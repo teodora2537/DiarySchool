@@ -47,12 +47,8 @@ BEGIN_MESSAGE_MAP(CUpdateStudent, CDialogEx)
 	ON_BN_CLICKED(IDOK, &CUpdateStudent::OnBnClickedOk)
 END_MESSAGE_MAP()
 
-// CUpdateStudent message handlers
-
-
 void CUpdateStudent::OnBnClickedOk()
 {
-	// TODO: Add your control notification handler code here
 	CDialogEx::OnOK();
 
 	UpdateData(TRUE);

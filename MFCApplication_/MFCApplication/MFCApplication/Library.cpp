@@ -626,39 +626,6 @@ multimap<int, vector<string>> Library::PrintScore()
 //Average score
 
 //Average score by subject
-map<int, string[2]> Library::AverageScoreBySubject() {
-	multimap<int, vector<string>> _map = PrintScore();
-
-	int sum = 0;
-	int count = 0;
-	map<int, string[2]> averageMap;
-	//loop for, for all score 
-	for (auto i = _map.begin(); i != _map.end(); i++)
-	{
-		//if student exist in averageMap, continue
-		if (averageMap.count((*i).first))
-		{
-			count=0;
-			sum = 0;
-			continue;
-		}
-		//loop for, for all score 
-		for (auto j = _map.begin(); j != _map.end(); j++)
-		{
-			//sum all score of student by subject
-			if ((*i).first == (*j).first && (*i).second[0] == (*j).second[0])
-			{
-				sum += stoi((*j).second[1]);
-				count++;
-			}
-		}
-		//add in student subject and average score 
-		averageMap[(*i).first][0] = (*i).second[0]; 
-		averageMap[(*i).first][1] = to_string(sum / count);
-	}
-	return averageMap;
-}
-
 map<int, vector<string>> Library::AverageScoreBySubject_new()
 {
 	multimap<int, vector<string>> _map = PrintScore();
@@ -705,42 +672,6 @@ map<int, vector<string>> Library::AverageScoreBySubject_new()
 }
 
 //Average score by all subject
-map<int, int> Library::AverageScoreByAllSubject() {
-	multimap<int, vector<string>> _multimap = PrintScore();
-
-	float sum = 0;
-	int count = 0;
-	string studentName;
-	map<int, int> averageMap;
-	
-	//loop for, for all score
-	for (auto i = _multimap.begin(); i != _multimap.end(); i++)
-	{
-		//if student exist -> continue
-		if (averageMap.count((*i).first))
-		{
-			sum = 0;
-		    count = 0;
-			continue;
-		}
-		//sum all score of student
-		for (auto j = _multimap.begin(); j != _multimap.end(); j++)
-		{
-			if ((*i).first == (*j).first)
-			{
-				sum += stoi((*j).second[1]);
-				count++;
-			}
-		}
-
-		float avg = sum / count;
-		int i_averageScore = round(avg);
-		//add in student average score
-		averageMap[(*i).first]= i_averageScore;
-	}
-	return averageMap;
-}
-
 map<int, int> Library::AverageScoreByAllSubject_new() {
 	
 	multimap<int, vector<string>> _map = PrintScore();

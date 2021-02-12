@@ -38,19 +38,14 @@ public:
 	afx_msg void OnBnClickedButtonAvgscorebyallsubjects();
 	afx_msg void OnBnClickedButtonExcellentstudent();
 	afx_msg void OnBnClickedButtonBirtdays();
-
-	CListCtrl m_listCtrl;
-	void ClearListCtrl();
 	afx_msg void OnBnClickedButton();
 	afx_msg void OnBnClickedButtonByMoreSubjects();
-	//void OnLButtonDblClk(UINT nFlags, CPoint point);
 
-	CListCtrl m_list2;
+	CListCtrl m_listCtrl;
+	afx_msg void ClearListCtrl();
+
 	CString m_class;
-	afx_msg void OnBnClickedButton3();
-	//afx_msg void OnNMDblclkList1(NMHDR* pNMHDR, LRESULT* pResult);
-	//afx_msg void OnNMDblclkList(NMHDR* pNMHDR, LRESULT* pResult);
-	//afx_msg void OnNMRClickList1(NMHDR* pNMHDR, LRESULT* pResult);
+	int nItem;
 
 	//////////////////////////////////////////////////////////////////////////////////
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);

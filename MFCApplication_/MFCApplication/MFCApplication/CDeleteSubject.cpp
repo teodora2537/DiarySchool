@@ -37,9 +37,6 @@ BEGIN_MESSAGE_MAP(CDeleteSubject, CDialogEx)
 END_MESSAGE_MAP()
 
 
-// CDeleteSubject message handlers
-
-
 void CDeleteSubject::OnBnClickedOk()
 {
 	CDialogEx::OnOK();

@@ -23,13 +23,10 @@ public:
 	map<int, vector<string>> PrintStudent();
 	map<int, vector<string>> PrintSubject();
 	multimap<int, vector<string>> PrintScore();
-	map<int, string[2]> AverageScoreBySubject();
 	map<int, vector<string>> AverageScoreBySubject_new();
-	map<int, int> AverageScoreByAllSubject();
 	map<int, int> AverageScoreByAllSubject_new();
 	vector<string> ExcellentStudent();
 	vector<string> PeopleHaveBirthdayToday();
 	map<int, vector<string>> remedialExaminationBySubject();
 	vector<string> remedialExaminationByMoreSubjects();
-
 };

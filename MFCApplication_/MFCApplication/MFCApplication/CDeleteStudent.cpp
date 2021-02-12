@@ -16,11 +16,6 @@ IMPLEMENT_DYNAMIC(CDeleteStudent, CDialogEx)
 CDeleteStudent::CDeleteStudent(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_DELETE_STUDENT, pParent)
 {
-	//Library lib;
-	// CString m_cstrFirstName(m_oStudent.GetFirstName().c_str());
-	// CString m_cstrLastName(m_oStudent.GetLastName().c_str());
-	// CString m_cstrBirthday(m_oStudent.GetBirthday().c_str());
-
 	Student m_oStudent;
 	classNum.Format(L"%d", m_oStudent.GetClassNumber());
 }
@@ -39,8 +34,6 @@ void CDeleteStudent::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CDeleteStudent, CDialogEx)
 	ON_BN_CLICKED(IDOK, &CDeleteStudent::OnBnClickedOk)
 END_MESSAGE_MAP()
-
-// CDeleteStudent message handlers
 
 void CDeleteStudent::OnBnClickedOk()
 {

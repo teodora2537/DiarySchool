@@ -15,9 +15,7 @@ CTabControl::CTabControl()
 CTabControl::~CTabControl()
 {
     for (int nCount = 0; nCount < m_nNumberOfPages; nCount++)
-    {
         delete m_tabPages[nCount];
-    }
 }
 
 void CTabControl::Init(void)
@@ -59,8 +57,6 @@ END_MESSAGE_MAP()
 
 void CTabControl::OnLButtonDown(UINT nFlags, CPoint point)
 {
-    // TODO: Add your message handler code here and/or call default
-
     CTabCtrl::OnLButtonDown(nFlags, point);
     CTabCtrl::OnLButtonDown(nFlags, point);
     if (m_tabCurrent != GetCurFocus())

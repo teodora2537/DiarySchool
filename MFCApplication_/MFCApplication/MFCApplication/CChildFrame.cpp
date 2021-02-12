@@ -10,8 +10,6 @@
 IMPLEMENT_DYNCREATE(CChildFrame, CMDIChildWnd)
 
 BEGIN_MESSAGE_MAP(CChildFrame, CMDIChildWnd)
-//	ON_WM_CONTEXTMENU()
-	//ON_BN_CLICKED(IDC_MENU_ADD, m_wndSplitter)
 END_MESSAGE_MAP()
 
 // CChildFrame construction/destruction
@@ -51,12 +49,3 @@ void CChildFrame::Dump(CDumpContext& dc) const
 	CMDIChildWnd::Dump(dc);
 }
 #endif //_DEBUG
-
-
-//void CChildFrame::OnContextMenu(CWnd* /*pWnd*/, CPoint /*point*/)
-//{
-//	CMenu submenu;
-//
-//	submenu.CreatePopupMenu();
-//	//submenu.AppendMenuW(MF_STRING, IDC_MENU_ADD, _T("Line"));
-//}

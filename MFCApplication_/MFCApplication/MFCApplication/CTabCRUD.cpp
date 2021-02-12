@@ -24,10 +24,6 @@
 IMPLEMENT_DYNAMIC(CTabCRUD, CDialogEx)
 CTabCRUD::CTabCRUD(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_TAB_CRUD, pParent)
-	/*, edit1(_T(""))
-	, edit2(_T(""))
-	, edit3(_T(""))
-	, edit4(_T(""))*/
 {
 
 }

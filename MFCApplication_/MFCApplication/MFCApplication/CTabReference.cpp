@@ -31,6 +31,7 @@ IMPLEMENT_DYNAMIC(CTabReference, CDialogEx)
 CTabReference::CTabReference(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_TAB_REFERENCES, pParent)
 {
+	nItem = 0;
 }
 
 CTabReference::~CTabReference()
@@ -41,7 +42,6 @@ void CTabReference::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_LIST, m_listCtrl);
-	DDX_Control(pDX, IDC_LIST_1, m_list2);
 	m_class = "";
 }
 
@@ -56,9 +56,6 @@ BEGIN_MESSAGE_MAP(CTabReference, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_BIRTDAYS, &CTabReference::OnBnClickedButtonBirtdays)
 	ON_BN_CLICKED(IDC_BUTTON_, &CTabReference::OnBnClickedButton)
 	ON_BN_CLICKED(IDC_BUTTON_BY_MORE_SUBJECTS, &CTabReference::OnBnClickedButtonByMoreSubjects)
-	ON_BN_CLICKED(IDC_BUTTON3, &CTabReference::OnBnClickedButton3)
-	//ON_NOTIFY(NM_DBLCLK, IDC_LIST_1, &CTabReference::OnNMDblclkList1)
-	//ON_NOTIFY(NM_DBLCLK, IDC_LIST, &CTabReference::OnNMDblclkList)
 	
 	//////////////////////////////////////
 	ON_WM_CONTEXTMENU()
@@ -293,19 +290,7 @@ void CTabReference::OnBnClickedButtonBirtdays()
 	}
 }
 
-void CTabReference::ClearListCtrl()
-{
-	int nColumnCount = m_listCtrl.GetHeaderCtrl()->GetItemCount();
-	m_listCtrl.SetRedraw(FALSE);
-	m_listCtrl.DeleteAllItems();
-	m_listCtrl.SetRedraw(TRUE);
-	// Delete all of the columns.
-	for (int i = 0; i < nColumnCount; i++)
-	{
-		m_listCtrl.DeleteColumn(0);
-	}
-}
-
+//Remedial examination by subject
 void CTabReference::OnBnClickedButton()
 {
 	ClearListCtrl(); 
@@ -336,7 +321,7 @@ void CTabReference::OnBnClickedButton()
 		}
 	}
 }
-
+//Remedial examination by more 3 subjects
 void CTabReference::OnBnClickedButtonByMoreSubjects()
 {
 	ClearListCtrl();
@@ -353,69 +338,34 @@ void CTabReference::OnBnClickedButtonByMoreSubjects()
 		}
 	}
 
-void CTabReference::OnBnClickedButton3()
+void CTabReference::ClearListCtrl()
 {
-
-	m_list2.SetExtendedStyle(LVS_EX_FULLROWSELECT);
-
-	m_list2.InsertColumn(0, L"¹", LVCFMT_LEFT, 30);
-	m_list2.InsertColumn(1, L"Avg score", LVCFMT_LEFT, 100);
-
-	m_list2.InsertItem(0, L"1");
-	m_list2.SetItemText(0, 1, L"5.0");
-	m_list2.InsertItem(1, L"2");
-	m_list2.SetItemText(1, 1, L"5.0");
-	m_list2.InsertItem(2, L"3");
-	m_list2.SetItemText(2, 1, L"5.0");
-	
-	if (m_list2.GetSelectionMark() == 1)
+	int nColumnCount = m_listCtrl.GetHeaderCtrl()->GetItemCount();
+	m_listCtrl.SetRedraw(FALSE);
+	m_listCtrl.DeleteAllItems();
+	m_listCtrl.SetRedraw(TRUE);
+	// Delete all of the columns.
+	for (int i = 0; i < nColumnCount; i++)
 	{
-		MessageBox(L"You clicked ADD");
+		m_listCtrl.DeleteColumn(0);
 	}
-	
 }
-	// TODO: Add your control notification handler code here
-/*
-void CTabReference::OnNMDblclkList1(NMHDR* pNMHDR, LRESULT* pResult)
-{
-	int idItem = m_list2.GetSelectionMark()+1;
-
-	if (idItem < 0)
-		return;
-	
-	CString str;
-	str.Format(L"%d", idItem);
-	MessageBox(str);
-
-}
-
-void CTabReference::OnNMDblclkList(NMHDR* pNMHDR, LRESULT* pResult)
-{
-	int idItem = m_listCtrl.GetSelectionMark()+1;
-	
-	if (idItem < 0)
-		return;
-
-	//DWORD_PTR dwItemData = m_listCtrl.GetItemData(idItem); //iterira
-
-	CString str;
-	str.Format(L"%d", idItem);
-	MessageBox(str);
-}
-*/
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void CTabReference::OnContextMenu(CWnd* pWnd, CPoint point)
 {
-	int nItem = m_listCtrl.GetSelectionMark();
-	
-	if (m_class == "student")
-		SubmenuStudent(pWnd, point);
-	else if (m_class == "subject")
-		SubmenuSubject(pWnd, point);
-	else if (m_class == "score")
-		SubmenuScore(pWnd, point);
+	nItem = m_listCtrl.GetSelectionMark()+1;
+	if (nItem == 0)
+		return;
+
+
+		if (m_class == "student")
+			SubmenuStudent(pWnd, point);
+		else if (m_class == "subject")
+			SubmenuSubject(pWnd, point);
+		else if (m_class == "score")
+			SubmenuScore(pWnd, point);
 }
 
 void CTabReference::OnAddStudent()
@@ -488,8 +438,12 @@ void CTabReference::OnDeleteScore()
 
 void CTabReference::SubmenuStudent(CWnd* pWnd, CPoint point)
 {
+	if (nItem == 0)
+		return;
+
 	CMenu submenu;
 	submenu.CreatePopupMenu();
+	 
 
 	submenu.AppendMenu(MF_STRING, IDC_MENU_ADD_STUDENT, L"Add student");
 	submenu.AppendMenu(MF_STRING, IDC_MENU_EDIT_STUDENT, L"Edit student");
@@ -600,14 +554,3 @@ void CTabReference::getScoreFromDlg()
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-CMyListCtrlItemDataStudent::CMyListCtrlItemDataStudent()
-{
-	idStudent = 0;
-	nameStudent = "";
-	studentBirthday = "";
-}
-
-CMyListCtrlItemDataStudent::~CMyListCtrlItemDataStudent()
-{
-}

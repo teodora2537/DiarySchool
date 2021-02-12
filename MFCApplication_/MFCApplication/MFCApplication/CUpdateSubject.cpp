@@ -48,19 +48,14 @@ BEGIN_MESSAGE_MAP(CUpdateSubject, CDialogEx)
 	ON_BN_CLICKED(IDOK, &CUpdateSubject::OnBnClickedOk)
 END_MESSAGE_MAP()
 
-// CUpdateSubject message handlers
-
-
 void CUpdateSubject::OnBnClickedOk()
 {
-	// TODO: Add your control notification handler code here
 	CDialogEx::OnOK();
 	
 	UpdateData(TRUE);
 	Library lib;
 	string row = "";
 
-	//Success Update
 	Subject subject(_ttoi(roomNum), subject, lib.ConvertToStirng(fn, row), lib.ConvertToStirng(ln, row));
 
 	lib.UpdateSubject();

@@ -47,19 +47,14 @@ BEGIN_MESSAGE_MAP(CUpdateScore, CDialogEx)
 	ON_BN_CLICKED(IDOK, &CUpdateScore::OnBnClickedOk)
 END_MESSAGE_MAP()
 
-// CUpdateScore message handlers
-
-
 void CUpdateScore::OnBnClickedOk()
 {
-	// TODO: Add your control notification handler code here
 	CDialogEx::OnOK();
 
 	UpdateData(TRUE);
 	Library lib;
 	string row = "";
 
-	//Success Update
 	Score score(_ttoi(classNum), lib.ConvertToStirng(subject, row), _ttoi(score), lib.ConvertToStirng(date, row));
 
 	lib.UpdateScore();

@@ -42,10 +42,4 @@ void CAddStudent::OnBnClickedAddStudent() {
 	string row = "";
 
 		Student student(_ttoi(classNum), lib.ConvertToStirng(fn, row), lib.ConvertToStirng(ln, row), lib.ConvertToStirng(birthday, row));
-	
-		/*int MessageBox(LPCTSTR lpszText,
-			LPCTSTR lpszCaption = NULL,
-			UINT nType = MB_OK);*/
 }
-
-// AddStudent message handlers

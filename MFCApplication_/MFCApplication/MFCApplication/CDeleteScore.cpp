@@ -58,6 +58,4 @@ void CDeleteScore::OnBnClickedOk()
 
 	lib.DeleteScore();
 	}
-	
-	//score.SetClassNum(_ttoi(classNum));
 }
