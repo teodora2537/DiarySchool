@@ -3,13 +3,13 @@
 
 // CUpdateStudent dialog
 
-class CUpdateStudent : public CDialogEx
+class CUpdateStudentDlg : public CDialogEx
 {
-	DECLARE_DYNAMIC(CUpdateStudent)
+	DECLARE_DYNAMIC(CUpdateStudentDlg)
 
 public:
-	CUpdateStudent(CWnd* pParent = nullptr);   // standard constructor
-	virtual ~CUpdateStudent();
+	CUpdateStudentDlg(CWnd* pParent = nullptr);   // standard constructor
+	virtual ~CUpdateStudentDlg();
 
 // Dialog Data
 #ifdef AFX_DESIGN_TIME

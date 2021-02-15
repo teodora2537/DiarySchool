@@ -27,9 +27,9 @@ string Library::ConvertToStirng(CString str_cstr, string row)
 //Add student/subject/score to file
 bool Library::AddInStudent()
 {
-	Student student;
+	CStudentData student;
 	ofstream outFile;
-	outFile.open("Student.txt",ios::app);
+	outFile.open("CStudentData.txt",ios::app);
 	outFile << student.GetClassNumber() <<'|'<< student.GetFirstName()<<'|'<<student.GetLastName()<< '|' <<student.GetBirthday()<< "\n";
 	outFile.close();
 
@@ -71,7 +71,7 @@ bool Library::AddInScore()
 bool Library::UpdateStudent()
 {
 	//Datas from edit boxes
-	Student student;
+	CStudentData student;
 	int classNum = student.GetClassNumber();
 	string fName = student.GetFirstName();
 	string lName = student.GetLastName();
@@ -82,11 +82,11 @@ bool Library::UpdateStudent()
 	string token;
 	fstream file;
 	size_t position;
-	Student currentStudent;
+	CStudentData currentStudent;
 	bool isFind = false;
 	map<int, vector<string>> mapStudent;
 	
-	file.open("Student.txt", ios::in);
+	file.open("CStudentData.txt", ios::in);
 
 	while (getline(file, text))
 	{
@@ -125,7 +125,7 @@ bool Library::UpdateStudent()
 	if (isFind)
 	{
 		ofstream outFile;
-		outFile.open("Student.txt", ios::out | ios::trunc);
+		outFile.open("CStudentData.txt", ios::out | ios::trunc);
 		//Set student in the file.
 		for (auto i = mapStudent.begin(); i != mapStudent.end(); i++)
 		{
@@ -298,7 +298,7 @@ bool Library::UpdateScore()
 //Delete student/subject/score -> delete by exist number
 bool Library::DeleteStudent()
 {
-	Student student;
+	CStudentData student;
 	int classNum = student.GetClassNumber();
 	string fName = student.GetFirstName();
 	string lName = student.GetLastName();
@@ -309,11 +309,11 @@ bool Library::DeleteStudent()
 	string token;
 	fstream file;
 	size_t position;
-	Student currentStudent;
+	CStudentData currentStudent;
 	bool isFind = false;
 	map<int, vector<string>> mapStudent;
 
-	file.open("Student.txt", ios::in);
+	file.open("CStudentData.txt", ios::in);
 
 	while (getline(file, text))
 	{
@@ -346,7 +346,7 @@ bool Library::DeleteStudent()
 	if (isFind)
 	{
 		ofstream outFile;
-		outFile.open("Student.txt", ios::out | ios::trunc);
+		outFile.open("CStudentData.txt", ios::out | ios::trunc);
 
 		for (auto i = mapStudent.begin(); i != mapStudent.end(); i++)
 		{
@@ -480,7 +480,7 @@ bool Library::DeleteScore()
 	}
 
 	file.close();
-
+	
 	if (isFind)
 	{
 		ofstream outFile;
@@ -507,7 +507,7 @@ map<int, vector<string>> Library::PrintStudent()
 	string token;
 	fstream file;
 	size_t position;
-	Student currentStudent;
+	CStudentData currentStudent;
 	map<int, vector<string>> mapStudent;
 
 	file.open("Student.txt", ios::in);
@@ -762,7 +762,7 @@ vector<string> Library::ExcellentStudent() {
 	return excelentStudents;
 }
 
-// Student have birthday today
+// CStudentData have birthday today
 vector<string> Library::PeopleHaveBirthdayToday()
 {
 	map<int, vector<string>> map_student = PrintStudent();

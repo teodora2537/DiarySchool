@@ -15,9 +15,6 @@
 #include "CUpdateStudent.h"
 #include "CUpdateSubject.h"
 #include "CUpdateScore.h"
-#include "CDeleteStudent.h"
-#include "CDeleteSubject.h"
-#include "CDeleteScore.h"
 #include "MFCApplicationDlg.h"
 // CTabCRUD dialog
 
@@ -49,46 +46,60 @@ END_MESSAGE_MAP()
 
 void CTabCRUD::OnBnClickedButtonAddStudent()
 {
-	CAddStudent dlg;
-	dlg.DoModal();
+	CStudentData oStudentData;
+	
+	CAddStudentDlg dlg(oStudentData, eDialogMode_Add);
+	
+	if (dlg.DoModal() != IDOK)
+		return;
+
+	CStudent oStudent;
+
+	oStudent.AddStudent(oStudentData);
 }
 void CTabCRUD::OnBnClickedButtonAddSubject()
 {
-	CAddSubject dlg;
+	CAddSubjectDlg dlg;
 	dlg.DoModal();
 }
 void CTabCRUD::OnBnClickedButtonAddScore()
 {
-	CAddScore dlg;
+	CAddScoreDlg dlg;
 	dlg.DoModal();
 }
 void CTabCRUD::OnBnClickedButtonUpdateStudent()
 {
-	CUpdateStudent dlg;
+	CUpdateStudentDlg dlg;
 	dlg.DoModal();
 }
 void CTabCRUD::OnBnClickedButtonUpdateSubject()
 {
-	CUpdateSubject dlg;
+	CUpdateSubjectDlg dlg;
 	dlg.DoModal();
 }
 void CTabCRUD::OnBnClickedButtonUpdateScore()
 {
-	CUpdateScore dlg;
+	CUpdateScoreDlg dlg;
 	dlg.DoModal();
 }
 void CTabCRUD::OnBnClickedButtonDeleteStudent()
 {
+	/*
 	CDeleteStudent dlg;
 	dlg.DoModal();
+	*/
 }
 void CTabCRUD::OnBnClickedButtonDeleteSubject()
 {
+	/*
 	CDeleteSubject dlg;
 	dlg.DoModal();
+	*/
 }
 void CTabCRUD::OnBnClickedButtonDeleteScore()
 {
+	/*
 	CDeleteScore dlg;
 	dlg.DoModal();
+	*/
 }

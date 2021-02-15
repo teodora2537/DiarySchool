@@ -11,13 +11,13 @@
 
 // CUpdateStudent dialog
 
-IMPLEMENT_DYNAMIC(CUpdateStudent, CDialogEx)
+IMPLEMENT_DYNAMIC(CUpdateStudentDlg, CDialogEx)
 
-CUpdateStudent::CUpdateStudent(CWnd* pParent /*=nullptr*/)
+CUpdateStudentDlg::CUpdateStudentDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_UPDATE_STUDENT, pParent)
 {
 		Library lib;
-		Student m_oStudent;
+		CStudentData m_oStudent;
 		CString m_cstrFirstName(m_oStudent.GetFirstName().c_str());
 		CString m_cstrLastName(m_oStudent.GetLastName().c_str());
 		CString m_cstrBirthday(m_oStudent.GetBirthday().c_str());
@@ -29,11 +29,11 @@ CUpdateStudent::CUpdateStudent(CWnd* pParent /*=nullptr*/)
 
 }
 
-CUpdateStudent::~CUpdateStudent()
+CUpdateStudentDlg::~CUpdateStudentDlg()
 {
 }
 
-void CUpdateStudent::DoDataExchange(CDataExchange* pDX)
+void CUpdateStudentDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Text(pDX, IDC_EDIT_UPDATE_STUDENT_CLASS_NUM, classNum);
@@ -43,11 +43,11 @@ void CUpdateStudent::DoDataExchange(CDataExchange* pDX)
 }
 
 
-BEGIN_MESSAGE_MAP(CUpdateStudent, CDialogEx)
-	ON_BN_CLICKED(IDOK, &CUpdateStudent::OnBnClickedOk)
+BEGIN_MESSAGE_MAP(CUpdateStudentDlg, CDialogEx)
+	ON_BN_CLICKED(IDOK, &CUpdateStudentDlg::OnBnClickedOk)
 END_MESSAGE_MAP()
 
-void CUpdateStudent::OnBnClickedOk()
+void CUpdateStudentDlg::OnBnClickedOk()
 {
 	CDialogEx::OnOK();
 
@@ -55,7 +55,7 @@ void CUpdateStudent::OnBnClickedOk()
 	Library lib;
 	string row = "";
 
-	Student student(_ttoi(classNum), lib.ConvertToStirng(fn, row), lib.ConvertToStirng(ln, row), lib.ConvertToStirng(birthday, row));
+	CStudentData student(_ttoi(classNum), lib.ConvertToStirng(fn, row), lib.ConvertToStirng(ln, row), lib.ConvertToStirng(birthday, row));
 	
 	lib.UpdateStudent();
 }

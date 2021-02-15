@@ -11,9 +11,9 @@
 
 // CUpdateScore dialog
 
-IMPLEMENT_DYNAMIC(CUpdateScore, CDialogEx)
+IMPLEMENT_DYNAMIC(CUpdateScoreDlg, CDialogEx)
 
-CUpdateScore::CUpdateScore(CWnd* pParent /*=nullptr*/)
+CUpdateScoreDlg::CUpdateScoreDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_UPDATE_SCORE, pParent)
 {
 	Library lib;
@@ -29,11 +29,11 @@ CUpdateScore::CUpdateScore(CWnd* pParent /*=nullptr*/)
 	score = m_cstrScore;
 }
 
-CUpdateScore::~CUpdateScore()
+CUpdateScoreDlg::~CUpdateScoreDlg()
 {
 }
 
-void CUpdateScore::DoDataExchange(CDataExchange* pDX)
+void CUpdateScoreDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Text(pDX, IDC_EDIT_UPDATE_SCORE_CLASS_NUMBER, classNum);
@@ -43,11 +43,11 @@ void CUpdateScore::DoDataExchange(CDataExchange* pDX)
 }
 
 
-BEGIN_MESSAGE_MAP(CUpdateScore, CDialogEx)
-	ON_BN_CLICKED(IDOK, &CUpdateScore::OnBnClickedOk)
+BEGIN_MESSAGE_MAP(CUpdateScoreDlg, CDialogEx)
+	ON_BN_CLICKED(IDOK, &CUpdateScoreDlg::OnBnClickedOk)
 END_MESSAGE_MAP()
 
-void CUpdateScore::OnBnClickedOk()
+void CUpdateScoreDlg::OnBnClickedOk()
 {
 	CDialogEx::OnOK();
 

@@ -1,14 +1,14 @@
 #pragma once
 #include<string>
 using namespace std;
-class Student
+class CStudentData
 {
 protected:
 
 public:
 
-	Student(int _classNum, string fName, string lName, string birthday);
-	Student();
+	CStudentData(int _classNum, string fName, string lName, string birthday);
+	CStudentData();
 	string GetFirstName();
 	void SetFirstName(string firstName);
 	
@@ -24,3 +24,18 @@ public:
 	void SetFullName(CString _fullName);
 };
 
+
+
+class CStudent
+{
+public:
+	CStudent();
+	virtual ~CStudent();
+
+public:
+
+	bool AddStudent(CStudentData& oStudent);
+	bool EditStudent(const CStudentData& oStudent);
+	bool LoadStudent(const int nClassNumber, CStudentData& oStudent);
+	bool DeleteStudent(const int nClassNumber);
+};

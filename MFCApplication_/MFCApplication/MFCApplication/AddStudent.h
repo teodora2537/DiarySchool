@@ -1,15 +1,19 @@
 #pragma once
+#include "Library.h"
+#include "Student.h"
 
 
 // AddStudent dialog
 
-class CAddStudent : public CDialogEx
+class CAddStudentDlg : public CDialogEx
 {
-	DECLARE_DYNAMIC(CAddStudent)
+	DECLARE_DYNAMIC(CAddStudentDlg)
 
 public:
-	CAddStudent(CWnd* pParent = nullptr);   // standard constructor
-	virtual ~CAddStudent();
+	CAddStudentDlg(CStudentData& oStudent, const DialogMode eMode);   // standard constructor
+	virtual ~CAddStudentDlg();
+
+public:
 
 // Dialog Data
 #ifdef AFX_DESIGN_TIME
@@ -17,6 +21,8 @@ public:
 #endif
 
 protected:
+	virtual BOOL OnInitDialog();
+
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
 	afx_msg void OnBnClickedAddStudent();
@@ -24,10 +30,16 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 public:
-	CString classNum;
+	CString m_strclassNum;
 	CString fn;
 	CString ln;
 	CString birthday;
+
+	CEdit m_edb;
+
+	CStudentData& m_oStudent;
+	
+	DialogMode m_eMode;
 
 	afx_msg void OnBnClickedOk();
 };

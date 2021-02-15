@@ -3,13 +3,13 @@
 
 // CUpdateScore dialog
 
-class CUpdateScore : public CDialogEx
+class CUpdateScoreDlg : public CDialogEx
 {
-	DECLARE_DYNAMIC(CUpdateScore)
+	DECLARE_DYNAMIC(CUpdateScoreDlg)
 
 public:
-	CUpdateScore(CWnd* pParent = nullptr);   // standard constructor
-	virtual ~CUpdateScore();
+	CUpdateScoreDlg(CWnd* pParent = nullptr);   // standard constructor
+	virtual ~CUpdateScoreDlg();
 
 // Dialog Data
 #ifdef AFX_DESIGN_TIME

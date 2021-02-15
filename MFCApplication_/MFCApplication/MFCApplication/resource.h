@@ -15,9 +15,6 @@
 #define IDD_DIALOG_UPDATE_STUDENT       138
 #define IDD_DIALOG_UPDATE_SUBJECT       140
 #define IDD_DIALOG_UPDATE_SCORE         142
-#define IDD_DIALOG_DELETE_STUDENT       144
-#define IDD_DIALOG_DELETE_SUBJECT       146
-#define IDD_DIALOG_DELETE_SCORE         148
 #define IDC_TAB                         1000
 #define IDC_EDIT_ADD_SCORE_DATE         1007
 #define IDC_EDIT_ADD_SCORE_SCORE        1008
@@ -62,10 +59,7 @@
 #define IDC_EDIT_UPDATE_SCORE_SUBJECT   1051
 #define IDC_EDIT_UPDATE_SCORE_DATE      1052
 #define IDC_EDIT_UPDATE_SCORE_SCORE     1053
-#define IDC_EDIT_DELETE_STUDENT_CLASS_NUM 1054
-#define IDC_EDIT_DELETE_SUBJECT_ROOM_NUM 1055
 #define IDC_EDIT_DELETE_SCORE_CLASS_NUMBER 1056
-#define IDC_EDIT_DELETE_SCORE_ID_SCORE  1056
 #define IDC_LIST                        1058
 #define IDC_BUTTON_                     1059
 #define IDC_BUTTON_BY_MORE_SUBJECTS     1060
@@ -83,9 +77,6 @@
 #define IDC_MENU_EDIT_SCORE             1072
 #define IDC_MENU_DEL_SCORE              1073
 #define IDC_MENU_VIEW_SCORE             1074
-
-
-
 
 // Next default values for new objects
 // 

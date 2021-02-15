@@ -72,15 +72,6 @@
     <ClInclude Include="CUpdateScore.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CDeleteStudent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CDeleteSubject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CDeleteScore.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="CChildFrame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -132,15 +123,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CUpdateScore.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CDeleteStudent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CDeleteSubject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CDeleteScore.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ADDSTUDENT.CPP">

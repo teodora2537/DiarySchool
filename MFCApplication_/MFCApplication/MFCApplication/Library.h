@@ -4,6 +4,13 @@
 #include<vector> 
 using namespace std;
 
+enum DialogMode
+{
+	eDialogMode_Add = 1,
+	eDialogMode_Edit = 2,
+	eDialogMode_View = 3
+};
+
 class Library
 {
 public:

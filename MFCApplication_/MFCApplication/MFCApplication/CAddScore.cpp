@@ -11,19 +11,19 @@
 
 // CAddScore dialog
 
-IMPLEMENT_DYNAMIC(CAddScore, CDialogEx)
+IMPLEMENT_DYNAMIC(CAddScoreDlg, CDialogEx)
 
-CAddScore::CAddScore(CWnd* pParent /*=nullptr*/)
+CAddScoreDlg::CAddScoreDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_ADD_SCORE, pParent)
 {
 
 }
 
-CAddScore::~CAddScore()
+CAddScoreDlg::~CAddScoreDlg()
 {
 }
 
-void CAddScore::DoDataExchange(CDataExchange* pDX)
+void CAddScoreDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Text(pDX, IDC_EDIT_ADD_SCORE_CLASS_NUMBER, classNum);
@@ -33,14 +33,14 @@ void CAddScore::DoDataExchange(CDataExchange* pDX)
 }
 
 
-BEGIN_MESSAGE_MAP(CAddScore, CDialogEx)
-	ON_BN_CLICKED(IDOK, &CAddScore::OnBnClickedOk)
+BEGIN_MESSAGE_MAP(CAddScoreDlg, CDialogEx)
+	ON_BN_CLICKED(IDOK, &CAddScoreDlg::OnBnClickedOk)
 END_MESSAGE_MAP()
 
 // CAddScore message handlers
 
 
-void CAddScore::OnBnClickedOk()
+void CAddScoreDlg::OnBnClickedOk()
 {
 	// TODO: Add your control notification handler code here
 	CDialogEx::OnOK();

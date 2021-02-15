@@ -11,9 +11,9 @@
 
 // CUpdateSubject dialog
 
-IMPLEMENT_DYNAMIC(CUpdateSubject, CDialogEx)
+IMPLEMENT_DYNAMIC(CUpdateSubjectDlg, CDialogEx)
 
-CUpdateSubject::CUpdateSubject(CWnd* pParent /*=nullptr*/)
+CUpdateSubjectDlg::CUpdateSubjectDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_UPDATE_SUBJECT, pParent)
 {
 	
@@ -30,11 +30,11 @@ CUpdateSubject::CUpdateSubject(CWnd* pParent /*=nullptr*/)
 	
 }
 
-CUpdateSubject::~CUpdateSubject()
+CUpdateSubjectDlg::~CUpdateSubjectDlg()
 {
 }
 
-void CUpdateSubject::DoDataExchange(CDataExchange* pDX)
+void CUpdateSubjectDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Text(pDX, IDC_EDIT_UPDATE_SUBJECT_ROOM_NUM, roomNum);
@@ -44,11 +44,11 @@ void CUpdateSubject::DoDataExchange(CDataExchange* pDX)
 }
 
 
-BEGIN_MESSAGE_MAP(CUpdateSubject, CDialogEx)
-	ON_BN_CLICKED(IDOK, &CUpdateSubject::OnBnClickedOk)
+BEGIN_MESSAGE_MAP(CUpdateSubjectDlg, CDialogEx)
+	ON_BN_CLICKED(IDOK, &CUpdateSubjectDlg::OnBnClickedOk)
 END_MESSAGE_MAP()
 
-void CUpdateSubject::OnBnClickedOk()
+void CUpdateSubjectDlg::OnBnClickedOk()
 {
 	CDialogEx::OnOK();
 	

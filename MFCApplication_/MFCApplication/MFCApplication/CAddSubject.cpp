@@ -11,19 +11,19 @@
 
 // CAddSubject dialog
 
-IMPLEMENT_DYNAMIC(CAddSubject, CDialogEx)
+IMPLEMENT_DYNAMIC(CAddSubjectDlg, CDialogEx)
 
-CAddSubject::CAddSubject(CWnd* pParent /*=nullptr*/)
+CAddSubjectDlg::CAddSubjectDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_ADD_SUBJECT, pParent)
 {
 
 }
 
-CAddSubject::~CAddSubject()
+CAddSubjectDlg::~CAddSubjectDlg()
 {
 }
 
-void CAddSubject::DoDataExchange(CDataExchange* pDX)
+void CAddSubjectDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Text(pDX, IDC_EDIT_ADD_SUBJECT_ROOM_NUM, roomNum);
@@ -33,14 +33,14 @@ void CAddSubject::DoDataExchange(CDataExchange* pDX)
 }
 
 
-BEGIN_MESSAGE_MAP(CAddSubject, CDialogEx)
-	ON_BN_CLICKED(IDOK, &CAddSubject::OnBnClickedOk)
+BEGIN_MESSAGE_MAP(CAddSubjectDlg, CDialogEx)
+	ON_BN_CLICKED(IDOK, &CAddSubjectDlg::OnBnClickedOk)
 END_MESSAGE_MAP()
 
 // CAddSubject message handlers
 
 
-void CAddSubject::OnBnClickedOk()
+void CAddSubjectDlg::OnBnClickedOk()
 {
 	// TODO: Add your control notification handler code here
 	CDialogEx::OnOK();

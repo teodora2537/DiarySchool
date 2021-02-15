@@ -3,13 +3,13 @@
 
 // CAddSubject dialog
 
-class CAddSubject : public CDialogEx
+class CAddSubjectDlg : public CDialogEx
 {
-	DECLARE_DYNAMIC(CAddSubject)
+	DECLARE_DYNAMIC(CAddSubjectDlg)
 
 public:
-	CAddSubject(CWnd* pParent = nullptr);   // standard constructor
-	virtual ~CAddSubject();
+	CAddSubjectDlg(CWnd* pParent = nullptr);   // standard constructor
+	virtual ~CAddSubjectDlg();
 
 // Dialog Data
 #ifdef AFX_DESIGN_TIME
@@ -28,5 +28,9 @@ public:
 	CString subject;
 	CString fn;
 	CString ln;
+
+	CEdit m_edb;
+
+
 	afx_msg void OnBnClickedOk();
 };

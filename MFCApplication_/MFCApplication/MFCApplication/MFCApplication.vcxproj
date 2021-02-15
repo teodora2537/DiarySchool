@@ -187,9 +187,6 @@
     <ClInclude Include="CAddScore.h" />
     <ClInclude Include="CAddSubject.h" />
     <ClInclude Include="CChildFrame.h" />
-    <ClInclude Include="CDeleteScore.h" />
-    <ClInclude Include="CDeleteStudent.h" />
-    <ClInclude Include="CDeleteSubject.h" />
     <ClInclude Include="CTabControl.h" />
     <ClInclude Include="CTabCRUD.h" />
     <ClInclude Include="CTabReference.h" />
@@ -213,9 +210,6 @@
     <ClCompile Include="CAddScore.cpp" />
     <ClCompile Include="CAddSubject.cpp" />
     <ClCompile Include="CChildFrame.cpp" />
-    <ClCompile Include="CDeleteScore.cpp" />
-    <ClCompile Include="CDeleteStudent.cpp" />
-    <ClCompile Include="CDeleteSubject.cpp" />
     <ClCompile Include="CTabControl.cpp" />
     <ClCompile Include="CTabCRUD.cpp" />
     <ClCompile Include="CTabReference.cpp" />

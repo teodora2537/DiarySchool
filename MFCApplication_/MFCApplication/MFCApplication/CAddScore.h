@@ -3,13 +3,13 @@
 
 // CAddScore dialog
 
-class CAddScore : public CDialogEx
+class CAddScoreDlg : public CDialogEx
 {
-	DECLARE_DYNAMIC(CAddScore)
+	DECLARE_DYNAMIC(CAddScoreDlg)
 
 public:
-	CAddScore(CWnd* pParent = nullptr);   // standard constructor
-	virtual ~CAddScore();
+	CAddScoreDlg(CWnd* pParent = nullptr);   // standard constructor
+	virtual ~CAddScoreDlg();
 
 // Dialog Data
 #ifdef AFX_DESIGN_TIME
