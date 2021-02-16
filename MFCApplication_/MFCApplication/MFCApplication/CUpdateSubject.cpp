@@ -18,7 +18,7 @@ CUpdateSubjectDlg::CUpdateSubjectDlg(CWnd* pParent /*=nullptr*/)
 {
 	
 	Library lib;
-	Subject m_oSubject;
+	CSubjectData m_oSubject;
 	CString m_cstrFirstNameTeacher(m_oSubject.GetFirstNameTeacher().c_str());
 	CString m_cstrLastNameTeacher(m_oSubject.GetLastNameTeacher().c_str());
 	CString m_cstrSubject(m_oSubject.GetNameSubject());
@@ -56,7 +56,7 @@ void CUpdateSubjectDlg::OnBnClickedOk()
 	Library lib;
 	string row = "";
 
-	Subject subject(_ttoi(roomNum), subject, lib.ConvertToStirng(fn, row), lib.ConvertToStirng(ln, row));
+	CSubjectData subject(_ttoi(roomNum), subject, lib.ConvertToStirng(fn, row), lib.ConvertToStirng(ln, row));
 
 	lib.UpdateSubject();
 }

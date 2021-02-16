@@ -26,12 +26,12 @@ CAddStudentDlg::~CAddStudentDlg()
 /*virtual*/
 BOOL CAddStudentDlg::OnInitDialog()
 {
-	if (!__super::OnInitDialog())
+	/*if (!__super::OnInitDialog())
 		return FALSE;
 
 	BOOL bReadOnly = m_eMode == eDialogMode_View;
 
-	m_edb.SetReadOnly(bReadOnly);
+	m_edb.SetReadOnly(bReadOnly);*/
 
 	return TRUE;
 }

@@ -2,12 +2,12 @@
 #include<string>
 using namespace std;
 
-class Score
+class CScoreData
 {
 public:
-	Score(int _classNum, string _subject, int _score, string _date);
+	CScoreData(int _classNum, string _subject, int _score, string _date);
 //	Score(int _classNum);
-	Score();
+	CScoreData();
 
 	int GetIdScore();
 	void SetIdScore(int _idScore);
@@ -23,7 +23,7 @@ public:
 
 	string GetDate();
 	void SetDate(string _date);
-
-
 };
+
+
 

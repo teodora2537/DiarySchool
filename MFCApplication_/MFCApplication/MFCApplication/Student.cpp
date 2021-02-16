@@ -49,14 +49,13 @@ int CStudentData::GetClassNumber() {
 void CStudentData::SetClassNumber(int _classNumber) {
 	classNumber = _classNumber;
 }
+
 CString CStudentData::GetFullName() {
 	return fullName;
 }
 void CStudentData::SetFullName(CString _fullName) {
 	fullName = _fullName;
 }
-
-
 
 CStudent::CStudent()
 {

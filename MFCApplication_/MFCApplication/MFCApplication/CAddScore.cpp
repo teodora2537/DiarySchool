@@ -54,7 +54,7 @@ void CAddScoreDlg::OnBnClickedOk()
 	string str_date = lib.ConvertToStirng(date, row);
 
 
-	Score score(_ttoi(classNum), lib.ConvertToStirng(subject, row), _ttoi(score), lib.ConvertToStirng(date, row));
+	CScoreData score(_ttoi(classNum), lib.ConvertToStirng(subject, row), _ttoi(score), lib.ConvertToStirng(date, row));
 
 	//Success Add
 	lib.AddInScore();

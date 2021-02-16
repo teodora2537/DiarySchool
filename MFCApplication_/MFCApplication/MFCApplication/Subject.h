@@ -3,13 +3,13 @@
 #include <string>
 
 using namespace std;
-class Subject
+class CSubjectData
 {
 
 public:
 
-	Subject(int _roomNumber, CString _nameSubject, string _fNameTeacher, string _lNameTeacher);
-	Subject();
+	CSubjectData(int _roomNumber, CString _nameSubject, string _fNameTeacher, string _lNameTeacher);
+	CSubjectData();
 
 	string GetFirstNameTeacher();
 	void SetFirstNameTeacher(string _firstNameTeacher);
@@ -25,5 +25,18 @@ public:
 	
 	CString GetFullNameTeacher();
 	void SetFullNameTeacher(CString _fullNameTeacher);
+};
+
+class CSubject {
+public:
+	CSubject();
+	virtual ~CSubject();
+
+public:
+	bool AddSubject(CSubjectData& oSubject);
+	bool EditSubject(const CSubjectData& oSubject);
+	bool LoadSubject(const int nClassNumber, CSubjectData& oSubject);
+	bool DeleteSubject(const int nClassNumber);
+
 };
 

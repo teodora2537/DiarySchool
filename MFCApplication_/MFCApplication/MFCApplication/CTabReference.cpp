@@ -432,22 +432,15 @@ void CTabReference::OnDeleteStudent()
 	message.Format(L"Do you want to delete %s with ¹ in class %d?", m_oStudent.GetFullName(), m_oStudent.GetClassNumber());
 
 	int result = MessageBox(message, L"Delete student", MB_YESNO);
-	CDialogEx::OnOK();
 
 	//button yes clicked
-	if (result == 6)
-	{
-		UpdateData(TRUE);
-		Library lib;
-		string row = "";
+	if (result != IDYES)
+		return;
 
-		CStudentData student;
-		//student.SetClassNumber(_ttoi(classNum));
+		UpdateData(TRUE);
 
 		lib.DeleteStudent();
-	}
-	//CDeleteStudent dlg;
-	//dlg.DoModal();
+		//CDialogEx::OnOK();
 
 
 }
@@ -471,27 +464,21 @@ void CTabReference::OnViewSubject()
 void CTabReference::OnDeleteSubject()
 {
 	getSubjectFromDlg();
-	CDialogEx::OnOK();
-	Subject m_oSubject;
+	//CDialogEx::OnOK();
+	CSubjectData m_oSubject;
 	CString message;
 	message.Format(L"Do you want to delete %s with room ¹ %d?", m_oSubject.GetNameSubject(), m_oSubject.GetRoomNumber());
 
 	int result = MessageBox(message, L"Delete subject", MB_YESNO);
 
 	//button yes clicked
-	if (result == 6)
-	{
+	if (result != IDYES)
+		return;
 		UpdateData(TRUE);
 		Library lib;
-		string row = "";
-
-		Subject subject;
-		//subject.SetRoomNumber(_ttoi(roomNum));
 
 		lib.DeleteSubject();
-	}
-	//CDeleteSubject dlg;
-	//dlg.DoModal();
+		DeleteItem();
 }
 
 void CTabReference::OnAddScore()
@@ -509,7 +496,7 @@ void CTabReference::OnEditScore()
 void CTabReference::OnViewScore()
 {
 	Library lib;
-	Score m_oScore;
+	CScoreData m_oScore;
 	multimap<int, vector<string>> infoScores = lib.PrintScore();
 	vector<int> m_vecScoresStudent;
 	getScoreFromDlg();
@@ -545,26 +532,21 @@ void CTabReference::OnViewScore()
 void CTabReference::OnDeleteScore()
 {
 	getScoreFromDlg();
+	CScoreData m_oScore;
+	
 	CString message;
-	Score m_oScore;
-	message.Format(L"Do you want to delete score with id %s?", m_oScore.GetIdScore());
-	MessageBox(message, L"Delete student", MB_YESNO);
+	message.Format(L"Do you want to delete score with id %d?", m_oScore.GetIdScore());
+	int result = MessageBox(message, L"Delete score", MB_YESNO);
+
+	if (result != IDYES)
+		return;
 
 	//button yes clicked
-	if (true)
-	{
 		UpdateData(TRUE);
 		Library lib;
-		string row = "";
-
-	//	m_oScore.SetIdScore(_ttoi(idScore));
 
 		lib.DeleteScore();
-	}
-
-	CDialogEx::OnOK();
-	//CDeleteScore dlg;
-	//dlg.DoModal();
+		DeleteItem();
 }
 
 void CTabReference::SubmenuStudent(CWnd* pWnd, CPoint point)
@@ -666,7 +648,7 @@ void CTabReference::getSubjectFromDlg()
 		}
 		strToken = m_cstrTeacher.Tokenize(_T(" "), nTokenPos);
 	}
-	Subject sub(_ttoi(m_cstrId), m_cstrSubject, lib.ConvertToStirng(m_cstrFirstName, ""), lib.ConvertToStirng(m_cstrLastName, ""));
+	CSubjectData sub(_ttoi(m_cstrId), m_cstrSubject, lib.ConvertToStirng(m_cstrFirstName, ""), lib.ConvertToStirng(m_cstrLastName, ""));
 	sub.SetFullNameTeacher(m_cstrTeacher);
 }
 void CTabReference::getScoreFromDlg()
@@ -680,8 +662,18 @@ void CTabReference::getScoreFromDlg()
 
 	int id = m_listCtrl.GetSelectionMark()+1;
 
-	Score score(_ttoi(m_cstrClassNum), lib.ConvertToStirng(m_cstrSubject, ""), _ttoi(m_cstrScore), lib.ConvertToStirng(m_cstrDate, ""));
+	CScoreData score(_ttoi(m_cstrClassNum), lib.ConvertToStirng(m_cstrSubject, ""), _ttoi(m_cstrScore), lib.ConvertToStirng(m_cstrDate, ""));
 	score.SetIdScore(id);
+}
+
+void CTabReference::DeleteItem() {
+		for (int nItem = 0; nItem < m_listCtrl.GetItemCount(); )
+		{
+			if (m_listCtrl.GetItemState(nItem, LVIS_SELECTED) == LVIS_SELECTED)
+				m_listCtrl.DeleteItem(nItem);
+			else
+				++nItem;
+		}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

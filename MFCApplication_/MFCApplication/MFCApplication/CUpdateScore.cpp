@@ -17,7 +17,7 @@ CUpdateScoreDlg::CUpdateScoreDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_UPDATE_SCORE, pParent)
 {
 	Library lib;
-	Score m_oScore;
+	CScoreData m_oScore;
 	CString m_cstrSubject(m_oScore.GetSubject().c_str());
 	CString m_cstrDate(m_oScore.GetDate().c_str());
 	CString m_cstrScore;
@@ -55,7 +55,7 @@ void CUpdateScoreDlg::OnBnClickedOk()
 	Library lib;
 	string row = "";
 
-	Score score(_ttoi(classNum), lib.ConvertToStirng(subject, row), _ttoi(score), lib.ConvertToStirng(date, row));
+	CScoreData score(_ttoi(classNum), lib.ConvertToStirng(subject, row), _ttoi(score), lib.ConvertToStirng(date, row));
 
 	lib.UpdateScore();
 }

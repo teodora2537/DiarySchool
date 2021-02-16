@@ -1,5 +1,2 @@
-﻿  CTabCRUD.cpp
-  CTabReference.cpp
-C:\Users\teodora.stoeva\Desktop\MFCApplication_\MFCApplication\MFCApplication\CTabReference.cpp(407,41): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-  Generating Code...
+﻿  CAddStudent.cpp
   MFCApplication.vcxproj -> C:\Users\teodora.stoeva\Desktop\MFCApplication_\MFCApplication\x64\Debug\MFCApplication.exe

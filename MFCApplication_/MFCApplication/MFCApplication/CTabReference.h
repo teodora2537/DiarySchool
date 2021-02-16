@@ -73,6 +73,8 @@ public:
 	afx_msg void getSubjectFromDlg();
 	afx_msg void getScoreFromDlg();
 
+	afx_msg void DeleteItem();
+
 	CString m_cstrId;
 	CString m_cstrName;
 	CString m_cstrBirthday;

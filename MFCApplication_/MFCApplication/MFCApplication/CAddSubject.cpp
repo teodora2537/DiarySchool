@@ -49,6 +49,6 @@ void CAddSubjectDlg::OnBnClickedOk()
 	Library lib;
 	string row = "";
 
-	Subject subject(_ttoi(roomNum), subject, lib.ConvertToStirng(fn, row), lib.ConvertToStirng(ln, row));
+	CSubjectData subject(_ttoi(roomNum), subject, lib.ConvertToStirng(fn, row), lib.ConvertToStirng(ln, row));
 	lib.AddInSubject();
 }

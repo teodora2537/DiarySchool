@@ -9,7 +9,7 @@ int score;
 string subject;
 string date;
 
-Score::Score(int _classNum, string _subject, int _score, string _date)
+CScoreData::CScoreData(int _classNum, string _subject, int _score, string _date)
 {
 	classNum = _classNum;
 	subject = _subject;
@@ -17,54 +17,54 @@ Score::Score(int _classNum, string _subject, int _score, string _date)
 	date = _date;
 }
 
-Score::Score()
+CScoreData::CScoreData()
 {
 }
 
 
-int Score::GetIdScore()
+int CScoreData::GetIdScore()
 {
 	return idScore;
 }
-void Score::SetIdScore(int _idScore)
+void CScoreData::SetIdScore(int _idScore)
 {
 	idScore = _idScore;
 }
-int Score::GetClassNum()
+int CScoreData::GetClassNum()
 {
 	return classNum;
 }
-void Score::SetClassNum(int _classNum)
+void CScoreData::SetClassNum(int _classNum)
 {
 	classNum = _classNum;
 }
 
-int Score::GetScore()
+int CScoreData::GetScore()
 {
 	return score;
 }
 
-void Score::SetScore(int _score)
+void CScoreData::SetScore(int _score)
 {
 	score = _score;
 }
 
-string Score::GetSubject()
+string CScoreData::GetSubject()
 {
 	return subject;
 }
 
-void Score::SetSubject(string _subject)
+void CScoreData::SetSubject(string _subject)
 {
 	subject = _subject;
 }
 
-string Score::GetDate()
+string CScoreData::GetDate()
 {
 	return date;
 }
 
-void Score::SetDate(string _date)
+void CScoreData::SetDate(string _date)
 {
 	date = _date;
 }

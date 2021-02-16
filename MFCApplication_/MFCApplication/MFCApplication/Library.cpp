@@ -37,7 +37,7 @@ bool Library::AddInStudent()
 }
 bool Library::AddInSubject()
 {
-	Subject subject;
+	CSubjectData subject;
 	ofstream outFile;
 	outFile.open("Subject.txt", ios::app);
 	outFile <<subject.GetRoomNumber()<<'|' <<subject.GetNameSubject() << '|' << subject.GetFirstNameTeacher()<< '|' << subject.GetLastNameTeacher() << "\n";
@@ -47,7 +47,7 @@ bool Library::AddInSubject()
 }
 bool Library::AddInScore()
 {
-	Score score;
+	CScoreData score;
 	int length=0;
 
 	fstream outFile, inputfile;
@@ -141,7 +141,7 @@ bool Library::UpdateStudent()
 bool Library::UpdateSubject()
 {
 	//Datas from edit boxes
-	Subject subject;
+	CSubjectData subject;
 	int roomNum = subject.GetRoomNumber();
 	string fName = subject.GetFirstNameTeacher();
 	string lName = subject.GetLastNameTeacher();
@@ -153,7 +153,7 @@ bool Library::UpdateSubject()
 	string token;
 	fstream file;
 	size_t position;
-	Subject currentSubject;
+	CSubjectData currentSubject;
 	bool isFind = false;
 	map<int, vector<string>> mapSubject;
 
@@ -215,7 +215,7 @@ bool Library::UpdateSubject()
 bool Library::UpdateScore()
 {
 	//Datas from edit boxes
-	Score score;
+	CScoreData score;
 	int idScore = score.GetIdScore();
 	int classNum = score.GetClassNum();
 	string subject = score.GetSubject();
@@ -227,7 +227,7 @@ bool Library::UpdateScore()
 	string token;
 	fstream file;
 	size_t position;
-	Score currentScore;
+	CScoreData currentScore;
 	bool isFind = false;
 	multimap<int, vector<string>> mapScore;
 	vector<string> _vector;
@@ -361,7 +361,7 @@ bool Library::DeleteStudent()
 }
 bool Library::DeleteSubject()
 {
-	Subject subject;
+	CSubjectData subject;
 	int roomNum = subject.GetRoomNumber();
 	string _subject = ConvertToStirng(subject.GetNameSubject(), "");
 	string fName = subject.GetFirstNameTeacher();
@@ -372,7 +372,7 @@ bool Library::DeleteSubject()
 	string token;
 	fstream file;
 	size_t position;
-	Subject currentSubject;
+	CSubjectData currentSubject;
 	bool isFind = false;
 	map<int, vector<string>> mapSubject;
 
@@ -428,7 +428,7 @@ bool Library::DeleteSubject()
 }
 bool Library::DeleteScore()
 {
-	Score score;
+	CScoreData score;
 	int idScore = score.GetIdScore();
 	int classNum = score.GetClassNum();
 	string subject = score.GetSubject();
@@ -440,7 +440,7 @@ bool Library::DeleteScore()
 	string token;
 	fstream file;
 	size_t position;
-	Score currentScore;
+	CScoreData currentScore;
 	bool isFind = false;
 	multimap<int, vector<string>> mapScore;
 	vector<string> _vector;
@@ -542,7 +542,7 @@ map<int, vector<string>> Library::PrintSubject() {
 		string token;
 		fstream file;
 		size_t position;
-		Subject currentSubject;
+		CSubjectData currentSubject;
 		bool isFind = false;
 		map<int, vector<string>> mapSubject;
 
@@ -582,7 +582,7 @@ multimap<int, vector<string>> Library::PrintScore()
 	string token;
 	fstream file;
 	size_t position;
-	Score currentScore;
+	CScoreData currentScore;
 	bool isFind = false;
 	multimap<int, vector<string>> mapScore;
 	vector<string> _vector;
