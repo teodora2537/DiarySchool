@@ -1,0 +1,3 @@
+1|Geography|Petq|Saeva
+2|Biology|Kamen|Stoilov
+3|Literature|Plamena|Veleva
