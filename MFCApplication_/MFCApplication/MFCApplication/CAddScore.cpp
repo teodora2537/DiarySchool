@@ -47,6 +47,7 @@ void CAddScoreDlg::OnBnClickedOk()
 	UpdateData(TRUE);
 	Library lib;
 	string row = "";
+	CScore oScore;
 
 	int i_classNum = _ttoi(classNum);
 	int i_score = _ttoi(score);
@@ -57,6 +58,6 @@ void CAddScoreDlg::OnBnClickedOk()
 	CScoreData score(_ttoi(classNum), lib.ConvertToStirng(subject, row), _ttoi(score), lib.ConvertToStirng(date, row));
 
 	//Success Add
-	lib.AddInScore();
-
+	//lib.AddInScore();
+	oScore.AddScore(score);
 }

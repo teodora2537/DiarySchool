@@ -5,6 +5,7 @@
 #define IDM_ABOUTBOX                    0x0010
 #define IDD_ABOUTBOX                    100
 #define IDS_ABOUTBOX                    101
+#define IDD_TAB_STUDENT                 101
 #define IDD_MFCAPPLICATION_DIALOG       102
 #define IDD_TAB_CRUD                    105
 #define IDD_TAB_REFERENCES              106
@@ -15,6 +16,8 @@
 #define IDD_DIALOG_UPDATE_STUDENT       138
 #define IDD_DIALOG_UPDATE_SUBJECT       140
 #define IDD_DIALOG_UPDATE_SCORE         142
+#define IDD_TAB_SUBJECT                 143
+#define IDD_TAB_SCORE                   144
 #define IDC_TAB                         1000
 #define IDC_EDIT_ADD_SCORE_DATE         1007
 #define IDC_EDIT_ADD_SCORE_SCORE        1008
@@ -82,9 +85,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        150
+#define _APS_NEXT_RESOURCE_VALUE        153
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1063
+#define _APS_NEXT_CONTROL_VALUE         1064
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

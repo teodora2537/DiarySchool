@@ -7,6 +7,7 @@
 #include "afxdialogex.h"
 #include "Library.h"
 #include "Subject.h"
+#include "Student.h"
 
 
 // CAddSubject dialog
@@ -47,8 +48,10 @@ void CAddSubjectDlg::OnBnClickedOk()
 	
 	UpdateData(TRUE);
 	Library lib;
+	CSubject oSubject;
 	string row = "";
 
 	CSubjectData subject(_ttoi(roomNum), subject, lib.ConvertToStirng(fn, row), lib.ConvertToStirng(ln, row));
-	lib.AddInSubject();
+	//lib.AddInSubject();
+	oSubject.AddSubject(subject);
 }

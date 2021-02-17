@@ -5,7 +5,8 @@ class CTabControl :    public CTabCtrl
 public:
 	CTabControl();
 	virtual ~CTabControl();
-	CDialog* m_tabPages[2];
+	//CDialog* m_tabPages[2];
+	CDialog* m_tabPages[4];
 	int m_tabCurrent;
 	int m_nNumberOfPages;
 	

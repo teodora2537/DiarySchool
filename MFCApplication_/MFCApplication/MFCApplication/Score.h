@@ -1,5 +1,7 @@
 #pragma once
 #include<string>
+#include<map>
+#include<vector>
 using namespace std;
 
 class CScoreData
@@ -25,5 +27,17 @@ public:
 	void SetDate(string _date);
 };
 
+class CScore
+{
+public:
+	CScore();
+	virtual ~CScore();
 
+public:
 
+	bool AddScore(CScoreData& oScoreData);
+	bool EditScore(const CScoreData& oScore);
+	bool LoadScore(const int nClassNumber, CScoreData& oScore);
+	bool DeleteScore(const int nClassNumber);
+	multimap<int, vector<string>> PrintScore();
+};

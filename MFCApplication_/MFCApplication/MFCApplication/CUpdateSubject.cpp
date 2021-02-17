@@ -58,5 +58,7 @@ void CUpdateSubjectDlg::OnBnClickedOk()
 
 	CSubjectData subject(_ttoi(roomNum), subject, lib.ConvertToStirng(fn, row), lib.ConvertToStirng(ln, row));
 
-	lib.UpdateSubject();
+	//lib.UpdateSubject();
+	CSubject oSubject;
+	oSubject.EditSubject(subject);
 }

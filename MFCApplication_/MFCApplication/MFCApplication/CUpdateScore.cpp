@@ -57,5 +57,9 @@ void CUpdateScoreDlg::OnBnClickedOk()
 
 	CScoreData score(_ttoi(classNum), lib.ConvertToStirng(subject, row), _ttoi(score), lib.ConvertToStirng(date, row));
 
-	lib.UpdateScore();
+	//lib.UpdateScore();
+
+	CScore oScore;
+	oScore.EditScore(score);
+
 }

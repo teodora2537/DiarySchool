@@ -24,6 +24,22 @@ string Library::ConvertToStirng(CString str_cstr, string row)
 	return row;
 }
 
+void Library::ClearListCtrl(CListCtrl& m_listCtrl)
+{
+	int nColumnCount = m_listCtrl.GetHeaderCtrl()->GetItemCount();
+	m_listCtrl.SetRedraw(FALSE);
+	m_listCtrl.DeleteAllItems();
+	m_listCtrl.SetRedraw(TRUE);
+	// Delete all of the columns.
+	for (int i = 0; i < nColumnCount; i++)
+	{
+		m_listCtrl.DeleteColumn(0);
+	}
+}
+
+/*
+* 
+* CRUD
 //Add student/subject/score to file
 bool Library::AddInStudent()
 {
@@ -295,6 +311,7 @@ bool Library::UpdateScore()
 	else return false;
 
 }
+
 //Delete student/subject/score -> delete by exist number
 bool Library::DeleteStudent()
 {
@@ -496,7 +513,9 @@ bool Library::DeleteScore()
 	}
 	else return false;
 }
+*/
 
+/*
 //Report
 
 //Print functions
@@ -856,4 +875,5 @@ vector<string> Library::remedialExaminationByMoreSubjects() {
 	}
 		return students;
 }
+*/
 

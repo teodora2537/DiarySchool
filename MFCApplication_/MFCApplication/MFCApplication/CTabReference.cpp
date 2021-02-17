@@ -80,17 +80,18 @@ END_MESSAGE_MAP()
 //Print all students
 void CTabReference::OnBnClickedButtonAllstudent()
 {
-	ClearListCtrl();
+	Library lib;
+	lib.ClearListCtrl(m_listCtrl);
 
 	m_listCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT);
 
 	int nItem=0;
 
-	Library lib_;
-	map<int, vector<string>> mapStudent = lib_.PrintStudent();
-	string str;
+	//Library lib_;
+	CStudent oStudent;
 
-//	string number = to_string(mapStudent.begin()->first);
+	map<int, vector<string>> mapStudent = oStudent.PrintStudent();
+	string str;
 
 	int count = 0;
 	
@@ -120,12 +121,14 @@ void CTabReference::OnBnClickedButtonAllstudent()
 //Print all subject
 void CTabReference::OnBnClickedButtonAllsubject()
 {	
-	ClearListCtrl();
+	Library lib;
+	lib.ClearListCtrl(m_listCtrl);
 
 	m_listCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT);
 
-	Library lib;
-	map<int, vector<string>> mapSubject = lib.PrintSubject();
+	CSubject oSubject;
+	//Library lib;
+	map<int, vector<string>> mapSubject = oSubject.PrintSubject();
 	string str;
 
 	m_listCtrl.InsertColumn(0, L"¹", LVCFMT_LEFT, 30);
@@ -152,12 +155,13 @@ void CTabReference::OnBnClickedButtonAllsubject()
 //Print all score
 void CTabReference::OnBnClickedButtonAllscore()
 {
-	ClearListCtrl();
+	Library lib;
+	lib.ClearListCtrl(m_listCtrl);
 
 	m_listCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT);
-
-	Library lib;
-	multimap<int, vector<string>> mapScore = lib.PrintScore();
+	CScore oScore;
+	//Library lib;
+	multimap<int, vector<string>> mapScore = oScore.PrintScore();
 	string str;
 	int row = 0;
 
@@ -190,14 +194,16 @@ void CTabReference::OnBnClickedButtonAllscore()
 // Print average score by subject1
 void CTabReference::OnBnClickedButtonAvgscorebysubject()
 {
-	ClearListCtrl();
+	Library lib;
+	lib.ClearListCtrl(m_listCtrl);
 
 	m_listCtrl.InsertColumn(0, L"¹", LVCFMT_LEFT, 30);
 	m_listCtrl.InsertColumn(1, L"Subject", LVCFMT_LEFT, 100);
 	m_listCtrl.InsertColumn(2, L"Avg score", LVCFMT_LEFT, 100);
 
-	Library lib;
-	map<int, vector<string>> _map = lib.AverageScoreBySubject_new();
+	CStudent oStudent;
+	//Library lib;
+	map<int, vector<string>> _map = oStudent.AverageScoreBySubject();
 	
 	int position = 0;
 	int count = 0;
@@ -210,7 +216,7 @@ void CTabReference::OnBnClickedButtonAvgscorebysubject()
 			
 		string student = to_string(i_student);
 		string subject = _map[i_student][j];
-		string avgScore = _map[i_student][j+1];
+		string avgScore = _map[i_student][j++];
 
 		CString cstrNumber(student.c_str());
 		CString cstrSubject(subject.c_str());
@@ -227,10 +233,10 @@ void CTabReference::OnBnClickedButtonAvgscorebysubject()
 // Print average score by all subject
 void CTabReference::OnBnClickedButtonAvgscorebyallsubjects()
 {
-	ClearListCtrl();
-
 	Library lib;
-	map<int, int> _map = lib.AverageScoreByAllSubject_new();
+	lib.ClearListCtrl(m_listCtrl);
+	CStudent oStudent;
+	map<int, int> _map = oStudent.AverageScoreByAllSubject();
 	string str;
 	
 	m_listCtrl.InsertColumn(0, L"¹", LVCFMT_LEFT, 30);
@@ -251,10 +257,11 @@ void CTabReference::OnBnClickedButtonAvgscorebyallsubjects()
 //Print excelent student
 void CTabReference::OnBnClickedButtonExcellentstudent()
 {
-	ClearListCtrl();
-
 	Library lib;
-	vector<string> _student = lib.ExcellentStudent();
+	lib.ClearListCtrl(m_listCtrl);
+	CStudent oStudent;
+	//Library lib;
+	vector<string> _student = oStudent.ExcellentStudent();
 	string str;
 	int j = 0;
 	m_listCtrl.InsertColumn(0, L"Name", LVCFMT_LEFT, 100);
@@ -270,10 +277,11 @@ void CTabReference::OnBnClickedButtonExcellentstudent()
 //Print birthdays
 void CTabReference::OnBnClickedButtonBirtdays()
 {
-	ClearListCtrl(); 
-
 	Library lib;
-	vector<string> _student = lib.PeopleHaveBirthdayToday();
+	lib.ClearListCtrl(m_listCtrl);
+	CStudent oStudent;
+	//Library lib;
+	vector<string> _student = oStudent.PeopleHaveBirthdayToday();
 	string str;
 	int j = 0;
 
@@ -291,9 +299,11 @@ void CTabReference::OnBnClickedButtonBirtdays()
 //Remedial examination by subject
 void CTabReference::OnBnClickedButton()
 {
-	ClearListCtrl(); 
 	Library lib;
-	map<int, vector<string>> _map = lib.remedialExaminationBySubject();
+	lib.ClearListCtrl(m_listCtrl);
+	//Library lib;
+	CStudent oStudent;
+	map<int, vector<string>> _map = oStudent.remedialExaminationBySubject();
 
 	m_listCtrl.InsertColumn(0, L"¹", LVCFMT_LEFT, 30);
 	m_listCtrl.InsertColumn(1, L"Avg score", LVCFMT_LEFT, 100);
@@ -322,9 +332,11 @@ void CTabReference::OnBnClickedButton()
 //Remedial examination by more 3 subjects
 void CTabReference::OnBnClickedButtonByMoreSubjects()
 {
-	ClearListCtrl();
 	Library lib;
-	vector<string> students = lib.remedialExaminationByMoreSubjects();
+	lib.ClearListCtrl(m_listCtrl);
+	//Library lib;
+	CStudent oStudent;
+	vector<string> students = oStudent.remedialExaminationByMoreSubjects();
 
 	m_listCtrl.InsertColumn(0, L"Name", LVCFMT_LEFT, 100);
 
@@ -336,18 +348,7 @@ void CTabReference::OnBnClickedButtonByMoreSubjects()
 		}
 	}
 
-void CTabReference::ClearListCtrl()
-{
-	int nColumnCount = m_listCtrl.GetHeaderCtrl()->GetItemCount();
-	m_listCtrl.SetRedraw(FALSE);
-	m_listCtrl.DeleteAllItems();
-	m_listCtrl.SetRedraw(TRUE);
-	// Delete all of the columns.
-	for (int i = 0; i < nColumnCount; i++)
-	{
-		m_listCtrl.DeleteColumn(0);
-	}
-}
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -382,12 +383,14 @@ void CTabReference::OnEditStudent()
 {
 	getStudentFromDlg();
 
+
+
 	CUpdateStudentDlg dlg;
 	dlg.DoModal();
 }
 void CTabReference::OnViewStudent()
 {
-	Library lib;
+	/*Library lib;
 	CStudentData m_oStudent;
 	multimap<int, vector<string>> infoScores = lib.PrintScore();
 	map<string, vector<int>> m_mapScoresStudent;
@@ -421,15 +424,15 @@ void CTabReference::OnViewStudent()
 	CString m_cstrMessageSubAndScore(m_strMessageSubAndScore.c_str());
 	CString message;
 	message.Format(m_cstrMessageSubAndScore, m_oStudent.GetClassNumber(), m_oStudent.GetFullName());
-	MessageBox(message, L"CStudentData", MB_OK);
+	MessageBox(message, L"CStudentData", MB_OK);*/
 }
 void CTabReference::OnDeleteStudent()
 {
 	getStudentFromDlg();
-	Library lib;
-	CStudentData m_oStudent;
+	//Library lib;
+	CStudentData oStudentData;
 	CString message;
-	message.Format(L"Do you want to delete %s with ¹ in class %d?", m_oStudent.GetFullName(), m_oStudent.GetClassNumber());
+	message.Format(L"Do you want to delete %s with ¹ in class %d?", oStudentData.GetFullName(), oStudentData.GetClassNumber());
 
 	int result = MessageBox(message, L"Delete student", MB_YESNO);
 
@@ -439,10 +442,10 @@ void CTabReference::OnDeleteStudent()
 
 		UpdateData(TRUE);
 
-		lib.DeleteStudent();
-		//CDialogEx::OnOK();
-
-
+		//lib.DeleteStudent();
+		CStudent oStudent;
+		oStudent.DeleteStudent(oStudentData.GetClassNumber());
+		DeleteItem();
 }
 
 void CTabReference::OnAddSubject()
@@ -465,9 +468,9 @@ void CTabReference::OnDeleteSubject()
 {
 	getSubjectFromDlg();
 	//CDialogEx::OnOK();
-	CSubjectData m_oSubject;
+	CSubjectData oSubjectData;
 	CString message;
-	message.Format(L"Do you want to delete %s with room ¹ %d?", m_oSubject.GetNameSubject(), m_oSubject.GetRoomNumber());
+	message.Format(L"Do you want to delete %s with room ¹ %d?", oSubjectData.GetNameSubject(), oSubjectData.GetRoomNumber());
 
 	int result = MessageBox(message, L"Delete subject", MB_YESNO);
 
@@ -475,9 +478,12 @@ void CTabReference::OnDeleteSubject()
 	if (result != IDYES)
 		return;
 		UpdateData(TRUE);
+		/*
 		Library lib;
-
 		lib.DeleteSubject();
+		*/
+		CSubject oSubject;
+		oSubject.DeleteSubject(oSubjectData.GetRoomNumber());
 		DeleteItem();
 }
 
@@ -489,12 +495,13 @@ void CTabReference::OnAddScore()
 void CTabReference::OnEditScore()
 {
 	getScoreFromDlg();
-	
 	CUpdateScoreDlg dlg;
 	dlg.DoModal();
-}
+	
+	}
 void CTabReference::OnViewScore()
 {
+	/*
 	Library lib;
 	CScoreData m_oScore;
 	multimap<int, vector<string>> infoScores = lib.PrintScore();
@@ -528,14 +535,15 @@ void CTabReference::OnViewScore()
 	CString message;
 	message.Format(m_cstrMessageSubAndScore, m_oScore.GetClassNum(), sub);
 	MessageBox(message, L"", MB_OK);
+	*/
 }
 void CTabReference::OnDeleteScore()
 {
 	getScoreFromDlg();
-	CScoreData m_oScore;
+	CScoreData oScoreData;
 	
 	CString message;
-	message.Format(L"Do you want to delete score with id %d?", m_oScore.GetIdScore());
+	message.Format(L"Do you want to delete score with id %d?", oScoreData.GetIdScore());
 	int result = MessageBox(message, L"Delete score", MB_YESNO);
 
 	if (result != IDYES)
@@ -543,9 +551,12 @@ void CTabReference::OnDeleteScore()
 
 	//button yes clicked
 		UpdateData(TRUE);
+		/*
 		Library lib;
-
 		lib.DeleteScore();
+		*/
+		CScore oScore;
+		oScore.DeleteScore(oScoreData.GetIdScore());
 		DeleteItem();
 }
 
@@ -557,7 +568,6 @@ void CTabReference::SubmenuStudent(CWnd* pWnd, CPoint point)
 	CMenu submenu;
 	submenu.CreatePopupMenu();
 	 
-
 	submenu.AppendMenu(MF_STRING, IDC_MENU_ADD_STUDENT, L"Add student");
 	submenu.AppendMenu(MF_STRING, IDC_MENU_EDIT_STUDENT, L"Edit student");
 	submenu.AppendMenu(MF_STRING, IDC_MENU_DEL_STUDENT, L"Delete student");

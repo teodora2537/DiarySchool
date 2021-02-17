@@ -75,6 +75,15 @@
     <ClInclude Include="CChildFrame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CTabStudent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CTabSubject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CTabScore.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MFCApplication.cpp">
@@ -125,10 +134,16 @@
     <ClCompile Include="CUpdateScore.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ADDSTUDENT.CPP">
+    <ClCompile Include="CChildFrame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CChildFrame.cpp">
+    <ClCompile Include="CTabStudent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CTabSubject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CTabScore.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

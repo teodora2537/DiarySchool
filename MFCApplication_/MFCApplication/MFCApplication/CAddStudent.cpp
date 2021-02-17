@@ -26,12 +26,12 @@ CAddStudentDlg::~CAddStudentDlg()
 /*virtual*/
 BOOL CAddStudentDlg::OnInitDialog()
 {
-	/*if (!__super::OnInitDialog())
+	if (!__super::OnInitDialog())
 		return FALSE;
 
 	BOOL bReadOnly = m_eMode == eDialogMode_View;
 
-	m_edb.SetReadOnly(bReadOnly);*/
+	m_edb.SetReadOnly(bReadOnly);
 
 	return TRUE;
 }
@@ -40,9 +40,9 @@ void CAddStudentDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_EDIT_ADD_STUDENT_CLASS_NUM, m_edb);
-	DDX_Text(pDX, IDC_EDIT_ADD_STUDENT_FN, fn);
-	DDX_Text(pDX, IDC_EDIT_ADD_STUDENT_LN, ln);
-	DDX_Text(pDX, IDC_EDIT_ADD_STUDENT_BIRTHDAY, birthday);
+	DDX_Text(pDX, IDC_EDIT_ADD_STUDENT_FN, m_cstrFn);
+	DDX_Text(pDX, IDC_EDIT_ADD_STUDENT_LN, m_cstrLn);
+	DDX_Text(pDX, IDC_EDIT_ADD_STUDENT_BIRTHDAY, m_cstrBirthday);
 }
 
 BEGIN_MESSAGE_MAP(CAddStudentDlg, CDialogEx)
@@ -54,15 +54,13 @@ void CAddStudentDlg::OnBnClickedAddStudent() {
 	Library lib;
 	string row = "";
 
-
 	//	CStudentData student(_ttoi(classNum), lib.ConvertToStirng(fn, row), lib.ConvertToStirng(ln, row), lib.ConvertToStirng(birthday, row));
 }
-
 
 void CAddStudentDlg::OnBnClickedOk()
 {
 	// TODO: Add your control notification handler code here
-	CDialogEx::OnOK();
+	//CDialogEx::OnOK();
 
 	UpdateData(TRUE);
 	Library lib;

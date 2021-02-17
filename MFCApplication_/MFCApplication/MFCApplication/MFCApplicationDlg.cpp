@@ -101,8 +101,14 @@ BOOL CMFCApplicationDlg::OnInitDialog()
 
 	// TODO: Add extra initialization here
 	//Add extra iniitialization here
-	m_tabCTabCtrl.InsertItem(0, _T("Add/Update/Delete"));
-	m_tabCTabCtrl.InsertItem(1, _T("References"));
+	
+	//m_tabCTabCtrl.InsertItem(0, _T("Add/Update/Delete"));
+	
+	///NEW////
+	m_tabCTabCtrl.InsertItem(0, _T("Students"));
+	m_tabCTabCtrl.InsertItem(1, _T("Subjects"));
+	m_tabCTabCtrl.InsertItem(2, _T("Scores"));
+	m_tabCTabCtrl.InsertItem(3, _T("References"));
 	m_tabCTabCtrl.Init();
 
 	return TRUE;  // return TRUE  unless you set the focus to a control

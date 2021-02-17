@@ -1,5 +1,7 @@
 #pragma once
-#include<string>
+#include <string>
+#include <map>
+#include <vector>
 using namespace std;
 class CStudentData
 {
@@ -38,4 +40,11 @@ public:
 	bool EditStudent(const CStudentData& oStudent);
 	bool LoadStudent(const int nClassNumber, CStudentData& oStudent);
 	bool DeleteStudent(const int nClassNumber);
+	map<int, vector<string>> PrintStudent();
+	map<int, vector<string>> AverageScoreBySubject();
+	map<int, int> AverageScoreByAllSubject();
+	vector<string> ExcellentStudent();
+	vector<string> PeopleHaveBirthdayToday();
+	map<int, vector<string>> remedialExaminationBySubject();
+	vector<string> remedialExaminationByMoreSubjects();
 };

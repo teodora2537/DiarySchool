@@ -57,5 +57,7 @@ void CUpdateStudentDlg::OnBnClickedOk()
 
 	CStudentData student(_ttoi(classNum), lib.ConvertToStirng(fn, row), lib.ConvertToStirng(ln, row), lib.ConvertToStirng(birthday, row));
 	
-	lib.UpdateStudent();
+	//lib.UpdateStudent();
+	CStudent oStudent;
+	oStudent.EditStudent(student);
 }

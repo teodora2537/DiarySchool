@@ -75,6 +75,8 @@ public:
 
 	afx_msg void DeleteItem();
 
+	//afx_msg void EditItem();
+
 	CString m_cstrId;
 	CString m_cstrName;
 	CString m_cstrBirthday;

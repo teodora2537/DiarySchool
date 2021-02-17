@@ -16,11 +16,10 @@ class Library
 public:
 	Library(void);
 	~Library(void);
-
+	/*
 	bool AddInStudent();
 	bool AddInSubject();
 	bool AddInScore();
-	string ConvertToStirng(CString str_cstr, string row);
 	bool UpdateStudent();
 	bool UpdateSubject();
 	bool UpdateScore();
@@ -36,4 +35,7 @@ public:
 	vector<string> PeopleHaveBirthdayToday();
 	map<int, vector<string>> remedialExaminationBySubject();
 	vector<string> remedialExaminationByMoreSubjects();
+	*/
+	string ConvertToStirng(CString str_cstr, string row);
+	void ClearListCtrl(CListCtrl& m_listCtrl);
 };

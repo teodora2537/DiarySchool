@@ -1,6 +1,8 @@
 #pragma once
 #include <iostream>
 #include <string>
+#include <map>
+#include <vector>
 
 using namespace std;
 class CSubjectData
@@ -37,6 +39,6 @@ public:
 	bool EditSubject(const CSubjectData& oSubject);
 	bool LoadSubject(const int nClassNumber, CSubjectData& oSubject);
 	bool DeleteSubject(const int nClassNumber);
-
+	map<int, vector<string>> PrintSubject();
 };
 

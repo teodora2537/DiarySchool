@@ -30,10 +30,10 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 public:
-	CString m_strclassNum;
-	CString fn;
-	CString ln;
-	CString birthday;
+	CString m_cstrClassNum;
+	CString m_cstrFn;
+	CString m_cstrLn;
+	CString m_cstrBirthday;
 
 	CEdit m_edb;
 
