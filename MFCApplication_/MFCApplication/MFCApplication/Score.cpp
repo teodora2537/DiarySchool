@@ -7,18 +7,12 @@
 #include "Library.h"
 using namespace std;
 
-int idScore;
-int classNum;
-int score;
-string subject;
-string date;
-
 CScoreData::CScoreData(int _classNum, string _subject, int _score, string _date)
 {
-	classNum = _classNum;
-	subject = _subject;
-	score = _score;
-	date = _date;
+	m_iClassNum = _classNum;
+	m_strSubject = _subject;
+	m_iScore = _score;
+	m_strDate = _date;
 }
 
 CScoreData::CScoreData()
@@ -27,47 +21,47 @@ CScoreData::CScoreData()
 
 int CScoreData::GetIdScore()
 {
-	return idScore;
+	return m_iIdScore;
 }
 void CScoreData::SetIdScore(int _idScore)
 {
-	idScore = _idScore;
+	m_iIdScore = _idScore;
 }
 
 int CScoreData::GetClassNum()
 {
-	return classNum;
+	return m_iClassNum;
 }
 void CScoreData::SetClassNum(int _classNum)
 {
-	classNum = _classNum;
+	m_iClassNum = _classNum;
 }
 
 int CScoreData::GetScore()
 {
-	return score;
+	return m_iScore;
 }
 void CScoreData::SetScore(int _score)
 {
-	score = _score;
+	m_iScore = _score;
 }
 
 string CScoreData::GetSubject()
 {
-	return subject;
+	return m_strSubject;
 }
 void CScoreData::SetSubject(string _subject)
 {
-	subject = _subject;
+	m_strSubject = _subject;
 }
 
 string CScoreData::GetDate()
 {
-	return date;
+	return m_strDate;
 }
 void CScoreData::SetDate(string _date)
 {
-	date = _date;
+	m_strDate = _date;
 }
 
 CScore::CScore()
@@ -102,7 +96,7 @@ bool CScore::AddScore(CScoreData& oScoreData)
 }
 
 //	! you must use the parametter oScore
-bool CScore::EditScore(const CScoreData& oScore, CListCtrl m_listCtrl)
+bool CScore::EditScore(const CScoreData& oScore)
 {
 	//Datas from edit boxes
 	CScoreData score;
@@ -179,17 +173,6 @@ bool CScore::EditScore(const CScoreData& oScore, CListCtrl m_listCtrl)
 			outFile << (*i).first << '|' << (*i).second[0] << '|' << (*i).second[1] << '|' << (*i).second[2] << '|' << (*i).second[3] << "\n";
 		}
 		outFile.close();
-
-		///////
-		Library lib;
-		CScoreData oScoreData;
-		int row = oScoreData.GetIdScore() - 1;
-
-		m_listCtrl.SetItemText(row, 0, classNum);
-		m_listCtrl.SetItemText(row, 1, subject);
-		m_listCtrl.SetItemText(row, 2, date);
-		m_listCtrl.SetItemText(row, 3, score);
-		///////
 
 		return true;
 	}

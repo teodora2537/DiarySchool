@@ -19,14 +19,12 @@ public:
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
-	afx_msg void OnBnClickedAddScore();
-
 	DECLARE_MESSAGE_MAP()
 
 public:
-	CString classNum;
-	CString subject;
-	CString date;
-	CString score;
+	CString m_cstrClassNum;
+	CString m_cstrSubject;
+	CString m_cstrDate;
+	CString m_cstrScore;
 	afx_msg void OnBnClickedOk();
 };

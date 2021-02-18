@@ -1,16 +1,5 @@
 #pragma once
 
-class CMyListCtrlItemDataStudent {
-public:
-	CMyListCtrlItemDataStudent();
-	virtual ~CMyListCtrlItemDataStudent();
-
-public:
-	int idStudent;
-	CString nameStudent;
-	CString studentBirthday;
-};
-
 // CTabReference dialog
 
 class CTabReference : public CDialogEx
@@ -31,9 +20,6 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 public:
-	afx_msg void OnBnClickedButtonAllstudent();
-	afx_msg void OnBnClickedButtonAllsubject();
-	afx_msg void OnBnClickedButtonAllscore();
 	afx_msg void OnBnClickedButtonAvgscorebysubject();
 	afx_msg void OnBnClickedButtonAvgscorebyallsubjects();
 	afx_msg void OnBnClickedButtonExcellentstudent();
@@ -42,10 +28,10 @@ public:
 	afx_msg void OnBnClickedButtonByMoreSubjects();
 
 	CListCtrl m_listCtrl;
-	afx_msg void ClearListCtrl();
 
 	CString m_class;
-	int nItem;
+	
+	int m_nItem;
 
 	//////////////////////////////////////////////////////////////////////////////////
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
@@ -74,8 +60,6 @@ public:
 	afx_msg void getScoreFromDlg();
 
 	afx_msg void DeleteItem();
-
-	//afx_msg void EditItem();
 
 	CString m_cstrId;
 	CString m_cstrName;

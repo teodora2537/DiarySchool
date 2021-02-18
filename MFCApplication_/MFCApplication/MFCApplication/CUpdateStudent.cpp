@@ -7,6 +7,7 @@
 #include "afxdialogex.h"
 #include "Library.h"
 #include "Student.h"
+#include "CTabReference.h"
 
 
 // CUpdateStudent dialog
@@ -22,10 +23,10 @@ CUpdateStudentDlg::CUpdateStudentDlg(CWnd* pParent /*=nullptr*/)
 		CString m_cstrLastName(m_oStudent.GetLastName().c_str());
 		CString m_cstrBirthday(m_oStudent.GetBirthday().c_str());
 		
-		classNum.Format(L"%d", m_oStudent.GetClassNumber());
-		fn = m_cstrFirstName;
-		ln = m_cstrLastName;
-		birthday = m_cstrBirthday;
+		m_cstrClassNum.Format(L"%d", m_oStudent.GetClassNumber());
+		m_cstrFn = m_cstrFirstName;
+		m_cstrLn = m_cstrLastName;
+		m_cstrBirthday = m_cstrBirthday;
 
 }
 
@@ -36,10 +37,10 @@ CUpdateStudentDlg::~CUpdateStudentDlg()
 void CUpdateStudentDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
-	DDX_Text(pDX, IDC_EDIT_UPDATE_STUDENT_CLASS_NUM, classNum);
-	DDX_Text(pDX, IDC_EDIT_UPDATE_STUDENT_FN, fn);
-	DDX_Text(pDX, IDC_EDIT_UPDATE_STUDENT_LN, ln);
-	DDX_Text(pDX, IDC_EDIT_UPDATE_STUDENT_BIRTHDAY, birthday);
+	DDX_Text(pDX, IDC_EDIT_UPDATE_STUDENT_CLASS_NUM, m_cstrClassNum);
+	DDX_Text(pDX, IDC_EDIT_UPDATE_STUDENT_FN, m_cstrFn);
+	DDX_Text(pDX, IDC_EDIT_UPDATE_STUDENT_LN, m_cstrLn);
+	DDX_Text(pDX, IDC_EDIT_UPDATE_STUDENT_BIRTHDAY, m_cstrBirthday);
 }
 
 
@@ -49,15 +50,13 @@ END_MESSAGE_MAP()
 
 void CUpdateStudentDlg::OnBnClickedOk()
 {
-	CDialogEx::OnOK();
-
 	UpdateData(TRUE);
 	Library lib;
 	string row = "";
 
-	CStudentData student(_ttoi(classNum), lib.ConvertToStirng(fn, row), lib.ConvertToStirng(ln, row), lib.ConvertToStirng(birthday, row));
+	CStudentData student(_ttoi(m_cstrClassNum), lib.ConvertToStirng(m_cstrFn, row), lib.ConvertToStirng(m_cstrLn, row), lib.ConvertToStirng(m_cstrBirthday, row));
 	
-	//lib.UpdateStudent();
 	CStudent oStudent;
 	oStudent.EditStudent(student);
+	CDialogEx::OnOK();
 }

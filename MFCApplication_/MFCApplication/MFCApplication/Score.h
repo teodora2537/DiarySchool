@@ -8,8 +8,10 @@ class CScoreData
 {
 public:
 	CScoreData(int _classNum, string _subject, int _score, string _date);
-//	Score(int _classNum);
 	CScoreData();
+
+	int m_iIdScore, m_iClassNum, m_iScore;
+	string m_strSubject, m_strDate;
 
 	int GetIdScore();
 	void SetIdScore(int _idScore);

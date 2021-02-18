@@ -3,16 +3,12 @@
 #include <fstream>
 #include "Library.h"
 
-int roomNumber;
-CString nameSubject, fullNameTeacher;
-string fNameTeacher, lNameTeacher;
-
 CSubjectData::CSubjectData(int _roomNumber, CString _nameSubject, string _fNameTeacher, string _lNameTeacher)
 {
-    roomNumber=_roomNumber;
-    nameSubject = _nameSubject;
-    fNameTeacher = _fNameTeacher;
-    lNameTeacher = _lNameTeacher;
+    m_iRoomNumber=_roomNumber;
+    m_cstrNameSubject = _nameSubject;
+    m_strFNameTeacher = _fNameTeacher;
+    m_strLNameTeacher = _lNameTeacher;
 }
 
 CSubjectData::CSubjectData()
@@ -21,52 +17,52 @@ CSubjectData::CSubjectData()
 
 string CSubjectData::GetFirstNameTeacher()
 {
-    return fNameTeacher;
+    return m_strFNameTeacher;
 }
 
 void CSubjectData::SetFirstNameTeacher(string _firstNameTeacher)
 {
-    fNameTeacher = _firstNameTeacher;
+	m_strFNameTeacher = _firstNameTeacher;
 }
 
 string CSubjectData::GetLastNameTeacher()
 {
-    return lNameTeacher;
+    return m_strLNameTeacher;
 }
 
 void CSubjectData::SetLastNameTeacher(string _lastNameTeacher)
 {
-    lNameTeacher = _lastNameTeacher;
+	m_strLNameTeacher = _lastNameTeacher;
 }
 
 CString CSubjectData::GetNameSubject()
 {
-    return nameSubject;
+    return m_cstrNameSubject;
 }
 
 void CSubjectData::SetNameSubject(CString _nameSubject)
 {
-    nameSubject = _nameSubject;
+    m_cstrNameSubject = _nameSubject;
 }
 
 int CSubjectData::GetRoomNumber()
 {
-    return roomNumber;
+    return m_iRoomNumber;
 }
 
 void CSubjectData::SetRoomNumber(int _roomNumber)
 {
-    roomNumber = _roomNumber;
+    m_iRoomNumber = _roomNumber;
 }
 
 CString CSubjectData::GetFullNameTeacher()
 {
-    return fullNameTeacher;
+    return m_cstrFullNameTeacher;
 }
 
 void CSubjectData::SetFullNameTeacher(CString _fullNameTeacher)
 {
-    fullNameTeacher = _fullNameTeacher;
+	m_cstrFullNameTeacher = _fullNameTeacher;
 }
 
 

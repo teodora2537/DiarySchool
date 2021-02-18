@@ -26,10 +26,11 @@
 using namespace std;
 // CTabReference dialog
 IMPLEMENT_DYNAMIC(CTabReference, CDialogEx)
+
 CTabReference::CTabReference(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_TAB_REFERENCES, pParent)
 {
-	nItem = 0;
+	m_nItem = 0;
 }
 
 CTabReference::~CTabReference()
@@ -44,10 +45,6 @@ void CTabReference::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CTabReference, CDialogEx)
-	ON_BN_CLICKED(IDC_BUTTON_AllStudent, &CTabReference::OnBnClickedButtonAllstudent)
-	ON_BN_CLICKED(IDC_BUTTON_AllSubject, &CTabReference::OnBnClickedButtonAllsubject)
-	ON_BN_CLICKED(IDC_BUTTON_AllScore, &CTabReference::OnBnClickedButtonAllscore)
-
 	ON_BN_CLICKED(IDC_BUTTON_AvgScoreBySubject, &CTabReference::OnBnClickedButtonAvgscorebysubject)
 	ON_BN_CLICKED(IDC_BUTTON_AvgScoreByAllSubjects, &CTabReference::OnBnClickedButtonAvgscorebyallsubjects)
 	ON_BN_CLICKED(IDC_BUTTON_ExcellentStudent, &CTabReference::OnBnClickedButtonExcellentstudent)
@@ -77,6 +74,7 @@ END_MESSAGE_MAP()
 
 // CTabReference message handlers
 
+/*
 //Print all students
 void CTabReference::OnBnClickedButtonAllstudent()
 {
@@ -84,8 +82,7 @@ void CTabReference::OnBnClickedButtonAllstudent()
 	lib.ClearListCtrl(m_listCtrl);
 
 	m_listCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT);
-
-	int nItem=0;
+int nItem=0;
 
 	//Library lib_;
 	CStudent oStudent;
@@ -115,9 +112,9 @@ void CTabReference::OnBnClickedButtonAllstudent()
 		
 		count++;
 	}	
-
 	m_class = "student";
 }
+
 //Print all subject
 void CTabReference::OnBnClickedButtonAllsubject()
 {	
@@ -190,6 +187,7 @@ void CTabReference::OnBnClickedButtonAllscore()
 	}
 	m_class = "score";
 }
+*/
 
 // Print average score by subject1
 void CTabReference::OnBnClickedButtonAvgscorebysubject()
@@ -216,7 +214,7 @@ void CTabReference::OnBnClickedButtonAvgscorebysubject()
 			
 		string student = to_string(i_student);
 		string subject = _map[i_student][j];
-		string avgScore = _map[i_student][j++];
+		string avgScore = _map[i_student][j+1];
 
 		CString cstrNumber(student.c_str());
 		CString cstrSubject(subject.c_str());
@@ -341,21 +339,22 @@ void CTabReference::OnBnClickedButtonByMoreSubjects()
 	m_listCtrl.InsertColumn(0, L"Name", LVCFMT_LEFT, 100);
 
 		for (int j = 0; j < students.size(); j+=2) {
-			string name = students[j] + " " + students[j+1];
+			CString cstrName((students[j] + " " + students[j++]).c_str());
+			/*
+			string name = students[j] + " " + students[j++];
 			CString cstrName(name.c_str());
+			*/
 
 			m_listCtrl.InsertItem(j, cstrName);
 		}
 	}
 
-
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void CTabReference::OnContextMenu(CWnd* pWnd, CPoint point)
 {
-	nItem = m_listCtrl.GetSelectionMark()+1;
-	if (nItem == 0)
+	m_nItem = m_listCtrl.GetSelectionMark()+1;
+	if (m_nItem == 0)
 		return;
 
 		if (m_class == "student")
@@ -382,9 +381,6 @@ void CTabReference::OnAddStudent()
 void CTabReference::OnEditStudent()
 {
 	getStudentFromDlg();
-
-
-
 	CUpdateStudentDlg dlg;
 	dlg.DoModal();
 }
@@ -425,6 +421,9 @@ void CTabReference::OnViewStudent()
 	CString message;
 	message.Format(m_cstrMessageSubAndScore, m_oStudent.GetClassNumber(), m_oStudent.GetFullName());
 	MessageBox(message, L"CStudentData", MB_OK);*/
+	getStudentFromDlg();
+	CUpdateStudentDlg dlg;
+	dlg.DoModal();
 }
 void CTabReference::OnDeleteStudent()
 {
@@ -432,7 +431,7 @@ void CTabReference::OnDeleteStudent()
 	//Library lib;
 	CStudentData oStudentData;
 	CString message;
-	message.Format(L"Do you want to delete %s with ¹ in class %d?", oStudentData.GetFullName(), oStudentData.GetClassNumber());
+	message.Format(L"Do you want to delete %s with ¹ in class %d?", oStudentData.GetFullName() , oStudentData.GetClassNumber());
 
 	int result = MessageBox(message, L"Delete student", MB_YESNO);
 
@@ -442,7 +441,6 @@ void CTabReference::OnDeleteStudent()
 
 		UpdateData(TRUE);
 
-		//lib.DeleteStudent();
 		CStudent oStudent;
 		oStudent.DeleteStudent(oStudentData.GetClassNumber());
 		DeleteItem();
@@ -471,7 +469,6 @@ void CTabReference::OnDeleteSubject()
 	CSubjectData oSubjectData;
 	CString message;
 	message.Format(L"Do you want to delete %s with room ¹ %d?", oSubjectData.GetNameSubject(), oSubjectData.GetRoomNumber());
-
 	int result = MessageBox(message, L"Delete subject", MB_YESNO);
 
 	//button yes clicked
@@ -562,7 +559,7 @@ void CTabReference::OnDeleteScore()
 
 void CTabReference::SubmenuStudent(CWnd* pWnd, CPoint point)
 {
-	if (nItem == 0)
+	if (m_nItem == 0)
 		return;
 
 	CMenu submenu;

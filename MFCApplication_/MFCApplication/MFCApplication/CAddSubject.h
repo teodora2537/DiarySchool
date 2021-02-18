@@ -19,15 +19,13 @@ public:
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
-	afx_msg void OnBnClickedCAddSubject();
-
 	DECLARE_MESSAGE_MAP()
 
 public:
-	CString roomNum;
-	CString subject;
-	CString fn;
-	CString ln;
+	CString m_cstrRoomNum;
+	CString m_cstrSubject;
+	CString m_cstrFnTeacher;
+	CString m_cstrLnTeacher;
 
 	CEdit m_edb;
 

@@ -22,9 +22,9 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 public:
-	CString roomNum;
-	CString subject;
-	CString fn;
-	CString ln;
+	CString m_cstrRoomNum;
+	CString m_cstrSubject;
+	CString m_cstrFN;
+	CString m_cstrLN;
 	afx_msg void OnBnClickedOk();
 };

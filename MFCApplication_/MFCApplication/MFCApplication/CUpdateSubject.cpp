@@ -23,11 +23,10 @@ CUpdateSubjectDlg::CUpdateSubjectDlg(CWnd* pParent /*=nullptr*/)
 	CString m_cstrLastNameTeacher(m_oSubject.GetLastNameTeacher().c_str());
 	CString m_cstrSubject(m_oSubject.GetNameSubject());
 
-	roomNum.Format(L"%d", m_oSubject.GetRoomNumber());
-	subject = m_cstrSubject;
-	fn = m_cstrFirstNameTeacher;
-	ln = m_cstrLastNameTeacher;
-	
+	m_cstrRoomNum.Format(L"%d", m_oSubject.GetRoomNumber());
+	m_cstrSubject = m_cstrSubject;
+	m_cstrFN = m_cstrFirstNameTeacher;
+	m_cstrLN = m_cstrLastNameTeacher;
 }
 
 CUpdateSubjectDlg::~CUpdateSubjectDlg()
@@ -37,10 +36,10 @@ CUpdateSubjectDlg::~CUpdateSubjectDlg()
 void CUpdateSubjectDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
-	DDX_Text(pDX, IDC_EDIT_UPDATE_SUBJECT_ROOM_NUM, roomNum);
-	DDX_Text(pDX, IDC_EDIT_UPDATE_SUBJECT_SUBJECY, subject);
-	DDX_Text(pDX, IDC_EDIT_UPDATE_SUBJECT_FN, fn);
-	DDX_Text(pDX, IDC_EDIT_UPDATE_SUBJECT_LN, ln);
+	DDX_Text(pDX, IDC_EDIT_UPDATE_SUBJECT_ROOM_NUM, m_cstrRoomNum);
+	DDX_Text(pDX, IDC_EDIT_UPDATE_SUBJECT_SUBJECY, m_cstrSubject);
+	DDX_Text(pDX, IDC_EDIT_UPDATE_SUBJECT_FN, m_cstrFN);
+	DDX_Text(pDX, IDC_EDIT_UPDATE_SUBJECT_LN, m_cstrLN);
 }
 
 
@@ -56,7 +55,7 @@ void CUpdateSubjectDlg::OnBnClickedOk()
 	Library lib;
 	string row = "";
 
-	CSubjectData subject(_ttoi(roomNum), subject, lib.ConvertToStirng(fn, row), lib.ConvertToStirng(ln, row));
+	CSubjectData subject(_ttoi(m_cstrRoomNum), m_cstrSubject, lib.ConvertToStirng(m_cstrFN, row), lib.ConvertToStirng(m_cstrLN, row));
 
 	//lib.UpdateSubject();
 	CSubject oSubject;

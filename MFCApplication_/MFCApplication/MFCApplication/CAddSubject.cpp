@@ -27,10 +27,10 @@ CAddSubjectDlg::~CAddSubjectDlg()
 void CAddSubjectDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
-	DDX_Text(pDX, IDC_EDIT_ADD_SUBJECT_ROOM_NUM, roomNum);
-	DDX_Text(pDX, IDC_EDIT_ADD_SUBJECT_SUBJECT, subject);
-	DDX_Text(pDX, IDC_EDIT_ADD_SUBJECT_FN, fn);
-	DDX_Text(pDX, IDC_EDIT_ADD_SUBJECT_LN, ln);
+	DDX_Text(pDX, IDC_EDIT_ADD_SUBJECT_ROOM_NUM, m_cstrRoomNum);
+	DDX_Text(pDX, IDC_EDIT_ADD_SUBJECT_SUBJECT, m_cstrSubject);
+	DDX_Text(pDX, IDC_EDIT_ADD_SUBJECT_FN, m_cstrFnTeacher);
+	DDX_Text(pDX, IDC_EDIT_ADD_SUBJECT_LN, m_cstrLnTeacher);
 }
 
 
@@ -51,7 +51,6 @@ void CAddSubjectDlg::OnBnClickedOk()
 	CSubject oSubject;
 	string row = "";
 
-	CSubjectData subject(_ttoi(roomNum), subject, lib.ConvertToStirng(fn, row), lib.ConvertToStirng(ln, row));
-	//lib.AddInSubject();
+	CSubjectData subject(_ttoi(m_cstrRoomNum), m_cstrSubject, lib.ConvertToStirng(m_cstrFnTeacher, row), lib.ConvertToStirng(m_cstrLnTeacher, row));
 	oSubject.AddSubject(subject);
 }

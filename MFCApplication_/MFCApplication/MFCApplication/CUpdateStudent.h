@@ -22,9 +22,10 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 public:
-	CString classNum;
-	CString fn;
-	CString ln;
-	CString birthday;
+	CString m_cstrClassNum;
+	CString m_cstrFn;
+	CString m_cstrLn;
+	CString m_cstrBirthday;
+
 	afx_msg void OnBnClickedOk();
 };

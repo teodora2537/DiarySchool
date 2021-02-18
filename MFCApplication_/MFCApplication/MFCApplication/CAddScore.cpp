@@ -26,10 +26,10 @@ CAddScoreDlg::~CAddScoreDlg()
 void CAddScoreDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
-	DDX_Text(pDX, IDC_EDIT_ADD_SCORE_CLASS_NUMBER, classNum);
-	DDX_Text(pDX, IDC_EDIT_ADD_SCORE_SUBJECT, subject);
-	DDX_Text(pDX, IDC_EDIT_ADD_SCORE_DATE, date);
-	DDX_Text(pDX, IDC_EDIT_ADD_SCORE_SCORE, score);
+	DDX_Text(pDX, IDC_EDIT_ADD_SCORE_CLASS_NUMBER, m_cstrClassNum);
+	DDX_Text(pDX, IDC_EDIT_ADD_SCORE_SUBJECT, m_cstrSubject);
+	DDX_Text(pDX, IDC_EDIT_ADD_SCORE_DATE, m_cstrDate);
+	DDX_Text(pDX, IDC_EDIT_ADD_SCORE_SCORE, m_cstrScore);
 }
 
 
@@ -42,22 +42,13 @@ END_MESSAGE_MAP()
 
 void CAddScoreDlg::OnBnClickedOk()
 {
-	// TODO: Add your control notification handler code here
 	CDialogEx::OnOK();
 	UpdateData(TRUE);
 	Library lib;
 	string row = "";
 	CScore oScore;
 
-	int i_classNum = _ttoi(classNum);
-	int i_score = _ttoi(score);
-	string str_sub = lib.ConvertToStirng(subject, row);
-	string str_date = lib.ConvertToStirng(date, row);
+	CScoreData score(_ttoi(m_cstrClassNum), lib.ConvertToStirng(m_cstrSubject, row), _ttoi(m_cstrScore), lib.ConvertToStirng(m_cstrDate, row));
 
-
-	CScoreData score(_ttoi(classNum), lib.ConvertToStirng(subject, row), _ttoi(score), lib.ConvertToStirng(date, row));
-
-	//Success Add
-	//lib.AddInScore();
 	oScore.AddScore(score);
 }

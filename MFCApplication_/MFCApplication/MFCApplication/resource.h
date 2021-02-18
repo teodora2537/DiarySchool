@@ -23,13 +23,10 @@
 #define IDC_EDIT_ADD_SCORE_SCORE        1008
 #define IDC_STATIC7                     1021
 #define IDC_BUTTON1                     1023
-#define IDC_BUTTON_AllStudent           1023
 #define IDC_BUTTON_ADD_STUDENT          1023
 #define IDC_BUTTON_ADD_SUBJECT          1024
 #define IDC_BUTTON_ADD_SCORE            1025
-#define IDC_BUTTON_AllSubject           1026
 #define IDC_BUTTON_UPDATE_STUDENT       1026
-#define IDC_BUTTON_AllScore             1027
 #define IDC_BUTTON_UPDATE_SUBJECT       1027
 #define IDC_BUTTON_AvgScoreBySubject    1028
 #define IDC_BUTTON_UPDATE_SCORE         1028

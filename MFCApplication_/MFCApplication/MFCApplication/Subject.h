@@ -13,6 +13,10 @@ public:
 	CSubjectData(int _roomNumber, CString _nameSubject, string _fNameTeacher, string _lNameTeacher);
 	CSubjectData();
 
+	int m_iRoomNumber;
+	CString m_cstrNameSubject, m_cstrFullNameTeacher;
+	string m_strFNameTeacher, m_strLNameTeacher;
+
 	string GetFirstNameTeacher();
 	void SetFirstNameTeacher(string _firstNameTeacher);
 

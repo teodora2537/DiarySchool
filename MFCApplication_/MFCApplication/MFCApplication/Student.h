@@ -11,6 +11,13 @@ public:
 
 	CStudentData(int _classNum, string fName, string lName, string birthday);
 	CStudentData();
+	
+	string m_strFirstName;
+	string m_strLastName;
+	string m_strBirthday;
+	CString m_cstrFullName;
+	int m_iClassNumber;
+
 	string GetFirstName();
 	void SetFirstName(string firstName);
 	
@@ -26,8 +33,6 @@ public:
 	void SetFullName(CString _fullName);
 };
 
-
-
 class CStudent
 {
 public:
@@ -40,11 +45,15 @@ public:
 	bool EditStudent(const CStudentData& oStudent);
 	bool LoadStudent(const int nClassNumber, CStudentData& oStudent);
 	bool DeleteStudent(const int nClassNumber);
+	
 	map<int, vector<string>> PrintStudent();
+	
 	map<int, vector<string>> AverageScoreBySubject();
 	map<int, int> AverageScoreByAllSubject();
+	
 	vector<string> ExcellentStudent();
 	vector<string> PeopleHaveBirthdayToday();
+	
 	map<int, vector<string>> remedialExaminationBySubject();
 	vector<string> remedialExaminationByMoreSubjects();
 };

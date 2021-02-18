@@ -6,14 +6,9 @@
 #include <vector>
 #include "Score.h"
 #include "Library.h"
+#include "CUpdateStudent.h"
 
 using namespace std;
-
-string m_strFirstName;
-string m_strLastName;
-string m_strBirthday;
-CString m_cstrFullName;
-int m_iClassNumber;
 
 CStudentData::CStudentData(int _classNum, string _fName, string _lName, string _birthday)
 {
@@ -158,6 +153,7 @@ bool CStudent::EditStudent(const CStudentData& oStudent)
 //Empty
 bool CStudent::LoadStudent(const int nClassNumber, CStudentData& oStudent)
 {
+	
 	return false;
 }
 
@@ -319,7 +315,7 @@ map<int, int> CStudent::AverageScoreByAllSubject() {
 	float sum = 0;
 	int count = 0;
 	map<int, int> averageMap;
-	int countStudents = allStudents.size();
+	size_t countStudents = allStudents.size();
 
 	//loop for, for all score 
 	for (auto i = 1; i <= countStudents; i++)
