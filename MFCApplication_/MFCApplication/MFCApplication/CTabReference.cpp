@@ -53,7 +53,7 @@ BEGIN_MESSAGE_MAP(CTabReference, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_BY_MORE_SUBJECTS, &CTabReference::OnBnClickedButtonByMoreSubjects)
 	
 	//////////////////////////////////////
-	ON_WM_CONTEXTMENU()
+	/*ON_WM_CONTEXTMENU()
 
 	ON_BN_CLICKED(IDC_MENU_ADD_STUDENT, OnAddStudent)
 	ON_BN_CLICKED(IDC_MENU_EDIT_STUDENT, OnEditStudent)
@@ -68,7 +68,7 @@ BEGIN_MESSAGE_MAP(CTabReference, CDialogEx)
 	ON_BN_CLICKED(IDC_MENU_ADD_SCORE, OnAddScore)
 	ON_BN_CLICKED(IDC_MENU_EDIT_SCORE, OnEditScore)
 	ON_BN_CLICKED(IDC_MENU_DEL_SCORE, OnDeleteScore)
-	ON_BN_CLICKED(IDC_MENU_VIEW_SCORE, OnViewScore)
+	ON_BN_CLICKED(IDC_MENU_VIEW_SCORE, OnViewScore)*/
 	///////////////////////////////////////
 END_MESSAGE_MAP()
 
@@ -196,6 +196,7 @@ void CTabReference::OnBnClickedButtonAvgscorebysubject()
 	lib.ClearListCtrl(m_listCtrl);
 
 	m_listCtrl.InsertColumn(0, L"¹", LVCFMT_LEFT, 30);
+	m_listCtrl.InsertColumn(1, L"Name", LVCFMT_LEFT, 100);
 	m_listCtrl.InsertColumn(1, L"Subject", LVCFMT_LEFT, 100);
 	m_listCtrl.InsertColumn(2, L"Avg score", LVCFMT_LEFT, 100);
 
@@ -210,19 +211,22 @@ void CTabReference::OnBnClickedButtonAvgscorebysubject()
 	{
 		int i_student = (*i).first;
 	
-		for (int j = 0; j < _map[i_student].size(); j+=2) {
+		for (int j = 0; j < _map[i_student].size(); j+=3) {
 			
 		string student = to_string(i_student);
-		string subject = _map[i_student][j];
-		string avgScore = _map[i_student][j+1];
+		string nameStudent = _map[i_student][j];
+		string subject = _map[i_student][j+1];
+		string avgScore = _map[i_student][j+2];
 
 		CString cstrNumber(student.c_str());
+		CString cstrName(nameStudent.c_str());
 		CString cstrSubject(subject.c_str());
 		CString cstrAvgScore(avgScore.c_str());
 
 		m_listCtrl.InsertItem(position, cstrNumber);
-		m_listCtrl.SetItemText(position, 1, cstrSubject);
-		m_listCtrl.SetItemText(position, 2, cstrAvgScore);
+		m_listCtrl.SetItemText(position, 1, cstrName);
+		m_listCtrl.SetItemText(position, 2, cstrSubject);
+		m_listCtrl.SetItemText(position, 3, cstrAvgScore);
 		
 		position++;
 		}
@@ -234,24 +238,29 @@ void CTabReference::OnBnClickedButtonAvgscorebyallsubjects()
 	Library lib;
 	lib.ClearListCtrl(m_listCtrl);
 	CStudent oStudent;
-	map<int, int> _map = oStudent.AverageScoreByAllSubject();
+	map<int, vector<string>> _map = oStudent.AverageScoreByAllSubject();
 	string str;
 	
 	m_listCtrl.InsertColumn(0, L"¹", LVCFMT_LEFT, 30);
-	m_listCtrl.InsertColumn(1, L"Avg score", LVCFMT_LEFT, 70);
+	m_listCtrl.InsertColumn(1, L"Name", LVCFMT_LEFT, 100);
+	m_listCtrl.InsertColumn(2, L"Avg score", LVCFMT_LEFT, 70);
 
 	for (auto i = _map.begin(); i != _map.end(); i++)
 	{
 		string number = to_string((*i).first);
-		string avgScore = to_string((*i).second);
+		string name = (*i).second[0];
+		string avgScore = (*i).second[1];
 
 		CString cstrNumber(number.c_str());
+		CString cstrName(name.c_str());
 		CString cstrAvgScore(avgScore.c_str());
 
 		m_listCtrl.InsertItem((*i).first - 1, cstrNumber);
-		m_listCtrl.SetItemText((*i).first - 1, 1, cstrAvgScore);
+		m_listCtrl.SetItemText((*i).first - 1, 1, cstrName);
+		m_listCtrl.SetItemText((*i).first - 1, 2, cstrAvgScore);
 	}
 }
+
 //Print excelent student
 void CTabReference::OnBnClickedButtonExcellentstudent()
 {
@@ -304,7 +313,8 @@ void CTabReference::OnBnClickedButton()
 	map<int, vector<string>> _map = oStudent.remedialExaminationBySubject();
 
 	m_listCtrl.InsertColumn(0, L"¹", LVCFMT_LEFT, 30);
-	m_listCtrl.InsertColumn(1, L"Avg score", LVCFMT_LEFT, 100);
+	m_listCtrl.InsertColumn(1, L"Name", LVCFMT_LEFT, 100);
+	m_listCtrl.InsertColumn(2, L"Avg score", LVCFMT_LEFT, 100);
 
 	int position = 0;
 	int count = 0;
@@ -316,12 +326,17 @@ void CTabReference::OnBnClickedButton()
 		string student = to_string(i_student);
 		CString cstrNumber(student.c_str());
 		
-		for (int j = 0; j < subjects.size(); j++) {	
-			string subject = _map[i_student][j];
+		for (int j = 0; j < subjects.size(); j+=2) {	
+			string name = _map[i_student][j];
+			CString cstrName(name.c_str());
+			string subject = _map[i_student][j+1];
 			CString cstrSubject(subject.c_str());
 
+
+
 			m_listCtrl.InsertItem(position, cstrNumber);
-			m_listCtrl.SetItemText(position, 1, cstrSubject);
+			m_listCtrl.SetItemText(position, 1, cstrName);
+			m_listCtrl.SetItemText(position, 2, cstrSubject);
 
 			position++;
 		}
@@ -349,7 +364,9 @@ void CTabReference::OnBnClickedButtonByMoreSubjects()
 		}
 	}
 
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*
 
 void CTabReference::OnContextMenu(CWnd* pWnd, CPoint point)
 {
@@ -420,7 +437,7 @@ void CTabReference::OnViewStudent()
 	CString m_cstrMessageSubAndScore(m_strMessageSubAndScore.c_str());
 	CString message;
 	message.Format(m_cstrMessageSubAndScore, m_oStudent.GetClassNumber(), m_oStudent.GetFullName());
-	MessageBox(message, L"CStudentData", MB_OK);*/
+	MessageBox(message, L"CStudentData", MB_OK);/////
 	getStudentFromDlg();
 	CUpdateStudentDlg dlg;
 	dlg.DoModal();
@@ -475,10 +492,9 @@ void CTabReference::OnDeleteSubject()
 	if (result != IDYES)
 		return;
 		UpdateData(TRUE);
-		/*
+		
 		Library lib;
 		lib.DeleteSubject();
-		*/
 		CSubject oSubject;
 		oSubject.DeleteSubject(oSubjectData.GetRoomNumber());
 		DeleteItem();
@@ -532,7 +548,7 @@ void CTabReference::OnViewScore()
 	CString message;
 	message.Format(m_cstrMessageSubAndScore, m_oScore.GetClassNum(), sub);
 	MessageBox(message, L"", MB_OK);
-	*/
+	////
 }
 void CTabReference::OnDeleteScore()
 {
@@ -551,7 +567,7 @@ void CTabReference::OnDeleteScore()
 		/*
 		Library lib;
 		lib.DeleteScore();
-		*/
+		********
 		CScore oScore;
 		oScore.DeleteScore(oScoreData.GetIdScore());
 		DeleteItem();
@@ -682,5 +698,5 @@ void CTabReference::DeleteItem() {
 				++nItem;
 		}
 }
-
+*/
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -7,6 +7,9 @@
 #include "afxdialogex.h"
 #include "Library.h"
 #include "Student.h"
+#include "AddStudent.h"
+#include "CUpdateStudent.h"
+#include "CTabReference.h"
 
 
 // CTabStudent dialog
@@ -30,6 +33,7 @@ void CTabStudent::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CTabStudent, CDialogEx)
+	ON_WM_CONTEXTMENU()
 END_MESSAGE_MAP()
 
 BOOL CTabStudent::OnInitDialog() {
@@ -70,4 +74,22 @@ BOOL CTabStudent::OnInitDialog() {
 	}
 	
 	return true;
+}
+
+
+void CTabStudent::OnContextMenu(CWnd* pWnd, CPoint point)
+{
+	int m_nItem = m_listCtrl.GetSelectionMark() + 1;
+	if (m_nItem == 0)
+		return;
+
+	CMenu submenu;
+	submenu.CreatePopupMenu();
+
+	submenu.AppendMenu(MF_STRING, IDC_MENU_ADD_STUDENT, L"Add student");
+	submenu.AppendMenu(MF_STRING, IDC_MENU_EDIT_STUDENT, L"Edit student");
+	submenu.AppendMenu(MF_STRING, IDC_MENU_DEL_STUDENT, L"Delete student");
+	submenu.AppendMenu(MF_STRING, IDC_MENU_VIEW_STUDENT, L"View student");
+
+	submenu.TrackPopupMenu(TPM_LEFTALIGN, point.x, point.y, this);
 }

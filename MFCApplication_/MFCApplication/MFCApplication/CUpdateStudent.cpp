@@ -18,12 +18,12 @@ CUpdateStudentDlg::CUpdateStudentDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_UPDATE_STUDENT, pParent)
 {
 		Library lib;
-		CStudentData m_oStudent;
-		CString m_cstrFirstName(m_oStudent.GetFirstName().c_str());
-		CString m_cstrLastName(m_oStudent.GetLastName().c_str());
-		CString m_cstrBirthday(m_oStudent.GetBirthday().c_str());
+		CStudentData m_oStudentData;
+		CString m_cstrFirstName(m_oStudentData.GetFirstName().c_str());
+		CString m_cstrLastName(m_oStudentData.GetLastName().c_str());
+		CString m_cstrBirthday(m_oStudentData.GetBirthday().c_str());
 		
-		m_cstrClassNum.Format(L"%d", m_oStudent.GetClassNumber());
+		m_cstrClassNum.Format(L"%d", m_oStudentData.GetClassNumber());
 		m_cstrFn = m_cstrFirstName;
 		m_cstrLn = m_cstrLastName;
 		m_cstrBirthday = m_cstrBirthday;

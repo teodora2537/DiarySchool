@@ -49,7 +49,7 @@ public:
 	map<int, vector<string>> PrintStudent();
 	
 	map<int, vector<string>> AverageScoreBySubject();
-	map<int, int> AverageScoreByAllSubject();
+	map<int, vector<string>> AverageScoreByAllSubject();
 	
 	vector<string> ExcellentStudent();
 	vector<string> PeopleHaveBirthdayToday();

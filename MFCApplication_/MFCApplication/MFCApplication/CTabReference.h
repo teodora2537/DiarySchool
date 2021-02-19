@@ -34,7 +34,7 @@ public:
 	int m_nItem;
 
 	//////////////////////////////////////////////////////////////////////////////////
-	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
+	/*afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 
 	afx_msg void OnAddStudent();
 	afx_msg void OnEditStudent();
@@ -60,7 +60,7 @@ public:
 	afx_msg void getScoreFromDlg();
 
 	afx_msg void DeleteItem();
-
+	*/
 	CString m_cstrId;
 	CString m_cstrName;
 	CString m_cstrBirthday;

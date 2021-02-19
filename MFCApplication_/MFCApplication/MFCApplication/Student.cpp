@@ -66,8 +66,6 @@ CStudent::~CStudent()
 {
 }
 
-
-
 bool CStudent::AddStudent(CStudentData& oStudent)
 {
 	ofstream outFile;
@@ -82,63 +80,63 @@ bool CStudent::AddStudent(CStudentData& oStudent)
 bool CStudent::EditStudent(const CStudentData& oStudent)
 {
 	//Datas from edit boxes
-	CStudentData student;
-	int classNum = student.GetClassNumber();
-	string fName = student.GetFirstName();
-	string lName = student.GetLastName();
-	string birthday = student.GetBirthday();
+	CStudentData oStudentData;
+	int m_iClassNum = oStudentData.GetClassNumber();
+	string m_strFName = oStudentData.GetFirstName();
+	string m_strLName = oStudentData.GetLastName();
+	string m_strBirthday = oStudentData.GetBirthday();
 
-	int count = 0;
-	string text;
-	string token;
-	fstream file;
-	size_t position;
-	CStudentData currentStudent;
-	bool isFind = false;
-	map<int, vector<string>> mapStudent;
+	int m_iCount = 0;
+	string m_strText;
+	string m_strToken;
+	fstream m_file;
+	size_t m_sizeTPosition;
+	CStudentData oCurrentStudent;
+	bool m_bIsFind = false;
+	map<int, vector<string>> m_mapStudent;
 
-	file.open("Student.txt", ios::in);
+	m_file.open("Student.txt", ios::in);
 
-	while (getline(file, text))
+	while (getline(m_file, m_strText))
 	{
-		position = 0;
-		count = 0;
+		m_sizeTPosition = 0;
+		m_iCount = 0;
 		// set data's student to class student
 		while (true)
 		{
-			position = text.find('|');
-			token = text.substr(0, position);
-			count++;
-			if (count == 1) currentStudent.SetClassNumber(stoi(token));
-			else if (count == 2) currentStudent.SetFirstName(token);
-			else if (count == 3) currentStudent.SetLastName(token);
-			else if (count == 4) { currentStudent.SetBirthday(token); break; }
-			text = text.substr(position + 1, text.length());
+			m_sizeTPosition = m_strText.find('|');
+			m_strToken = m_strText.substr(0, m_sizeTPosition);
+			m_iCount++;
+			if (m_iCount == 1) oCurrentStudent.SetClassNumber(stoi(m_strToken));
+			else if (m_iCount == 2) oCurrentStudent.SetFirstName(m_strToken);
+			else if (m_iCount == 3) oCurrentStudent.SetLastName(m_strToken);
+			else if (m_iCount == 4) { oCurrentStudent.SetBirthday(m_strToken); break; }
+			m_strText = m_strText.substr(m_sizeTPosition + 1, m_strText.length());
 		}
 		//if student exist (from edit box) save it and continue. 
-		if (currentStudent.GetClassNumber() == classNum ||
-			(currentStudent.GetFirstName() == fName && currentStudent.GetLastName() == lName) ||
-			currentStudent.GetBirthday() == birthday)
+		if (oCurrentStudent.GetClassNumber() == m_iClassNum ||
+			(oCurrentStudent.GetFirstName() == m_strFName && oCurrentStudent.GetLastName() == m_strLName) ||
+			oCurrentStudent.GetBirthday() == m_strBirthday)
 		{
-			mapStudent[classNum].push_back(fName);
-			mapStudent[classNum].push_back(lName);
-			mapStudent[classNum].push_back(birthday);
-			isFind = true;
+			m_mapStudent[m_iClassNum].push_back(m_strFName);
+			m_mapStudent[m_iClassNum].push_back(m_strLName);
+			m_mapStudent[m_iClassNum].push_back(m_strBirthday);
+			m_bIsFind = true;
 			continue;
 		}
 		//save student from file
-		mapStudent[currentStudent.GetClassNumber()].push_back(currentStudent.GetFirstName());
-		mapStudent[currentStudent.GetClassNumber()].push_back(currentStudent.GetLastName());
-		mapStudent[currentStudent.GetClassNumber()].push_back(currentStudent.GetBirthday());
+		m_mapStudent[oCurrentStudent.GetClassNumber()].push_back(oCurrentStudent.GetFirstName());
+		m_mapStudent[oCurrentStudent.GetClassNumber()].push_back(oCurrentStudent.GetLastName());
+		m_mapStudent[oCurrentStudent.GetClassNumber()].push_back(oCurrentStudent.GetBirthday());
 	}
-	file.close();
+	m_file.close();
 
-	if (isFind)
+	if (m_bIsFind)
 	{
 		ofstream outFile;
 		outFile.open("Student.txt", ios::out | ios::trunc);
 		//Set student in the file.
-		for (auto i = mapStudent.begin(); i != mapStudent.end(); i++)
+		for (auto i = m_mapStudent.begin(); i != m_mapStudent.end(); i++)
 		{
 			outFile << (*i).first << '|' << (*i).second[0] << '|' << (*i).second[1] << '|' << (*i).second[2] << "\n";
 		}
@@ -160,57 +158,57 @@ bool CStudent::LoadStudent(const int nClassNumber, CStudentData& oStudent)
 //	! you must use the parametter nClassNumber
 bool CStudent::DeleteStudent(const int nClassNumber)
 {
-	CStudentData student;
-	int classNum = student.GetClassNumber();
-	string fName = student.GetFirstName();
-	string lName = student.GetLastName();
-	string birthday = student.GetBirthday();
+	CStudentData oStudentData;
+	int m_iClassNum = oStudentData.GetClassNumber();
+	string m_strFName = oStudentData.GetFirstName();
+	string m_strLName = oStudentData.GetLastName();
+	string m_strBirthday = oStudentData.GetBirthday();
 
-	int count = 0;
-	string text;
-	string token;
-	fstream file;
-	size_t position;
-	CStudentData currentStudent;
-	bool isFind = false;
-	map<int, vector<string>> mapStudent;
+	int m_iCount = 0;
+	string m_strText;
+	string m_strToken;
+	fstream m_File;
+	size_t m_sizeTPosition;
+	CStudentData oCurrentStudent;
+	bool m_bIsFind = false;
+	map<int, vector<string>> m_mapStudent;
 
-	file.open("Student.txt", ios::in);
+	m_File.open("Student.txt", ios::in);
 
-	while (getline(file, text))
+	while (getline(m_File, m_strText))
 	{
-		position = 0;
-		count = 0;
+		m_sizeTPosition = 0;
+		m_iCount = 0;
 		while (true)
 		{
-			position = text.find('|');
-			token = text.substr(0, position);
-			count++;
-			if (count == 1) currentStudent.SetClassNumber(stoi(token));
-			else if (count == 2) currentStudent.SetFirstName(token);
-			else if (count == 3) currentStudent.SetLastName(token);
-			else if (count == 4) { currentStudent.SetBirthday(token); break; }
-			text = text.substr(position + 1, text.length());
+			m_sizeTPosition = m_strText.find('|');
+			m_strToken = m_strText.substr(0, m_sizeTPosition);
+			m_iCount++;
+			if (m_iCount == 1) oCurrentStudent.SetClassNumber(stoi(m_strToken));
+			else if (m_iCount == 2) oCurrentStudent.SetFirstName(m_strToken);
+			else if (m_iCount == 3) oCurrentStudent.SetLastName(m_strToken);
+			else if (m_iCount == 4) { oCurrentStudent.SetBirthday(m_strToken); break; }
+			m_strText = m_strText.substr(m_sizeTPosition + 1, m_strText.length());
 		}
 
-		if (currentStudent.GetClassNumber() == classNum)
+		if (oCurrentStudent.GetClassNumber() == m_iClassNum)
 		{
-			isFind = true;
+			m_bIsFind = true;
 			continue;
 		}
 
-		mapStudent[currentStudent.GetClassNumber()].push_back(currentStudent.GetFirstName());
-		mapStudent[currentStudent.GetClassNumber()].push_back(currentStudent.GetLastName());
-		mapStudent[currentStudent.GetClassNumber()].push_back(currentStudent.GetBirthday());
+		m_mapStudent[oCurrentStudent.GetClassNumber()].push_back(oCurrentStudent.GetFirstName());
+		m_mapStudent[oCurrentStudent.GetClassNumber()].push_back(oCurrentStudent.GetLastName());
+		m_mapStudent[oCurrentStudent.GetClassNumber()].push_back(oCurrentStudent.GetBirthday());
 	}
-	file.close();
+	m_File.close();
 
-	if (isFind)
+	if (m_bIsFind)
 	{
 		ofstream outFile;
 		outFile.open("Student.txt", ios::out | ios::trunc);
 
-		for (auto i = mapStudent.begin(); i != mapStudent.end(); i++)
+		for (auto i = m_mapStudent.begin(); i != m_mapStudent.end(); i++)
 		{
 			outFile << (*i).first << '|' << (*i).second[0] << '|' << (*i).second[1] << '|' << (*i).second[2] << "\n";
 		}
@@ -223,13 +221,13 @@ bool CStudent::DeleteStudent(const int nClassNumber)
 
 map<int, vector<string>> CStudent::PrintStudent()
 {
-	int count = 0;
-	string text;
-	string token;
-	fstream file;
-	size_t position;
-	CStudentData currentStudent;
-	map<int, vector<string>> mapStudent;
+	int m_iCount = 0;
+	string m_strText;
+	string m_strToken;
+	fstream m_file;
+	size_t m_sizeTPosition;
+	CStudentData oCurrentStudent;
+	map<int, vector<string>> m_mapStudent;
 
 	file.open("Student.txt", ios::in);
 
@@ -265,6 +263,7 @@ map<int, vector<string>> CStudent::AverageScoreBySubject()
 {
 	CScore oScore;
 	multimap<int, vector<string>> _map = oScore.PrintScore();
+	map<int, vector<string>> allStudents = PrintStudent();
 
 	float sum = 0;
 	int count = 0;
@@ -294,10 +293,12 @@ map<int, vector<string>> CStudent::AverageScoreBySubject()
 			}
 		}
 
-		//add in student subject and average score 
+		//add in student subject and average score
+		string nameStudent = allStudents[student][0] + " " + allStudents[student][1];
 		float avg = sum / count;
 		int i_averageScore = round(avg);
 		string str_averageScore = to_string(i_averageScore);
+		averageMap[student].push_back(nameStudent);
 		averageMap[student].push_back(subject);
 		averageMap[student].push_back(str_averageScore);
 
@@ -308,10 +309,11 @@ map<int, vector<string>> CStudent::AverageScoreBySubject()
 }
 
 //Average score by all subject
-map<int, int> CStudent::AverageScoreByAllSubject() {
+map<int, vector<string>> CStudent::AverageScoreByAllSubject() {
 	CScore oScore;
 	multimap<int, vector<string>> _map = oScore.PrintScore();
 	map<int, vector<string>> allStudents = PrintStudent();
+	/*
 	float sum = 0;
 	int count = 0;
 	map<int, int> averageMap;
@@ -342,6 +344,45 @@ map<int, int> CStudent::AverageScoreByAllSubject() {
 		int i_averageScore = round(avg);
 		averageMap[i] = i_averageScore;
 
+		sum = 0;
+		count = 0;
+	}
+	*/
+
+	float sum = 0;
+	int count = 0;
+	int currentStudent;
+	//vector[0] = name;  vector[1] = score
+	map<int, vector<string>> averageMap; 
+	size_t countStudents = allStudents.size();
+
+	//loop for, for all score 
+	for (auto i = 1; i <= countStudents; i++)
+	{
+		//loop for, for all score 
+		for (auto j = _map.begin(); j != _map.end(); j++)
+		{
+			 currentStudent = (*j).first;
+			string currentScore = (*j).second[1];
+
+			//sum all score of student by subject
+			if (i == currentStudent)
+			{
+				sum += stoi(currentScore);
+				count++;
+			}
+		}
+
+		if (sum == 0)
+			continue;
+
+		//add subject and average score in student
+		string nameStudent = allStudents[i][0]+" "+ allStudents[i][1];
+		averageMap[i].push_back(nameStudent);
+		float avg = sum / count;
+		int i_averageScore = round(avg);
+		averageMap[i].push_back(to_string(i_averageScore));
+		
 		sum = 0;
 		count = 0;
 	}
@@ -427,10 +468,12 @@ map<int, vector<string>> CStudent::remedialExaminationBySubject()
 {
 	CScore oScore;
 	multimap<int, vector<string>> _map = oScore.PrintScore();
+	map<int, vector<string>> allStudents = PrintStudent();
 
 	float sum = 0;
 	int count = 0;
 	map<int, vector<string>> averageMap;
+	
 	//loop for, for all score 
 	for (auto i = _map.begin(); i != _map.end(); i++)
 	{
@@ -465,6 +508,8 @@ map<int, vector<string>> CStudent::remedialExaminationBySubject()
 		int i_averageScore = round(avg);
 
 		if (i_averageScore == 2) {
+			string nameStudent = allStudents[student][0] + " " + allStudents[student][1];
+			averageMap[student].push_back(nameStudent);
 			averageMap[student].push_back(subject);
 		}
 

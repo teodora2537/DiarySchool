@@ -30,6 +30,7 @@ void CTabSubject::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CTabSubject, CDialogEx)
+	ON_WM_CONTEXTMENU()
 END_MESSAGE_MAP()
 
 
@@ -62,4 +63,23 @@ BOOL CTabSubject::OnInitDialog() {
 		m_listCtrl.SetItemText((*i).first - 1, 2, cstrTeacher);
 	}
 	return true;
+}
+
+
+void CTabSubject::OnContextMenu(CWnd* pWnd, CPoint point)
+{
+	int m_nItem = m_listCtrl.GetSelectionMark() + 1;
+
+	if (m_nItem == 0)
+		return;
+
+	CMenu submenu;
+	submenu.CreatePopupMenu();
+
+	submenu.AppendMenu(MF_STRING, IDC_MENU_ADD_SUBJECT, L"Add subject");
+	submenu.AppendMenu(MF_STRING, IDC_MENU_EDIT_SUBJECT, L"Edit subject");
+	submenu.AppendMenu(MF_STRING, IDC_MENU_DEL_SUBJECT, L"Delete subject");
+	submenu.AppendMenu(MF_STRING, IDC_MENU_VIEW_SUBJECT, L"View subject");
+
+	submenu.TrackPopupMenu(TPM_LEFTALIGN, point.x, point.y, this);
 }

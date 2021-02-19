@@ -5,6 +5,7 @@
 #include <vector>
 #include <map>
 #include "Library.h"
+#include "Student.h"
 using namespace std;
 
 CScoreData::CScoreData(int _classNum, string _subject, int _score, string _date)
@@ -268,6 +269,8 @@ multimap<int, vector<string>> CScore::PrintScore()
 	bool isFind = false;
 	multimap<int, vector<string>> mapScore;
 	vector<string> _vector;
+	CStudent oStudent;
+	map<int, vector<string>> allStudents = oStudent.PrintStudent();
 
 	file.open("Score.txt", ios::in);
 
@@ -295,6 +298,8 @@ multimap<int, vector<string>> CScore::PrintScore()
 			}
 			text = text.substr(position + 1, text.length());
 		}
+		string nameStudent = allStudents[currentScore.GetClassNum()][0] + " " + allStudents[currentScore.GetClassNum()][1];
+		_vector.push_back(nameStudent);
 		_vector.push_back(currentScore.GetSubject());
 		_vector.push_back(to_string(currentScore.GetScore()));
 		_vector.push_back(currentScore.GetDate());

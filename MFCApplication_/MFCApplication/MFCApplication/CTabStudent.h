@@ -27,4 +27,5 @@ protected:
 
 public:
 	CListCtrl m_listCtrl;
+	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 };
