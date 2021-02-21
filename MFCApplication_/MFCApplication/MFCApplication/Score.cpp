@@ -260,52 +260,45 @@ bool CScore::DeleteScore(const int nClassNumber)
 
 multimap<int, vector<string>> CScore::PrintScore()
 {
-	int count = 0;
-	string text;
-	string token;
-	fstream file;
-	size_t position;
-	CScoreData currentScore;
-	bool isFind = false;
-	multimap<int, vector<string>> mapScore;
-	vector<string> _vector;
-	CStudent oStudent;
-	map<int, vector<string>> allStudents = oStudent.PrintStudent();
+	
+	fstream m_file;
 
-	file.open("Score.txt", ios::in);
+	m_file.open("Score.txt", ios::in);
 
-	while (getline(file, text))
+	while (getline(m_file, m_strText))
 	{
-		position = 0;
-		count = 0;
+		m_sizeTPosition = 0;
+		m_iCount = 0;
 		while (true)
 		{
-			position = text.find('|');
-			token = text.substr(0, position);
-			count++;
-			if (count == 1)
-				currentScore.SetIdScore(stoi(token));
-			else if (count == 2)
-				currentScore.SetClassNum(stoi(token));
-			else if (count == 3)
-				currentScore.SetSubject(token);
-			else if (count == 4)
-				currentScore.SetScore(stoi(token));
-			else if (count == 5)
+			m_sizeTPosition = m_strText.find('|');
+			m_strToken = m_strText.substr(0, m_sizeTPosition);
+			m_iCount++;
+			if (m_iCount == 1)
+				oCurrentScore.SetIdScore(stoi(m_strToken));
+			else if (m_iCount == 2)
+				oCurrentScore.SetClassNum(stoi(m_strToken));
+			else if (m_iCount == 3)
+				oCurrentScore.SetSubject(m_strToken);
+			else if (m_iCount == 4)
+				oCurrentScore.SetScore(stoi(m_strToken));
+			else if (m_iCount == 5)
 			{
-				currentScore.SetDate(token);
+				oCurrentScore.SetDate(m_strToken);
 				break;
 			}
-			text = text.substr(position + 1, text.length());
+			m_strText = m_strText.substr(m_sizeTPosition + 1, m_strText.length());
 		}
-		string nameStudent = allStudents[currentScore.GetClassNum()][0] + " " + allStudents[currentScore.GetClassNum()][1];
-		_vector.push_back(nameStudent);
-		_vector.push_back(currentScore.GetSubject());
-		_vector.push_back(to_string(currentScore.GetScore()));
-		_vector.push_back(currentScore.GetDate());
-		mapScore.insert(pair<int, vector<string>>(currentScore.GetClassNum(), _vector));
-		_vector.clear();
+		CStudent oStud;
+		m_mapAllStudent = oStud.PrintStudent();
+		m_strName = m_mapAllStudent[oCurrentScore.GetClassNum()][0] + " " + m_mapAllStudent[oCurrentScore.GetClassNum()][1];
+		m_vecInfoStudent.push_back(m_strName);
+		m_vecInfoStudent.push_back(oCurrentScore.GetSubject());
+		m_vecInfoStudent.push_back(to_string(oCurrentScore.GetScore()));
+		m_vecInfoStudent.push_back(oCurrentScore.GetDate());
+		m_mapAllScore.insert(pair<int, vector<string>>(oCurrentScore.GetClassNum(), m_vecInfoStudent));
+		m_vecInfoStudent.clear();
 	}
-	file.close();
-	return mapScore;
+	m_file.close();
+	return m_mapAllScore;
 }

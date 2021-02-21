@@ -7,9 +7,6 @@
 #include "afxdialogex.h"
 #include "Library.h"
 #include "Student.h"
-#include "AddStudent.h"
-#include "CUpdateStudent.h"
-#include "CTabReference.h"
 
 
 // CTabStudent dialog
@@ -33,7 +30,6 @@ void CTabStudent::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CTabStudent, CDialogEx)
-	ON_WM_CONTEXTMENU()
 END_MESSAGE_MAP()
 
 BOOL CTabStudent::OnInitDialog() {
@@ -42,54 +38,33 @@ BOOL CTabStudent::OnInitDialog() {
 
 
 	m_listCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT);
-	int nItem = 0;
-
-	//Library lib_;
+	
 	CStudent oStudent;
 
-	map<int, vector<string>> mapStudent = oStudent.PrintStudent();
-	string str;
+	map<int, vector<string>> m_mapAllStudent = oStudent.PrintStudent();
 
-	int count = 0;
+	int m_iCount = 0;
 
 	m_listCtrl.InsertColumn(0, L"¹", LVCFMT_LEFT, 30);
 	m_listCtrl.InsertColumn(1, L"Name", LVCFMT_LEFT, 100);
 	m_listCtrl.InsertColumn(2, L"Date of birthday", LVCFMT_LEFT, 100);
 
-	for (auto i = mapStudent.begin(); i != mapStudent.end(); i++)
+	for (auto i = m_mapAllStudent.begin(); i != m_mapAllStudent.end(); i++)
 	{
-		string number = to_string((*i).first);
-		string name = (*i).second[0] + " " + (*i).second[1];
-		string dayOfBirth = (*i).second[2];
+		string m_strNumber = to_string((*i).first);
+		string m_strName = (*i).second[0] + " " + (*i).second[1];
+		string m_strDayOfBirth = (*i).second[2];
 
-		CString cstrNumber(number.c_str());
-		CString cstrName(name.c_str());
-		CString cstrDayOfBirth(dayOfBirth.c_str());
+		CString m_cstrNumber(m_strNumber.c_str());
+		CString m_cstrName(m_strName.c_str());
+		CString m_cstrDayOfBirth(m_strDayOfBirth.c_str());
 
-		m_listCtrl.InsertItem(count, cstrNumber);
-		m_listCtrl.SetItemText(count, 1, cstrName);
-		m_listCtrl.SetItemText(count, 2, cstrDayOfBirth);
+		m_listCtrl.InsertItem(m_iCount, m_cstrNumber);
+		m_listCtrl.SetItemText(m_iCount, 1, m_cstrName);
+		m_listCtrl.SetItemText(m_iCount, 2, m_cstrDayOfBirth);
 
-		count++;
+		m_iCount++;
 	}
 	
 	return true;
-}
-
-
-void CTabStudent::OnContextMenu(CWnd* pWnd, CPoint point)
-{
-	int m_nItem = m_listCtrl.GetSelectionMark() + 1;
-	if (m_nItem == 0)
-		return;
-
-	CMenu submenu;
-	submenu.CreatePopupMenu();
-
-	submenu.AppendMenu(MF_STRING, IDC_MENU_ADD_STUDENT, L"Add student");
-	submenu.AppendMenu(MF_STRING, IDC_MENU_EDIT_STUDENT, L"Edit student");
-	submenu.AppendMenu(MF_STRING, IDC_MENU_DEL_STUDENT, L"Delete student");
-	submenu.AppendMenu(MF_STRING, IDC_MENU_VIEW_STUDENT, L"View student");
-
-	submenu.TrackPopupMenu(TPM_LEFTALIGN, point.x, point.y, this);
 }

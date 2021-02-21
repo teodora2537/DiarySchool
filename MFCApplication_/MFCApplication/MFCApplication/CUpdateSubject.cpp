@@ -17,7 +17,7 @@ CUpdateSubjectDlg::CUpdateSubjectDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_UPDATE_SUBJECT, pParent)
 {
 	
-	Library lib;
+	//Library lib;
 	CSubjectData m_oSubject;
 	CString m_cstrFirstNameTeacher(m_oSubject.GetFirstNameTeacher().c_str());
 	CString m_cstrLastNameTeacher(m_oSubject.GetLastNameTeacher().c_str());

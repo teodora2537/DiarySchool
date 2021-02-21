@@ -1,7 +1,8 @@
 #pragma once
+#include <stdlib.h>
 
+using namespace std;
 // CTabReference dialog
-
 class CTabReference : public CDialogEx
 {
 	DECLARE_DYNAMIC(CTabReference)
@@ -34,7 +35,7 @@ public:
 	int m_nItem;
 
 	//////////////////////////////////////////////////////////////////////////////////
-	/*afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
+	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 
 	afx_msg void OnAddStudent();
 	afx_msg void OnEditStudent();
@@ -60,7 +61,7 @@ public:
 	afx_msg void getScoreFromDlg();
 
 	afx_msg void DeleteItem();
-	*/
+
 	CString m_cstrId;
 	CString m_cstrName;
 	CString m_cstrBirthday;
@@ -68,4 +69,9 @@ public:
 	CString m_cstrLastName;
 	CString m_cstrSubject;
 	CString m_cstrTeacher;
+	
+	int m_iPosition = 0;
+	int m_iStudent;
+	int m_iCount = 0;
+
 };

@@ -24,5 +24,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	CListCtrl m_listCtrl;
-	afx_msg void OnContextMenu(CWnd* /*pWnd*/, CPoint /*point*/);
+	int m_iRow = 0;
+	int nItem = 0;
+
 };

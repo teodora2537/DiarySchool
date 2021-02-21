@@ -30,7 +30,6 @@ void CTabScore::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CTabScore, CDialogEx)
-	ON_WM_CONTEXTMENU()
 END_MESSAGE_MAP()
 
 BOOL CTabScore::OnInitDialog() {
@@ -39,58 +38,38 @@ BOOL CTabScore::OnInitDialog() {
 
 	m_listCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT);
 	CScore oScore;
-	//Library lib;
 	multimap<int, vector<string>> mapScore = oScore.PrintScore();
-	string str;
-	int row = 0;
+	
+	m_iRow = 0;
 
 	m_listCtrl.InsertColumn(0, L"¹", LVCFMT_LEFT, 30);
 	m_listCtrl.InsertColumn(1, L"Name", LVCFMT_LEFT, 100);
 	m_listCtrl.InsertColumn(2, L"Subject", LVCFMT_LEFT, 100);
-	m_listCtrl.InsertColumn(3, L"Date", LVCFMT_LEFT, 100);
-	m_listCtrl.InsertColumn(4, L"Score", LVCFMT_LEFT, 50);
+	m_listCtrl.InsertColumn(3, L"Score", LVCFMT_LEFT, 50);
+	m_listCtrl.InsertColumn(4, L"Date", LVCFMT_LEFT, 100);
 
 	for (auto i = mapScore.begin(); i != mapScore.end(); i++)
 	{
-		string number = to_string((*i).first);
-		string name = (*i).second[0];
-		string subject = (*i).second[1];
-		string score = (*i).second[2];
-		string date = (*i).second[3];
+		string m_strNumber = to_string((*i).first);
+		string m_strName = (*i).second[0];
+		string m_strSubject = (*i).second[1];
+		string m_strScore = (*i).second[2];
+		string m_strDate = (*i).second[3];
 
-		CString cstrNumber(number.c_str());
-		CString cstrName(name.c_str());
-		CString cstrSubject(subject.c_str());
-		CString cstrScore(score.c_str());
-		CString cstrDate(date.c_str());
+		CString m_cstrNumber(m_strNumber.c_str());
+		CString m_cstrName(m_strName.c_str());
+		CString m_cstrSubject(m_strSubject.c_str());
+		CString m_cstrScore(m_strScore.c_str());
+		CString m_cstrDate(m_strDate.c_str());
 
-		m_listCtrl.InsertItem(row, cstrNumber);
-		m_listCtrl.SetItemText(row, 1, cstrName);
-		m_listCtrl.SetItemText(row, 2, cstrSubject);
-		m_listCtrl.SetItemText(row, 3, cstrDate);
-		m_listCtrl.SetItemText(row, 4, cstrScore);
-		row++;
+		m_listCtrl.InsertItem(m_iRow, m_cstrNumber);
+		m_listCtrl.SetItemText(m_iRow, 1, m_cstrName);
+		m_listCtrl.SetItemText(m_iRow, 2, m_cstrSubject);
+		m_listCtrl.SetItemText(m_iRow, 3, m_cstrScore);
+		m_listCtrl.SetItemText(m_iRow, 4, m_cstrDate);
+		m_iRow++;
 	}
 
 	return true;
 }
 
-
-
-void CTabScore::OnContextMenu(CWnd* pWnd, CPoint point)
-{
-	int m_nItem = m_listCtrl.GetSelectionMark() + 1;
-
-	if (m_nItem == 0)
-		return;
-
-	CMenu submenu;
-	submenu.CreatePopupMenu();
-
-	submenu.AppendMenu(MF_STRING, IDC_MENU_ADD_SCORE, L"Add score");
-	submenu.AppendMenu(MF_STRING, IDC_MENU_EDIT_SCORE, L"Edit score");
-	submenu.AppendMenu(MF_STRING, IDC_MENU_DEL_SCORE, L"Delete score");
-	submenu.AppendMenu(MF_STRING, IDC_MENU_VIEW_SCORE, L"View score");
-
-	submenu.TrackPopupMenu(TPM_LEFTALIGN, point.x, point.y, this);
-}

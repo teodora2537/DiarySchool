@@ -41,5 +41,21 @@ public:
 	bool EditScore(const CScoreData& oScore);
 	bool LoadScore(const int nClassNumber, CScoreData& oScore);
 	bool DeleteScore(const int nClassNumber);
+	
+	vector<string> m_vecInfoStudent;
+	map<int, vector<string>> m_mapAllStudent;
 	multimap<int, vector<string>> PrintScore();
+	multimap<int, vector<string>> m_mapAllScore;
+
+	int m_iCount = 0;
+	
+	string m_strText;
+	string m_strToken;
+	string m_strName;
+	
+	size_t m_sizeTPosition;
+	
+	CScoreData oCurrentScore;
+	
+	bool m_bIsFind = false;
 };

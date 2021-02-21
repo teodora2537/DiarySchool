@@ -56,4 +56,27 @@ public:
 	
 	map<int, vector<string>> remedialExaminationBySubject();
 	vector<string> remedialExaminationByMoreSubjects();
+
+	multimap<int, vector<string>> m_mapAllScore;
+	vector<string> m_vecStudentsName;
+	map<int, int> m_mapStudentScore;
+	map<int, vector<string>> m_mapAverageScore;
+	map<int, vector<string>> m_mapStudent = PrintStudent();
+	
+	float m_fSum = 0;
+	float m_fAvg;
+
+	int m_iCount = 0;
+	int m_iStudent;
+	int m_iCurrentStudent;
+	int m_iAverageScore;
+	
+	string m_strSubject;
+	string m_strScore;
+	string m_strCurrentSubject;
+	string m_strCurrentScore;
+	string m_strAverageScore;
+	string m_strName;
+
+	size_t countStudents = m_mapStudent.size();
 };

@@ -53,7 +53,7 @@ BEGIN_MESSAGE_MAP(CTabReference, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_BY_MORE_SUBJECTS, &CTabReference::OnBnClickedButtonByMoreSubjects)
 	
 	//////////////////////////////////////
-	/*ON_WM_CONTEXTMENU()
+	ON_WM_CONTEXTMENU()
 
 	ON_BN_CLICKED(IDC_MENU_ADD_STUDENT, OnAddStudent)
 	ON_BN_CLICKED(IDC_MENU_EDIT_STUDENT, OnEditStudent)
@@ -68,305 +68,179 @@ BEGIN_MESSAGE_MAP(CTabReference, CDialogEx)
 	ON_BN_CLICKED(IDC_MENU_ADD_SCORE, OnAddScore)
 	ON_BN_CLICKED(IDC_MENU_EDIT_SCORE, OnEditScore)
 	ON_BN_CLICKED(IDC_MENU_DEL_SCORE, OnDeleteScore)
-	ON_BN_CLICKED(IDC_MENU_VIEW_SCORE, OnViewScore)*/
+	ON_BN_CLICKED(IDC_MENU_VIEW_SCORE, OnViewScore)
 	///////////////////////////////////////
 END_MESSAGE_MAP()
 
 // CTabReference message handlers
 
-/*
-//Print all students
-void CTabReference::OnBnClickedButtonAllstudent()
-{
-	Library lib;
-	lib.ClearListCtrl(m_listCtrl);
-
-	m_listCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT);
-int nItem=0;
-
-	//Library lib_;
-	CStudent oStudent;
-
-	map<int, vector<string>> mapStudent = oStudent.PrintStudent();
-	string str;
-
-	int count = 0;
-	
-	m_listCtrl.InsertColumn(0, L"¹", LVCFMT_LEFT, 30);
-	m_listCtrl.InsertColumn(1, L"Name", LVCFMT_LEFT, 100);
-	m_listCtrl.InsertColumn(2, L"Date of birthday", LVCFMT_LEFT, 100);
-	
-	for (auto i = mapStudent.begin(); i != mapStudent.end(); i++)
-	{
-		string number = to_string((*i).first);
-		string name = (*i).second[0] + " " + (*i).second[1];
-		string dayOfBirth = (*i).second[2];
-
-		CString cstrNumber(number.c_str());
-		CString cstrName(name.c_str());
-		CString cstrDayOfBirth(dayOfBirth.c_str());
-
-		m_listCtrl.InsertItem(count, cstrNumber);
-		m_listCtrl.SetItemText(count, 1, cstrName);
-		m_listCtrl.SetItemText(count, 2, cstrDayOfBirth);
-		
-		count++;
-	}	
-	m_class = "student";
-}
-
-//Print all subject
-void CTabReference::OnBnClickedButtonAllsubject()
-{	
-	Library lib;
-	lib.ClearListCtrl(m_listCtrl);
-
-	m_listCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT);
-
-	CSubject oSubject;
-	//Library lib;
-	map<int, vector<string>> mapSubject = oSubject.PrintSubject();
-	string str;
-
-	m_listCtrl.InsertColumn(0, L"¹", LVCFMT_LEFT, 30);
-	m_listCtrl.InsertColumn(1, L"Subject", LVCFMT_LEFT, 100);
-	m_listCtrl.InsertColumn(2, L"Teacher", LVCFMT_LEFT, 100);
-
-	for (auto i = mapSubject.begin(); i != mapSubject.end(); i++)
-	{
-		string number = to_string((*i).first);
-		string subject = (*i).second[0];
-		string teacher = (*i).second[1] + " " + (*i).second[2];
-
-		CString cstrNumber(number.c_str());
-		CString cstrSubject(subject.c_str());
-		CString cstrTeacher(teacher.c_str());
-
-		m_listCtrl.InsertItem((*i).first-1, cstrNumber);
-		m_listCtrl.SetItemText((*i).first-1, 1, cstrSubject);
-		m_listCtrl.SetItemText((*i).first-1, 2, cstrTeacher);
-	}
-
-	m_class = "subject";
-}
-//Print all score
-void CTabReference::OnBnClickedButtonAllscore()
-{
-	Library lib;
-	lib.ClearListCtrl(m_listCtrl);
-
-	m_listCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT);
-	CScore oScore;
-	//Library lib;
-	multimap<int, vector<string>> mapScore = oScore.PrintScore();
-	string str;
-	int row = 0;
-
-	m_listCtrl.InsertColumn(0, L"¹", LVCFMT_LEFT, 30);
-	m_listCtrl.InsertColumn(1, L"Subject", LVCFMT_LEFT, 100);
-	m_listCtrl.InsertColumn(2, L"Date", LVCFMT_LEFT, 100);
-	m_listCtrl.InsertColumn(3, L"Score", LVCFMT_LEFT, 50);
-
-	for (auto i = mapScore.begin(); i != mapScore.end(); i++)
-	{
-		string number = to_string((*i).first);
-		string subject = (*i).second[0];
-		string date = (*i).second[2];
-		string score = (*i).second[1];
-
-		CString cstrNumber(number.c_str());
-		CString cstrSubject(subject.c_str());
-		CString cstrDate(date.c_str());
-		CString cstrScore(score.c_str());
-
-		m_listCtrl.InsertItem(row, cstrNumber);
-		m_listCtrl.SetItemText(row, 1, cstrSubject);
-		m_listCtrl.SetItemText(row, 2, cstrDate);
-		m_listCtrl.SetItemText(row, 3, cstrScore);
-		row++;
-	}
-	m_class = "score";
-}
-*/
-
 // Print average score by subject1
 void CTabReference::OnBnClickedButtonAvgscorebysubject()
 {
-	Library lib;
-	lib.ClearListCtrl(m_listCtrl);
-
-	m_listCtrl.InsertColumn(0, L"¹", LVCFMT_LEFT, 30);
-	m_listCtrl.InsertColumn(1, L"Name", LVCFMT_LEFT, 100);
-	m_listCtrl.InsertColumn(1, L"Subject", LVCFMT_LEFT, 100);
-	m_listCtrl.InsertColumn(2, L"Avg score", LVCFMT_LEFT, 100);
+	Library oLib;
+	oLib.ClearListCtrl(m_listCtrl);
 
 	CStudent oStudent;
-	//Library lib;
-	map<int, vector<string>> _map = oStudent.AverageScoreBySubject();
+	map<int, vector<string>> m_mapAverageScoreBySub = oStudent.AverageScoreBySubject();
 	
-	int position = 0;
-	int count = 0;
+	m_listCtrl.InsertColumn(0, L"¹", LVCFMT_LEFT, 30);
+	m_listCtrl.InsertColumn(1, L"Name", LVCFMT_LEFT, 100);
+	m_listCtrl.InsertColumn(2, L"Subject", LVCFMT_LEFT, 100);
+	m_listCtrl.InsertColumn(3, L"Avg score", LVCFMT_LEFT, 70);
 
-	for (auto i = _map.begin(); i != _map.end(); i++)
+	m_iPosition = 0;
+	for (auto i = m_mapAverageScoreBySub.begin(); i != m_mapAverageScoreBySub.end(); i++)
 	{
-		int i_student = (*i).first;
+		 m_iStudent = (*i).first;
 	
-		for (int j = 0; j < _map[i_student].size(); j+=3) {
+		for (int j = 0; j < m_mapAverageScoreBySub[m_iStudent].size(); j+=3) {
 			
-		string student = to_string(i_student);
-		string nameStudent = _map[i_student][j];
-		string subject = _map[i_student][j+1];
-		string avgScore = _map[i_student][j+2];
+		string m_strStudent = to_string(m_iStudent);
+		string m_strName = m_mapAverageScoreBySub[m_iStudent][j];
+		string m_strSubject = m_mapAverageScoreBySub[m_iStudent][j+1];
+		string m_strAvgScore = m_mapAverageScoreBySub[m_iStudent][j+2];
 
-		CString cstrNumber(student.c_str());
-		CString cstrName(nameStudent.c_str());
-		CString cstrSubject(subject.c_str());
-		CString cstrAvgScore(avgScore.c_str());
+		CString m_cstrNumber(m_strStudent.c_str());
+		CString m_cstrName(m_strName.c_str());
+		CString m_cstrSubject(m_strSubject.c_str());
+		CString m_cstrAvgScore(m_strAvgScore.c_str());
 
-		m_listCtrl.InsertItem(position, cstrNumber);
-		m_listCtrl.SetItemText(position, 1, cstrName);
-		m_listCtrl.SetItemText(position, 2, cstrSubject);
-		m_listCtrl.SetItemText(position, 3, cstrAvgScore);
+		m_listCtrl.InsertItem(m_iPosition, m_cstrNumber);
+		m_listCtrl.SetItemText(m_iPosition, 1, m_cstrName);
+		m_listCtrl.SetItemText(m_iPosition, 2, m_cstrSubject);
+		m_listCtrl.SetItemText(m_iPosition, 3, m_cstrAvgScore);
 		
-		position++;
+		m_iPosition++;
 		}
 	}
 }
 // Print average score by all subject
 void CTabReference::OnBnClickedButtonAvgscorebyallsubjects()
 {
-	Library lib;
-	lib.ClearListCtrl(m_listCtrl);
+	Library oLib;
+	oLib.ClearListCtrl(m_listCtrl);
+
 	CStudent oStudent;
-	map<int, vector<string>> _map = oStudent.AverageScoreByAllSubject();
-	string str;
+	map<int, vector<string>> m_mapAverageScore = oStudent.AverageScoreByAllSubject();
 	
 	m_listCtrl.InsertColumn(0, L"¹", LVCFMT_LEFT, 30);
 	m_listCtrl.InsertColumn(1, L"Name", LVCFMT_LEFT, 100);
 	m_listCtrl.InsertColumn(2, L"Avg score", LVCFMT_LEFT, 70);
 
-	for (auto i = _map.begin(); i != _map.end(); i++)
+	for (auto i = m_mapAverageScore.begin(); i != m_mapAverageScore.end(); i++)
 	{
-		string number = to_string((*i).first);
-		string name = (*i).second[0];
-		string avgScore = (*i).second[1];
+		string m_strNumber = to_string((*i).first);
+		string m_strName = (*i).second[0];
+		string m_strAvgScore = (*i).second[1];
 
-		CString cstrNumber(number.c_str());
-		CString cstrName(name.c_str());
-		CString cstrAvgScore(avgScore.c_str());
+		CString m_cstrNumber(m_strNumber.c_str());
+		CString m_cstrName(m_strName.c_str());
+		CString m_cstrAvgScore(m_strAvgScore.c_str());
 
-		m_listCtrl.InsertItem((*i).first - 1, cstrNumber);
-		m_listCtrl.SetItemText((*i).first - 1, 1, cstrName);
-		m_listCtrl.SetItemText((*i).first - 1, 2, cstrAvgScore);
+		m_listCtrl.InsertItem((*i).first - 1, m_cstrNumber);
+		m_listCtrl.SetItemText((*i).first - 1, 1, m_cstrName);
+		m_listCtrl.SetItemText((*i).first - 1, 2, m_cstrAvgScore);
 	}
 }
-
 //Print excelent student
 void CTabReference::OnBnClickedButtonExcellentstudent()
 {
-	Library lib;
-	lib.ClearListCtrl(m_listCtrl);
+	Library oLib;
+	oLib.ClearListCtrl(m_listCtrl);
 	CStudent oStudent;
-	//Library lib;
-	vector<string> _student = oStudent.ExcellentStudent();
-	string str;
-	int j = 0;
+	vector<string> m_cstrAvgScore = oStudent.ExcellentStudent();
+	string m_strStudentName;
+	m_iCount = 0;
 	m_listCtrl.InsertColumn(0, L"Name", LVCFMT_LEFT, 100);
-
-	for (auto i = _student.begin(); i != _student.end(); i++)
+	
+	for (auto i = m_cstrAvgScore.begin(); i != m_cstrAvgScore.end(); i++)
 	{
-		string name = *i;
-		CString cstrName(name.c_str());
-		m_listCtrl.InsertItem(j, cstrName);
-		j++;
+		m_strStudentName = *i;
+		CString m_cstrName(m_strStudentName.c_str());
+		m_listCtrl.InsertItem(m_iCount, m_cstrName);
+		m_iCount++;
 	}
 }
 //Print birthdays
 void CTabReference::OnBnClickedButtonBirtdays()
 {
-	Library lib;
-	lib.ClearListCtrl(m_listCtrl);
+	Library oLib;
+	oLib.ClearListCtrl(m_listCtrl);
 	CStudent oStudent;
-	//Library lib;
-	vector<string> _student = oStudent.PeopleHaveBirthdayToday();
-	string str;
-	int j = 0;
+	vector<string> m_vecStudentBirthday = oStudent.PeopleHaveBirthdayToday();
+	string m_strStudentName;
+	m_iCount = 0;
 
 	m_listCtrl.InsertColumn(0, L"Name", LVCFMT_LEFT, 100);
 
-	for (auto i = _student.begin(); i != _student.end(); i++)
+	for (auto i = m_vecStudentBirthday.begin(); i != m_vecStudentBirthday.end(); i++)
 	{
-		string name = *i;
-		CString cstrName(name.c_str());
-		m_listCtrl.InsertItem(j, cstrName);
-		j++;
+		m_strStudentName = *i;
+		CString cstrName(m_strStudentName.c_str());
+		m_listCtrl.InsertItem(m_iCount, cstrName);
+		m_iCount++;
 	}
 }
 
 //Remedial examination by subject
 void CTabReference::OnBnClickedButton()
 {
-	Library lib;
-	lib.ClearListCtrl(m_listCtrl);
-	//Library lib;
+	Library oLib;
+	oLib.ClearListCtrl(m_listCtrl);
 	CStudent oStudent;
-	map<int, vector<string>> _map = oStudent.remedialExaminationBySubject();
+	map<int, vector<string>> m_mapRemedialExaminationBySubject = oStudent.remedialExaminationBySubject();
 
 	m_listCtrl.InsertColumn(0, L"¹", LVCFMT_LEFT, 30);
 	m_listCtrl.InsertColumn(1, L"Name", LVCFMT_LEFT, 100);
-	m_listCtrl.InsertColumn(2, L"Avg score", LVCFMT_LEFT, 100);
+	m_listCtrl.InsertColumn(2, L"Subject", LVCFMT_LEFT, 100);
 
-	int position = 0;
-	int count = 0;
+	m_iPosition = 0;
+	m_iCount = 0;
 
-	for (auto i = _map.begin(); i != _map.end(); i++)
+	for (auto i = m_mapRemedialExaminationBySubject.begin(); i != m_mapRemedialExaminationBySubject.end(); i++)
 	{
-		int i_student = (*i).first;
-		vector<string> subjects = _map[i_student];
-		string student = to_string(i_student);
-		CString cstrNumber(student.c_str());
+		m_iStudent = (*i).first;
 		
-		for (int j = 0; j < subjects.size(); j+=2) {	
-			string name = _map[i_student][j];
-			CString cstrName(name.c_str());
-			string subject = _map[i_student][j+1];
-			CString cstrSubject(subject.c_str());
+		vector<string> m_vecSubjects = m_mapRemedialExaminationBySubject[m_iStudent];
+		
+		string m_strIdStudent = to_string(m_iStudent);
+		CString cstrNumber(m_strIdStudent.c_str());
+		
+		for (int j = 0; j < m_vecSubjects.size(); j+=2) {
+			
+			string m_strStudentName = m_mapRemedialExaminationBySubject[m_iStudent][j];
+			string m_strSubject = m_mapRemedialExaminationBySubject[m_iStudent][j+1];
+			
+			CString m_cstrName(m_strStudentName.c_str());
+			CString m_cstrSubject(m_strSubject.c_str());
+			
+			m_listCtrl.InsertItem(m_iPosition, cstrNumber);
+			m_listCtrl.SetItemText(m_iPosition, 1, m_cstrName);
+			m_listCtrl.SetItemText(m_iPosition, 2, m_cstrSubject);
 
-
-
-			m_listCtrl.InsertItem(position, cstrNumber);
-			m_listCtrl.SetItemText(position, 1, cstrName);
-			m_listCtrl.SetItemText(position, 2, cstrSubject);
-
-			position++;
+			m_iPosition++;
 		}
 	}
 }
+
 //Remedial examination by more 3 subjects
 void CTabReference::OnBnClickedButtonByMoreSubjects()
 {
-	Library lib;
-	lib.ClearListCtrl(m_listCtrl);
-	//Library lib;
+	Library oLib;
+	oLib.ClearListCtrl(m_listCtrl);
+	
 	CStudent oStudent;
-	vector<string> students = oStudent.remedialExaminationByMoreSubjects();
+	vector<string> m_vecStudentRemedialExamination = oStudent.remedialExaminationByMoreSubjects();
 
 	m_listCtrl.InsertColumn(0, L"Name", LVCFMT_LEFT, 100);
 
-		for (int j = 0; j < students.size(); j+=2) {
-			CString cstrName((students[j] + " " + students[j++]).c_str());
-			/*
-			string name = students[j] + " " + students[j++];
-			CString cstrName(name.c_str());
-			*/
-
+		for (int j = 0; j < m_vecStudentRemedialExamination.size(); j+=2) {
+			CString cstrName((m_vecStudentRemedialExamination[j] + " " + m_vecStudentRemedialExamination[j+1]).c_str());
 			m_listCtrl.InsertItem(j, cstrName);
 		}
 	}
 
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/*
 
 void CTabReference::OnContextMenu(CWnd* pWnd, CPoint point)
 {
@@ -437,7 +311,7 @@ void CTabReference::OnViewStudent()
 	CString m_cstrMessageSubAndScore(m_strMessageSubAndScore.c_str());
 	CString message;
 	message.Format(m_cstrMessageSubAndScore, m_oStudent.GetClassNumber(), m_oStudent.GetFullName());
-	MessageBox(message, L"CStudentData", MB_OK);/////
+	MessageBox(message, L"CStudentData", MB_OK);*/
 	getStudentFromDlg();
 	CUpdateStudentDlg dlg;
 	dlg.DoModal();
@@ -492,9 +366,10 @@ void CTabReference::OnDeleteSubject()
 	if (result != IDYES)
 		return;
 		UpdateData(TRUE);
-		
+		/*
 		Library lib;
 		lib.DeleteSubject();
+		*/
 		CSubject oSubject;
 		oSubject.DeleteSubject(oSubjectData.GetRoomNumber());
 		DeleteItem();
@@ -548,7 +423,7 @@ void CTabReference::OnViewScore()
 	CString message;
 	message.Format(m_cstrMessageSubAndScore, m_oScore.GetClassNum(), sub);
 	MessageBox(message, L"", MB_OK);
-	////
+	*/
 }
 void CTabReference::OnDeleteScore()
 {
@@ -567,7 +442,7 @@ void CTabReference::OnDeleteScore()
 		/*
 		Library lib;
 		lib.DeleteScore();
-		********
+		*/
 		CScore oScore;
 		oScore.DeleteScore(oScoreData.GetIdScore());
 		DeleteItem();
@@ -698,5 +573,5 @@ void CTabReference::DeleteItem() {
 				++nItem;
 		}
 }
-*/
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -16,7 +16,7 @@ IMPLEMENT_DYNAMIC(CUpdateScoreDlg, CDialogEx)
 CUpdateScoreDlg::CUpdateScoreDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DIALOG_UPDATE_SCORE, pParent)
 {
-	Library lib;
+	//Library oLib;
 	CScoreData m_oScore;
 	CString m_cstrSubject(m_oScore.GetSubject().c_str());
 	CString m_cstrDate(m_oScore.GetDate().c_str());
