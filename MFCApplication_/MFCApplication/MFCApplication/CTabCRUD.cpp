@@ -74,8 +74,10 @@ void CTabCRUD::OnBnClickedButtonUpdateStudent()
 }
 void CTabCRUD::OnBnClickedButtonUpdateSubject()
 {
+	/*
 	CUpdateSubjectDlg dlg;
 	dlg.DoModal();
+	*/
 }
 void CTabCRUD::OnBnClickedButtonUpdateScore()
 {

@@ -6,6 +6,9 @@
 #include "CTabSubject.h"
 #include "afxdialogex.h"
 #include "Subject.h"
+#include "CAddSubject.h"
+#include "CUpdateSubject.h"
+#include "Library.h"
 
 
 // CTabSubject dialog
@@ -30,6 +33,11 @@ void CTabSubject::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CTabSubject, CDialogEx)
+	ON_WM_CONTEXTMENU()
+	ON_BN_CLICKED(IDC_MENU_ADD_SUBJECT, OnAddSubject)
+	ON_BN_CLICKED(IDC_MENU_EDIT_SUBJECT, OnEditSubject)
+	ON_BN_CLICKED(IDC_MENU_DEL_SUBJECT, OnDeleteSubject)
+
 END_MESSAGE_MAP()
 
 
@@ -62,4 +70,108 @@ BOOL CTabSubject::OnInitDialog() {
 		m_listCtrl.SetItemText((*i).first - 1, 2, m_cstrTeacher);
 	}
 	return true;
+}
+
+
+void CTabSubject::OnContextMenu(CWnd* pWnd, CPoint point)
+{
+	
+	if ((m_listCtrl.GetSelectionMark() + 1) == 0)
+		return;
+
+	CMenu submenu;
+	submenu.CreatePopupMenu();
+
+	submenu.AppendMenu(MF_STRING, IDC_MENU_ADD_SUBJECT, L"Add subject");
+	submenu.AppendMenu(MF_STRING, IDC_MENU_EDIT_SUBJECT, L"Edit subject");
+	submenu.AppendMenu(MF_STRING, IDC_MENU_DEL_SUBJECT, L"Delete subject");
+	submenu.AppendMenu(MF_STRING, IDC_MENU_VIEW_SUBJECT, L"View subject");
+
+	submenu.TrackPopupMenu(TPM_LEFTALIGN, point.x, point.y, this);
+	
+}
+
+void CTabSubject::OnAddSubject()
+{
+	//Set Enable room
+	CSubject oSubject;
+	CString m_cstrRow;
+	m_cstrRow.Format(L"%d", oSubject.PrintSubject().size() + 1);
+
+	GetSubjectFromDlg();
+	CAddSubjectDlg dlg;
+	dlg.m_cstrRoomNum = m_cstrRow;
+	dlg.DoModal();
+}
+
+void CTabSubject::OnEditSubject()
+{
+	
+	GetSubjectFromDlg();
+	CUpdateSubjectDlg dlg;
+	dlg.m_cstrRoomNum = m_cstrId;
+	dlg.m_cstrSubject = m_cstrSubject;
+	dlg.m_cstrFN = m_cstrFirstName;
+	dlg.m_cstrLN = m_cstrLastName;
+	dlg.DoModal();
+}
+
+void CTabSubject::OnDeleteSubject() {
+	GetSubjectFromDlg();
+	CSubjectData oSubjectData;
+	CString message;
+	message.Format(L"Do you want to delete %s with room ¹ %s?", m_cstrSubject, m_cstrId);
+	int result = MessageBox(message, L"Delete subject", MB_YESNO);
+
+	//button yes clicked
+	if (result != IDYES)
+		return;
+
+	UpdateData(TRUE);
+	CSubject oSubject;
+	oSubject.DeleteSubject(oSubjectData.GetRoomNumber());
+	
+	//Delete item
+	for (int nItem = 0; nItem < m_listCtrl.GetItemCount(); )
+	{
+		if (m_listCtrl.GetItemState(nItem, LVIS_SELECTED) == LVIS_SELECTED)
+			m_listCtrl.DeleteItem(nItem);
+		else
+			++nItem;
+	}
+}
+
+void CTabSubject::OnViewSubject()
+{
+
+}
+
+void CTabSubject::GetSubjectFromDlg()
+{
+	 m_cstrId = m_listCtrl.GetItemText(m_listCtrl.GetSelectionMark(), 0);
+	 m_cstrSubject = m_listCtrl.GetItemText(m_listCtrl.GetSelectionMark(), 1);
+	 CString m_cstrTeacher = m_listCtrl.GetItemText(m_listCtrl.GetSelectionMark(), 2);
+
+	 m_cstrFirstName = L"";
+	 m_cstrLastName = L"";
+	 m_nTokenPos = 0;
+	 m_iCount = 0;
+	Library lib;
+	CString strToken = m_cstrTeacher.Tokenize(_T(" "), m_nTokenPos);
+
+	while (!strToken.IsEmpty())
+	{
+		if (m_iCount == 0)
+		{
+			m_cstrFirstName = strToken;
+			m_iCount++;
+		}
+		else if (m_iCount == 1)
+		{
+			m_cstrLastName = strToken;
+		}
+		strToken = m_cstrTeacher.Tokenize(_T(" "), m_nTokenPos);
+	}
+	CSubjectData sub(_ttoi(m_cstrId), m_cstrSubject, lib.ConvertToStirng(m_cstrFirstName, ""), lib.ConvertToStirng(m_cstrLastName, ""));
+	sub.SetFullNameTeacher(m_cstrTeacher);
 }

@@ -2,6 +2,7 @@
 #include "Subject.h"
 #include <fstream>
 #include "Library.h"
+#include "CAddSubject.h"
 
 CSubjectData::CSubjectData(int _roomNumber, CString _nameSubject, string _fNameTeacher, string _lNameTeacher)
 {
@@ -78,10 +79,13 @@ CSubject::~CSubject()
 //	! you must use the parametter oSubject
 bool CSubject::AddSubject(CSubjectData& oSubject)
 {
+	Library oLib;
     CSubjectData subject;
+	CAddSubjectDlg dlg;
     ofstream outFile;
     outFile.open("Subject.txt", ios::app);
-    outFile << subject.GetRoomNumber() << '|' << subject.GetNameSubject() << '|' << subject.GetFirstNameTeacher() << '|' << subject.GetLastNameTeacher() << "\n";
+	//outFile << subject.GetRoomNumber() << '|' << subject.GetNameSubject() << '|' << subject.GetFirstNameTeacher() << '|' << subject.GetLastNameTeacher() << "\n";
+	outFile << oLib.ConvertToStirng( dlg.m_cstrRoomNum, "") << '|' << oLib.ConvertToStirng(dlg.m_cstrSubject,"") << '|' << oLib.ConvertToStirng(dlg.m_cstrFnTeacher, "") << '|' << oLib.ConvertToStirng(dlg.m_cstrLnTeacher,"") << "\n";
     outFile.close();
 
     return true;
