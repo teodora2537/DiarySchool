@@ -34,6 +34,7 @@ public:
 protected:
 	DECLARE_MESSAGE_MAP()
 public:
+	afx_msg void OnHdnItemdblclickList(NMHDR* pNMHDR, LRESULT* pResult);
 };
 
 CAboutDlg::CAboutDlg() : CDialogEx(IDD_ABOUTBOX)
@@ -46,6 +47,7 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
+	ON_NOTIFY(HDN_ITEMDBLCLICK, 0, &CAboutDlg::OnHdnItemdblclickList)
 END_MESSAGE_MAP()
 
 // CMFCApplicationDlg dialog
@@ -161,4 +163,11 @@ void CMFCApplicationDlg::OnPaint()
 HCURSOR CMFCApplicationDlg::OnQueryDragIcon()
 {
 	return static_cast<HCURSOR>(m_hIcon);
+}
+
+void CAboutDlg::OnHdnItemdblclickList(NMHDR* pNMHDR, LRESULT* pResult)
+{
+	LPNMHEADER phdr = reinterpret_cast<LPNMHEADER>(pNMHDR);
+	// TODO: Add your control notification handler code here
+	*pResult = 0;
 }

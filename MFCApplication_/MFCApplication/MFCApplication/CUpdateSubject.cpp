@@ -30,6 +30,7 @@ void CUpdateSubjectDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT_UPDATE_SUBJECT_SUBJECT, m_cstrSubject);
 	DDX_Text(pDX, IDC_EDIT_UPDATE_SUBJECT_FN, m_cstrFN);
 	DDX_Text(pDX, IDC_EDIT_UPDATE_SUBJECT_LN, m_cstrLN);
+	DDX_Text(pDX, IDC_STATIC7, m_cstrStaticText);
 }
 
 
@@ -42,12 +43,20 @@ void CUpdateSubjectDlg::OnBnClickedOk()
 	CDialogEx::OnOK();
 	
 	UpdateData(TRUE);
+
+	CSubjectData oSubjectData;
+	bool flag = oSubjectData.GetFlagIsUpdate();
+	if (flag) {
+	
 	Library lib;
 	string row = "";
 
-	CSubjectData subject(_ttoi(m_cstrRoomNum), m_cstrSubject, lib.ConvertToStirng(m_cstrFN, row), lib.ConvertToStirng(m_cstrLN, row));
+	int m_iRoomNum = _ttoi(m_cstrRoomNum);
+	string m_strFN = lib.ConvertToStirng(m_cstrFN, row);
+	string m_strLN = lib.ConvertToStirng(m_cstrLN, row);
 
-	//lib.UpdateSubject();
+	CSubjectData subject(m_iRoomNum, m_cstrSubject, m_strFN, m_strLN);
 	CSubject oSubject;
 	oSubject.EditSubject(subject);
+	}
 }

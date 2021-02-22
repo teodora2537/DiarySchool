@@ -27,6 +27,7 @@ public:
 	CString m_cstrSubject;
 	CString m_cstrFN;
 	CString m_cstrLN;
+	CString m_cstrStaticText;
 	
 	afx_msg void OnBnClickedOk();
 };

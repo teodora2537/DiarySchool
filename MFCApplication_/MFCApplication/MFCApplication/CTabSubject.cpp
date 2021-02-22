@@ -37,9 +37,8 @@ BEGIN_MESSAGE_MAP(CTabSubject, CDialogEx)
 	ON_BN_CLICKED(IDC_MENU_ADD_SUBJECT, OnAddSubject)
 	ON_BN_CLICKED(IDC_MENU_EDIT_SUBJECT, OnEditSubject)
 	ON_BN_CLICKED(IDC_MENU_DEL_SUBJECT, OnDeleteSubject)
-
+	ON_BN_CLICKED(IDC_MENU_VIEW_SUBJECT, OnViewSubject)
 END_MESSAGE_MAP()
-
 
 BOOL CTabSubject::OnInitDialog() {
 
@@ -72,7 +71,6 @@ BOOL CTabSubject::OnInitDialog() {
 	return true;
 }
 
-
 void CTabSubject::OnContextMenu(CWnd* pWnd, CPoint point)
 {
 	
@@ -102,18 +100,41 @@ void CTabSubject::OnAddSubject()
 	CAddSubjectDlg dlg;
 	dlg.m_cstrRoomNum = m_cstrRow;
 	dlg.DoModal();
+	
+	//Add item with dlg datas
+	int n = m_listCtrl.GetItemCount();
+	n = m_listCtrl.InsertItem(n, dlg.m_cstrRoomNum);
+	m_listCtrl.SetItemText(n, 1, dlg.m_cstrSubject);
+	m_listCtrl.SetItemText(n, 2, dlg.m_cstrFnTeacher+" "+ dlg.m_cstrLnTeacher);
 }
 
 void CTabSubject::OnEditSubject()
 {
-	
+	CSubjectData oSubjectData;
+	oSubjectData.SetFlagIsUpdate(true);
 	GetSubjectFromDlg();
 	CUpdateSubjectDlg dlg;
 	dlg.m_cstrRoomNum = m_cstrId;
 	dlg.m_cstrSubject = m_cstrSubject;
 	dlg.m_cstrFN = m_cstrFirstName;
 	dlg.m_cstrLN = m_cstrLastName;
+	dlg.m_cstrStaticText = "Update subject";
 	dlg.DoModal();
+
+	//Add item with dlg datas
+	int n = _ttoi(m_cstrId);
+	n = m_listCtrl.InsertItem(n, dlg.m_cstrRoomNum);
+	m_listCtrl.SetItemText(n, 1, dlg.m_cstrSubject);
+	m_listCtrl.SetItemText(n, 2, dlg.m_cstrFN + " " + dlg.m_cstrLN);
+
+	//Delete select item
+	for (int nItem = 0; nItem < m_listCtrl.GetItemCount(); )
+	{
+		if (m_listCtrl.GetItemState(nItem, LVIS_SELECTED) == LVIS_SELECTED)
+			m_listCtrl.DeleteItem(nItem);
+		else
+			++nItem;
+	}
 }
 
 void CTabSubject::OnDeleteSubject() {
@@ -131,7 +152,7 @@ void CTabSubject::OnDeleteSubject() {
 	CSubject oSubject;
 	oSubject.DeleteSubject(oSubjectData.GetRoomNumber());
 	
-	//Delete item
+	//Delete select item
 	for (int nItem = 0; nItem < m_listCtrl.GetItemCount(); )
 	{
 		if (m_listCtrl.GetItemState(nItem, LVIS_SELECTED) == LVIS_SELECTED)
@@ -143,19 +164,28 @@ void CTabSubject::OnDeleteSubject() {
 
 void CTabSubject::OnViewSubject()
 {
-
+	CSubjectData oSubjectData;
+	oSubjectData.SetFlagIsUpdate(false);
+	GetSubjectFromDlg();
+	CUpdateSubjectDlg dlg;
+	dlg.m_cstrRoomNum = m_cstrId;
+	dlg.m_cstrSubject = m_cstrSubject;
+	dlg.m_cstrFN = m_cstrFirstName;
+	dlg.m_cstrLN = m_cstrLastName;
+	dlg.m_cstrStaticText = "Subject";
+	dlg.DoModal();
 }
 
 void CTabSubject::GetSubjectFromDlg()
 {
-	 m_cstrId = m_listCtrl.GetItemText(m_listCtrl.GetSelectionMark(), 0);
-	 m_cstrSubject = m_listCtrl.GetItemText(m_listCtrl.GetSelectionMark(), 1);
-	 CString m_cstrTeacher = m_listCtrl.GetItemText(m_listCtrl.GetSelectionMark(), 2);
+	m_cstrId = m_listCtrl.GetItemText(m_listCtrl.GetSelectionMark(), 0);
+	m_cstrSubject = m_listCtrl.GetItemText(m_listCtrl.GetSelectionMark(), 1);
+	CString m_cstrTeacher = m_listCtrl.GetItemText(m_listCtrl.GetSelectionMark(), 2);
 
-	 m_cstrFirstName = L"";
-	 m_cstrLastName = L"";
-	 m_nTokenPos = 0;
-	 m_iCount = 0;
+	m_cstrFirstName = L"";
+	m_cstrLastName = L"";
+	m_nTokenPos = 0;
+	m_iCount = 0;
 	Library lib;
 	CString strToken = m_cstrTeacher.Tokenize(_T(" "), m_nTokenPos);
 

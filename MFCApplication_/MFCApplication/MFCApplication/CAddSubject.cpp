@@ -40,10 +40,8 @@ END_MESSAGE_MAP()
 
 // CAddSubject message handlers
 
-
 void CAddSubjectDlg::OnBnClickedOk()
 {
-	// TODO: Add your control notification handler code here
 	CDialogEx::OnOK();
 	
 	UpdateData(TRUE);
@@ -51,6 +49,10 @@ void CAddSubjectDlg::OnBnClickedOk()
 	CSubject oSubject;
 	string row = "";
 
-	CSubjectData subject(_ttoi(m_cstrRoomNum), m_cstrSubject, lib.ConvertToStirng(m_cstrFnTeacher, row), lib.ConvertToStirng(m_cstrLnTeacher, row));
-	oSubject.AddSubject(subject);
+	int m_iRoomNum = _ttoi(m_cstrRoomNum);
+	string m_strFN = lib.ConvertToStirng(m_cstrFnTeacher, row);
+	string m_strLN = lib.ConvertToStirng(m_cstrLnTeacher, row);
+
+	CSubjectData oSubjectData(m_iRoomNum, m_cstrSubject, m_strFN, m_strLN);
+	oSubject.AddSubject(oSubjectData);
 }
