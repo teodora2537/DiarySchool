@@ -177,65 +177,52 @@ bool CSubject::LoadSubject(const int nClassNumber, CSubjectData& oSubject)
     return false;
 }
 
-//	! you must use the parametter nClassNumber
 bool CSubject::DeleteSubject(const int nClassNumber)
 {
-	CSubjectData subject;
-	Library lib;
-	int roomNum = subject.GetRoomNumber();
-	string _subject = lib.ConvertToStirng(subject.GetNameSubject(), "");
-	string fName = subject.GetFirstNameTeacher();
-	string lName = subject.GetLastNameTeacher();
-
-	int count = 0;
-	string text;
-	string token;
-	fstream file;
-	size_t position;
+	Library oLib;
+	fstream m_file;
 	CSubjectData currentSubject;
-	bool isFind = false;
-	map<int, vector<string>> mapSubject;
 
-	file.open("Subject.txt", ios::in);
+	m_file.open("Subject.txt", ios::in);
 
-	while (getline(file, text))
+	while (getline(m_file, m_strText))
 	{
-		position = 0;
-		count = 0;
+		m_sizeTPosition = 0;
+		m_iCount = 0;
 		while (true)
 		{
-			position = text.find('|');
-			token = text.substr(0, position);
-			count++;
-			if (count == 1) currentSubject.SetRoomNumber(stoi(token));
-			else if (count == 2)
+			m_sizeTPosition = m_strText.find('|');
+			m_strToken = m_strText.substr(0, m_sizeTPosition);
+			m_iCount++;
+			if (m_iCount == 1) currentSubject.SetRoomNumber(stoi(m_strToken));
+			else if (m_iCount == 2)
 			{
-				CString cstr(token.c_str());
+				CString cstr(m_strToken.c_str());
 				currentSubject.SetNameSubject(cstr);
 			}
-			else if (count == 3) currentSubject.SetFirstNameTeacher(token);
-			else if (count == 4) { currentSubject.SetLastNameTeacher(token); break; }
-			text = text.substr(position + 1, text.length());
+			else if (m_iCount == 3) currentSubject.SetFirstNameTeacher(m_strToken);
+			else if (m_iCount == 4) { currentSubject.SetLastNameTeacher(m_strToken); break; }
+			m_strText = m_strText.substr(m_sizeTPosition + 1, m_strText.length());
 		}
 
-		if (currentSubject.GetRoomNumber() == roomNum)
+		if (currentSubject.GetRoomNumber() == nClassNumber)//roomNum)
 		{
-			isFind = true;
+			m_bIsFind = true;
 			continue;
 		}
 
-		mapSubject[currentSubject.GetRoomNumber()].push_back(lib.ConvertToStirng(currentSubject.GetNameSubject(), ""));
-		mapSubject[currentSubject.GetRoomNumber()].push_back(currentSubject.GetFirstNameTeacher());
-		mapSubject[currentSubject.GetRoomNumber()].push_back(currentSubject.GetLastNameTeacher());
+		m_mapSubjects[currentSubject.GetRoomNumber()].push_back(oLib.ConvertToStirng(currentSubject.GetNameSubject(), ""));
+		m_mapSubjects[currentSubject.GetRoomNumber()].push_back(currentSubject.GetFirstNameTeacher());
+		m_mapSubjects[currentSubject.GetRoomNumber()].push_back(currentSubject.GetLastNameTeacher());
 	}
-	file.close();
+	m_file.close();
 
-	if (isFind)
+	if (m_bIsFind)
 	{
 		ofstream outFile;
 		outFile.open("Subject.txt", ios::out | ios::trunc);
 
-		for (auto i = mapSubject.begin(); i != mapSubject.end(); i++)
+		for (auto i = m_mapSubjects.begin(); i != m_mapSubjects.end(); i++)
 		{
 			outFile << (*i).first << '|' << (*i).second[0] << '|' << (*i).second[1] << '|' << (*i).second[2] << "\n";
 		}
@@ -247,42 +234,36 @@ bool CSubject::DeleteSubject(const int nClassNumber)
 }
 
 map<int, vector<string>> CSubject::PrintSubject() {
-	Library lib;
-	int count = 0;
-	string text;
-	string token;
-	fstream file;
-	size_t position;
-	CSubjectData currentSubject;
-	bool isFind = false;
-	map<int, vector<string>> mapSubject;
+	Library oLib;
+	fstream m_file;
+	CSubjectData oCurrentSubject;
 
-	file.open("Subject.txt", ios::in);
+	m_file.open("Subject.txt", ios::in);
 
-	while (getline(file, text))
+	while (getline(m_file, m_strText))
 	{
-		position = 0;
-		count = 0;
+		m_sizeTPosition = 0;
+		m_iCount = 0;
 		while (true)
 		{
-			position = text.find('|');
-			token = text.substr(0, position);
-			count++;
-			if (count == 1) currentSubject.SetRoomNumber(stoi(token));
-			else if (count == 2) {
-				CString cstr(token.c_str());
-				currentSubject.SetNameSubject(cstr);
+			m_sizeTPosition = m_strText.find('|');
+			m_strToken = m_strText.substr(0, m_sizeTPosition);
+			m_iCount++;
+			if (m_iCount == 1) oCurrentSubject.SetRoomNumber(stoi(m_strToken));
+			else if (m_iCount == 2) {
+				CString cstr(m_strToken.c_str());
+				oCurrentSubject.SetNameSubject(cstr);
 			}
-			else if (count == 3) currentSubject.SetFirstNameTeacher(token);
-			else if (count == 4) { currentSubject.SetLastNameTeacher(token); break; }
-			text = text.substr(position + 1, text.length());
+			else if (m_iCount == 3) oCurrentSubject.SetFirstNameTeacher(m_strToken);
+			else if (m_iCount == 4) { oCurrentSubject.SetLastNameTeacher(m_strToken); break; }
+			m_strText = m_strText.substr(m_sizeTPosition + 1, m_strText.length());
 		}
 
-		mapSubject[currentSubject.GetRoomNumber()].push_back(lib.ConvertToStirng(currentSubject.GetNameSubject(), ""));
-		mapSubject[currentSubject.GetRoomNumber()].push_back(currentSubject.GetFirstNameTeacher());
-		mapSubject[currentSubject.GetRoomNumber()].push_back(currentSubject.GetLastNameTeacher());
+		m_mapSubjects[oCurrentSubject.GetRoomNumber()].push_back(oLib.ConvertToStirng(oCurrentSubject.GetNameSubject(), ""));
+		m_mapSubjects[oCurrentSubject.GetRoomNumber()].push_back(oCurrentSubject.GetFirstNameTeacher());
+		m_mapSubjects[oCurrentSubject.GetRoomNumber()].push_back(oCurrentSubject.GetLastNameTeacher());
 	}
-	file.close();
+	m_file.close();
 
-	return mapSubject;
+	return m_mapSubjects;
 }

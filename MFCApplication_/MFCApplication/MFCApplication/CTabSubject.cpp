@@ -38,6 +38,7 @@ BEGIN_MESSAGE_MAP(CTabSubject, CDialogEx)
 	ON_BN_CLICKED(IDC_MENU_EDIT_SUBJECT, OnEditSubject)
 	ON_BN_CLICKED(IDC_MENU_DEL_SUBJECT, OnDeleteSubject)
 	ON_BN_CLICKED(IDC_MENU_VIEW_SUBJECT, OnViewSubject)
+	ON_NOTIFY(NM_DBLCLK, IDC_LIST, &CTabSubject::OnNMDblclkList)
 END_MESSAGE_MAP()
 
 BOOL CTabSubject::OnInitDialog() {
@@ -100,12 +101,15 @@ void CTabSubject::OnAddSubject()
 	CAddSubjectDlg dlg;
 	dlg.m_cstrRoomNum = m_cstrRow;
 	dlg.DoModal();
-	
-	//Add item with dlg datas
-	int n = m_listCtrl.GetItemCount();
-	n = m_listCtrl.InsertItem(n, dlg.m_cstrRoomNum);
-	m_listCtrl.SetItemText(n, 1, dlg.m_cstrSubject);
-	m_listCtrl.SetItemText(n, 2, dlg.m_cstrFnTeacher+" "+ dlg.m_cstrLnTeacher);
+
+	if (dlg.m_cstrRoomNum != "" && dlg.m_cstrSubject != "" && dlg.m_cstrFnTeacher != "" && dlg.m_cstrLnTeacher != "")
+	{
+		//Add item with dlg datas
+		int n = m_listCtrl.GetItemCount();
+		n = m_listCtrl.InsertItem(n, dlg.m_cstrRoomNum);
+		m_listCtrl.SetItemText(n, 1, dlg.m_cstrSubject);
+		m_listCtrl.SetItemText(n, 2, dlg.m_cstrFnTeacher + " " + dlg.m_cstrLnTeacher);
+	}
 }
 
 void CTabSubject::OnEditSubject()
@@ -121,19 +125,22 @@ void CTabSubject::OnEditSubject()
 	dlg.m_cstrStaticText = "Update subject";
 	dlg.DoModal();
 
-	//Add item with dlg datas
-	int n = _ttoi(m_cstrId);
-	n = m_listCtrl.InsertItem(n, dlg.m_cstrRoomNum);
-	m_listCtrl.SetItemText(n, 1, dlg.m_cstrSubject);
-	m_listCtrl.SetItemText(n, 2, dlg.m_cstrFN + " " + dlg.m_cstrLN);
-
-	//Delete select item
-	for (int nItem = 0; nItem < m_listCtrl.GetItemCount(); )
+	if (dlg.m_cstrRoomNum != "" && dlg.m_cstrSubject != "" && dlg.m_cstrFN != "" && dlg.m_cstrLN != "")
 	{
-		if (m_listCtrl.GetItemState(nItem, LVIS_SELECTED) == LVIS_SELECTED)
-			m_listCtrl.DeleteItem(nItem);
-		else
-			++nItem;
+		//Add item with dlg datas
+		int n = _ttoi(m_cstrId);
+		n = m_listCtrl.InsertItem(n, dlg.m_cstrRoomNum);
+		m_listCtrl.SetItemText(n, 1, dlg.m_cstrSubject);
+		m_listCtrl.SetItemText(n, 2, dlg.m_cstrFN + " " + dlg.m_cstrLN);
+		
+		//Delete select item
+		for (int nItem = 0; nItem < m_listCtrl.GetItemCount(); )
+		{
+			if (m_listCtrl.GetItemState(nItem, LVIS_SELECTED) == LVIS_SELECTED)
+				m_listCtrl.DeleteItem(nItem);
+			else
+				++nItem;
+		}
 	}
 }
 
@@ -150,7 +157,7 @@ void CTabSubject::OnDeleteSubject() {
 
 	UpdateData(TRUE);
 	CSubject oSubject;
-	oSubject.DeleteSubject(oSubjectData.GetRoomNumber());
+	oSubject.DeleteSubject(_ttoi(m_cstrId));
 	
 	//Delete select item
 	for (int nItem = 0; nItem < m_listCtrl.GetItemCount(); )
@@ -204,4 +211,9 @@ void CTabSubject::GetSubjectFromDlg()
 	}
 	CSubjectData sub(_ttoi(m_cstrId), m_cstrSubject, lib.ConvertToStirng(m_cstrFirstName, ""), lib.ConvertToStirng(m_cstrLastName, ""));
 	sub.SetFullNameTeacher(m_cstrTeacher);
+}
+
+void CTabSubject::OnNMDblclkList(NMHDR* pNMHDR, LRESULT* pResult)
+{
+	OnViewSubject();
 }

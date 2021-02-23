@@ -39,4 +39,5 @@ public:
 
 	int m_nTokenPos = 0;
 	int m_iCount = 0;
+	afx_msg void OnNMDblclkList(NMHDR* pNMHDR, LRESULT* pResult);
 };

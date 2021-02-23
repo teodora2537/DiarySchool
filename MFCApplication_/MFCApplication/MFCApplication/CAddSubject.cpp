@@ -45,13 +45,13 @@ void CAddSubjectDlg::OnBnClickedOk()
 	CDialogEx::OnOK();
 	
 	UpdateData(TRUE);
-	Library lib;
+	Library oLib;
 	CSubject oSubject;
-	string row = "";
+	string m_strRow = "";
 
 	int m_iRoomNum = _ttoi(m_cstrRoomNum);
-	string m_strFN = lib.ConvertToStirng(m_cstrFnTeacher, row);
-	string m_strLN = lib.ConvertToStirng(m_cstrLnTeacher, row);
+	string m_strFN = oLib.ConvertToStirng(m_cstrFnTeacher, m_strRow);
+	string m_strLN = oLib.ConvertToStirng(m_cstrLnTeacher, m_strRow);
 
 	CSubjectData oSubjectData(m_iRoomNum, m_cstrSubject, m_strFN, m_strLN);
 	oSubject.AddSubject(oSubjectData);
