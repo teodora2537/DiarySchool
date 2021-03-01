@@ -19,15 +19,14 @@ CUpdateStudentDlg::CUpdateStudentDlg(CWnd* pParent /*=nullptr*/)
 {
 		//Library lib;
 		CStudentData m_oStudent;
-		CString m_cstrFirstName(m_oStudent.GetFirstName().c_str());
-		CString m_cstrLastName(m_oStudent.GetLastName().c_str());
-		CString m_cstrBirthday(m_oStudent.GetBirthday().c_str());
+		CString m_strFirstName(m_oStudent.m_strFirstName);
+		CString m_strLastName(m_oStudent.m_strLastName);
+		CString m_strBirthday(m_oStudent.m_strBirthday);
 		
-		m_cstrClassNum.Format(L"%d", m_oStudent.GetClassNumber());
-		m_cstrFn = m_cstrFirstName;
-		m_cstrLn = m_cstrLastName;
-		m_cstrBirthday = m_cstrBirthday;
-
+		m_strClassNum.Format("%d", m_oStudent.m_iClassNumber);
+		m_strFn = m_strFirstName;
+		m_strLn = m_strLastName;
+		m_strBirthday = m_strBirthday;
 }
 
 CUpdateStudentDlg::~CUpdateStudentDlg()
@@ -37,10 +36,10 @@ CUpdateStudentDlg::~CUpdateStudentDlg()
 void CUpdateStudentDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
-	DDX_Text(pDX, IDC_EDIT_UPDATE_STUDENT_CLASS_NUM, m_cstrClassNum);
-	DDX_Text(pDX, IDC_EDIT_UPDATE_STUDENT_FN, m_cstrFn);
-	DDX_Text(pDX, IDC_EDIT_UPDATE_STUDENT_LN, m_cstrLn);
-	DDX_Text(pDX, IDC_EDIT_UPDATE_STUDENT_BIRTHDAY, m_cstrBirthday);
+	DDX_Text(pDX, IDC_EDIT_UPDATE_STUDENT_CLASS_NUM, m_strClassNum);
+	DDX_Text(pDX, IDC_EDIT_UPDATE_STUDENT_FN, m_strFn);
+	DDX_Text(pDX, IDC_EDIT_UPDATE_STUDENT_LN, m_strLn);
+	DDX_Text(pDX, IDC_EDIT_UPDATE_STUDENT_BIRTHDAY, m_strBirthday);
 }
 
 
@@ -54,7 +53,7 @@ void CUpdateStudentDlg::OnBnClickedOk()
 	Library lib;
 	string row = "";
 
-	CStudentData student(_ttoi(m_cstrClassNum), lib.ConvertToStirng(m_cstrFn, row), lib.ConvertToStirng(m_cstrLn, row), lib.ConvertToStirng(m_cstrBirthday, row));
+	CStudentData student(_ttoi(m_strClassNum), m_strFn, m_strLn, m_strBirthday);
 	
 	CStudent oStudent;
 	oStudent.EditStudent(student);

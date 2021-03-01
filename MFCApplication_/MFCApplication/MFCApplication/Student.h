@@ -9,28 +9,14 @@ protected:
 
 public:
 
-	CStudentData(int _classNum, string fName, string lName, string birthday);
+	CStudentData(int _classNum, CString fName, CString lName, CString birthday);
 	CStudentData();
 	
-	string m_strFirstName;
-	string m_strLastName;
-	string m_strBirthday;
-	CString m_cstrFullName;
+	CString m_strFirstName;
+	CString m_strLastName;
+	CString m_strBirthday;
+	CString m_strFullName;
 	int m_iClassNumber;
-
-	string GetFirstName();
-	void SetFirstName(string firstName);
-	
-	string GetLastName();
-	void SetLastName(string lastName);
-
-	string GetBirthday();
-	void SetBirthday(string birthday);
-
-	int GetClassNumber();
-	void SetClassNumber(int classNumber);
-	CString GetFullName();
-	void SetFullName(CString _fullName);
 };
 
 class CStudent
@@ -46,37 +32,14 @@ public:
 	bool LoadStudent(const int nClassNumber, CStudentData& oStudent);
 	bool DeleteStudent(const int nClassNumber);
 	
-	map<int, vector<string>> PrintStudent();
+	void PrintStudent(map<int, vector<CString>>& m_mapAllStudent);
 	
-	map<int, vector<string>> AverageScoreBySubject();
-	map<int, vector<string>> AverageScoreByAllSubject();
+	void AverageScoreBySubject(map<int, vector<CString>>& m_mapAverageScoreBySub);
+	void AverageScoreByAllSubject(map<int, vector<CString>>& m_mapAverageScore);
 	
-	vector<string> ExcellentStudent();
-	vector<string> PeopleHaveBirthdayToday();
+	void ExcellentStudent(vector<CString>& m_vecStudentsName);
+	void PeopleHaveBirthdayToday(vector<CString>& m_vecStudentsName);
 	
-	map<int, vector<string>> remedialExaminationBySubject();
-	vector<string> remedialExaminationByMoreSubjects();
-
-	multimap<int, vector<string>> m_mapAllScore;
-	vector<string> m_vecStudentsName;
-	map<int, int> m_mapStudentScore;
-	map<int, vector<string>> m_mapAverageScore;
-	map<int, vector<string>> m_mapStudent = PrintStudent();
-	
-	float m_fSum = 0;
-	float m_fAvg;
-
-	int m_iCount = 0;
-	int m_iStudent;
-	int m_iCurrentStudent;
-	int m_iAverageScore;
-	
-	string m_strSubject;
-	string m_strScore;
-	string m_strCurrentSubject;
-	string m_strCurrentScore;
-	string m_strAverageScore;
-	string m_strName;
-
-	size_t countStudents = m_mapStudent.size();
+	void remedialExaminationBySubject(map<int, vector<CString>>& m_mapAverageScore);
+	void remedialExaminationByMoreSubjects(vector<CString>& m_vecStudentsName);
 };

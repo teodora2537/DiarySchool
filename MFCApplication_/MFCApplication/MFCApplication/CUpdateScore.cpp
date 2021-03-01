@@ -18,15 +18,15 @@ CUpdateScoreDlg::CUpdateScoreDlg(CWnd* pParent /*=nullptr*/)
 {
 	//Library oLib;
 	CScoreData m_oScore;
-	CString m_cstrSubject(m_oScore.GetSubject().c_str());
-	CString m_cstrDate(m_oScore.GetDate().c_str());
-	CString m_cstrScore;
-	m_cstrScore.Format(L"%d" ,m_oScore.GetScore());
+	CString m_strSubject(m_oScore.m_strSubject);
+	CString m_strDate(m_oScore.m_strDate);
+	CString m_strScore;
+	m_strScore.Format("%d" ,m_oScore.m_iScore);
 
-	m_cstrClassNum.Format(L"%d", m_oScore.GetClassNum());
-	m_cstrSubject = m_cstrSubject;
-	m_cstrDate = m_cstrDate;
-	m_cstrScore = m_cstrScore;
+	m_strClassNum.Format("%d", m_oScore.m_iClassNum);
+	m_strSubject = m_strSubject;
+	m_strDate = m_strDate;
+	m_strScore = m_strScore;
 }
 
 CUpdateScoreDlg::~CUpdateScoreDlg()
@@ -36,10 +36,10 @@ CUpdateScoreDlg::~CUpdateScoreDlg()
 void CUpdateScoreDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
-	DDX_Text(pDX, IDC_EDIT_UPDATE_SCORE_CLASS_NUMBER, m_cstrClassNum);
-	DDX_Text(pDX, IDC_EDIT_UPDATE_SCORE_SUBJECT, m_cstrSubject);
-	DDX_Text(pDX, IDC_EDIT_UPDATE_SCORE_DATE, m_cstrDate);
-	DDX_Text(pDX, IDC_EDIT_UPDATE_SCORE_SCORE, m_cstrScore);
+	DDX_Text(pDX, IDC_EDIT_UPDATE_SCORE_CLASS_NUMBER, m_strClassNum);
+	DDX_Text(pDX, IDC_EDIT_UPDATE_SCORE_SUBJECT, m_strSubject);
+	DDX_Text(pDX, IDC_EDIT_UPDATE_SCORE_DATE, m_strDate);
+	DDX_Text(pDX, IDC_EDIT_UPDATE_SCORE_SCORE, m_strScore);
 }
 
 
@@ -55,7 +55,7 @@ void CUpdateScoreDlg::OnBnClickedOk()
 	Library lib;
 	string row = "";
 
-	CScoreData score(_ttoi(m_cstrClassNum), lib.ConvertToStirng(m_cstrSubject, row), _ttoi(m_cstrScore), lib.ConvertToStirng(m_cstrDate, row));
+	CScoreData score(_ttoi(m_strClassNum), m_strSubject, _ttoi(m_strScore), m_strDate);
 
 	CScore oScore;
 	oScore.EditScore(score);

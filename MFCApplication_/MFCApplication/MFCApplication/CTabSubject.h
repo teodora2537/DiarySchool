@@ -1,5 +1,6 @@
 #pragma once
-
+#include "Subject.h"
+#include "Library.h"
 
 // CTabSubject dialog
 
@@ -32,12 +33,16 @@ public:
 	
 	void GetSubjectFromDlg();
 	
-	CString m_cstrId;
-	CString m_cstrSubject;
-	CString m_cstrFirstName;
-	CString m_cstrLastName;
+	CString m_strId;
+	CString m_strSubject;
+	CString m_strFirstName;
+	CString m_strLastName;
+
+	DialogMode m_eModeAddSub;
+	CSubjectData m_oSubject;
 
 	int m_nTokenPos = 0;
 	int m_iCount = 0;
 	afx_msg void OnNMDblclkList(NMHDR* pNMHDR, LRESULT* pResult);
+	void LoadDataFromFile(CListCtrl& m_listCtrl);
 };

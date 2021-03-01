@@ -4,6 +4,8 @@
 #include<vector> 
 using namespace std;
 
+#define DEF_FILE_DATA_SEPARATOR	'|'
+
 enum DialogMode
 {
 	eDialogMode_Add = 1,
@@ -17,6 +19,6 @@ public:
 	Library(void);
 	~Library(void);
 
-	string ConvertToStirng(CString str_cstr, string row);
+	string ConvertToString(CString str_cstr, string row);
 	void ClearListCtrl(CListCtrl& m_listCtrl);
 };

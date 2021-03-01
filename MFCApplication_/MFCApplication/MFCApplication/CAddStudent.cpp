@@ -54,7 +54,7 @@ void CAddStudentDlg::OnBnClickedAddStudent() {
 	Library lib;
 	string row = "";
 
-	//	CStudentData student(_ttoi(classNum), lib.ConvertToStirng(fn, row), lib.ConvertToStirng(ln, row), lib.ConvertToStirng(birthday, row));
+		CStudentData student(_ttoi(m_cstrClassNum), m_cstrFn, m_cstrLn, m_cstrBirthday);
 }
 
 void CAddStudentDlg::OnBnClickedOk()
@@ -65,7 +65,7 @@ void CAddStudentDlg::OnBnClickedOk()
 	UpdateData(TRUE);
 	Library lib;
 	string row = "";
-
-	//CStudentData student(_ttoi(classNum), lib.ConvertToStirng(fn, row), lib.ConvertToStirng(ln, row), lib.ConvertToStirng(birthday, row));
-	//lib.AddInStudent();
+	CStudent oStudent;
+	CStudentData oStudentData(_ttoi(m_cstrClassNum), m_cstrFn, m_cstrLn, m_cstrBirthday);
+	oStudent.AddStudent(oStudentData);
 }

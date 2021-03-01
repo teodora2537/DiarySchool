@@ -23,12 +23,5 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnBnClickedButtonAddStudent();
-	afx_msg void OnBnClickedButtonAddSubject();
-	afx_msg void OnBnClickedButtonAddScore();
-	afx_msg void OnBnClickedButtonUpdateStudent();
-	afx_msg void OnBnClickedButtonUpdateSubject();
-	afx_msg void OnBnClickedButtonUpdateScore();
-	afx_msg void OnBnClickedButtonDeleteStudent();
-	afx_msg void OnBnClickedButtonDeleteSubject();
-	afx_msg void OnBnClickedButtonDeleteScore();
+
 };

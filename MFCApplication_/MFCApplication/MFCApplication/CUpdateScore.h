@@ -22,10 +22,10 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 public:
-	CString m_cstrClassNum;
-	CString m_cstrSubject;
-	CString m_cstrDate;
-	CString m_cstrScore;
+	CString m_strClassNum;
+	CString m_strSubject;
+	CString m_strDate;
+	CString m_strScore;
 
 	afx_msg void OnBnClickedOk();
 };

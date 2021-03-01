@@ -16,9 +16,9 @@ CTabControl::CTabControl()
     */
     
     //////NEW///////
-
+    
     m_tabPages[0] = new CTabStudent;
-    m_tabPages[1] = new CTabSubject;
+    m_tabPages[1] = new CTabSubject();
     m_tabPages[2] = new CTabScore;
     m_tabPages[3] = new CTabReference;
     m_nNumberOfPages = 4;

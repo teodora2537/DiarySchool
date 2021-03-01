@@ -16,7 +16,7 @@ Library::Library(void) {}
 Library::~Library(void) {}
 
 //Convert CString to string
-string Library::ConvertToStirng(CString str_cstr, string row) 
+string Library::ConvertToString(CString str_cstr, string row) 
 {
 	CString s_cstring = str_cstr;
 	CT2CA ct(s_cstring);
@@ -30,6 +30,7 @@ void Library::ClearListCtrl(CListCtrl& m_listCtrl)
 	m_listCtrl.SetRedraw(FALSE);
 	m_listCtrl.DeleteAllItems();
 	m_listCtrl.SetRedraw(TRUE);
+	
 	// Delete all of the columns.
 	for (int i = 0; i < nColumnCount; i++)
 	{

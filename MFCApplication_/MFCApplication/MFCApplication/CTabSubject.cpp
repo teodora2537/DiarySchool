@@ -15,11 +15,13 @@
 
 IMPLEMENT_DYNAMIC(CTabSubject, CDialogEx)
 
+
 CTabSubject::CTabSubject(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_TAB_SUBJECT, pParent)
 {
 
 }
+
 
 CTabSubject::~CTabSubject()
 {
@@ -46,14 +48,23 @@ BOOL CTabSubject::OnInitDialog() {
 	CDialogEx::OnInitDialog();
 
 	m_listCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT);
+	
+	LoadDataFromFile(m_listCtrl);
+
+	/*
+	// na edna fuknciq LoadDataFromFile ili ne6to takova
+	m_listCtrl.DeleteAllItems();
 
 	CSubject oSubject;
-	map<int, vector<string>> m_mapSubjects = oSubject.PrintSubject();
-	string str;
+	map<int, vector<CString>> m_mapSubjects;
+	oSubject.PrintSubject(m_mapSubjects);
 
-	m_listCtrl.InsertColumn(0, L"¹", LVCFMT_LEFT, 30);
-	m_listCtrl.InsertColumn(1, L"Subject", LVCFMT_LEFT, 100);
-	m_listCtrl.InsertColumn(2, L"Teacher", LVCFMT_LEFT, 100);
+	m_listCtrl.InsertColumn(0, "#", LVCFMT_LEFT, 30);
+	m_listCtrl.InsertColumn(1, "Subject", LVCFMT_LEFT, 100);
+	m_listCtrl.InsertColumn(2, "Teacher", LVCFMT_LEFT, 100);
+
+	int nCount = 0;
+	int nItemIndex = 0;
 
 	for (auto i = m_mapSubjects.begin(); i != m_mapSubjects.end(); i++)
 	{
@@ -65,10 +76,21 @@ BOOL CTabSubject::OnInitDialog() {
 		CString m_cstrSubject(m_strSubject.c_str());
 		CString m_cstrTeacher(m_strTeacher.c_str());
 
-		m_listCtrl.InsertItem((*i).first - 1, m_cstrNumber);
-		m_listCtrl.SetItemText((*i).first - 1, 1, m_cstrSubject);
-		m_listCtrl.SetItemText((*i).first - 1, 2, m_cstrTeacher);
+		//get Count list items
+		nCount = m_listCtrl.GetItemCount();
+		
+		nItemIndex = m_listCtrl.InsertItem(nCount - 1, m_cstrNumber);
+
+		if (nItemIndex > -1)
+		{
+			m_listCtrl.SetItemText(nItemIndex, 1, m_cstrSubject);
+			m_listCtrl.SetItemText(nItemIndex, 2, m_cstrTeacher);
+			
+			m_listCtrl.SetItemData(nItemIndex, (DWORD_PTR)i->first);
+		}
 	}
+	// na edna fuknciq LoadDataFromFile ili ne6to takova
+	*/
 	return true;
 }
 
@@ -81,10 +103,10 @@ void CTabSubject::OnContextMenu(CWnd* pWnd, CPoint point)
 	CMenu submenu;
 	submenu.CreatePopupMenu();
 
-	submenu.AppendMenu(MF_STRING, IDC_MENU_ADD_SUBJECT, L"Add subject");
-	submenu.AppendMenu(MF_STRING, IDC_MENU_EDIT_SUBJECT, L"Edit subject");
-	submenu.AppendMenu(MF_STRING, IDC_MENU_DEL_SUBJECT, L"Delete subject");
-	submenu.AppendMenu(MF_STRING, IDC_MENU_VIEW_SUBJECT, L"View subject");
+	submenu.AppendMenu(MF_STRING, IDC_MENU_ADD_SUBJECT, "Add subject");
+	submenu.AppendMenu(MF_STRING, IDC_MENU_EDIT_SUBJECT, "Edit subject");
+	submenu.AppendMenu(MF_STRING, IDC_MENU_DEL_SUBJECT, "Delete subject");
+	submenu.AppendMenu(MF_STRING, IDC_MENU_VIEW_SUBJECT, "View subject");
 
 	submenu.TrackPopupMenu(TPM_LEFTALIGN, point.x, point.y, this);
 	
@@ -92,14 +114,48 @@ void CTabSubject::OnContextMenu(CWnd* pWnd, CPoint point)
 
 void CTabSubject::OnAddSubject()
 {
-	//Set Enable room
+	
+	POSITION pos = m_listCtrl.GetFirstSelectedItemPosition();
+	//if not sected
+	if (pos == NULL)
+		return;
+
+	int nItem = m_listCtrl.GetNextSelectedItem(pos);
+	//if don't get selected item
+	if (nItem < 0)
+		return;
+
+	//int nRoomId = (int)m_listCtrl.GetItemData(nItem); //0 - always
+
+	CSubjectData oSubjectData;
+
 	CSubject oSubject;
+
+	oSubjectData.m_iRoomNumber = m_listCtrl.GetItemCount()+1;
+
+	CAddSubjectDlg dlg(oSubjectData, eDialogMode_Add);
+
+	if (dlg.DoModal() != IDOK)
+		return;
+
+	if (!oSubject.AddSubject(oSubjectData))
+		return;
+	LoadDataFromFile(m_listCtrl);
+
+	/*
+	//Set Enable room
+	map<int, vector<CString>> mapAllSubjects;
+	CSubject oSubject;
+	oSubject.PrintSubject(mapAllSubjects);
+	CSubjectData oSubjectData;
 	CString m_cstrRow;
-	m_cstrRow.Format(L"%d", oSubject.PrintSubject().size() + 1);
+	m_cstrRow.Format("%d", mapAllSubjects.size() + 1);
 
 	GetSubjectFromDlg();
-	CAddSubjectDlg dlg;
+	CAddSubjectDlg dlg(oSubjectData, eDialogMode_View);
+	//CAddSubjectDlg dlg;
 	dlg.m_cstrRoomNum = m_cstrRow;
+	
 	dlg.DoModal();
 
 	if (dlg.m_cstrRoomNum != "" && dlg.m_cstrSubject != "" && dlg.m_cstrFnTeacher != "" && dlg.m_cstrLnTeacher != "")
@@ -110,87 +166,115 @@ void CTabSubject::OnAddSubject()
 		m_listCtrl.SetItemText(n, 1, dlg.m_cstrSubject);
 		m_listCtrl.SetItemText(n, 2, dlg.m_cstrFnTeacher + " " + dlg.m_cstrLnTeacher);
 	}
+	*/
+
 }
 
+//!!!WORK!!!
 void CTabSubject::OnEditSubject()
 {
-	CSubjectData oSubjectData;
-	oSubjectData.SetFlagIsUpdate(true);
-	GetSubjectFromDlg();
-	CUpdateSubjectDlg dlg;
-	dlg.m_cstrRoomNum = m_cstrId;
-	dlg.m_cstrSubject = m_cstrSubject;
-	dlg.m_cstrFN = m_cstrFirstName;
-	dlg.m_cstrLN = m_cstrLastName;
-	dlg.m_cstrStaticText = "Update subject";
-	dlg.DoModal();
+	POSITION pos = m_listCtrl.GetFirstSelectedItemPosition();
+	//if not sected
+	if (pos == NULL)
+		return;
 
-	if (dlg.m_cstrRoomNum != "" && dlg.m_cstrSubject != "" && dlg.m_cstrFN != "" && dlg.m_cstrLN != "")
-	{
-		//Add item with dlg datas
-		int n = _ttoi(m_cstrId);
-		n = m_listCtrl.InsertItem(n, dlg.m_cstrRoomNum);
-		m_listCtrl.SetItemText(n, 1, dlg.m_cstrSubject);
-		m_listCtrl.SetItemText(n, 2, dlg.m_cstrFN + " " + dlg.m_cstrLN);
-		
-		//Delete select item
-		for (int nItem = 0; nItem < m_listCtrl.GetItemCount(); )
-		{
-			if (m_listCtrl.GetItemState(nItem, LVIS_SELECTED) == LVIS_SELECTED)
-				m_listCtrl.DeleteItem(nItem);
-			else
-				++nItem;
-		}
-	}
+	int nItem = m_listCtrl.GetNextSelectedItem(pos);
+	//if don't get selected item
+	if (nItem < 0)
+		return;
+
+	//int nRoomId = (int)m_listCtrl.GetItemData(nItem); //0 - always
+
+	CSubjectData oSubjectData;
+
+	CSubject oSubject;
+
+	if (!oSubject.LoadSubject(nItem+1, oSubjectData))
+		return;
+
+	CUpdateSubjectDlg dlg(oSubjectData, eDialogMode_Edit);
+	
+	if (dlg.DoModal() != IDOK)
+		return;
+	
+
+	if (!oSubject.EditSubject(oSubjectData))
+		return;
+
+	LoadDataFromFile(m_listCtrl);
 }
+//!!!WORK!!!
+void CTabSubject::OnDeleteSubject() 
+{
+	POSITION pos = m_listCtrl.GetFirstSelectedItemPosition();
 
-void CTabSubject::OnDeleteSubject() {
-	GetSubjectFromDlg();
-	CSubjectData oSubjectData;
+	if (pos == NULL)
+		return;
+
+	int nItem = m_listCtrl.GetNextSelectedItem(pos);
+
+	if (nItem < 0)
+		return;
+
+	//int nRoomId = (int)m_listCtrl.GetItemData(nItem); always == 0
+
+	CSubject oSubject;
+
 	CString message;
-	message.Format(L"Do you want to delete %s with room ¹ %s?", m_cstrSubject, m_cstrId);
-	int result = MessageBox(message, L"Delete subject", MB_YESNO);
+	message.Format("Do you want to delete subject with room # %d?", nItem+1); // nRoomId
+	int result = MessageBox(message, "Delete subject", MB_YESNO);
 
 	//button yes clicked
 	if (result != IDYES)
 		return;
 
-	UpdateData(TRUE);
-	CSubject oSubject;
-	oSubject.DeleteSubject(_ttoi(m_cstrId));
-	
-	//Delete select item
-	for (int nItem = 0; nItem < m_listCtrl.GetItemCount(); )
-	{
-		if (m_listCtrl.GetItemState(nItem, LVIS_SELECTED) == LVIS_SELECTED)
-			m_listCtrl.DeleteItem(nItem);
-		else
-			++nItem;
-	}
+	if (!oSubject.DeleteSubject(nItem+1)) // nRoomId
+		return;
+
+	m_listCtrl.DeleteItem(nItem);
 }
 
 void CTabSubject::OnViewSubject()
 {
+	POSITION pos = m_listCtrl.GetFirstSelectedItemPosition();
+	//if not sected
+	if (pos == NULL)
+		return;
+
+	int nItem = m_listCtrl.GetNextSelectedItem(pos);
+	//if don't get selected item
+	if (nItem < 0)
+		return;
+
+	//int nRoomId = (int)m_listCtrl.GetItemData(nItem); //0 - always
+
 	CSubjectData oSubjectData;
-	oSubjectData.SetFlagIsUpdate(false);
-	GetSubjectFromDlg();
-	CUpdateSubjectDlg dlg;
-	dlg.m_cstrRoomNum = m_cstrId;
-	dlg.m_cstrSubject = m_cstrSubject;
-	dlg.m_cstrFN = m_cstrFirstName;
-	dlg.m_cstrLN = m_cstrLastName;
-	dlg.m_cstrStaticText = "Subject";
-	dlg.DoModal();
+
+	CSubject oSubject;
+
+	if (!oSubject.LoadSubject(nItem + 1, oSubjectData))
+		return;
+
+	CUpdateSubjectDlg dlg(oSubjectData, eDialogMode_View);
+
+	if (dlg.DoModal() != IDOK)
+		return;
+
+
+	if (!oSubject.LoadSubject(nItem+1,oSubjectData))
+		return;
+
+	LoadDataFromFile(m_listCtrl);
 }
 
 void CTabSubject::GetSubjectFromDlg()
 {
-	m_cstrId = m_listCtrl.GetItemText(m_listCtrl.GetSelectionMark(), 0);
-	m_cstrSubject = m_listCtrl.GetItemText(m_listCtrl.GetSelectionMark(), 1);
+	m_strId = m_listCtrl.GetItemText(m_listCtrl.GetSelectionMark(), 0);
+	m_strSubject = m_listCtrl.GetItemText(m_listCtrl.GetSelectionMark(), 1);
 	CString m_cstrTeacher = m_listCtrl.GetItemText(m_listCtrl.GetSelectionMark(), 2);
 
-	m_cstrFirstName = L"";
-	m_cstrLastName = L"";
+	m_strFirstName = "";
+	m_strLastName = "";
 	m_nTokenPos = 0;
 	m_iCount = 0;
 	Library lib;
@@ -200,20 +284,61 @@ void CTabSubject::GetSubjectFromDlg()
 	{
 		if (m_iCount == 0)
 		{
-			m_cstrFirstName = strToken;
+			m_strFirstName = strToken;
 			m_iCount++;
 		}
 		else if (m_iCount == 1)
 		{
-			m_cstrLastName = strToken;
+			m_strLastName = strToken;
 		}
 		strToken = m_cstrTeacher.Tokenize(_T(" "), m_nTokenPos);
 	}
-	CSubjectData sub(_ttoi(m_cstrId), m_cstrSubject, lib.ConvertToStirng(m_cstrFirstName, ""), lib.ConvertToStirng(m_cstrLastName, ""));
-	sub.SetFullNameTeacher(m_cstrTeacher);
+	CSubjectData oSubjectData(_ttoi(m_strId), m_strSubject, m_strFirstName, m_strLastName);
+	oSubjectData.m_strFullNameTeacher = m_cstrTeacher;
 }
 
 void CTabSubject::OnNMDblclkList(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	OnViewSubject();
+}
+
+void CTabSubject::LoadDataFromFile(CListCtrl& m_listCtrl)
+{
+	m_listCtrl.DeleteAllItems();
+	CSubject oSubject;
+	map<int, vector<CString>> m_mapSubjects;
+	oSubject.PrintSubject(m_mapSubjects);
+
+	m_listCtrl.InsertColumn(0, "#", LVCFMT_LEFT, 30);
+	m_listCtrl.InsertColumn(1, "Subject", LVCFMT_LEFT, 100);
+	m_listCtrl.InsertColumn(2, "Teacher", LVCFMT_LEFT, 100);
+
+	int nCount = 0;
+	int nItemIndex = 0;
+
+	for (auto i = m_mapSubjects.begin(); i != m_mapSubjects.end(); i++)
+	{
+		string m_strNumber = to_string((*i).first);
+		string m_strSubject = (*i).second[0];
+		string m_strTeacher = (*i).second[1] + " " + (*i).second[2];
+
+		CString m_cstrNumber(m_strNumber.c_str());
+		CString m_cstrSubject(m_strSubject.c_str());
+		CString m_cstrTeacher(m_strTeacher.c_str());
+		
+		//get Count list items
+		
+		nCount = m_listCtrl.GetItemCount();
+
+			nItemIndex = m_listCtrl.InsertItem(nCount, m_cstrNumber);
+		
+
+		if (nItemIndex > -1)
+		{
+			m_listCtrl.SetItemText(nItemIndex, 1, m_cstrSubject);
+			m_listCtrl.SetItemText(nItemIndex, 2, m_cstrTeacher);
+
+			//nItemIndex = m_listCtrl.SetItemData(nCount, (DWORD_PTR)i->first); don't show datas
+		}
+	}
 }

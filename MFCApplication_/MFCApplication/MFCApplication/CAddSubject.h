@@ -1,4 +1,6 @@
 #pragma once
+#include "Subject.h"
+#include "Library.h"
 
 
 // CAddSubject dialog
@@ -8,7 +10,8 @@ class CAddSubjectDlg : public CDialogEx
 	DECLARE_DYNAMIC(CAddSubjectDlg)
 
 public:
-	CAddSubjectDlg(CWnd* pParent = nullptr);   // standard constructor
+	//CAddSubjectDlg(CWnd* pParent = nullptr);   // standard constructor
+	CAddSubjectDlg(CSubjectData& oSubject, const DialogMode m_eModeAddSub);   // standard constructor
 	virtual ~CAddSubjectDlg();
 
 // Dialog Data
@@ -17,18 +20,23 @@ public:
 #endif
 
 protected:
+	virtual BOOL OnInitDialog();
+
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
 	DECLARE_MESSAGE_MAP()
 
 public:
-	CString m_cstrRoomNum;
-	CString m_cstrSubject;
-	CString m_cstrFnTeacher;
-	CString m_cstrLnTeacher;
+	CString m_strRoomNum;
+	CString m_strSubject;
+	CString m_strFnTeacher;
+	CString m_strLnTeacher;
 
-	CEdit m_edb;
+	CEdit m_eRoomNum;
+	DialogMode m_eModeAddSub;
+	CSubjectData m_oSubject;
 
-
-	afx_msg void OnBnClickedOk();
+	afx_msg
+		afx_msg	BOOL ValidateData();
+	void OnBnClickedOk();
 };

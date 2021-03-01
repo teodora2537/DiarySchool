@@ -34,14 +34,6 @@ void CTabCRUD::DoDataExchange(CDataExchange* pDX)
 }
 BEGIN_MESSAGE_MAP(CTabCRUD, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_ADD_STUDENT, &CTabCRUD::OnBnClickedButtonAddStudent)
-	ON_BN_CLICKED(IDC_BUTTON_ADD_SUBJECT, &CTabCRUD::OnBnClickedButtonAddSubject)
-	ON_BN_CLICKED(IDC_BUTTON_ADD_SCORE, &CTabCRUD::OnBnClickedButtonAddScore)
-	ON_BN_CLICKED(IDC_BUTTON_UPDATE_STUDENT, &CTabCRUD::OnBnClickedButtonUpdateStudent)
-	ON_BN_CLICKED(IDC_BUTTON_UPDATE_SUBJECT, &CTabCRUD::OnBnClickedButtonUpdateSubject)
-	ON_BN_CLICKED(IDC_BUTTON_UPDATE_SCORE, &CTabCRUD::OnBnClickedButtonUpdateScore)
-	ON_BN_CLICKED(IDC_BUTTON_DELETE_STUDENT, &CTabCRUD::OnBnClickedButtonDeleteStudent)
-	ON_BN_CLICKED(IDC_BUTTON_DELETE_SUBJECT, &CTabCRUD::OnBnClickedButtonDeleteSubject)
-	ON_BN_CLICKED(IDC_BUTTON_DELETE_SCORE, &CTabCRUD::OnBnClickedButtonDeleteScore)
 END_MESSAGE_MAP()
 
 void CTabCRUD::OnBnClickedButtonAddStudent()
@@ -56,52 +48,4 @@ void CTabCRUD::OnBnClickedButtonAddStudent()
 	CStudent oStudent;
 
 	oStudent.AddStudent(oStudentData);
-}
-void CTabCRUD::OnBnClickedButtonAddSubject()
-{
-	CAddSubjectDlg dlg;
-	dlg.DoModal();
-}
-void CTabCRUD::OnBnClickedButtonAddScore()
-{
-	CAddScoreDlg dlg;
-	dlg.DoModal();
-}
-void CTabCRUD::OnBnClickedButtonUpdateStudent()
-{
-	CUpdateStudentDlg dlg;
-	dlg.DoModal();
-}
-void CTabCRUD::OnBnClickedButtonUpdateSubject()
-{
-	/*
-	CUpdateSubjectDlg dlg;
-	dlg.DoModal();
-	*/
-}
-void CTabCRUD::OnBnClickedButtonUpdateScore()
-{
-	CUpdateScoreDlg dlg;
-	dlg.DoModal();
-}
-void CTabCRUD::OnBnClickedButtonDeleteStudent()
-{
-	/*
-	CDeleteStudent dlg;
-	dlg.DoModal();
-	*/
-}
-void CTabCRUD::OnBnClickedButtonDeleteSubject()
-{
-	/*
-	CDeleteSubject dlg;
-	dlg.DoModal();
-	*/
-}
-void CTabCRUD::OnBnClickedButtonDeleteScore()
-{
-	/*
-	CDeleteScore dlg;
-	dlg.DoModal();
-	*/
 }

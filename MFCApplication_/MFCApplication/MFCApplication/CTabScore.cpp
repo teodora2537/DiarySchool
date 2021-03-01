@@ -37,16 +37,18 @@ BOOL CTabScore::OnInitDialog() {
 	CDialogEx::OnInitDialog();
 
 	m_listCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT);
+	
 	CScore oScore;
-	multimap<int, vector<string>> mapScore = oScore.PrintScore();
+	multimap<int, vector<CString>> mapScore;
+	oScore.PrintScore(mapScore);
 	
 	m_iRow = 0;
 
-	m_listCtrl.InsertColumn(0, L"¹", LVCFMT_LEFT, 30);
-	m_listCtrl.InsertColumn(1, L"Name", LVCFMT_LEFT, 100);
-	m_listCtrl.InsertColumn(2, L"Subject", LVCFMT_LEFT, 100);
-	m_listCtrl.InsertColumn(3, L"Score", LVCFMT_LEFT, 50);
-	m_listCtrl.InsertColumn(4, L"Date", LVCFMT_LEFT, 100);
+	m_listCtrl.InsertColumn(0, "¹", LVCFMT_LEFT, 30);
+	m_listCtrl.InsertColumn(1, "Name", LVCFMT_LEFT, 100);
+	m_listCtrl.InsertColumn(2, "Subject", LVCFMT_LEFT, 100);
+	m_listCtrl.InsertColumn(3, "Score", LVCFMT_LEFT, 50);
+	m_listCtrl.InsertColumn(4, "Date", LVCFMT_LEFT, 100);
 
 	for (auto i = mapScore.begin(); i != mapScore.end(); i++)
 	{
@@ -69,6 +71,7 @@ BOOL CTabScore::OnInitDialog() {
 		m_listCtrl.SetItemText(m_iRow, 4, m_cstrDate);
 		m_iRow++;
 	}
+	
 
 	return true;
 }

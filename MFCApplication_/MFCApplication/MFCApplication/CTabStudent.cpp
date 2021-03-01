@@ -41,13 +41,14 @@ BOOL CTabStudent::OnInitDialog() {
 	
 	CStudent oStudent;
 
-	map<int, vector<string>> m_mapAllStudent = oStudent.PrintStudent();
+	map<int, vector<CString>> m_mapAllStudent;
+	oStudent.PrintStudent(m_mapAllStudent);
 
 	int m_iCount = 0;
 
-	m_listCtrl.InsertColumn(0, L"¹", LVCFMT_LEFT, 30);
-	m_listCtrl.InsertColumn(1, L"Name", LVCFMT_LEFT, 100);
-	m_listCtrl.InsertColumn(2, L"Date of birthday", LVCFMT_LEFT, 100);
+	m_listCtrl.InsertColumn(0, "¹", LVCFMT_LEFT, 30);
+	m_listCtrl.InsertColumn(1, "Name", LVCFMT_LEFT, 100);
+	m_listCtrl.InsertColumn(2, "Date of birthday", LVCFMT_LEFT, 100);
 
 	for (auto i = m_mapAllStudent.begin(); i != m_mapAllStudent.end(); i++)
 	{

@@ -8,7 +8,7 @@
 #include "Student.h"
 using namespace std;
 
-CScoreData::CScoreData(int _classNum, string _subject, int _score, string _date)
+CScoreData::CScoreData(int _classNum, CString _subject, int _score, CString _date)
 {
 	m_iClassNum = _classNum;
 	m_strSubject = _subject;
@@ -18,51 +18,6 @@ CScoreData::CScoreData(int _classNum, string _subject, int _score, string _date)
 
 CScoreData::CScoreData()
 {
-}
-
-int CScoreData::GetIdScore()
-{
-	return m_iIdScore;
-}
-void CScoreData::SetIdScore(int _idScore)
-{
-	m_iIdScore = _idScore;
-}
-
-int CScoreData::GetClassNum()
-{
-	return m_iClassNum;
-}
-void CScoreData::SetClassNum(int _classNum)
-{
-	m_iClassNum = _classNum;
-}
-
-int CScoreData::GetScore()
-{
-	return m_iScore;
-}
-void CScoreData::SetScore(int _score)
-{
-	m_iScore = _score;
-}
-
-string CScoreData::GetSubject()
-{
-	return m_strSubject;
-}
-void CScoreData::SetSubject(string _subject)
-{
-	m_strSubject = _subject;
-}
-
-string CScoreData::GetDate()
-{
-	return m_strDate;
-}
-void CScoreData::SetDate(string _date)
-{
-	m_strDate = _date;
 }
 
 CScore::CScore()
@@ -76,21 +31,22 @@ CScore::~CScore()
 bool CScore::AddScore(CScoreData& oScoreData)
 {
 	Library lib;
-	CScoreData score;
 	int length = 0;
 
 	fstream outFile, inputfile;
 	outFile.open("Score.txt", ios::app);
 
-	int classNum = score.GetClassNum();
-	int i_score = score.GetScore();
-	string subject = score.GetSubject();
-	string date = score.GetDate();
+	int classNum = oScoreData.m_iClassNum;
+	int i_score = oScoreData.m_iScore;
+	CString subject = oScoreData.m_strSubject;
+	CString date = oScoreData.m_strDate;
 	CScore oScore;
-	multimap<int, vector<string>> mapScores = oScore.PrintScore();
+	multimap<int, vector<CString>> mapScores;
+	oScore.PrintScore(mapScores);
+
 	int idScore = mapScores.size() + 1;
 
-	outFile << idScore << '|' << classNum << '|' << subject << '|' << i_score << '|' << date << "\n";
+	outFile << idScore << DEF_FILE_DATA_SEPARATOR << classNum << DEF_FILE_DATA_SEPARATOR << subject << DEF_FILE_DATA_SEPARATOR << i_score << DEF_FILE_DATA_SEPARATOR << date << "\n";
 	outFile.close();
 
 	return true;
@@ -100,78 +56,85 @@ bool CScore::AddScore(CScoreData& oScoreData)
 bool CScore::EditScore(const CScoreData& oScore)
 {
 	//Datas from edit boxes
-	CScoreData score;
-	int idScore = score.GetIdScore();
-	int classNum = score.GetClassNum();
-	string subject = score.GetSubject();
-	int _score = score.GetScore();
-	string date = score.GetDate();
+	int m_iIdScore = oScore.m_iIdScore;
+	int m_iClassNum = oScore.m_iClassNum;
+	CString m_strSubject = oScore.m_strSubject;
+	int m_iScore = oScore.m_iScore;
+	CString m_strDate = oScore.m_strDate;
 
-	int count = 0;
-	string text;
-	string token;
-	fstream file;
-	size_t position;
-	CScoreData currentScore;
-	bool isFind = false;
-	multimap<int, vector<string>> mapScore;
-	vector<string> _vector;
+	int m_iCount = 0;
+	string m_strText;
+	CString m_strToken;
+	fstream m_file;
+	size_t m_sizeTPosition;
+	CScoreData oCurrentScore;
+	bool m_bIsFind = false;
+	multimap<int, vector<CString>> m_mapAllScore;
+	vector<CString> m_vecInfoScore;
 
-	file.open("Score.txt", ios::in);
+	m_file.open("Score.txt", ios::in);
 
-	while (getline(file, text))
+	while (getline(m_file, m_strText))
 	{
-		position = 0;
-		count = 0;
+		m_sizeTPosition = 0;
+		m_iCount = 0;
 		// set data's score to class score
 		while (true)
 		{
-			position = text.find('|');
-			token = text.substr(0, position);
-			count++;
-			if (count == 1)
+			m_sizeTPosition = m_strText.find(DEF_FILE_DATA_SEPARATOR);
+			m_strToken = (m_strText.substr(0, m_sizeTPosition)).c_str();
+			m_iCount++;
+			if (m_iCount == 1)
 			{
-				currentScore.SetIdScore(stoi(token));
-				idScore = currentScore.GetIdScore();
-			}
-			if (count == 2) currentScore.SetClassNum(stoi(token));
-			else if (count == 3) currentScore.SetSubject(token);
-			else if (count == 4)  currentScore.SetScore(stoi(token));
-			else if (count == 5) { currentScore.SetDate(token); break; }
-			text = text.substr(position + 1, text.length());
+				oCurrentScore.m_iIdScore = atoi(m_strToken);
+				m_iIdScore = oCurrentScore.m_iIdScore;
+			} 
+			if (m_iCount == 2) oCurrentScore.m_iClassNum = atoi(m_strToken);
+			else if (m_iCount == 3) oCurrentScore.m_strSubject = m_strToken;
+			else if (m_iCount == 4)  oCurrentScore.m_iScore = atoi(m_strToken);
+			else if (m_iCount == 5) { oCurrentScore.m_strDate = m_strToken; break; }
+			m_strText = m_strText.substr(m_sizeTPosition + 1, m_strText.length());
 		}
 
 		//if exist (from edit box) save it and continue. 
-		if (currentScore.GetClassNum() == classNum &&
-			currentScore.GetSubject() == subject && currentScore.GetDate() == date)
+		if (oCurrentScore.m_iClassNum == m_iClassNum &&
+			oCurrentScore.m_strSubject == m_strSubject && oCurrentScore.m_strDate == m_strDate)
 		{
-			_vector.push_back(to_string(classNum));
-			_vector.push_back(subject);
-			_vector.push_back(to_string(_score));
-			_vector.push_back(date);
-			mapScore.insert(pair<int, vector<string>>(idScore, _vector));
-			_vector.clear();
-			isFind = true;
+			CString m_strClassNum;
+			m_strClassNum.Format("%d", m_iClassNum);
+			m_vecInfoScore.push_back(m_strClassNum);
+			m_vecInfoScore.push_back(m_strSubject);
+			CString m_strScore;
+			m_strScore.Format("%d", m_iScore);
+			m_vecInfoScore.push_back(m_strScore);
+			m_vecInfoScore.push_back(m_strDate);
+			m_mapAllScore.insert(pair<int, vector<CString>>(m_iIdScore, m_vecInfoScore));
+			m_vecInfoScore.clear();
+			m_bIsFind = true;
 			continue;
 		}
 		//save score from file
-		_vector.push_back(to_string(currentScore.GetClassNum()));
-		_vector.push_back(currentScore.GetSubject());
-		_vector.push_back(to_string(currentScore.GetScore()));
-		_vector.push_back(currentScore.GetDate());
-			mapScore.insert(pair<int, vector<string>>(idScore, _vector));
-		_vector.clear();
+		CString m_strCurrentClassNum;
+		m_strCurrentClassNum.Format("%d", oCurrentScore.m_iClassNum);
+		m_vecInfoScore.push_back(m_strCurrentClassNum);
+		m_vecInfoScore.push_back(oCurrentScore.m_strSubject);
+		CString m_strCurrentScore;
+		m_strCurrentScore.Format("%d", oCurrentScore.m_iScore);
+		m_vecInfoScore.push_back(m_strCurrentScore);
+		m_vecInfoScore.push_back(oCurrentScore.m_strDate);
+		m_mapAllScore.insert(pair<int, vector<CString>>(m_iIdScore, m_vecInfoScore));
+		m_vecInfoScore.clear();
 	}
-	file.close();
+	m_file.close();
 
-	if (isFind)
+	if (m_bIsFind)
 	{
 		ofstream outFile;
 		outFile.open("Score.txt", ios::out | ios::trunc);
 		//Set score in the file.
-		for (auto i = mapScore.begin(); i != mapScore.end(); i++)
+		for (auto i = m_mapAllScore.begin(); i != m_mapAllScore.end(); i++)
 		{
-			outFile << (*i).first << '|' << (*i).second[0] << '|' << (*i).second[1] << '|' << (*i).second[2] << '|' << (*i).second[3] << "\n";
+			outFile << (*i).first << DEF_FILE_DATA_SEPARATOR << (*i).second[0] << DEF_FILE_DATA_SEPARATOR << (*i).second[1] << DEF_FILE_DATA_SEPARATOR << (*i).second[2] << DEF_FILE_DATA_SEPARATOR << (*i).second[3] << "\n";
 		}
 		outFile.close();
 
@@ -186,70 +149,68 @@ bool CScore::LoadScore(const int nClassNumber, CScoreData& oScore)
 	return false;
 }
 
-//	! you must use the parametter nClassNumber
 bool CScore::DeleteScore(const int nClassNumber)
 {
-	CScoreData score;
-	int idScore = score.GetIdScore();
-	int classNum = score.GetClassNum();
-	string subject = score.GetSubject();
-	string date = score.GetDate();
-	int _score = score.GetScore();
+	CScoreData oScoreData;
 
-	int count = 0;
-	string text;
-	string token;
-	fstream file;
-	size_t position;
-	CScoreData currentScore;
-	bool isFind = false;
-	multimap<int, vector<string>> mapScore;
-	vector<string> _vector;
+	int m_iCount = 0;
+	string m_strText;
+	CString m_strToken;
+	fstream m_file;
+	size_t m_sizeTPosition;
+	CScoreData oCurrentScoreData;
+	bool m_bIsFind = false;
+	multimap<int, vector<CString>> m_mapAllScore;
+	vector<CString> m_vecInfoScore;
 
-	file.open("Score.txt", ios::in);
+	m_file.open("Score.txt", ios::in);
 
-	while (getline(file, text))
+	while (getline(m_file, m_strText))
 	{
-		position = 0;
-		count = 0;
+		m_sizeTPosition = 0;
+		m_iCount = 0;
 
 		while (true)
 		{
-			position = text.find('|');
-			token = text.substr(0, position);
-			count++;
-			if (count == 1) currentScore.SetIdScore(stoi(token));
-			else if (count == 2) currentScore.SetClassNum(stoi(token));
-			else if (count == 3) currentScore.SetSubject(token);
-			else if (count == 4) currentScore.SetScore(stoi(token));
-			else if (count == 5) { currentScore.SetDate(token); break; }
-			text = text.substr(position + 1, text.length());
+			m_sizeTPosition = m_strText.find(DEF_FILE_DATA_SEPARATOR);
+			m_strToken = (m_strText.substr(0, m_sizeTPosition)).c_str();
+			m_iCount++;
+			if (m_iCount == 1) oCurrentScoreData.m_iIdScore = atoi(m_strToken);
+			else if (m_iCount == 2) oCurrentScoreData.m_iClassNum = atoi(m_strToken);
+			else if (m_iCount == 3) oCurrentScoreData.m_strSubject = m_strToken;
+			else if (m_iCount == 4) oCurrentScoreData.m_iScore = atoi(m_strToken);
+			else if (m_iCount == 5) { oCurrentScoreData.m_strDate = m_strToken; break; }
+			m_strText = m_strText.substr(m_sizeTPosition + 1, m_strText.length());
 		}
 
-		if (currentScore.GetIdScore() == idScore)
+		if (oCurrentScoreData.m_iIdScore == nClassNumber)
 		{
-			isFind = true;
+			m_bIsFind = true;
 			continue;
 		}
 
-		_vector.push_back(to_string(currentScore.GetClassNum()));
-		_vector.push_back(currentScore.GetSubject());
-		_vector.push_back(to_string(currentScore.GetScore()));
-		_vector.push_back(currentScore.GetDate());
-		mapScore.insert(pair<int, vector<string>>(currentScore.GetIdScore(), _vector));
-		_vector.clear();
+		CString m_strClassNum;
+		m_strClassNum.Format("%d", oCurrentScoreData.m_iClassNum);
+		m_vecInfoScore.push_back(m_strClassNum);
+		m_vecInfoScore.push_back(oCurrentScoreData.m_strSubject);
+		CString m_strScore;
+		m_strScore.Format("%d", oCurrentScoreData.m_iScore);
+		m_vecInfoScore.push_back(m_strScore);
+		m_vecInfoScore.push_back(oCurrentScoreData.m_strDate);
+		m_mapAllScore.insert(pair<int, vector<CString>>(oCurrentScoreData.m_iIdScore, m_vecInfoScore));
+		m_vecInfoScore.clear();
 	}
 
-	file.close();
+	m_file.close();
 
-	if (isFind)
+	if (m_bIsFind)
 	{
 		ofstream outFile;
 		outFile.open("Score.txt", ios::out | ios::trunc);
 
-		for (auto i = mapScore.begin(); i != mapScore.end(); i++)
+		for (auto i = m_mapAllScore.begin(); i != m_mapAllScore.end(); i++)
 		{
-			outFile << (*i).first << '|' << (*i).second[0] << '|' << (*i).second[1] << '|' << (*i).second[2] << '|' << (*i).second[3] << "\n";
+			outFile << (*i).first << DEF_FILE_DATA_SEPARATOR << (*i).second[0] << DEF_FILE_DATA_SEPARATOR << (*i).second[1] << DEF_FILE_DATA_SEPARATOR << (*i).second[2] << DEF_FILE_DATA_SEPARATOR << (*i).second[3] << "\n";
 		}
 		outFile.close();
 
@@ -258,8 +219,25 @@ bool CScore::DeleteScore(const int nClassNumber)
 	else return false;
 }
 
-multimap<int, vector<string>> CScore::PrintScore()
+void CScore::PrintScore(multimap<int, vector<CString>>& mapScore)
 {
+	vector<CString> m_vecInfoStudent;
+	map<int, vector<CString>> m_mapAllStudent;
+	
+
+	int m_iCount = 0;
+	
+	string m_strText;
+	CString m_strToken;
+	CString m_strName;
+
+	size_t m_sizeTPosition;
+	
+	CScoreData oCurrentScore;
+	
+	bool m_bIsFind = false;
+
+	mapScore.clear();
 	
 	fstream m_file;
 
@@ -271,34 +249,35 @@ multimap<int, vector<string>> CScore::PrintScore()
 		m_iCount = 0;
 		while (true)
 		{
-			m_sizeTPosition = m_strText.find('|');
-			m_strToken = m_strText.substr(0, m_sizeTPosition);
+			m_sizeTPosition = m_strText.find(DEF_FILE_DATA_SEPARATOR);
+			m_strToken = (m_strText.substr(0, m_sizeTPosition).c_str());
 			m_iCount++;
 			if (m_iCount == 1)
-				oCurrentScore.SetIdScore(stoi(m_strToken));
+				oCurrentScore.m_iIdScore = atoi(m_strToken);
 			else if (m_iCount == 2)
-				oCurrentScore.SetClassNum(stoi(m_strToken));
+				oCurrentScore.m_iClassNum = atoi(m_strToken);
 			else if (m_iCount == 3)
-				oCurrentScore.SetSubject(m_strToken);
+				oCurrentScore.m_strSubject = m_strToken;
 			else if (m_iCount == 4)
-				oCurrentScore.SetScore(stoi(m_strToken));
+				oCurrentScore.m_iScore = atoi(m_strToken);
 			else if (m_iCount == 5)
 			{
-				oCurrentScore.SetDate(m_strToken);
+				oCurrentScore.m_strDate = m_strToken;
 				break;
 			}
 			m_strText = m_strText.substr(m_sizeTPosition + 1, m_strText.length());
 		}
 		CStudent oStud;
-		m_mapAllStudent = oStud.PrintStudent();
-		m_strName = m_mapAllStudent[oCurrentScore.GetClassNum()][0] + " " + m_mapAllStudent[oCurrentScore.GetClassNum()][1];
+		oStud.PrintStudent(m_mapAllStudent);
+		m_strName = m_mapAllStudent[oCurrentScore.m_iClassNum][0] + " " + m_mapAllStudent[oCurrentScore.m_iClassNum][1];
 		m_vecInfoStudent.push_back(m_strName);
-		m_vecInfoStudent.push_back(oCurrentScore.GetSubject());
-		m_vecInfoStudent.push_back(to_string(oCurrentScore.GetScore()));
-		m_vecInfoStudent.push_back(oCurrentScore.GetDate());
-		m_mapAllScore.insert(pair<int, vector<string>>(oCurrentScore.GetClassNum(), m_vecInfoStudent));
+		m_vecInfoStudent.push_back(oCurrentScore.m_strSubject);
+		CString m_strScore;
+		m_strScore.Format("%d", oCurrentScore.m_iScore);
+		m_vecInfoStudent.push_back(m_strScore);
+		m_vecInfoStudent.push_back(oCurrentScore.m_strDate);
+		mapScore.insert(pair<int, vector<CString>>(oCurrentScore.m_iClassNum, m_vecInfoStudent));
 		m_vecInfoStudent.clear();
 	}
 	m_file.close();
-	return m_mapAllScore;
 }
