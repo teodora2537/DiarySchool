@@ -64,7 +64,7 @@ void CTabReference::OnBnClickedButtonAvgscorebysubject()
 	map<int, vector<CString>> m_mapAverageScoreBySub;
 		oStudent.AverageScoreBySubject(m_mapAverageScoreBySub);
 	
-	m_listCtrl.InsertColumn(0, "¹", LVCFMT_LEFT, 30);
+	m_listCtrl.InsertColumn(0, "#", LVCFMT_LEFT, 30);
 	m_listCtrl.InsertColumn(1, "Name", LVCFMT_LEFT, 100);
 	m_listCtrl.InsertColumn(2, "Subject", LVCFMT_LEFT, 100);
 	m_listCtrl.InsertColumn(3, "Avg score", LVCFMT_LEFT, 70);
@@ -105,7 +105,7 @@ void CTabReference::OnBnClickedButtonAvgscorebyallsubjects()
 	map<int, vector<CString>> m_mapAverageScore;
 	oStudent.AverageScoreByAllSubject(m_mapAverageScore);
 	
-	m_listCtrl.InsertColumn(0, "¹", LVCFMT_LEFT, 30);
+	m_listCtrl.InsertColumn(0, "#", LVCFMT_LEFT, 30);
 	m_listCtrl.InsertColumn(1, "Name", LVCFMT_LEFT, 100);
 	m_listCtrl.InsertColumn(2, "Avg score", LVCFMT_LEFT, 70);
 
@@ -175,7 +175,7 @@ void CTabReference::OnBnClickedButton()
 	map<int, vector<CString>> m_mapRemedialExaminationBySubject;
 	oStudent.remedialExaminationBySubject(m_mapRemedialExaminationBySubject);
 
-	m_listCtrl.InsertColumn(0, "¹", LVCFMT_LEFT, 30);
+	m_listCtrl.InsertColumn(0, "#", LVCFMT_LEFT, 30);
 	m_listCtrl.InsertColumn(1, "Name", LVCFMT_LEFT, 100);
 	m_listCtrl.InsertColumn(2, "Subject", LVCFMT_LEFT, 100);
 

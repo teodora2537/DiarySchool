@@ -41,18 +41,21 @@ bool CScore::AddScore(CScoreData& oScoreData)
 	CString subject = oScoreData.m_strSubject;
 	CString date = oScoreData.m_strDate;
 	CScore oScore;
-	multimap<int, vector<CString>> mapScores;
+	map<int, vector<CString>> mapScores;
 	oScore.PrintScore(mapScores);
 
 	int idScore = mapScores.size() + 1;
 
-	outFile << idScore << DEF_FILE_DATA_SEPARATOR << classNum << DEF_FILE_DATA_SEPARATOR << subject << DEF_FILE_DATA_SEPARATOR << i_score << DEF_FILE_DATA_SEPARATOR << date << "\n";
+	outFile << idScore << DEF_FILE_DATA_SEPARATOR 
+			<< classNum << DEF_FILE_DATA_SEPARATOR 
+			<< subject << DEF_FILE_DATA_SEPARATOR 
+			<< i_score << DEF_FILE_DATA_SEPARATOR 
+			<< date << "\n";
 	outFile.close();
 
 	return true;
 }
 
-//	! you must use the parametter oScore
 bool CScore::EditScore(const CScoreData& oScore)
 {
 	//Datas from edit boxes
@@ -134,7 +137,11 @@ bool CScore::EditScore(const CScoreData& oScore)
 		//Set score in the file.
 		for (auto i = m_mapAllScore.begin(); i != m_mapAllScore.end(); i++)
 		{
-			outFile << (*i).first << DEF_FILE_DATA_SEPARATOR << (*i).second[0] << DEF_FILE_DATA_SEPARATOR << (*i).second[1] << DEF_FILE_DATA_SEPARATOR << (*i).second[2] << DEF_FILE_DATA_SEPARATOR << (*i).second[3] << "\n";
+			outFile << (*i).first << DEF_FILE_DATA_SEPARATOR 
+					<< (*i).second[0] << DEF_FILE_DATA_SEPARATOR 
+					<< (*i).second[1] << DEF_FILE_DATA_SEPARATOR 
+					<< (*i).second[2] << DEF_FILE_DATA_SEPARATOR 
+					<< (*i).second[3] << "\n";
 		}
 		outFile.close();
 
@@ -143,10 +150,17 @@ bool CScore::EditScore(const CScoreData& oScore)
 	else return false;
 }
 
-//Empty
-bool CScore::LoadScore(const int nClassNumber, CScoreData& oScore)
+bool CScore::LoadScore(const int nIdScore, CScoreData& oScore)
 {
-	return false;
+	map<int, vector<CString>> m_mapScores;
+	PrintScore(m_mapScores);
+	oScore.m_iIdScore = nIdScore;
+	oScore.m_iClassNum = atoi(m_mapScores[nIdScore][0]);
+	oScore.m_strSubject = m_mapScores[nIdScore][2];
+	oScore.m_iScore = atoi(m_mapScores[nIdScore][3]);
+	oScore.m_strDate = m_mapScores[nIdScore][4];
+	
+	return true;
 }
 
 bool CScore::DeleteScore(const int nClassNumber)
@@ -210,7 +224,11 @@ bool CScore::DeleteScore(const int nClassNumber)
 
 		for (auto i = m_mapAllScore.begin(); i != m_mapAllScore.end(); i++)
 		{
-			outFile << (*i).first << DEF_FILE_DATA_SEPARATOR << (*i).second[0] << DEF_FILE_DATA_SEPARATOR << (*i).second[1] << DEF_FILE_DATA_SEPARATOR << (*i).second[2] << DEF_FILE_DATA_SEPARATOR << (*i).second[3] << "\n";
+			outFile << (*i).first << DEF_FILE_DATA_SEPARATOR 
+					<< (*i).second[0] << DEF_FILE_DATA_SEPARATOR 
+					<< (*i).second[1] << DEF_FILE_DATA_SEPARATOR 
+					<< (*i).second[2] << DEF_FILE_DATA_SEPARATOR 
+					<< (*i).second[3] << "\n";
 		}
 		outFile.close();
 
@@ -219,12 +237,11 @@ bool CScore::DeleteScore(const int nClassNumber)
 	else return false;
 }
 
-void CScore::PrintScore(multimap<int, vector<CString>>& mapScore)
+void CScore::PrintScore(map<int, vector<CString>>& mapScore)
 {
 	vector<CString> m_vecInfoStudent;
 	map<int, vector<CString>> m_mapAllStudent;
 	
-
 	int m_iCount = 0;
 	
 	string m_strText;
@@ -270,13 +287,16 @@ void CScore::PrintScore(multimap<int, vector<CString>>& mapScore)
 		CStudent oStud;
 		oStud.PrintStudent(m_mapAllStudent);
 		m_strName = m_mapAllStudent[oCurrentScore.m_iClassNum][0] + " " + m_mapAllStudent[oCurrentScore.m_iClassNum][1];
+		CString m_strClassNum;
+		m_strClassNum.Format("%d", oCurrentScore.m_iClassNum);
+		m_vecInfoStudent.push_back(m_strClassNum);
 		m_vecInfoStudent.push_back(m_strName);
 		m_vecInfoStudent.push_back(oCurrentScore.m_strSubject);
 		CString m_strScore;
 		m_strScore.Format("%d", oCurrentScore.m_iScore);
 		m_vecInfoStudent.push_back(m_strScore);
 		m_vecInfoStudent.push_back(oCurrentScore.m_strDate);
-		mapScore.insert(pair<int, vector<CString>>(oCurrentScore.m_iClassNum, m_vecInfoStudent));
+		mapScore.insert(pair<int, vector<CString>>(oCurrentScore.m_iIdScore, m_vecInfoStudent));
 		m_vecInfoStudent.clear();
 	}
 	m_file.close();

@@ -32,8 +32,7 @@ public:
 	bool LoadStudent(const int nClassNumber, CStudentData& oStudent);
 	bool DeleteStudent(const int nClassNumber);
 	
-	void PrintStudent(map<int, vector<CString>>& m_mapAllStudent);
-	
+	void PrintStudent(map<int, vector<CString>>& m_mapAllStudent);	
 	void AverageScoreBySubject(map<int, vector<CString>>& m_mapAverageScoreBySub);
 	void AverageScoreByAllSubject(map<int, vector<CString>>& m_mapAverageScore);
 	
@@ -42,4 +41,5 @@ public:
 	
 	void remedialExaminationBySubject(map<int, vector<CString>>& m_mapAverageScore);
 	void remedialExaminationByMoreSubjects(vector<CString>& m_vecStudentsName);
+	int CountStudent();
 };

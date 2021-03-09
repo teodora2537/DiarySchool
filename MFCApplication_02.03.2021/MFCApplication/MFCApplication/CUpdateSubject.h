@@ -31,6 +31,7 @@ public:
 	CSubjectData& m_oSubject;
 	DialogMode m_eMode;
 
+
 protected:
 	CEdit m_eRoomNum;
 

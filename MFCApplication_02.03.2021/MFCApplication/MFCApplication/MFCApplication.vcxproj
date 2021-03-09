@@ -183,8 +183,6 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="AddStudent.h" />
-    <ClInclude Include="CAddScore.h" />
     <ClInclude Include="CChildFrame.h" />
     <ClInclude Include="CTabControl.h" />
     <ClInclude Include="CTabReference.h" />
@@ -206,8 +204,6 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CAddStudent.cpp" />
-    <ClCompile Include="CAddScore.cpp" />
     <ClCompile Include="CChildFrame.cpp" />
     <ClCompile Include="CTabControl.cpp" />
     <ClCompile Include="CTabReference.cpp" />

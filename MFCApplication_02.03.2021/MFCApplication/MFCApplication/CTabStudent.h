@@ -22,9 +22,29 @@ protected:
 
 	BOOL OnInitDialog();
 
+	void LoadDataFromFile();
+
+	void OnContextMenu(CWnd* pWnd, CPoint point);
+
+	void OnAddStudent();
+
+	void OnEditStudent();
+
+	void OnViewStudent();
+
+	void OnDeleteStudent();
+
+	void GetStudentFromDlg();
+
 
 	DECLARE_MESSAGE_MAP()
 
 public:
 	CListCtrl m_listCtrl;
+	
+	CString m_cstrId;
+	CString m_cstrName;
+	CString m_cstrBirthday;
+	CString m_cstrFirstName;
+	CString m_cstrLastName;
 };

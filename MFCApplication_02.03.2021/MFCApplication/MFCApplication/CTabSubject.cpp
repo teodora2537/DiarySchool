@@ -46,7 +46,7 @@ BOOL CTabSubject::OnInitDialog() {
 
 	CDialogEx::OnInitDialog();
 
-	m_listCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT);
+	m_listCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
 	
 	LoadDataFromFile(m_listCtrl);
 
@@ -55,9 +55,9 @@ BOOL CTabSubject::OnInitDialog() {
 
 void CTabSubject::OnContextMenu(CWnd* pWnd, CPoint point)
 {
-	
-	if ((m_listCtrl.GetSelectionMark() + 1) == 0)
-		return;
+	POSITION pos = m_listCtrl.GetFirstSelectedItemPosition();
+	//if not sected
+	bool bIsItemSelected = pos != NULL;
 
 	CMenu submenu;
 	submenu.CreatePopupMenu();
@@ -66,6 +66,11 @@ void CTabSubject::OnContextMenu(CWnd* pWnd, CPoint point)
 	submenu.AppendMenu(MF_STRING, IDC_MENU_EDIT_SUBJECT, "Edit subject");
 	submenu.AppendMenu(MF_STRING, IDC_MENU_DEL_SUBJECT, "Delete subject");
 	submenu.AppendMenu(MF_STRING, IDC_MENU_VIEW_SUBJECT, "View subject");
+	
+	//disable edit/delete/view from submenu
+	submenu.EnableMenuItem(IDC_MENU_EDIT_SUBJECT, !bIsItemSelected);
+	submenu.EnableMenuItem(IDC_MENU_DEL_SUBJECT, !bIsItemSelected);
+	submenu.EnableMenuItem(IDC_MENU_VIEW_SUBJECT, !bIsItemSelected);
 
 	submenu.TrackPopupMenu(TPM_LEFTALIGN, point.x, point.y, this);
 	
@@ -74,7 +79,7 @@ void CTabSubject::OnContextMenu(CWnd* pWnd, CPoint point)
 void CTabSubject::OnAddSubject()
 {
 	POSITION pos = m_listCtrl.GetFirstSelectedItemPosition();
-	//if not sected
+	//if not selected
 	if (pos == NULL)
 		return;
 
@@ -82,8 +87,6 @@ void CTabSubject::OnAddSubject()
 	//if don't get selected item
 	if (nItem < 0)
 		return;
-
-	//int nRoomId = (int)m_listCtrl.GetItemData(nItem); //0 - always
 
 	CSubjectData oSubjectData;
 
@@ -104,7 +107,7 @@ void CTabSubject::OnAddSubject()
 void CTabSubject::OnEditSubject()
 {
 	POSITION pos = m_listCtrl.GetFirstSelectedItemPosition();
-	//if not sected
+	//if not selected
 	if (pos == NULL)
 		return;
 
@@ -113,13 +116,13 @@ void CTabSubject::OnEditSubject()
 	if (nItem < 0)
 		return;
 
-	//int nRoomId = (int)m_listCtrl.GetItemData(nItem); //0 - always
+	int nRoomId = (int)m_listCtrl.GetItemData(nItem); 
 
 	CSubjectData oSubjectData;
 
 	CSubject oSubject;
 
-	if (!oSubject.LoadSubject(nItem+1, oSubjectData))
+	if (!oSubject.LoadSubject(nRoomId, oSubjectData))
 		return;
 
 	CSubjectDlg dlg(oSubjectData, eDialogMode_Edit);
@@ -146,19 +149,19 @@ void CTabSubject::OnDeleteSubject()
 	if (nItem < 0)
 		return;
 
-	//int nRoomId = (int)m_listCtrl.GetItemData(nItem); always == 0
+	int nRoomId = (int)m_listCtrl.GetItemData(nItem);
 
 	CSubject oSubject;
 
 	CString message;
-	message.Format("Do you want to delete subject with room # %d?", nItem+1); // nRoomId
+	message.Format("Do you want to delete subject with room # %d?", nRoomId); 
 	int result = MessageBox(message, "Delete subject", MB_YESNO);
 
 	//button yes clicked
 	if (result != IDYES)
 		return;
 
-	if (!oSubject.DeleteSubject(nItem+1)) // nRoomId
+	if (!oSubject.DeleteSubject(nRoomId))
 		return;
 
 	m_listCtrl.DeleteItem(nItem);
@@ -176,13 +179,13 @@ void CTabSubject::OnViewSubject()
 	if (nItem < 0)
 		return;
 
-	//int nRoomId = (int)m_listCtrl.GetItemData(nItem); //0 - always
+	int nRoomId = (int)m_listCtrl.GetItemData(nItem); 
 
 	CSubjectData oSubjectData;
 
 	CSubject oSubject;
 
-	if (!oSubject.LoadSubject(nItem + 1, oSubjectData))
+	if (!oSubject.LoadSubject(nRoomId, oSubjectData))
 		return;
 
 	CSubjectDlg dlg(oSubjectData, eDialogMode_View);
@@ -191,7 +194,7 @@ void CTabSubject::OnViewSubject()
 		return;
 
 
-	if (!oSubject.LoadSubject(nItem+1,oSubjectData))
+	if (!oSubject.LoadSubject(nRoomId,oSubjectData))
 		return;
 
 	LoadDataFromFile(m_listCtrl);
@@ -257,7 +260,6 @@ void CTabSubject::LoadDataFromFile(CListCtrl& m_listCtrl)
 		CString m_cstrTeacher(m_strTeacher.c_str());
 		
 		//get Count list items
-		
 		nCount = m_listCtrl.GetItemCount();
 
 			nItemIndex = m_listCtrl.InsertItem(nCount, m_cstrNumber);
@@ -267,8 +269,8 @@ void CTabSubject::LoadDataFromFile(CListCtrl& m_listCtrl)
 		{
 			m_listCtrl.SetItemText(nItemIndex, 1, m_cstrSubject);
 			m_listCtrl.SetItemText(nItemIndex, 2, m_cstrTeacher);
-
-			//nItemIndex = m_listCtrl.SetItemData(nCount, (DWORD_PTR)i->first); don't show datas
+			//set index back item
+			nItemIndex = m_listCtrl.SetItemData(nCount, (DWORD_PTR)i->first);
 		}
 	}
 }

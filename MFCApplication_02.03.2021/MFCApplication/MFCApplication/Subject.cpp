@@ -128,7 +128,7 @@ bool CSubject::LoadSubject(const int nRoomId, CSubjectData& oSubject)
 	map<int, vector<CString>> m_mapSubjects;
 	PrintSubject(m_mapSubjects);
 	oSubject.m_iRoomNumber = nRoomId;
-	oSubject.m_strNameSubject = m_mapSubjects[nRoomId][0];
+	oSubject.m_strNameSubject  = m_mapSubjects[nRoomId][0];
 	oSubject.m_strFNameTeacher = m_mapSubjects[nRoomId][1];
 	oSubject.m_strLNameTeacher = m_mapSubjects[nRoomId][2];
     return true;

@@ -10,16 +10,12 @@
 #define IDD_TAB_CRUD                    105
 #define IDD_TAB_REFERENCES              106
 #define IDR_MAINFRAME                   128
-#define IDD_DIALOG_ADD_STUDENT          132
-#define IDD_DIALOG_ADD_SCORE            136
 #define IDD_DIALOG_UPDATE_STUDENT       138
 #define IDD_DIALOG_UPDATE_SUBJECT       140
 #define IDD_DIALOG_UPDATE_SCORE         142
 #define IDD_TAB_SUBJECT                 143
 #define IDD_TAB_SCORE                   144
 #define IDC_TAB                         1000
-#define IDC_EDIT_ADD_SCORE_DATE         1007
-#define IDC_EDIT_ADD_SCORE_SCORE        1008
 #define IDC_STATIC7                     1021
 #define IDC_BUTTON1                     1023
 #define IDC_BUTTON_ADD_STUDENT          1023
@@ -36,12 +32,6 @@
 #define IDC_BUTTON2                     1031
 #define IDC_BUTTON_BIRTDAYS             1031
 #define IDC_BUTTON_DELETE_SCORE         1031
-#define IDC_EDIT_ADD_STUDENT_CLASS_NUM  1032
-#define IDC_EDIT_ADD_STUDENT_FN         1033
-#define IDC_EDIT_ADD_STUDENT_LN         1034
-#define IDC_EDIT_ADD_STUDENT_BIRTHDAY   1035
-#define IDC_EDIT_ADD_SCORE_CLASS_NUMBER 1040
-#define IDC_EDIT_ADD_SCORE_SUBJECT      1041
 #define IDC_EDIT_UPDATE_STUDENT_CLASS_NUM 1042
 #define IDC_EDIT_UPDATE_STUDENT_FN      1043
 #define IDC_EDIT_UPDATE_STUDENT_LN      1044
@@ -63,8 +53,11 @@
 #define IDC_BUTTON3                     1062
 #define IDC_MENU_ADD_STUDENT            1063
 #define IDC_MENU_EDIT_STUDENT           1064
+#define IDC_DATETIMEPICKER              1064
 #define IDC_MENU_DEL_STUDENT            1065
 #define IDC_MENU_VIEW_STUDENT           1066
+#define IDC_                            1066
+#define IDC_TEST                        1066
 #define IDC_MENU_ADD_SUBJECT            1067
 #define IDC_MENU_EDIT_SUBJECT           1068
 #define IDC_MENU_DEL_SUBJECT            1069
@@ -80,7 +73,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        153
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1064
+#define _APS_NEXT_CONTROL_VALUE         1067
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

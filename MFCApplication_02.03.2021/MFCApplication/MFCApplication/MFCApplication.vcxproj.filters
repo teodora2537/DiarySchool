@@ -51,12 +51,6 @@
     <ClInclude Include="Score.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AddStudent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CAddScore.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="CUpdateStudent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -107,13 +101,7 @@
     <ClCompile Include="Score.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CAddScore.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="CUpdateStudent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CAddStudent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CUpdateSubject.cpp">

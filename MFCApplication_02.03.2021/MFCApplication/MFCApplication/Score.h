@@ -40,7 +40,7 @@ public:
 public:
 	bool AddScore(CScoreData& oScoreData);
 	bool EditScore(const CScoreData& oScore);
-	bool LoadScore(const int nClassNumber, CScoreData& oScore);
+	bool LoadScore(const int nIdScore, CScoreData& oScore);
 	bool DeleteScore(const int nClassNumber);
-	void PrintScore(multimap<int, vector<CString>>& mapScore); /*LoadAllScores*/
+	void PrintScore(map<int, vector<CString>>& mapScore); /*LoadAllScores*/
 };	
