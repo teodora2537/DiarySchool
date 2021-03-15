@@ -56,7 +56,6 @@ BOOL CTabScore::OnInitDialog() {
 
 void CTabScore::OnContextMenu(CWnd* pWnd, CPoint point)
 {
-
 	POSITION pos = m_listCtrl.GetFirstSelectedItemPosition();
 	//if not sected
 	bool bIsItemSelected = pos != NULL;
@@ -204,8 +203,8 @@ void CTabScore::GetScoreFromDlg()
 
 	CString m_strClassNum = m_listCtrl.GetItemText(m_listCtrl.GetSelectionMark(), 0);
 	CString m_strSubject  = m_listCtrl.GetItemText(m_listCtrl.GetSelectionMark(), 1);
-	CString m_strDate	   = m_listCtrl.GetItemText(m_listCtrl.GetSelectionMark(), 2);
-	CString m_strScore	   = m_listCtrl.GetItemText(m_listCtrl.GetSelectionMark(), 3);
+	CString m_strDate	  = m_listCtrl.GetItemText(m_listCtrl.GetSelectionMark(), 2);
+	CString m_strScore	  = m_listCtrl.GetItemText(m_listCtrl.GetSelectionMark(), 3);
 
 	CScoreData score(_ttoi(m_strClassNum), m_strSubject, _ttoi(m_strScore), m_strDate);
 	score.m_iIdScore =  m_listCtrl.GetSelectionMark() + 1;

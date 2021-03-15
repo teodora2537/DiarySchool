@@ -54,8 +54,8 @@ BOOL CStudentDlg::OnInitDialog()
 	GetDlgItem(IDC_EDIT_UPDATE_STUDENT_FN)->EnableWindow(bEnable);
 	GetDlgItem(IDC_EDIT_UPDATE_STUDENT_LN)->EnableWindow(bEnable);
 	GetDlgItem(IDC_EDIT_UPDATE_STUDENT_BIRTHDAY)->EnableWindow(bEnable);
-
-	m_strClassNum.Format("%d", m_oStudent.m_iClassNumber);
+	Library oLib;
+	m_strClassNum = oLib.IntToCString(m_oStudent.m_iClassNumber);
 	m_strFn = m_oStudent.m_strFirstName;
 	m_strLn = m_oStudent.m_strLastName;
 	m_strBirthday = m_oStudent.m_strBirthday;

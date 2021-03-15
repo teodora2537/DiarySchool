@@ -22,4 +22,5 @@ public:
 	string ConvertToString(CString str_cstr, string row);
 	void ClearListCtrl(CListCtrl& m_listCtrl);
 	BOOL IsCorrectDate(CString date);
+	CString IntToCString(int input);
 };

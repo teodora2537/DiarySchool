@@ -82,82 +82,6 @@ bool CStudent::EditStudent(const CStudentData& oStudent) {
 	return true;
 }
 
-/*
-bool CStudent::EditStudent(const CStudentData& oStudent)
-{
-	//Datas from edit boxes
-	Library oLib;
-	int classNum = oStudent.m_iClassNumber;
-	CString fName = oStudent.m_strFirstName;
-	CString lName = oStudent.m_strLastName;
-	CString birthday = oStudent.m_strBirthday;
-
-	int count = 0;
-	string text;
-	CString token;
-	fstream file;
-	size_t position;
-	CStudentData currentStudent;
-	bool isFind = false;
-	map<int, vector<CString>> mapStudent;
-
-	file.open("Student.txt", ios::in);
-
-	while (getline(file, text))
-	{
-		position = 0;
-		count = 0;
-		// set data's student to class student
-		while (true)
-		{
-			position = text.find(DEF_FILE_DATA_SEPARATOR);
-			token =  (text.substr(0, position)).c_str();
-			count++;
-			if (count == 1) currentStudent.m_iClassNumber = atoi(token);
-			else if (count == 2) currentStudent.m_strFirstName = token;
-			else if (count == 3) currentStudent.m_strLastName = token;
-			else if (count == 4) { currentStudent.m_strBirthday = token; break; }
-			text = text.substr(position + 1, text.length());
-		}
-		//if student exist (from edit box) save it and continue. 
-		if (currentStudent.m_iClassNumber == classNum ||
-			(currentStudent.m_strFirstName == fName && currentStudent.m_strLastName == lName) ||
-			currentStudent.m_strBirthday == birthday)
-		{
-			mapStudent[classNum].push_back(fName);
-			mapStudent[classNum].push_back(lName);
-			mapStudent[classNum].push_back(birthday);
-			isFind = true;
-			continue;
-		}
-		//save student from file
-		mapStudent[currentStudent.m_iClassNumber].push_back(currentStudent.m_strFirstName);
-		mapStudent[currentStudent.m_iClassNumber].push_back(currentStudent.m_strLastName);
-		mapStudent[currentStudent.m_iClassNumber].push_back(currentStudent.m_strBirthday);
-	}
-	file.close();
-
-	if (isFind)
-	{
-		ofstream outFile;
-		outFile.open("Student.txt", ios::out | ios::trunc);
-		//Set student in the file.
-		for (auto i = mapStudent.begin(); i != mapStudent.end(); i++)
-		{
-			outFile << (*i).first << DEF_FILE_DATA_SEPARATOR 
-					<< (*i).second[0] << DEF_FILE_DATA_SEPARATOR 
-					<< (*i).second[1] << DEF_FILE_DATA_SEPARATOR 
-					<< (*i).second[2] << "\n";
-		}
-		outFile.close();
-
-		return true;
-	}
-	else return false;
-
-}
-*/
-
 bool CStudent::LoadStudent(const int nClassNumber, CStudentData& oStudent)
 {
 	map<int, vector<CString>> m_mapStudents;
@@ -200,73 +124,6 @@ bool CStudent::DeleteStudent(const int nClassNumber) {
 	return true;
 }
 
-/*
-bool CStudent::DeleteStudent(const int nClassNumber)
-{
-	CStudentData student;
-	CString fName = student.m_strFirstName;
-	CString lName = student.m_strLastName;
-	CString birthday = student.m_strBirthday;
-
-	int count = 0;
-	string text;
-	CString token;
-	fstream file;
-	size_t position;
-	bool isFind = false;
-	map<int, vector<CString>> mapStudent;
-	CStudentData currentStudent;
-
-	file.open("Student.txt", ios::in);
-
-	while (getline(file, text))
-	{
-		position = 0;
-		count = 0;
-		while (true)
-		{
-			position = text.find(DEF_FILE_DATA_SEPARATOR);
-			token = (text.substr(0, position)).c_str();
-			count++;
-			if (count == 1) currentStudent.m_iClassNumber = atoi(token);
-			else if (count == 2) currentStudent.m_strFirstName = token;
-			else if (count == 3) currentStudent.m_strLastName = token;
-			else if (count == 4) { currentStudent.m_strBirthday = token; break; }
-			text = text.substr(position + 1, text.length());
-		}
-
-		if (currentStudent.m_iClassNumber == nClassNumber)
-		{
-			isFind = true;
-			continue;
-		}
-
-		mapStudent[currentStudent.m_iClassNumber].push_back(currentStudent.m_strFirstName);
-		mapStudent[currentStudent.m_iClassNumber].push_back(currentStudent.m_strLastName);
-		mapStudent[currentStudent.m_iClassNumber].push_back(currentStudent.m_strBirthday);
-	}
-	file.close();
-
-	if (isFind)
-	{
-		ofstream outFile;
-		outFile.open("Student.txt", ios::out | ios::trunc);
-
-		for (auto i = mapStudent.begin(); i != mapStudent.end(); i++)
-		{
-			outFile << (*i).first << DEF_FILE_DATA_SEPARATOR 
-					<< (*i).second[0] << DEF_FILE_DATA_SEPARATOR 
-					<< (*i).second[1] << DEF_FILE_DATA_SEPARATOR 
-					<< (*i).second[2] << "\n";
-		}
-		outFile.close();
-
-		return true;
-	}
-	else return false;
-}
-*/
-
 void CStudent::PrintStudent(map<int, vector<CString>>& m_mapAllStudent)
 {
 	int count = 0;
@@ -304,6 +161,7 @@ void CStudent::PrintStudent(map<int, vector<CString>>& m_mapAllStudent)
 //Average score by subject -> id student, subject | full name student, avg score by subject
 void CStudent::AverageScoreBySubject(map<vector<CString>, vector<CString>>& m_mapAverageScoreBySub)
 {
+	Library oLib;
 	//id student | fn, ln, birthday
 	map<int, vector<CString>> m_mapStudent;
 	PrintStudent(m_mapStudent);
@@ -316,78 +174,11 @@ void CStudent::AverageScoreBySubject(map<vector<CString>, vector<CString>>& m_ma
 	{
 		CString fullNameStudent = m_mapStudent[atoi((*i).first[0])][0] + " " + m_mapStudent[atoi((*i).first[0])][1];
 		CString m_strAvgScore;
-		m_strAvgScore.Format("%d", (i->second[0]));
+		m_strAvgScore = oLib.IntToCString(i->second[0]);
 
 		m_mapAverageScoreBySub.insert(pair<vector<CString>, vector<CString>>(i->first, vector<CString>{fullNameStudent, m_strAvgScore}));
 	}
 }
-
-//Average score by subject
-/*
- void CStudent::AverageScoreBySubject(map<int, vector<CString>>& m_mapAverageScoreBySub)
- {
-	 map<vector<CString>, vector<int>> mapAllScoreBySub;
-	 AverageScore(mapAllScoreBySub);
-
-	map<int, vector<CString>> m_mapAllScore;
-	CScore oScore;
-	oScore.PrintScore(m_mapAllScore);
-	int m_iStudent;
-	CString m_strSubject;
-	int m_iCurrentStudent;
-	CString m_strCurrentSubject;
-	CString m_strCurrentScore;
-	float m_fSum = 0;
-	int m_iCount = 0;
-	float m_fAvg;
-	int m_iAverageScore;
-	CString m_strName;
-
-	//loop for, for all score 
-	for (map<int, vector<CString>>::iterator i = m_mapAllScore.begin(); i != m_mapAllScore.end(); i++)
-	{
-		//m_iStudent = (*i).first;
-		m_iStudent = atoi((*i).second[0]);
-		m_strSubject = (*i).second[2];
-		map<int, vector<CString>> m_mapStudent;
-		PrintStudent(m_mapStudent);
-
-		if (std::count(m_mapAverageScoreBySub[m_iStudent].begin(), m_mapAverageScoreBySub[m_iStudent].end(), m_strSubject))
-			continue;
-
-		//loop for, for all score 
-		for (multimap<int, vector<CString>>::iterator j = i; j != m_mapAllScore.end(); j++)
-		{
-			//m_iCurrentStudent = (*j).first;
-			m_iCurrentStudent = atoi((*j).second[0]);
-			m_strCurrentSubject = (*j).second[2];
-			m_strCurrentScore = (*j).second[3];
-
-			//sum all score of student by subject
-			if (m_iStudent == m_iCurrentStudent && m_strSubject == m_strCurrentSubject)
-			{
-				m_fSum += atoi(m_strCurrentScore);
-				m_iCount++;
-			}
-		}
-
-		//add in student subject and average score 
-		m_fAvg = m_fSum / m_iCount;
-		m_iAverageScore = round(m_fAvg);
-		CString m_strAverageScore;
-		m_strAverageScore.Format("%d",m_iAverageScore);
-		m_strAverageScore = m_strAverageScore;
-		m_strName = m_mapStudent[m_iStudent][0] + " " + m_mapStudent[m_iStudent][1];
-
-		m_mapAverageScoreBySub[m_iStudent].push_back(m_strName);
-		m_mapAverageScoreBySub[m_iStudent].push_back(m_strSubject);
-		m_mapAverageScoreBySub[m_iStudent].push_back(m_strAverageScore);
-
-		m_fSum = 0;
-		m_iCount = 0;
-	}
-}
-*/
 
 //Average score by all subject
 //id student| full name student, avg score
@@ -408,10 +199,11 @@ void CStudent::AverageScoreByAllSubject(map<int, vector<CString>>& m_mapAverageS
 	CString m_strAvgScore;
 	/// 
 
+	Library oLib;
 	for (map<vector<CString>, vector<int>>::iterator i = mapAllScoreBySub.begin(); i != mapAllScoreBySub.end(); i++)
 	{
 		CString m_strAvgScore;
-		m_strAvgScore.Format("%d", (i->second[0]));
+		m_strAvgScore = oLib.IntToCString((i->second[0]));
 		if (atoi(i->first[0]) == idStudent)
 		{
 			sum += i->second[0];
@@ -421,7 +213,7 @@ void CStudent::AverageScoreByAllSubject(map<int, vector<CString>>& m_mapAverageS
 			CString fullNameStudent = m_mapStudent[idStudent][0] + " " + m_mapStudent[idStudent][1];
 			m_fAvg = sum * 1.0 / count;
 			m_iAverageScore = round(m_fAvg);
-			m_strAvgScore.Format("%d", m_iAverageScore);
+			m_strAvgScore = oLib.IntToCString(m_iAverageScore);
 			//insert datas
 			m_mapAverageScore.insert(pair<int, vector<CString>>(idStudent, vector<CString>{fullNameStudent, m_strAvgScore}));
 			//last student
@@ -434,61 +226,6 @@ void CStudent::AverageScoreByAllSubject(map<int, vector<CString>>& m_mapAverageS
 		}
 	}
 }
-/*
- void CStudent::AverageScoreByAllSubject(map<int, vector<CString>>& m_mapAverageScore) {	 
-	 map<int, vector<CString>> m_mapAllScore;
-	 map<int, vector<CString>> m_mapStudent;  
-	 PrintStudent(m_mapStudent);
-	 size_t countStudents = m_mapStudent.size();
-	 
-	 float m_fSum = 0;
-	 float m_fAvg;
-	 
-	 int m_iCount = 0;
-	 int m_iCurrentStudent;
-	 int m_iAverageScore;
-	 
-	 CString m_strCurrentScore;
-	 CString m_strName;
-
-	CScore oScore; 
-	oScore.PrintScore(m_mapAllScore);
-
-	//loop for, for all score 
-	for (auto i = 1; i <= countStudents; i++)
-	{
-		//loop for, for all score 
-		for (auto j = m_mapAllScore.begin(); j != m_mapAllScore.end(); j++)
-		{
-			//m_iCurrentStudent = (*j).first;
-			m_iCurrentStudent = atoi((*j).second[0]);
-			m_strCurrentScore = (*j).second[3];
-
-			//sum all score of student by subject
-			if (i == m_iCurrentStudent)
-			{
-				m_fSum += atoi(m_strCurrentScore);
-				m_iCount++;
-			}
-		}
-
-		if (m_fSum == 0)
-			continue;
-
-		//add in student subject and average score 
-		m_fAvg = m_fSum / m_iCount;
-		m_iAverageScore = round(m_fAvg);
-		CString m_strAverageScore;
-		m_strAverageScore.Format("%d", m_iAverageScore);
-		m_strName = m_mapStudent[i][0] + " " + m_mapStudent[i][1];
-		m_mapAverageScore[i].push_back(m_strName);
-		m_mapAverageScore[i].push_back(m_strAverageScore);
-
-		m_fSum = 0;
-		m_iCount = 0;
-	}
-}
-*/
 
 //Excellent student
  void CStudent::ExcellentStudent(vector<CString>& m_vecStudentsName) {
@@ -501,61 +238,6 @@ void CStudent::AverageScoreByAllSubject(map<int, vector<CString>>& m_mapAverageS
 		 if (i->second[1] == "6")
 			 m_vecStudentsName.push_back(i->second[0]);
 	 }
-
-	 /*
-	 map<int, int> m_mapStudentScore;
-	 map<int, vector<CString>> m_mapStudent;
-	 PrintStudent(m_mapStudent);
-	 
-	 float m_fSum = 0;
-	 
-	 int m_iCount = 0;
-
-	 map<int, vector<CString>> m_mapAllScore;
-	 CScore oScore;
-	 oScore.PrintScore(m_mapAllScore);
-	
-	//loop for all score
-	for (auto i = m_mapAllScore.begin(); i != m_mapAllScore.end(); i++)
-	{
-		//if student exist -> continue
-		if (m_mapStudentScore.count(atoi((*i).second[0])))
-		{
-			m_fSum = m_iCount = 0;
-			continue;
-		}
-
-	
-		if (std::find(m_mapAllScore[(*i).first].begin(), m_mapAllScore[(*i).first].end(), 20) != m_mapAllScore[(*i).first].end()) {
-		
-		}
-
-		//loop for student -> sum all score of student
-		for (multimap<int, vector<CString>>::iterator j = m_mapAllScore.begin(); j != m_mapAllScore.end(); j++)
-		{
-			if ((*i).second[0] == (*j).second[0])
-			{
-				m_fSum += atoi((*j).second[3]);
-				m_iCount++;
-			}
-		}
-		//add average score of student
-		m_mapStudentScore[atoi((*i).second[0])] = m_fSum / m_iCount;
-	}
-
-	//Get name excellent students
-	for (auto i = m_mapStudentScore.begin(); i != m_mapStudentScore.end(); i++)
-	{
-		for (auto j = m_mapStudent.begin(); j != m_mapStudent.end(); j++)
-		{
-			if ((*i).first == (*j).first && (*i).second >= 5.5)
-			{
-				m_vecStudentsName.push_back((*j).second[0] + " " + (*j).second[1]);
-				break;
-			}
-		}
-	}
-	 */
 }
 
 // CStudentData have birthday today
@@ -591,68 +273,6 @@ void CStudent::remedialExaminationBySubject(map<vector<CString>, CString>& mapAv
 			mapAverageScore.insert(pair<vector<CString>, CString>(vector<CString>{i->first[0], i->first[1]}, i->second[0]));
 		}
 	}
-
-	/*
-	map<int, vector<CString>> m_mapStudent;
-	PrintStudent(m_mapStudent);
-	float m_fSum = 0;
-	float m_fAvg;
-	int m_iCount = 0;
-	int m_iStudent;
-	int m_iCurrentStudent;
-	int m_iAverageScore;
-	CString m_strSubject;
-	CString m_strCurrentSubject;
-	CString m_strCurrentScore;
-	CString m_strName;
-
-	CScore oScore;
-	map<int, vector<CString>> m_mapAllScore;
-	oScore.PrintScore(m_mapAllScore);
-
-	//loop for, for all score 
-	for (auto i = m_mapAllScore.begin(); i != m_mapAllScore.end(); i++)
-	{
-		m_iStudent = atoi((*i).second[0]);
-		m_strSubject = (*i).second[2];
-
-		//if student and subject exist -> continue
-		if (m_mapAverageScore.count(m_iStudent) > 0) {
-			vector<CString> vec_subjects = m_mapAverageScore[m_iStudent];
-			if (find(vec_subjects.begin(), vec_subjects.end(), m_strSubject) != vec_subjects.end()) {
-				continue;
-			}
-		}
-
-		//loop for, for all score 
-		for (auto j = m_mapAllScore.begin(); j != m_mapAllScore.end(); j++)
-		{
-			m_iCurrentStudent = atoi((*j).second[0]);
-			m_strCurrentSubject = (*j).second[2];
-			m_strCurrentScore = (*j).second[3];
-
-			//sum all score of student by subject
-			if (m_iStudent == m_iCurrentStudent && m_strSubject == m_strCurrentSubject)
-			{
-				m_fSum += atoi(m_strCurrentScore);
-				m_iCount++;
-			}
-		}
-
-		//add in student subject and average score 
-		m_fAvg = m_fSum / m_iCount;
-		m_iAverageScore = round(m_fAvg);
-
-		if (m_iAverageScore == 2) {
-			m_strName = m_mapStudent[m_iStudent][0] + " " + m_mapStudent[m_iStudent][1];
-			m_mapAverageScore[m_iStudent].push_back(m_strName);
-			m_mapAverageScore[m_iStudent].push_back(m_strSubject);
-		}
-
-		m_fSum = 0;
-		m_iCount = 0;
-	}
-	*/
 }
 
 void CStudent::remedialExaminationByMoreSubjects(vector<CString>& m_vecStudentsName) {
@@ -678,29 +298,6 @@ void CStudent::remedialExaminationByMoreSubjects(vector<CString>& m_vecStudentsN
 			count = 0;
 		}
 	}
-
-	/*
-	map<int, vector<CString>> m_mapStudent;
-		PrintStudent(m_mapStudent);
-		//id student, subject | full name
-		map<vector<CString>, CString> studentWithPoor;
-		remedialExaminationBySubject(studentWithPoor);
-
-	for (auto i = studentWithPoor.begin(); i != studentWithPoor.end(); i++)
-	{
-
-		int studentNum = (*i).first;
-		//((*i).second.size())/2 -> /2 because inside i have name and score
-		if (((*i).second.size())/2 >= 3)
-		{
-			CString m_strFN = m_mapStudent[studentNum][0];
-			CString m_strLN = m_mapStudent[studentNum][1];
-			//set student name
-			m_vecStudentsName.push_back(m_strFN);
-			m_vecStudentsName.push_back(m_strLN);
-		}
-	}
-	*/
 }
 
 int CStudent::CountStudent()
@@ -711,7 +308,8 @@ int CStudent::CountStudent()
 	return m_mapStudent.size();
 }
 
-//Average score: //id student, subject | average scores(int)
+//Average score: 
+//id student, subject | average scores(int)
 void CStudent::AverageScore(map<vector<CString>, vector<int>>& mapAllScoreBySub) {
 	//map: idScore; [0]= # class, [1] = full name, [2] = subject, [3] = score, [4] = date
 	map<int, vector<CString>> m_mapAllScore;
@@ -757,7 +355,6 @@ void CStudent::AverageScore(map<vector<CString>, vector<int>>& mapAllScoreBySub)
 
 		m_fAvg = sum * 1.0 / m_vecScore.capacity();
 		m_iAverageScore = round(m_fAvg);
-		//m_strAvgScore.Format("%d", m_iAverageScore);
 		m_vecScore.clear();
 		m_vecScore.push_back(m_iAverageScore);
 		mapAllScoreBySub[i->first] = m_vecScore;

@@ -183,30 +183,6 @@ void CTabReference::OnBnClickedButton()
 			m_listCtrl.SetItemText(m_iPosition, 2, i->first[1]);
 
 			m_iPosition++;
-
-		/*
-		m_iStudent = (*i).first;
-		
-		vector<CString> m_vecSubjects = m_mapRemedialExaminationBySubject[m_iStudent];
-		
-		string m_strIdStudent = to_string(m_iStudent);
-		CString cstrNumber(m_strIdStudent.c_str());
-		
-		for (int j = 0; j < m_vecSubjects.size(); j+=2) {
-			
-			string m_strStudentName = m_mapRemedialExaminationBySubject[m_iStudent][j];
-			string m_strSubject = m_mapRemedialExaminationBySubject[m_iStudent][j+1];
-			
-			CString m_cstrName(m_strStudentName.c_str());
-			CString m_cstrSubject(m_strSubject.c_str());
-			
-			m_listCtrl.InsertItem(m_iPosition, cstrNumber);
-			m_listCtrl.SetItemText(m_iPosition, 1, m_cstrName);
-			m_listCtrl.SetItemText(m_iPosition, 2, m_cstrSubject);
-
-			m_iPosition++;
-		}
-		*/
 	}
 	
 }

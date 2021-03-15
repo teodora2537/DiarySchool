@@ -44,8 +44,8 @@ BOOL CSubjectDlg::OnInitDialog()
 	GetDlgItem(IDC_EDIT_UPDATE_SUBJECT_SUBJECT)->EnableWindow(bEnable);
 	GetDlgItem(IDC_EDIT_UPDATE_SUBJECT_FN)->EnableWindow(bEnable);
 	GetDlgItem(IDC_EDIT_UPDATE_SUBJECT_LN)->EnableWindow(bEnable);
-	
-	m_strRoomNum.Format("%d", m_oSubject.m_iRoomNumber);
+	Library oLib;
+	m_strRoomNum = oLib.IntToCString(m_oSubject.m_iRoomNumber);
 	m_strSubject =  m_oSubject.m_strNameSubject;
 	m_strFN = m_oSubject.m_strFNameTeacher;
 	m_strLN = m_oSubject.m_strLNameTeacher;
@@ -61,7 +61,6 @@ void CSubjectDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Text(pDX, IDC_EDIT_UPDATE_SUBJECT_ROOM_NUM, m_strRoomNum);
-	//DDX_Control(pDX, IDC_EDIT_UPDATE_SUBJECT_ROOM_NUM, m_eRoomNum);
 	DDX_Text(pDX, IDC_EDIT_UPDATE_SUBJECT_SUBJECT, m_strSubject);
 	DDV_MaxChars(pDX, m_strSubject, 25);//Size of subject
 	DDX_Text(pDX, IDC_EDIT_UPDATE_SUBJECT_FN, m_strFN);

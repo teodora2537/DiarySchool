@@ -36,8 +36,6 @@ void CScoreDlg::DoDataExchange(CDataExchange* pDX)
 	CStudent oStudent;
 	DDV_MinMaxInt(pDX, atoi(m_strClassNum), 1, oStudent.CountStudent());	
 	
-	DDX_Text(pDX, IDC_EDIT_UPDATE_SCORE_SUBJECT, m_strSubject);	
-	DDV_MaxChars(pDX, m_strSubject, 20);//Size of subject
 	DDX_Text(pDX, IDC_EDIT_UPDATE_SCORE_SCORE, m_strScore);
 	DDV_MaxChars(pDX, m_strScore, 1);//Size of score
 	DDV_MinMaxInt(pDX, atoi(m_strScore), 2, 6);
@@ -55,6 +53,7 @@ void CScoreDlg::DoDataExchange(CDataExchange* pDX)
 /*virtual*/
 BOOL CScoreDlg::OnInitDialog()
 {
+	Library oLib;
 	CSubject oSubject;
 	map<int, vector<CString>> m_mapAllSubjects;
 	oSubject.PrintSubject(m_mapAllSubjects);
@@ -71,12 +70,11 @@ BOOL CScoreDlg::OnInitDialog()
 	BOOL bEnable = m_eMode != eDialogMode_View;
 	GetDlgItem(IDC_EDIT_UPDATE_SCORE_CLASS_NUMBER)->EnableWindow(FALSE);
 	GetDlgItem(IDC_COMBO_SUBJECT)->EnableWindow(bEnable);
-	GetDlgItem(IDC_EDIT_UPDATE_SCORE_SUBJECT)->EnableWindow(bEnable);
 	GetDlgItem(IDC_EDIT_UPDATE_SCORE_SCORE)->EnableWindow(bEnable);
 	GetDlgItem(IDC_EDIT_UPDATE_SCORE_DATE)->EnableWindow(bEnable);
 
-	m_strClassNum.Format("%d", m_oScore.m_iClassNum);
-	m_strScore.Format("%d",m_oScore.m_iScore);
+	m_strClassNum = oLib.IntToCString(m_oScore.m_iClassNum);
+	m_strScore= oLib.IntToCString(m_oScore.m_iScore);
 	m_strSubject = m_oScore.m_strSubject;
 	m_strDate = m_oScore.m_strDate;
 

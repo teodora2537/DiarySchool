@@ -62,3 +62,10 @@ BOOL Library::IsCorrectDate(CString strDate) {
 
  return true;
 }
+
+CString Library::IntToCString(int input) {
+	CString str;
+	str.Format("%d", input);
+
+	return str;
+}
