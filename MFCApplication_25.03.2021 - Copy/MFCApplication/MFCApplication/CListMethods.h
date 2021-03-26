@@ -3,6 +3,7 @@
 #include "CTabStudent.h"
 #include "CTabSubject.h"
 #include "CTabScore.h"
+#include "CTabReference.h"
 #include <iostream>
 using namespace std;
 
@@ -13,26 +14,33 @@ typedef enum {
 } SortOrder;
 
 typedef struct SubStruct {
-    CString idRoom;
-    CString subject;
-    CString nameTeacher;
-} ListData;
+    CString strIdRoom;
+    CString strSubject;
+    CString strNameTeacher;
+};
 
-typedef struct StudentStruct {     // data layout for each row
-    int idStudent;
-    CString nameStudent;
-    CString birthday;
-} SampleListData;
+typedef struct StudentStruct {
+    int nIdStudent;
+    CString strNameStudent;
+    CString strBirthday;
+};
 
-typedef struct ScoreStruct {     // data layout for each row
-    int idScore;
-    CString idStudent;
-    CString nameStudent;
-    CString subject;
-    CString score;
-    CString date;
-} SampleListData_;
+typedef struct ScoreStruct {
+    int nIdScore;
+    CString strIdStudent;
+    CString strNameStudent;
+    CString strSubject;
+    CString strScore;
+    CString strDate;
+};
 
+typedef struct ReferenceStruct {
+    
+    int nIdStudent;
+    CString strNameStudent;
+    CString strSubject;
+    CString strAvgScore;
+};
 
 class CListMethods :
     public CDialogEx,

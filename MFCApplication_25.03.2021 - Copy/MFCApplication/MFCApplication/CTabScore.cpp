@@ -57,11 +57,8 @@ BOOL CTabScore::OnInitDialog() {
 	m_listCtrl.InsertColumn(2, "Subject", LVCFMT_LEFT, 100);
 	m_listCtrl.InsertColumn(3, "Score", LVCFMT_LEFT, 50);
 	m_listCtrl.InsertColumn(4, "Date", LVCFMT_LEFT, 100);
-	
-	map<int, vector<CString>> mapScore;
-	CScore oScore;
-	oScore.PrintScore(mapScore);
-	LoadDataFromFile(mapScore);
+
+	LoadDataFromFile();
 	return true;
 }
 
@@ -87,10 +84,9 @@ void CTabScore::OnContextMenu(CWnd* pWnd, CPoint point)
 }
 
 void CTabScore::OnAddScore()
-{
-	CScoreData oScoreData;
-
+{	
 	CScore oScore;
+	CScoreData oScoreData;
 
 	oScoreData.m_iIdScore = m_listCtrl.GetItemCount() + 1;
 
@@ -102,9 +98,7 @@ void CTabScore::OnAddScore()
 	if (!oScore.AddScore(oScoreData))
 		return;
 
-	map<int, vector<CString>> mapScore;	
-	oScore.PrintScore(mapScore);
-	LoadDataFromFile(mapScore);
+	LoadDataFromFile();
 }
 
 void CTabScore::OnEditScore()
@@ -136,9 +130,7 @@ void CTabScore::OnEditScore()
 	if (!oScore.EditScore(oScoreData))
 		return;
 
-	map<int, vector<CString>> mapScore;
-	oScore.PrintScore(mapScore);
-	LoadDataFromFile(mapScore);
+	LoadDataFromFile();
 }
 
 void CTabScore::OnDeleteScore()
@@ -199,9 +191,7 @@ void CTabScore::OnViewScore()
 	if (!oScore.LoadScore(nRoomId, oScoreData))
 		return;
 
-	map<int, vector<CString>> mapScore;
-	oScore.PrintScore(mapScore);
-	LoadDataFromFile(mapScore);
+	LoadDataFromFile();
 }
 
 void CTabScore::GetScoreFromDlg()
@@ -290,24 +280,27 @@ void CTabScore::LoadDataFromStruct()
 		//get Count list items
 		nCount = m_listCtrl.GetItemCount();
 
-		nItemIndex = m_listCtrl.InsertItem(nCount, it->idStudent);
+		nItemIndex = m_listCtrl.InsertItem(nCount, it->strIdStudent);
 
 		if (nItemIndex > -1)
 		{
-			m_listCtrl.SetItemText(nItemIndex, 1, it->nameStudent);
-			m_listCtrl.SetItemText(nItemIndex, 2, it->subject);
-			m_listCtrl.SetItemText(nItemIndex, 3, it->score);
-			m_listCtrl.SetItemText(nItemIndex, 4, it->date);
+			m_listCtrl.SetItemText(nItemIndex, 1, it->strNameStudent);
+			m_listCtrl.SetItemText(nItemIndex, 2, it->strSubject);
+			m_listCtrl.SetItemText(nItemIndex, 3, it->strScore);
+			m_listCtrl.SetItemText(nItemIndex, 4, it->strDate);
 
 			//set index back item
-			nItemIndex = m_listCtrl.SetItemData(nCount, (DWORD_PTR)it->idScore);
+			nItemIndex = m_listCtrl.SetItemData(nCount, (DWORD_PTR)it->nIdScore);
 		}
 	}
 }
 //////////////////////////////////////////////////////////////////////////////
-void CTabScore::LoadDataFromFile(map<int, vector<CString>>& mapScore)
+void CTabScore::LoadDataFromFile()
 {
+	CScore oScore;
 	m_listCtrl.DeleteAllItems();
+	map<int, vector<CString>> mapScore;	
+	oScore.PrintScore(mapScore);
 	Library oLib;
 	int nCount = 0;
 	int nItemIndex = 0;
@@ -321,17 +314,17 @@ void CTabScore::LoadDataFromFile(map<int, vector<CString>>& mapScore)
 		ScoreStruct scoreStruct = {it->first, it->second[0], it->second[1], it->second[2], it->second[3], it->second[4]};
 		m_listScore.push_back(scoreStruct);
 
-		nItemIndex = m_listCtrl.InsertItem(nCount, scoreStruct.idStudent);
+		nItemIndex = m_listCtrl.InsertItem(nCount, scoreStruct.strIdStudent);
 
 		if (nItemIndex > -1)
 		{
-			m_listCtrl.SetItemText(nItemIndex, 1, scoreStruct.nameStudent);
-			m_listCtrl.SetItemText(nItemIndex, 2, scoreStruct.subject);
-			m_listCtrl.SetItemText(nItemIndex, 3, scoreStruct.score);
-			m_listCtrl.SetItemText(nItemIndex, 4, scoreStruct.date);
+			m_listCtrl.SetItemText(nItemIndex, 1, scoreStruct.strNameStudent);
+			m_listCtrl.SetItemText(nItemIndex, 2, scoreStruct.strSubject);
+			m_listCtrl.SetItemText(nItemIndex, 3, scoreStruct.strScore);
+			m_listCtrl.SetItemText(nItemIndex, 4, scoreStruct.strDate);
 		
 			//set index back item
-			nItemIndex = m_listCtrl.SetItemData(nCount, (DWORD_PTR)scoreStruct.idScore);
+			nItemIndex = m_listCtrl.SetItemData(nCount, (DWORD_PTR)scoreStruct.nIdScore);
 		}
 	}
 }

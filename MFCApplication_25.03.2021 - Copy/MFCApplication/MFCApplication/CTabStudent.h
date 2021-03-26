@@ -1,29 +1,13 @@
 #pragma once
 #include "CListMethods.h"
 
-
-// CTabStudent dialog
-
-
-/*
-typedef enum {
-	SORT_None = 0,
-	SORT_AZ = -1,
-	SORT_ZA = 1,
-} SortOrderStudent;
-*/
-
-
-
-
-
 class CTabStudent : public CDialogEx
 {
 	DECLARE_DYNAMIC(CTabStudent)
 
 public:
 	CTabStudent(CWnd* pParent = nullptr);   // standard constructor
-	afx_msg void OnInitialUpdate();
+	//afx_msg void OnInitialUpdate();
 	virtual ~CTabStudent();
 
 	// Dialog Data

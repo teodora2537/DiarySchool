@@ -41,7 +41,6 @@ END_MESSAGE_MAP()
 
 BOOL CTabSubject::OnInitDialog() {
 
-	//CDialogEx::OnInitDialog();
 	if (!__super::OnInitDialog())
 		return FALSE;
 	
@@ -49,7 +48,7 @@ BOOL CTabSubject::OnInitDialog() {
 	m_listCtrl.InsertColumn(0, "#", LVCFMT_LEFT, 30);
 	m_listCtrl.InsertColumn(1, "Subject", LVCFMT_LEFT, 100);
 	m_listCtrl.InsertColumn(2, "Teacher", LVCFMT_LEFT, 100);
-	LoadDataFromFile(m_listCtrl);
+	LoadDataFromFile();
 
 	return true;
 }
@@ -91,7 +90,7 @@ void CTabSubject::OnAddSubject()
 
 	if (!oSubject.AddSubject(oSubjectData))
 		return;
-	LoadDataFromFile(m_listCtrl);
+	LoadDataFromFile();
 }
 
 void CTabSubject::OnEditSubject()
@@ -124,7 +123,7 @@ void CTabSubject::OnEditSubject()
 	if (!oSubject.EditSubject(oSubjectData))
 		return;
 
-	LoadDataFromFile(m_listCtrl);
+	LoadDataFromFile();
 }
 
 void CTabSubject::OnDeleteSubject()
@@ -187,7 +186,7 @@ void CTabSubject::OnViewSubject()
 	if (!oSubject.LoadSubject(nRoomId, oSubjectData))
 		return;
 
-	LoadDataFromFile(m_listCtrl);
+	LoadDataFromFile();
 }
 
 void CTabSubject::GetSubjectFromDlg()
@@ -232,9 +231,10 @@ list<SubStruct> m_listSubject;
 SortOrder orderIdRoom = SORT_None;
 SortOrder orderSubs = SORT_None;
 SortOrder orderTeachers = SORT_None;
+
 SortOrder sortOrderSubject = SORT_None;
 
-void CTabSubject::LoadDataFromFile(CListCtrl& m_listCtrl)
+void CTabSubject::LoadDataFromFile()
 {
 	m_listCtrl.DeleteAllItems();
 	Library oLib;
@@ -254,15 +254,15 @@ void CTabSubject::LoadDataFromFile(CListCtrl& m_listCtrl)
 		SubStruct subStruct = { oLib.IntToCString(it->first), it->second[0], it->second[1] + " " + it->second[2] };
 		m_listSubject.push_back(subStruct);
 
-		nItemIndex = m_listCtrl.InsertItem(nCount, subStruct.idRoom);
+		nItemIndex = m_listCtrl.InsertItem(nCount, subStruct.strIdRoom);
 
 		if (nItemIndex > -1)
 		{
-			m_listCtrl.SetItemText(nItemIndex, 1, subStruct.subject);
-			m_listCtrl.SetItemText(nItemIndex, 2, subStruct.nameTeacher);
+			m_listCtrl.SetItemText(nItemIndex, 1, subStruct.strSubject);
+			m_listCtrl.SetItemText(nItemIndex, 2, subStruct.strNameTeacher);
 
 			//set index back item
-			nItemIndex = m_listCtrl.SetItemData(nCount, (DWORD_PTR)atoi(subStruct.idRoom));
+			nItemIndex = m_listCtrl.SetItemData(nCount, (DWORD_PTR)atoi(subStruct.strIdRoom));
 		}
 	}
 	
@@ -314,15 +314,15 @@ void CTabSubject::LoadDataFromListStruct()
 
 		nCount = m_listCtrl.GetItemCount();
 
-		nItemIndex = m_listCtrl.InsertItem(nCount, it->idRoom);
+		nItemIndex = m_listCtrl.InsertItem(nCount, it->strIdRoom);
 
 		if (nItemIndex > -1)
 		{
-			m_listCtrl.SetItemText(nItemIndex, 1, it->subject);
-			m_listCtrl.SetItemText(nItemIndex, 2, it->nameTeacher);
+			m_listCtrl.SetItemText(nItemIndex, 1, it->strSubject);
+			m_listCtrl.SetItemText(nItemIndex, 2, it->strNameTeacher);
 
 			//set index back item
-			nItemIndex = m_listCtrl.SetItemData(nCount, (DWORD_PTR)atoi(it->idRoom));
+			nItemIndex = m_listCtrl.SetItemData(nCount, (DWORD_PTR)atoi(it->strIdRoom));
 		}
 	}
 }

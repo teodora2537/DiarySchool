@@ -13,7 +13,7 @@ public:
 	CSubjectData(int _roomNumber, CString _nameSubject, CString _fNameTeacher, CString _lNameTeacher);
 	CSubjectData();
 
-	int m_iRoomNumber = 0;
+	int m_iRoomNumber{0};
 	CString m_strNameSubject;
 	CString m_strFullNameTeacher;
 	CString m_strFNameTeacher;

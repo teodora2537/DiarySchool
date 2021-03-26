@@ -27,8 +27,8 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	CListCtrl m_listCtrl;
-	int m_iRow = 0;
-	int nItem = 0;
+	int m_iRow{0};
+	int nItem = {0};
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 	afx_msg void OnAddScore();
 	afx_msg void OnEditScore();
@@ -40,7 +40,7 @@ public:
 	CString m_cstrSubject;
 	CString m_cstrDate;
 	CString m_cstrScore;
-	void LoadDataFromFile(map<int, vector<CString>>& mapScore);
+	afx_msg void LoadDataFromFile();
 	void OnNMDblclkList(NMHDR* pNMHDR, LRESULT* pResult);
 	void OnLvnColumnclickList(NMHDR* pNMHDR, LRESULT* pResult);
 	void LoadDataFromStruct();

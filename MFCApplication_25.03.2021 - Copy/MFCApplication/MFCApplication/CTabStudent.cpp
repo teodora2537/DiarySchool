@@ -1,6 +1,3 @@
-// CTabStudent.cpp : implementation file
-//
-
 #include "pch.h"
 #include "MFCApplication.h"
 #include "CTabStudent.h"
@@ -12,11 +9,9 @@
 #include <list>
 using namespace std;;
 
-// CTabStudent dialog
-
 IMPLEMENT_DYNAMIC(CTabStudent, CDialogEx)
 
-CTabStudent::CTabStudent(CWnd* pParent /*=nullptr*/)
+CTabStudent::CTabStudent(CWnd* pParent)
 	: CDialogEx(IDD_TAB_STUDENT, pParent)
 {
 
@@ -44,7 +39,6 @@ END_MESSAGE_MAP()
 
 BOOL CTabStudent::OnInitDialog() {
 
-	//CDialogEx::OnInitDialog();
 	if (!__super::OnInitDialog())
 		return FALSE;
 
@@ -249,11 +243,14 @@ list<StudentStruct> m_listStudent;
 void CTabStudent::LoadDataFromFile()
 {
 	m_listCtrl.DeleteAllItems();
+
 	CStudent oStudent;
 	Library oLib;
 	map<int, vector<CString>> m_mapAllStudent;
 	oStudent.PrintStudent(m_mapAllStudent);
+
 	m_listStudent.clear();
+
 	int nCount = 0;
 	int nItemIndex = 0;
 	
@@ -277,7 +274,6 @@ void CTabStudent::LoadDataFromFile()
 		}
 	}
 }
-
 
 void CTabStudent::OnLvnColumnclickList(NMHDR* pNMHDR, LRESULT* pResult)
 {
@@ -323,14 +319,14 @@ void CTabStudent::LoadDataFromStruct()
 		//get Count list items
 		nCount = m_listCtrl.GetItemCount();
 
-		nItemIndex = m_listCtrl.InsertItem(nCount, oLib.IntToCString(i->idStudent));
+		nItemIndex = m_listCtrl.InsertItem(nCount, oLib.IntToCString(i->nIdStudent));
 
 		if (nItemIndex > -1)
 		{
-			m_listCtrl.SetItemText(nItemIndex, 1, i->nameStudent);
-			m_listCtrl.SetItemText(nItemIndex, 2, i->birthday);
+			m_listCtrl.SetItemText(nItemIndex, 1, i->strNameStudent);
+			m_listCtrl.SetItemText(nItemIndex, 2, i->strBirthday);
 			//set index back item
-			nItemIndex = m_listCtrl.SetItemData(nCount, (DWORD_PTR)i->idStudent);
+			nItemIndex = m_listCtrl.SetItemData(nCount, (DWORD_PTR)i->nIdStudent);
 		}
 	}
 }

@@ -4,22 +4,6 @@
 #include <list>
 #include "CListMethods.h"
 
-// CTabSubject dialog
-/*
-typedef enum {
-	SORT_None = 0,
-	SORT_AZ = -1,
-	SORT_ZA = 1,
-} SortOrderSub;
-
-typedef struct SubStruct {
-	CString idRoom;
-	CString subject;
-	CString nameTeacher;
-} ListData;
-*/
-
-	
 class CTabSubject : public CDialogEx
 {
 	DECLARE_DYNAMIC(CTabSubject)
@@ -54,15 +38,15 @@ public:
 	CString m_strFirstName;
 	CString m_strLastName;
 
-	
+
 
 	DialogMode m_eModeAddSub;
 	CSubjectData m_oSubject;
 
-	int m_nTokenPos = 0;
-	int m_iCount = 0;
+	int m_nTokenPos{0};
+	int m_iCount{0};
 	afx_msg void OnNMDblclkList(NMHDR* pNMHDR, LRESULT* pResult);
-	void LoadDataFromFile(CListCtrl& m_listCtrl);
+	afx_msg void LoadDataFromFile();
 	afx_msg void OnLvnColumnclickList(NMHDR* pNMHDR, LRESULT* pResult);
 	void LoadDataFromListStruct();
 };
