@@ -1,15 +1,6 @@
 #include "pch.h"
 #include "Student.h"
-#include <string>
-#include <fstream>
-#include <map>
-#include <vector>
-#include "Score.h"
-#include "Library.h"
 #include "CUpdateStudent.h"
-#include <list>
-#include <numeric> //accumulate
-#include <time.h>
 using namespace std;
 
 CStudentData::CStudentData(int _classNum, CString _fName, CString _lName, CString _birthday)
@@ -114,7 +105,7 @@ bool CStudent::LoadStudent(const int nClassNumber, CStudentData& oStudent)
 	oStudent.m_strBirthday = oLib.CDBVariantToCString(varValueBirthday);
 	db.Close();
 	}CATCH(CDBException, e) {
-		AfxMessageBox("Database error:");
+		AfxMessageBox("Database error");
 	}
 	END_CATCH;
 	return true;

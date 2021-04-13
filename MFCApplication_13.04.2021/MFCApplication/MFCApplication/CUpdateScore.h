@@ -2,7 +2,8 @@
 #include "Score.h"
 #include "Library.h"
 #include "Student.h"
-
+#include "Subject.h"
+using namespace std;
 // CUpdateScore dialog
 
 class CScoreDlg : public CDialogEx
@@ -10,7 +11,6 @@ class CScoreDlg : public CDialogEx
 	DECLARE_DYNAMIC(CScoreDlg)
 
 public:
-	//CScoreDlg(CWnd* pParent = nullptr);   // standard constructor
 	CScoreDlg(CScoreData& oScore, const DialogMode eMode);   // standard constructor
 	virtual ~CScoreDlg();
 
@@ -24,7 +24,7 @@ protected:
 	virtual	BOOL OnInitDialog() override;
 	DECLARE_MESSAGE_MAP()
 
-public:
+private:
 	CString m_strClassNum;
 	CString m_strSubject;
 	CString m_strScore;

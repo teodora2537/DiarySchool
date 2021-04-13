@@ -1,11 +1,5 @@
 #include "pch.h"
 #include "Score.h"
-#include <string>
-#include <fstream>
-#include <vector>
-#include <map>
-#include "Library.h"
-#include "Student.h"
 using namespace std;
 
 CScoreData::CScoreData(int _idScore, int _classNum, CString _subject, int _score, CString _date)
@@ -76,11 +70,10 @@ bool CScore::EditScore(const CScoreData& oScore) {
 
 	int iRec = 0;
 
-	// Build ODBC connection string
 	ConnectionString = "Driver={SQL Server};Server=db-mp-vn01, 16333; Database=DiarySchool;";
 
 	TRY{
-		// Open the database
+
 	db.OpenEx(ConnectionString, CDatabase::noOdbcDialog);
 
 	CRecordset rs(&db);
@@ -111,19 +104,16 @@ bool CScore::LoadScore(const int nIdScore, CScoreData& oScore)
 	CStudentData oStudent;
 	Library oLib;
 
-	// Build ODBC connection string
 	ConnectionString = "Driver={SQL Server};Server=db-mp-vn01, 16333; Database=DiarySchool;";
 	
 	TRY{
 
 	db.OpenEx(ConnectionString, CDatabase::noOdbcDialog);
 
-	// Allocate the recordset
 	CRecordset recset(&db);
 	
 	SqlString = "SELECT Student.first_name, Student.last_name, Subject.subject, Score.student_id, Score.score, Score.date_score FROM Student INNER JOIN Score ON Score.student_id = Student.id INNER JOIN Subject ON Score.subject_id = Subject.id WHERE Score.id = '"+oLib.IntToCString(nIdScore)+"';";
 
-	// Execute the query
 	recset.Open(CRecordset::forwardOnly, SqlString, CRecordset::readOnly);
 
 	recset.GetFieldValue("first_name", oStudent.m_strFirstName);
@@ -158,10 +148,8 @@ bool CScore::DeleteScore(const int nIdScore)
 	ConnectionString = "Driver={SQL Server};Server=db-mp-vn01, 16333; Database=DiarySchool;";
 
 	TRY{
-		// Open the database
 	db.OpenEx(ConnectionString, CDatabase::noOdbcDialog);
 
-	// Allocate the recordset
 	CRecordset recset(&db);
 
 	SqlString = "DELETE FROM Score WHERE id = '" + oLib.IntToCString(nIdScore) + "';";
@@ -183,12 +171,10 @@ void CScore::Print_Score(list<ScoreStruct>& listScore)
 	CDBVariant varValueDate;
 	CStudentData oStudent;
 
-	// Build ODBC connection string
 	ConnectionString = "Driver={SQL Server};Server=db-mp-vn01, 16333; Database=DiarySchool;";
 
 	db.OpenEx(ConnectionString, CDatabase::noOdbcDialog);
 	
-	// Allocate the recordset
 	CRecordset recset(&db);
 	
 	SqlString = "SELECT Student.first_name, Student.last_name, Subject.subject, Score.id, Score.student_id, Score.score, Score.date_score FROM Student INNER JOIN Score ON Score.student_id = Student.id INNER JOIN Subject ON Score.subject_id = Subject.id;";
@@ -197,7 +183,7 @@ void CScore::Print_Score(list<ScoreStruct>& listScore)
 	Library oLib;
 	CString s;
 	while (!recset.IsEOF()) {
-		// Copy each column into a variable
+
 		recset.GetFieldValue("first_name", oStudent.m_strFirstName);
 		recset.GetFieldValue("last_name", oStudent.m_strLastName);
 		recset.GetFieldValue("subject", m_strSubject);
@@ -215,9 +201,7 @@ void CScore::Print_Score(list<ScoreStruct>& listScore)
 		scoreStruct.strDate = oLib.CDBVariantToCString(varValueDate);
 		listScore.push_back(scoreStruct);
 
-		// goto next record
 		recset.MoveNext();
 	}
-	// Close the database
 	db.Close();
 }

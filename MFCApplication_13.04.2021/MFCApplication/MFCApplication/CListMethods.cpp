@@ -1,10 +1,5 @@
 #include "pch.h"
 #include "CListMethods.h"
-#include "Score.h"
-#include <iostream>
-#include <list>
-#include "CTabSubject.h"
-#include "Library.h"
 using namespace std;
 
 void CListMethods::SortListStudent(int sortClm, list<StudentStruct>& listFromStruct, SortOrder order)
@@ -86,14 +81,14 @@ void CListMethods::SortListScore(int sortClm, list<ScoreStruct>& listFromStruct,
 	}
 }
 
-void CListMethods::SortListReference(int sortClm, list<ReferenceStruct>& listFromStruct, SortOrder order, bool bIsVector)
+void CListMethods::SortListReference(int sortClm, list<ReferenceStruct>& listFromStruct, SortOrder order, bool bIsNames)
 {
 	switch (order)
 	{
 	case SORT_AZ:
-			if (sortClm == 0 && !bIsVector)
+			if (sortClm == 0 && !bIsNames)
 			listFromStruct.sort([](const ReferenceStruct& a, const ReferenceStruct& b) { return a.nIdStudent < b.nIdStudent; });
-		else if (sortClm == 0 && bIsVector)
+		else if (sortClm == 0 && bIsNames)
 				listFromStruct.sort([](const ReferenceStruct& a, const ReferenceStruct& b) { return a.strClm0 < b.strClm0; });
 		else if (sortClm == 1)			 						   
 			listFromStruct.sort([](const ReferenceStruct& a, const ReferenceStruct& b) { return a.strClm1 < b.strClm1; });
@@ -103,9 +98,9 @@ void CListMethods::SortListReference(int sortClm, list<ReferenceStruct>& listFro
 			listFromStruct.sort([](const ReferenceStruct& a, const ReferenceStruct& b) { return a.strClm3 < b.strClm3; });
 		break;							
 	case SORT_ZA:	
-			 if (sortClm == 0 && !bIsVector)
+			 if (sortClm == 0 && !bIsNames)
 			listFromStruct.sort([](const ReferenceStruct& a, const ReferenceStruct& b) { return a.nIdStudent > b.nIdStudent; });
-		else if (sortClm == 0 && bIsVector)				 
+		else if (sortClm == 0 && bIsNames)				 
 			listFromStruct.sort([](const ReferenceStruct& a, const ReferenceStruct& b) { return a.strClm0 > b.strClm0; });
 		else if (sortClm == 1)			 						   
 			listFromStruct.sort([](const ReferenceStruct& a, const ReferenceStruct& b) { return a.strClm1 > b.strClm1; });

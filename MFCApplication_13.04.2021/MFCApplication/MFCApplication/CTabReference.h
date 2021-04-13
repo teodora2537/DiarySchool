@@ -1,7 +1,13 @@
 #pragma once
-#include <stdlib.h>
-#include <vector>
-
+#include <list>
+#include "Library.h"
+#include "CListMethods.h"
+#include "Score.h"
+#include "Student.h"
+#include "Subject.h"
+#include "CUpdateScore.h"
+#include "CUpdateStudent.h"
+#include "CUpdateSubject.h"
 using namespace std;
 // CTabReference dialog
 class CTabReference : public CDialogEx
@@ -21,18 +27,22 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
 	DECLARE_MESSAGE_MAP()
-public:
+
+private:
+//buttons for list references
 	afx_msg void OnBnClickedButtonAvgscorebysubject();
 	afx_msg void OnBnClickedButtonAvgscorebyallsubjects();
 	afx_msg void OnBnClickedButtonExcellentstudent();
 	afx_msg void OnBnClickedButtonBirtdays();
 	afx_msg void OnBnClickedButton();
-			void LoadStudentInfoFromFile(CString idStudent, CString nameStud, CString sub, CString avgScore);
-			void LoadDataFromListStructNames();
-			void LoadDataFromListStructInfo();
 	afx_msg void OnBnClickedButtonByMoreSubjects();
+	
+	//load functions and clicked column
 	afx_msg void OnLvnColumnclickList(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg void LoadStudentFromFile(CString nameVector);
+	void LoadStudentFromFile(CString nameVector);
+	void LoadStudentInfoFromFile(CString idStudent, CString nameStud, CString sub, CString avgScore);
+	void LoadDataFromListStructNames();
+	void LoadDataFromListStructInfo();
 
 	CListCtrl m_listCtrl;
 };

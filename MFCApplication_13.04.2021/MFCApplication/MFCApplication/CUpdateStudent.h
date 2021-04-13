@@ -1,9 +1,8 @@
 #pragma once
-#include "Student.h"
 #include "Library.h"
-#include <afxdb.h>
-
-// CUpdateStudent dialog
+#include "Student.h"
+#include "CTabReference.h"
+using namespace std;
 
 class CStudentDlg : public CDialogEx
 {
@@ -24,7 +23,7 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 
-public:
+private:
 	CString m_strClassNum;
 	CString m_strFn;
 	CString m_strLn;
@@ -32,10 +31,6 @@ public:
 	
 	CDateTimeCtrl m_dtCtrlBirthday;
 
-	CString m_strStaticClassNum;
-	CString m_strStaticFn;
-	CString m_strStaticLn;
-	CString m_strStaticBirthday;
 	BOOL ValidateData();
 	CStudentData& m_oStudent;
 	DialogMode m_eMode;

@@ -3,28 +3,10 @@
 #include "Student.h"
 #include "Subject.h"
 #include "Score.h"
-#include <fstream>
-#include <iostream>
-#include <algorithm>
-#include <string>
-#include <vector>
-#include <map>
-#include<math.h>
-#include <winnt.h>
-#include "afxdb.h"
 using namespace std;
 
 Library::Library(void) {}
 Library::~Library(void) {}
-
-//Convert CString to string
-string Library::ConvertToString(CString str_cstr, string row)
-{
-	CString s_cstring = str_cstr;
-	CT2CA ct(s_cstring);
-	row = ct;
-	return row;
-}
 
 void Library::ClearListCtrl(CListCtrl& m_listCtrl)
 {

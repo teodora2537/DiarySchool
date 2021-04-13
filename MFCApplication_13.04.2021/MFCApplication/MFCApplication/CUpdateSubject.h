@@ -1,6 +1,10 @@
 #pragma once
-#include "Subject.h"
 #include "Library.h"
+#include "Subject.h"
+#include "CTabSubject.h"
+#include "Score.h"
+#include <list>
+using namespace std;
 
 class CSubjectDlg : public CDialogEx
 {
@@ -21,19 +25,14 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 
-public:
+private:
 	CString m_strRoomNum;
 	CString m_strSubject;
 	CString m_strFN;
 	CString m_strLN;
-	CString m_strStaticText;
 
 	CSubjectData& m_oSubject;
 	DialogMode m_eMode;
-
-
-protected:
-	CEdit m_eRoomNum;
 
 private:
 	afx_msg void OnBnClickedOk();

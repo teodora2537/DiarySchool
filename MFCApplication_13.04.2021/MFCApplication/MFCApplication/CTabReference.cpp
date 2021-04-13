@@ -1,18 +1,6 @@
-#include <list>
 #include "pch.h"
 #include "MFCApplication.h"
 #include "CTabReference.h"
-#include "afxdialogex.h"
-#include "Library.h"
-#include "CUpdateStudent.h"
-#include "CUpdateSubject.h"
-#include "CUpdateScore.h"
-#include "Library.h"
-#include "Student.h"
-#include "Subject.h"
-#include "Score.h"
-#include "CListMethods.h"
-
 using namespace std;
 
 IMPLEMENT_DYNAMIC(CTabReference, CDialogEx)

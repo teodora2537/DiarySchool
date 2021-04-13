@@ -1,15 +1,6 @@
-// CUpdateSubject.cpp : implementation file
-//
-
 #include "pch.h"
 #include "MFCApplication.h"
 #include "CUpdateSubject.h"
-#include "afxdialogex.h"
-#include "Library.h"
-#include "Subject.h"
-#include "CTabSubject.h"
-#include "Score.h"
-
 
 // CUpdateSubject dialog
 IMPLEMENT_DYNAMIC(CSubjectDlg, CDialogEx)
@@ -44,6 +35,7 @@ BOOL CSubjectDlg::OnInitDialog()
 	GetDlgItem(IDC_EDIT_UPDATE_SUBJECT_SUBJECT)->EnableWindow(bEnable);
 	GetDlgItem(IDC_EDIT_UPDATE_SUBJECT_FN)->EnableWindow(bEnable);
 	GetDlgItem(IDC_EDIT_UPDATE_SUBJECT_LN)->EnableWindow(bEnable);
+
 	Library oLib;
 	m_strRoomNum = oLib.IntToCString(m_oSubject.m_iRoomNumber);
 	m_strSubject = m_oSubject.m_strNameSubject;
@@ -54,6 +46,7 @@ BOOL CSubjectDlg::OnInitDialog()
 	SetDlgItemText(IDC_EDIT_UPDATE_SUBJECT_SUBJECT, m_strSubject);
 	SetDlgItemText(IDC_EDIT_UPDATE_SUBJECT_FN, m_strFN);
 	SetDlgItemText(IDC_EDIT_UPDATE_SUBJECT_LN, m_strLN);
+
 	return TRUE;
 }
 

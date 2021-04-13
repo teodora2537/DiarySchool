@@ -1,11 +1,6 @@
 #pragma once
-#include <afxdialogex.h>
-#include "CTabStudent.h"
-#include "CTabSubject.h"
-#include "CTabScore.h"
-#include "CTabReference.h"
-#include <iostream>
 #include <list>
+#include "Library.h"
 using namespace std;
 
 typedef enum {
@@ -55,9 +50,8 @@ public:
 private:
     CListCtrl m_list;
 public:
-  
     void SortListSub(int sortClm, list<SubStruct>& listFromStruct, SortOrder order);
     void SortListScore(int sortClm, list<ScoreStruct>& listFromStruct, SortOrder order);
-    void SortListReference(int sortClm, list<ReferenceStruct>& listFromStruct, SortOrder order, bool bIsVector);
+    void SortListReference(int sortClm, list<ReferenceStruct>& listFromStruct, SortOrder order, bool bIsNames);
     void SortListStudent(int sortClm, list<StudentStruct>& listFromStruct, SortOrder order);
 };

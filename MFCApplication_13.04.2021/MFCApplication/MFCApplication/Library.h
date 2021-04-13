@@ -1,9 +1,6 @@
 #pragma once
-#include<string> 
-#include<map> 
-#include<vector> 
-#include <winnt.h>
 #include "afxdb.h"
+
 
 using namespace std;
 
@@ -22,9 +19,8 @@ public:
 	Library(void);
 	~Library(void);
 
-	string ConvertToString(CString str_cstr, string row);
 	void ClearListCtrl(CListCtrl& m_listCtrl);
 	CString IntToCString(int input);
-	COleDateTime CStringToDate(CString input);
 	CString CDBVariantToCString(CDBVariant& varValueBirthday);
+	COleDateTime CStringToDate(CString input);
 };

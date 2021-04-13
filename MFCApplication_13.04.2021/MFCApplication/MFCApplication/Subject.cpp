@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "Subject.h"
-#include <fstream>
-#include "Library.h"
+
 using namespace std;
 
 CSubjectData::CSubjectData(int _roomNumber, CString _nameSubject, CString _fNameTeacher, CString _lNameTeacher)

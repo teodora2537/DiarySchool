@@ -1,12 +1,6 @@
 #include "pch.h"
 #include "MFCApplication.h"
 #include "CTabSubject.h"
-#include "afxdialogex.h"
-#include "Library.h"
-#include "Subject.h"
-#include "CUpdateSubject.h"
-#include "CListMethods.h"
-#include <list>
 
 IMPLEMENT_DYNAMIC(CTabSubject, CDialogEx)
 

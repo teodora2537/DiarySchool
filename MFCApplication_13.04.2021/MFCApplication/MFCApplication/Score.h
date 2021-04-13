@@ -1,9 +1,8 @@
 #pragma once
-#include<string>
-#include<map>
-#include<vector>
 #include<list>
 #include "CListMethods.h"
+#include "Library.h"
+#include "Student.h"
 using namespace std;
 
 #define DEF_SCORE_NAME_LEN 100
@@ -26,7 +25,6 @@ struct SCORE
 class CScoreData
 {
 public:
-	//CScoreData(int _classNum, CString _subject, int _score, CString _date);
 	CScoreData(int _idScore, int _classNum, CString _subject, int _score, CString _date);
 	CScoreData();
 

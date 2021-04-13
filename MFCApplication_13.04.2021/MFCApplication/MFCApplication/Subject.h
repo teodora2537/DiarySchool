@@ -1,16 +1,13 @@
 #pragma once
-#include <string>
-#include <map>
-#include <vector>
 #include <list>
 #include "CListMethods.h"
+#include "Library.h"
 using namespace std;
 
 class CSubjectData
 {
 
 public:
-
 	CSubjectData(int _roomNumber, CString _nameSubject, CString _fNameTeacher, CString _lNameTeacher);
 	CSubjectData();
 
@@ -25,7 +22,6 @@ class CSubject {
 public:
 	CSubject();
 	virtual ~CSubject();
-
 public:
 	bool AddSubject(const CSubjectData& oSubjectData);
 	bool EditSubject(const CSubjectData& oSubject);

@@ -1,9 +1,8 @@
 #pragma once
-#include <string>
-#include <map>
-#include <vector>
 #include <list>
 #include "CListMethods.h"
+#include "Score.h"
+#include "Library.h"
 using namespace std;
 class CStudentData
 {

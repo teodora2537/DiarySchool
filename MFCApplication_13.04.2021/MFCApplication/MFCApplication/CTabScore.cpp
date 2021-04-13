@@ -1,19 +1,6 @@
-// CTabScore.cpp : implementation file
-//
-
 #include "pch.h"
 #include "MFCApplication.h"
 #include "CTabScore.h"
-#include "afxdialogex.h"
-#include "Score.h"
-#include "CUpdateScore.h"
-#include "Library.h"
-#include <string.h>
-#include <map>
-#include <vector>
-#include <list>
-#include "CListMethods.h"
-
 using namespace std;
 
 // CTabScore dialog

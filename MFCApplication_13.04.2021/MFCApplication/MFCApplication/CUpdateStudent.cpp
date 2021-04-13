@@ -1,13 +1,6 @@
-// CUpdateStudent.cpp : implementation file
-//
-
 #include "pch.h"
 #include "MFCApplication.h"
 #include "CUpdateStudent.h"
-#include "afxdialogex.h"
-#include "Library.h"
-#include "Student.h"
-#include "CTabReference.h"
 
 // CUpdateStudent dialog
 

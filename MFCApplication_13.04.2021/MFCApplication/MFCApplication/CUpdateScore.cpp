@@ -1,17 +1,6 @@
-// CUpdateScore.cpp : implementation file
-//
-
 #include "pch.h"
 #include "MFCApplication.h"
 #include "CUpdateScore.h"
-#include "afxdialogex.h"
-#include "Library.h"
-#include "Score.h"
-#include "CTabStudent.h"
-#include <string> 
-#include "Subject.h"
-#include "list"
-#include "CListMethods.h"
 
 IMPLEMENT_DYNAMIC(CScoreDlg, CDialogEx)
 
