@@ -60,9 +60,6 @@
     <ClInclude Include="CUpdateScore.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CChildFrame.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="CTabStudent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -111,9 +108,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CUpdateScore.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CChildFrame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CTabStudent.cpp">

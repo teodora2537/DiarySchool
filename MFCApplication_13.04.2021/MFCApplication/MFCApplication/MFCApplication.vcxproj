@@ -183,7 +183,6 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="CChildFrame.h" />
     <ClInclude Include="CListMethods.h" />
     <ClInclude Include="CTabControl.h" />
     <ClInclude Include="CTabReference.h" />
@@ -205,7 +204,6 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CChildFrame.cpp" />
     <ClCompile Include="CListMethods.cpp" />
     <ClCompile Include="CTabControl.cpp" />
     <ClCompile Include="CTabReference.cpp" />

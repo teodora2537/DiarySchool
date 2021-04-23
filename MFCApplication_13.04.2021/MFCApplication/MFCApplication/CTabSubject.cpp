@@ -81,6 +81,7 @@ void CTabSubject::OnAddSubject()
 
 	if (!oSubject.AddSubject(oSubjectData))
 		return;
+
 	LoadDataFromFile();
 }
 

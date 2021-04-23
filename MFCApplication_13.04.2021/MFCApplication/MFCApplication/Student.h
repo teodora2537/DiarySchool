@@ -4,6 +4,7 @@
 #include "Score.h"
 #include "Library.h"
 using namespace std;
+
 class CStudentData
 {
 protected:
@@ -24,6 +25,7 @@ class CStudent
 {
 public:
 	CStudent();
+	BOOL InitInstance();
 	virtual ~CStudent();
 
 public:

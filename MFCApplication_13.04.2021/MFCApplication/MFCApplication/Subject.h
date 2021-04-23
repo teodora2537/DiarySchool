@@ -18,7 +18,7 @@ public:
 	CString m_strLNameTeacher;
 };
 
-class CSubject {
+class CSubject{
 public:
 	CSubject();
 	virtual ~CSubject();
@@ -29,4 +29,3 @@ public:
 	bool DeleteSubject(const int nClassNumber);
 	void PrintSub(list<SubStruct>& listSub);
 };
-
