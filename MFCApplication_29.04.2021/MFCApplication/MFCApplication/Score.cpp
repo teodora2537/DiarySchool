@@ -3,7 +3,7 @@
 #include "CUpdateScore.h"
 using namespace std;
 
-CScoreData::CScoreData(int _idScore, int _classNum, CString _subject, int _score, CString _date)
+CScoreData::CScoreData(int _idScore, int _classNum, CString _subject, int _score, COleDateTime _date)
 {
 	m_iIdScore = _idScore;
 	m_iClassNum = _classNum;
@@ -121,7 +121,7 @@ bool CScore::LoadScore(const int nIdScore, CScoreData& oScore)
 		oScore.m_strNameStudent = oStudent.m_strFirstName + " " + oStudent.m_strLastName;
 		oScore.m_iClassNum = atoi(m_strIdStudent);
 		oScore.m_iScore = atoi(m_strScore);
-		oScore.m_strDate = oLib.CDBVariantToCString(varValueDate);
+		oScore.m_strDate = oLib.CDBVariantToCOleDT(varValueDate);
 		oScore.m_iIdScore = nIdScore;
 	}
 	catch (exception e)
@@ -216,7 +216,5 @@ int CMyComboBox::GetSelectedValue(CComboBox& m_combo) const
 	if (nSelectedIndex == CB_ERR)
 		return CB_ERR;
 
-	//int test = (int)(GetItemData(nSelectedIndex));//защо го правим това
-	
-	return nSelectedIndex;
+	return (int)(m_combo.GetItemData(nSelectedIndex));
 };

@@ -42,3 +42,10 @@ CString Library::CDBVariantToCString(CDBVariant& varValueBirthday)
 		CString str = timestamp.Format("%m/%d/%Y");
 	return str;
 }
+
+COleDateTime Library::CDBVariantToCOleDT(CDBVariant& varValueBirthday) {
+
+	COleDateTime dateTime(varValueBirthday.m_pdate->year, varValueBirthday.m_pdate->month, varValueBirthday.m_pdate->day,
+		varValueBirthday.m_pdate->hour, varValueBirthday.m_pdate->minute, varValueBirthday.m_pdate->second);
+	return dateTime;
+}

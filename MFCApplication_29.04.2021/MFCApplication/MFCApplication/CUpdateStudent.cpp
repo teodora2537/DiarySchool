@@ -57,10 +57,12 @@ BOOL CStudentDlg::OnInitDialog()
 
 	if (m_eMode != eDialogMode_Add)
 	{
+		/*
 	COleDateTime date;
 	CString strDate = m_oStudent.m_strBirthday;
 	date.ParseDateTime(strDate);
-	m_dtCtrlBirthday.SetTime(date);
+		*/
+	m_dtCtrlBirthday.SetTime(m_oStudent.m_strBirthday);
 	}
 
 	SetDlgItemText(IDC_EDIT_UPDATE_STUDENT_CLASS_NUM, m_strClassNum);
@@ -110,7 +112,7 @@ void CStudentDlg::OnBnClickedOk()
 	m_oStudent.m_iClassNumber = atoi(m_strClassNum);
 	m_oStudent.m_strFirstName = m_strFn;
 	m_oStudent.m_strLastName = m_strLn;
-	m_oStudent.m_strBirthday = m_strBirthday;
+	m_dtCtrlBirthday.GetTime(m_oStudent.m_strBirthday);
 
 	CDialogEx::OnOK();
 }

@@ -4,7 +4,7 @@
 #include <afxwin.h>
 using namespace std;
 
-CStudentData::CStudentData(int _classNum, CString _fName, CString _lName, CString _birthday)
+CStudentData::CStudentData(int _classNum, CString _fName, CString _lName, COleDateTime _birthday)
 {
 	m_iClassNumber = _classNum;
 	m_strFirstName = _fName;
@@ -97,7 +97,8 @@ bool CStudent::LoadStudent(const int nClassNumber, CStudentData& oStudent)
 		recset.GetFieldValue("first_name", oStudent.m_strFirstName);
 		recset.GetFieldValue("last_name", oStudent.m_strLastName);
 		recset.GetFieldValue("birth_date", varValueBirthday);
-		oStudent.m_strBirthday = oLib.CDBVariantToCString(varValueBirthday);
+		oStudent.m_strBirthday = oLib.CDBVariantToCOleDT(varValueBirthday);
+		//oStudent.m_strBirthday = oLib.CDBVariantToCString(varValueBirthday);
 	}
 	catch (exception e)
 	{

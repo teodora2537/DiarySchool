@@ -1,6 +1,6 @@
 #pragma once
 #include "afxdb.h"
-
+#include <afxwin.h>
 
 using namespace std;
 
@@ -23,4 +23,5 @@ public:
 	CString IntToCString(int input);
 	CString CDBVariantToCString(CDBVariant& varValueBirthday);
 	COleDateTime CStringToDate(CString input);
+	COleDateTime CDBVariantToCOleDT(CDBVariant& varValueBirthday);
 };

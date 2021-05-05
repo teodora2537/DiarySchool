@@ -26,14 +26,14 @@ struct SCORE
 class CScoreData
 {
 public:
-	CScoreData(int _idScore, int _classNum, CString _subject, int _score, CString _date);
+	CScoreData(int _idScore, int _classNum, CString _subject, int _score, COleDateTime _date);
 	CScoreData();
 
 	int m_iIdScore;
 	int m_iClassNum;
 	int m_iScore;
 	CString m_strSubject;
-	CString m_strDate;
+	COleDateTime m_strDate;
 	CString m_strNameStudent;
 };
 

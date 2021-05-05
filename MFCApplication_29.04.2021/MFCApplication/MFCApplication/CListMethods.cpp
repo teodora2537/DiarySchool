@@ -12,7 +12,7 @@ void CListMethods::SortListStudent(const int sortClm, list<STUDENT>& listFromStr
 			else if (sortClm == 1)
 				listFromStruct.sort([](const STUDENT& a, const STUDENT& b) { CString str1 = CString(a.szName); CString str2 = CString(b.szName); return str1 < str2; });
 			else if (sortClm == 2)
-				listFromStruct.sort([](const STUDENT& a, const STUDENT& b) {Library oLib; return oLib.CStringToDate(a.szDate) < oLib.CStringToDate(b.szDate); });
+				listFromStruct.sort([](const STUDENT& a, const STUDENT& b) { Library oLib; return oLib.CStringToDate(a.szDate) < oLib.CStringToDate(b.szDate); return a.szDate < b.szDate; });
 		break;
 		
 		case SORT_ZA: 
@@ -21,7 +21,7 @@ void CListMethods::SortListStudent(const int sortClm, list<STUDENT>& listFromStr
 			else if (sortClm == 1)									  
 				listFromStruct.sort([](const STUDENT& a, const STUDENT& b) { CString str1 = CString(a.szName); CString str2 = CString(b.szName); return str1 > str2; });
 			else if (sortClm == 2)									  
-				listFromStruct.sort([](const STUDENT& a, const STUDENT& b) {Library oLib; return oLib.CStringToDate(a.szDate) > oLib.CStringToDate(b.szDate); });
+				listFromStruct.sort([](const STUDENT& a, const STUDENT& b) { Library oLib; return oLib.CStringToDate(a.szDate) > oLib.CStringToDate(b.szDate); return a.szDate > b.szDate; });
 		break;
 	}
 }
@@ -30,7 +30,6 @@ void CListMethods::SortListSub(const int sortClm, list<SUBJECT>& listFromStruct,
 {
 	switch (order)
 	{
-
 	case SORT_AZ:
 			 if (sortClm == 0)
 			listFromStruct.sort([](const SUBJECT& a, const SUBJECT& b) { return a.iId < b.iId; });

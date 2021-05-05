@@ -36,12 +36,12 @@ protected:
 
 public:
 
-	CStudentData(int _classNum, CString fName, CString lName, CString birthday);
+	CStudentData(int _classNum, CString fName, CString lName, COleDateTime birthday);
 	CStudentData();
 
 	CString m_strFirstName;
 	CString m_strLastName;
-	CString m_strBirthday;
+	COleDateTime m_strBirthday;
 	CString m_strFullName;
 	int m_iClassNumber;
 };

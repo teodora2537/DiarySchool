@@ -39,6 +39,58 @@ BOOL CScoreDlg::OnInitDialog()
 {
 	if (!__super::OnInitDialog())
 		return FALSE;
+	
+	//////////////////Range date//////////
+	COleDateTime currentDate = COleDateTime::GetCurrentTime();
+	COleDateTime dtMinRange;
+	COleDateTime dtMaxRange;
+
+	dtMaxRange.SetDate(currentDate.GetYear(), currentDate.GetMonth(), currentDate.GetDay());
+	m_dtCtrlDate.SetRange(&dtMinRange, &dtMaxRange);
+	/////////////////////////////////////
+	
+	///////////Fill combo box////////////
+	list<SUBJECT> m_listSub;
+
+	CSubject oSubject;
+	oSubject.PrintSub(m_listSub);
+	m_comboBoxSubject.SetItemHeight(5, 20);
+
+	
+	CArray<COMBO_DATA> arrData;
+	int iId = 0;
+	for (auto& i = m_listSub.begin(); i != m_listSub.end(); i++)
+	{	
+		COMBO_DATA combo_data;
+		combo_data.nID = iId;
+		sprintf(combo_data.szName, "%s", i->szSubject);
+		arrData.Add(combo_data);
+		iId++;
+
+		//m_comboBoxSubject.AddString(i->szSubject);
+	}
+	CMyComboBox subjectCombo;
+	subjectCombo.LoadData(arrData, m_comboBoxSubject);
+		
+	m_comboBoxScore.SetItemHeight(5, 20);
+
+	iId = 0;
+	arrData.RemoveAll();
+
+	for (int i = 2; i <= 6; i++) {
+	
+		COMBO_DATA combo_data;
+		combo_data.nID = iId;
+		sprintf(combo_data.szName, "%d", i);
+		arrData.Add(combo_data);
+
+		//m_comboBoxScore.AddString(oLib.IntToCString(i));
+}
+
+	subjectCombo.LoadData(arrData, m_comboBoxScore);
+	
+
+	/////////////////////////////////
 
 	if (m_eMode == eDialogMode_Edit)
 		this->SetWindowText("Update Score");
@@ -59,10 +111,12 @@ BOOL CScoreDlg::OnInitDialog()
 
 	if (m_eMode != eDialogMode_Add)
 	{
+		/*
 		COleDateTime date;
 		CString strDate = m_oScore.m_strDate;
 		date.ParseDateTime(strDate);
-		m_dtCtrlDate.SetTime(date);
+		*/
+		m_dtCtrlDate.SetTime(m_oScore.m_strDate);
 	}
 	else {
 	
@@ -80,56 +134,6 @@ BOOL CScoreDlg::OnInitDialog()
 	SetDlgItemText(IDC_COMBO_SUBJECT, m_strSubject);
 	SetDlgItemText(IDC_COMBO_SCORE, m_strScore);
 
-	//////////////////Range date//////////
-	COleDateTime currentDate = COleDateTime::GetCurrentTime();
-	COleDateTime dtMinRange;
-	COleDateTime dtMaxRange;
-
-	dtMaxRange.SetDate(currentDate.GetYear(), currentDate.GetMonth(), currentDate.GetDay());
-	m_dtCtrlDate.SetRange(&dtMinRange, &dtMaxRange);
-	/////////////////////////////////////
-	
-	///////////Fill combo box////////////
-	list<SUBJECT> m_listSub;
-
-	CSubject oSubject;
-	oSubject.PrintSub(m_listSub);
-	m_comboBoxSubject.SetItemHeight(5, 20);
-
-
-	CArray<COMBO_DATA> arrData;
-	int iId = 0;
-	for (auto& i = m_listSub.begin(); i != m_listSub.end(); i++)
-	{	
-		COMBO_DATA combo_data;
-		combo_data.nID = iId;
-		sprintf(combo_data.szName, "%s", i->szSubject);
-		arrData.Add(combo_data);
-		iId++;
-
-		//m_comboBoxSubject.AddString(i->szSubject);
-	}
-		CMyComboBox subjectCombo;
-	subjectCombo.LoadData(arrData, m_comboBoxSubject);
-		
-	m_comboBoxScore.SetItemHeight(5, 20);
-
-	iId = 0;
-	arrData.RemoveAll();
-
-	for (int i = 2; i <= 6; i++) {
-	
-		COMBO_DATA combo_data;
-		combo_data.nID = iId;
-		sprintf(combo_data.szName, "%d", i);
-		arrData.Add(combo_data);
-
-		//m_comboBoxScore.AddString(oLib.IntToCString(i));
-}
-
-	subjectCombo.LoadData(arrData, m_comboBoxScore);
-
-	/////////////////////////////////
 	return TRUE;
 }
 

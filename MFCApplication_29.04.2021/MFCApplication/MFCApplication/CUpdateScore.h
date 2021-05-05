@@ -30,7 +30,7 @@ private:
 	CEdit m_editClassNum;
 	CString m_strSubject;
 	CString m_strScore;
-	CString m_strDate;
+	COleDateTime m_strDate;
 
 	BOOL ValidateData();
 
