@@ -14,6 +14,7 @@ public:
 	CScoreDlg(CScoreData& oScore, const DialogMode eMode);   // standard constructor
 	virtual ~CScoreDlg();
 
+	CScoreDlg();
 	// Dialog Data
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_DIALOG_UPDATE_SCORE };

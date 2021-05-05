@@ -60,7 +60,7 @@ struct COMBO_DATA
 class CMyComboBox : public CComboBox
 {
 public:
-	void LoadData(const CArray<COMBO_DATA>& arrData);
+	void LoadData(const CArray<COMBO_DATA>& arrData, CComboBox& m_combo);
 
-	int GetSelectedValue() const;
+	int GetSelectedValue(CComboBox& m_combo) const;
 };

@@ -53,7 +53,6 @@ bool CStudent::AddStudent(CStudentData& oStudent)
 	try
 	{
 		g_dbConnection.ExecuteSQL(sqlString);
-
 	}
 	catch (exception e)
 	{
@@ -88,17 +87,17 @@ bool CStudent::LoadStudent(const int nClassNumber, CStudentData& oStudent)
 	CString m_strClassNum;
 	CDBVariant varValueBirthday;
 
-	try{
+	try
+	{
+		CRecordset recset(&g_dbConnection);
+		recset.Open(CRecordset::forwardOnly, "SELECT * FROM Student WHERE id = '" + oLib.IntToCString(nClassNumber) + "';", CRecordset::readOnly);
 
-	CRecordset recset(&g_dbConnection);
-	recset.Open(CRecordset::forwardOnly, "SELECT * FROM Student WHERE id = '" + oLib.IntToCString(nClassNumber) + "';", CRecordset::readOnly);
-
-	recset.GetFieldValue("id",m_strClassNum);
-	oStudent.m_iClassNumber = atoi(m_strClassNum);
-	recset.GetFieldValue("first_name", oStudent.m_strFirstName);
-	recset.GetFieldValue("last_name", oStudent.m_strLastName);
-	recset.GetFieldValue("birth_date", varValueBirthday);
-	oStudent.m_strBirthday = oLib.CDBVariantToCString(varValueBirthday);
+		recset.GetFieldValue("id",m_strClassNum);
+		oStudent.m_iClassNumber = atoi(m_strClassNum);
+		recset.GetFieldValue("first_name", oStudent.m_strFirstName);
+		recset.GetFieldValue("last_name", oStudent.m_strLastName);
+		recset.GetFieldValue("birth_date", varValueBirthday);
+		oStudent.m_strBirthday = oLib.CDBVariantToCString(varValueBirthday);
 	}
 	catch (exception e)
 	{
@@ -113,11 +112,11 @@ bool CStudent::DeleteStudent(const int nClassNumber) {
 	Library oLib;
 	CString SqlString = "DELETE FROM Student WHERE id = '" + oLib.IntToCString(nClassNumber) + "';";
 
-	try{
-
+	try
+	{
 		g_dbConnection.ExecuteSQL(SqlString);
-	
-	}catch(exception e)
+	}
+	catch(exception e)
 	{
 		AfxMessageBox("Error!", MB_ICONEXCLAMATION);
 	}
@@ -136,7 +135,8 @@ void CStudent::PrintStudent_(list<STUDENT>& m_listStudent)
 		CRecordset recset(&g_dbConnection);
 		recset.Open(CRecordset::forwardOnly, SqlString, CRecordset::readOnly);
 
-		while (!recset.IsEOF()) {
+		while (!recset.IsEOF()) 
+		{
 			recset.GetFieldValue("id", m_strID);
 			recset.GetFieldValue("first_name", m_strFName);
 			recset.GetFieldValue("last_name", m_strLName);
@@ -176,7 +176,8 @@ void CStudent::AvgScoreBySubject(list<REFERENCE>& m_listReference)
 		CRecordset recset(&g_dbConnection);
 		recset.Open(CRecordset::forwardOnly, SqlString, CRecordset::readOnly);
 	
-		while (!recset.IsEOF()) {
+		while (!recset.IsEOF()) 
+		{
 			recset.GetFieldValue("first_name", m_strFN);
 			recset.GetFieldValue("last_name", m_strLN);
 			recset.GetFieldValue("subject", m_strSubject);
@@ -211,11 +212,13 @@ void CStudent::AvgScoreByAllSubject(list<REFERENCE>& m_listReference) {
 				"INNER JOIN Score ON Score.student_id = Student.id "
 				"GROUP BY first_name, last_name, student_id";
 
-	try{
+	try
+	{
 		CRecordset recset(&g_dbConnection);
 		recset.Open(CRecordset::forwardOnly, SqlString, CRecordset::readOnly);
 	
-		while (!recset.IsEOF()) {
+		while (!recset.IsEOF()) 
+		{
 			recset.GetFieldValue("student_id", m_strStudentId);
 			recset.GetFieldValue("first_name", m_strFN);
 			recset.GetFieldValue("last_name", m_strLN);
@@ -248,11 +251,13 @@ void CStudent::ExcellentStud(list<REFERENCE>& m_listReference) {
 				"INNER JOIN Score ON Score.student_id = Student.id "
 				"GROUP BY first_name, last_name having AVG(Score.score) = 6";
 
-	try{
+	try
+	{
 		CRecordset recset(&g_dbConnection);
 		recset.Open(CRecordset::forwardOnly, SqlString, CRecordset::readOnly);
 		
-		while (!recset.IsEOF()) {
+		while (!recset.IsEOF()) 
+		{
 			recset.GetFieldValue("first_name", m_strFN);
 			recset.GetFieldValue("last_name", m_strLN);
 
@@ -281,26 +286,27 @@ void CStudent::PeopleHaveBirthday(list<REFERENCE>& m_listReference) {
 	sqlString.Format("SELECT Student.first_name, Student.last_name FROM Student WHERE DATEPART(mm, birth_date) = '%s' AND DATEPART(dd, birth_date) = '%s'", 
 					  oLib.IntToCString(oleDate.GetMonth()), oLib.IntToCString(oleDate.GetDay()));
 	
-		try {
-			CRecordset recset(&g_dbConnection);
-			recset.Open(CRecordset::forwardOnly, sqlString, CRecordset::readOnly);
+	try {
+		CRecordset recset(&g_dbConnection);
+		recset.Open(CRecordset::forwardOnly, sqlString, CRecordset::readOnly);
 
-			while (!recset.IsEOF()) {
-				recset.GetFieldValue("first_name", m_strFN);
-				recset.GetFieldValue("last_name", m_strLN);
-
-				REFERENCE refStruct;
-				sprintf(refStruct.szClm0, "%s", m_strFN + " " + m_strLN);
-				m_listReference.push_back(refStruct);
-
-				recset.MoveNext();
-			}
-		}
-		catch (exception e)
+		while (!recset.IsEOF()) 
 		{
-			AfxMessageBox("Error!", MB_ICONEXCLAMATION);
+			recset.GetFieldValue("first_name", m_strFN);
+			recset.GetFieldValue("last_name", m_strLN);
+
+			REFERENCE refStruct;
+			sprintf(refStruct.szClm0, "%s", m_strFN + " " + m_strLN);
+			m_listReference.push_back(refStruct);
+
+			recset.MoveNext();
 		}
 	}
+	catch (exception e)
+	{
+		AfxMessageBox("Error!", MB_ICONEXCLAMATION);
+	}
+}
 
 void CStudent::remedialExaminationBySub(list<REFERENCE>& m_listReference) {
 	m_listReference.clear();
@@ -312,11 +318,13 @@ void CStudent::remedialExaminationBySub(list<REFERENCE>& m_listReference) {
 				"INNER JOIN Subject ON Score.subject_id = Subject.id "
 				"GROUP BY first_name, last_name, subject, student_id having FLOOR(AVG(Score.score)) = 2;";
 	
-	try {
+	try 
+	{
 		CRecordset recset(&g_dbConnection);
 		recset.Open(CRecordset::forwardOnly, SqlString, CRecordset::readOnly);
 
-		while (!recset.IsEOF()) {
+		while (!recset.IsEOF()) 
+		{
 			recset.GetFieldValue("first_name", m_strFN);
 			recset.GetFieldValue("last_name", m_strLN);
 			recset.GetFieldValue("subject", m_strSubject);
@@ -355,7 +363,8 @@ void CStudent::remedialExaminationByMoreSub(list<REFERENCE>& m_listReference) {
 		CRecordset recset(&g_dbConnection);
 		recset.Open(CRecordset::forwardOnly, SqlString, CRecordset::readOnly);
 
-		while (!recset.IsEOF()) {
+		while (!recset.IsEOF()) 
+		{
 			recset.GetFieldValue("first_name", m_strFN);
 			recset.GetFieldValue("last_name", m_strLN);
 

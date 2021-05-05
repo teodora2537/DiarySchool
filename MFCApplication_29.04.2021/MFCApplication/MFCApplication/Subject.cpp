@@ -33,13 +33,13 @@ bool CSubject::AddSubject(const CSubjectData& oSubjectData)
 	sqlString.Format("INSERT INTO Student (first_name, last_name, birth_date) VALUES ('%s', '%s', '%s')", 
 			  oSubjectData.m_strNameSubject, oSubjectData.m_strFNameTeacher, oSubjectData.m_strLNameTeacher);
 
-		try{
-			g_dbConnection.ExecuteSQL(sqlString);
-		}
-		catch (exception e)
-		{
-			AfxMessageBox("Error!", MB_ICONEXCLAMATION);
-		}
+	try{
+		g_dbConnection.ExecuteSQL(sqlString);
+	}
+	catch (exception e)
+	{
+		AfxMessageBox("Error!", MB_ICONEXCLAMATION);
+	}
 	return true;
 }
 
@@ -47,6 +47,7 @@ bool CSubject::EditSubject(const CSubjectData& oSubject) {
 
 	Library oLib;
 	CString sqlString;
+	
 	sqlString.Format("UPDATE Subject SET subject ='%s' , first_name_teacher ='%s', last_name_teacher ='%s'  WHERE id = '%s'", 
 	oSubject.m_strNameSubject, oSubject.m_strFNameTeacher, oSubject.m_strLNameTeacher, oLib.IntToCString(oSubject.m_iRoomNumber));
 	
@@ -108,11 +109,13 @@ void CSubject::PrintSub(list<SUBJECT>& listSub)
 	CString SqlString = "SELECT * FROM Subject";
 	CString m_strID, m_strFName, m_strLName, m_strSub;
 
-	try {
+	try 
+	{
 		CRecordset recset(&g_dbConnection);
 		recset.Open(CRecordset::forwardOnly, SqlString, CRecordset::readOnly);
 
-		while (!recset.IsEOF()) {
+		while (!recset.IsEOF()) 
+		{
 			recset.GetFieldValue("id", m_strID);
 			recset.GetFieldValue("subject", m_strSub);
 			recset.GetFieldValue("first_name_teacher", m_strFName);

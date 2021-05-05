@@ -41,7 +41,7 @@ END_MESSAGE_MAP()
 	list<REFERENCE> m_listReference;
 
 	SortOrder orderClm0 = SORT_None;
-	SortOrder orderClm1= SORT_None;
+	SortOrder orderClm1 = SORT_None;
 	SortOrder orderClm2 = SORT_None;
 	SortOrder orderClm3 = SORT_None;
 	

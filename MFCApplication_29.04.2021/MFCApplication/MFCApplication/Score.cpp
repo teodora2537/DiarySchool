@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Score.h"
+#include "CUpdateScore.h"
 using namespace std;
 
 CScoreData::CScoreData(int _idScore, int _classNum, CString _subject, int _score, CString _date)
@@ -25,7 +26,6 @@ CScore::~CScore()
 {
 }
 
-	
 bool CScore::AddScore(CScoreData& oScoreData)
 {
 	Library oLib;
@@ -99,31 +99,35 @@ bool CScore::LoadScore(const int nIdScore, CScoreData& oScore)
 	CDBVariant varValueDate;
 	CStudentData oStudent;
 
-		sqlString.Format("SELECT Student.first_name, Student.last_name, Subject.subject, Score.student_id, Score.score, Score.date_score FROM Student INNER JOIN Score ON Score.student_id = Student.id INNER JOIN Subject ON Score.subject_id = Subject.id WHERE Score.id = '%d';", nIdScore);
+	sqlString.Format("SELECT Student.first_name, Student.last_name, Subject.subject, Score.student_id, Score.score, Score.date_score "
+					"FROM Student "
+					"INNER JOIN Score ON Score.student_id = Student.id "
+					"INNER JOIN Subject ON Score.subject_id = Subject.id "
+					"WHERE Score.id = '%d';", nIdScore);
 	
-		try{
+	try{
 
-			CRecordset recset(&g_dbConnection);
-			
-			recset.Open(CRecordset::forwardOnly, sqlString, CRecordset::readOnly);
+		CRecordset recset(&g_dbConnection);
+		
+		recset.Open(CRecordset::forwardOnly, sqlString, CRecordset::readOnly);
 	
-			recset.GetFieldValue("first_name", oStudent.m_strFirstName);
-			recset.GetFieldValue("last_name", oStudent.m_strLastName);
-			recset.GetFieldValue("subject", oScore.m_strSubject);
-			recset.GetFieldValue("student_id", m_strIdStudent);
-			recset.GetFieldValue("score", m_strScore);
-			recset.GetFieldValue("date_score", varValueDate);
+		recset.GetFieldValue("first_name", oStudent.m_strFirstName);
+		recset.GetFieldValue("last_name", oStudent.m_strLastName);
+		recset.GetFieldValue("subject", oScore.m_strSubject);
+		recset.GetFieldValue("student_id", m_strIdStudent);
+		recset.GetFieldValue("score", m_strScore);
+		recset.GetFieldValue("date_score", varValueDate);
 	
-			oScore.m_strNameStudent = oStudent.m_strFirstName + " " + oStudent.m_strLastName;
-			oScore.m_iClassNum = atoi(m_strIdStudent);
-			oScore.m_iScore = atoi(m_strScore);
-			oScore.m_strDate = oLib.CDBVariantToCString(varValueDate);
-			oScore.m_iIdScore = nIdScore;
-		}
-		catch (exception e)
-		{
-			AfxMessageBox("Error!", MB_ICONEXCLAMATION);
-		}
+		oScore.m_strNameStudent = oStudent.m_strFirstName + " " + oStudent.m_strLastName;
+		oScore.m_iClassNum = atoi(m_strIdStudent);
+		oScore.m_iScore = atoi(m_strScore);
+		oScore.m_strDate = oLib.CDBVariantToCString(varValueDate);
+		oScore.m_iIdScore = nIdScore;
+	}
+	catch (exception e)
+	{
+		AfxMessageBox("Error!", MB_ICONEXCLAMATION);
+	}
 	return true;
 }
 
@@ -159,7 +163,8 @@ void CScore::Print_Score(list<SCORE>& listScore)
 				"INNER JOIN Score ON Score.student_id = Student.id "
 				"INNER JOIN Subject ON Score.subject_id = Subject.id;";
 	
-	try {
+	try 
+	{
 		CRecordset recset(&g_dbConnection);
 		recset.Open(CRecordset::forwardOnly, SqlString, CRecordset::readOnly);
 	
@@ -191,26 +196,27 @@ void CScore::Print_Score(list<SCORE>& listScore)
 	}
 }
 
-
 //LOOK///
-void CMyComboBox::LoadData(const CArray<COMBO_DATA>& arrData)
+void CMyComboBox::LoadData(const CArray<COMBO_DATA>& arrData, CComboBox& m_combo)
 {
-	ResetContent();
+	m_combo.ResetContent();
 
 	for (int i = 0; i < arrData.GetSize(); i++)
 	{
-		int nItenmIndex = AddString(arrData[i].szName);
+		int nItenmIndex = m_combo.AddString(arrData[i].szName);
 
-		SetItemData(nItenmIndex, arrData[i].nID);
+		m_combo.SetItemData(nItenmIndex, arrData[i].nID);
 	}
 }
 
-int CMyComboBox::GetSelectedValue() const
+int CMyComboBox::GetSelectedValue(CComboBox& m_combo) const
 {
-	int nSelectedIndex = GetCurSel();
+	int nSelectedIndex = m_combo.GetCurSel();
 
 	if (nSelectedIndex == CB_ERR)
 		return CB_ERR;
 
-	return (int)GetItemData(nSelectedIndex);
+	//int test = (int)(GetItemData(nSelectedIndex));//защо го правим това
+	
+	return nSelectedIndex;
 };

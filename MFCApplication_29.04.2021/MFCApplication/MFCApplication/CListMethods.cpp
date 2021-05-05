@@ -6,23 +6,23 @@ void CListMethods::SortListStudent(const int sortClm, list<STUDENT>& listFromStr
 {
 	switch (order)
 	{
-	case SORT_AZ: 
-		if (sortClm == 0)
-			listFromStruct.sort([](const STUDENT& a, const STUDENT& b) { return a.iId < b.iId; });
-		else if (sortClm == 1)
-			listFromStruct.sort([](const STUDENT& a, const STUDENT& b) { CString str1 = CString(a.szName); CString str2 = CString(b.szName); return str1 < str2; });
-		else if (sortClm == 2)
-			listFromStruct.sort([](const STUDENT& a, const STUDENT& b) {Library oLib; return oLib.CStringToDate(a.szDate) < oLib.CStringToDate(b.szDate); });
-	break;
-	
-	case SORT_ZA: 
-		     if (sortClm == 0)
-			listFromStruct.sort([](const STUDENT& a, const STUDENT& b) { return a.iId > b.iId; });
-		else if (sortClm == 1)									  
-			listFromStruct.sort([](const STUDENT& a, const STUDENT& b) { CString str1 = CString(a.szName); CString str2 = CString(b.szName); return str1 > str2; });
-		else if (sortClm == 2)									  
-			listFromStruct.sort([](const STUDENT& a, const STUDENT& b) {Library oLib; return oLib.CStringToDate(a.szDate) > oLib.CStringToDate(b.szDate); });
-	break;
+		case SORT_AZ: 
+				 if (sortClm == 0)
+				listFromStruct.sort([](const STUDENT& a, const STUDENT& b) { return a.iId < b.iId; });
+			else if (sortClm == 1)
+				listFromStruct.sort([](const STUDENT& a, const STUDENT& b) { CString str1 = CString(a.szName); CString str2 = CString(b.szName); return str1 < str2; });
+			else if (sortClm == 2)
+				listFromStruct.sort([](const STUDENT& a, const STUDENT& b) {Library oLib; return oLib.CStringToDate(a.szDate) < oLib.CStringToDate(b.szDate); });
+		break;
+		
+		case SORT_ZA: 
+			     if (sortClm == 0)
+				listFromStruct.sort([](const STUDENT& a, const STUDENT& b) { return a.iId > b.iId; });
+			else if (sortClm == 1)									  
+				listFromStruct.sort([](const STUDENT& a, const STUDENT& b) { CString str1 = CString(a.szName); CString str2 = CString(b.szName); return str1 > str2; });
+			else if (sortClm == 2)									  
+				listFromStruct.sort([](const STUDENT& a, const STUDENT& b) {Library oLib; return oLib.CStringToDate(a.szDate) > oLib.CStringToDate(b.szDate); });
+		break;
 	}
 }
 

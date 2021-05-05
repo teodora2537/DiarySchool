@@ -4,8 +4,6 @@
 #include "Score.h"
 using namespace std;
 
-// CTabScore dialog
-
 IMPLEMENT_DYNAMIC(CTabScore, CDialogEx)
 
 CTabScore::CTabScore(CWnd* pParent)
@@ -82,13 +80,12 @@ void CTabScore::OnAddScore()
 	if (dlg.DoModal() != IDOK)
 		return;
 
-	if (!oScore.AddScore(oScoreData)) {
-		
+	if (!oScore.AddScore(oScoreData)) 
+	{	
 		MessageBox("The score not added!", "Error", MB_RETRYCANCEL | MB_ICONERROR);
 
 		if (IDRETRY)
 			OnAddScore();
-
 		return;
 	}
 

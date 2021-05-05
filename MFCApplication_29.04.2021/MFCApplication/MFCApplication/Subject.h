@@ -4,7 +4,7 @@
 using namespace std;
 
 
-#define DEF_SUBJECT_NAME_LEN 50
+#define DEF_SUBJECT_NAME_LEN 100
 #define DEF_SUBJECT_TEACHER_NAME_LEN 100
 
 struct SUBJECT {

@@ -42,6 +42,5 @@ private:
 
 	void LoadData(CString name);
 
-
 	CListCtrl m_listCtrl;
 };

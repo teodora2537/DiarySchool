@@ -35,8 +35,6 @@ BOOL CTabStudent::OnInitDialog() {
 
 	if (!__super::OnInitDialog())
 		return FALSE;
-
-	CString connectionString = "Driver={SQL Server};Server=db-mp-vn01, 16333; Database=DiarySchool;";
 	
 	CStudent oStude;
 	m_listCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
@@ -203,12 +201,14 @@ void CTabStudent::OnLvnColumnclickList(NMHDR* pNMHDR, LRESULT* pResult)
 	int sortClm = -1;
 	sortClm = pNMLV->iSubItem; //save column for the callback
 	
-	if (sortClm == 0) {
-		if ( idStudentOrder == SORT_None)idStudentOrder = SORT_AZ;
+	if (sortClm == 0) 
+	{
+		if (idStudentOrder == SORT_None)idStudentOrder = SORT_AZ;
 		else idStudentOrder = (SortOrder)-idStudentOrder;
 		sortOrderStudent = idStudentOrder;
 	}
-	else if (sortClm == 1) {
+	else if (sortClm == 1) 
+	{
 		if (nameStudOrder == SORT_None)nameStudOrder = SORT_AZ;
 		else nameStudOrder = (SortOrder)-nameStudOrder;
 		sortOrderStudent = nameStudOrder;
