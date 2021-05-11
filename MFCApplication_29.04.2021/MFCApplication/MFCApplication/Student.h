@@ -16,8 +16,6 @@ struct STUDENT {
 		SecureZeroMemory(this, sizeof(*this));
 	}
 };
-
-
 struct REFERENCE {
 	int iId;
 	char szClm0[DEF_SCORE_NAME_LEN + 1];
@@ -35,7 +33,6 @@ class CStudentData
 protected:
 
 public:
-
 	CStudentData(int _classNum, CString fName, CString lName, COleDateTime birthday);
 	CStudentData();
 
@@ -50,12 +47,11 @@ class CStudent
 {
 public:
 	CStudent();
-	BOOL InitInstance();
 	virtual ~CStudent();
 
 public:
 	bool AddStudent(CStudentData& oStudent);
-	bool EditStudent(const CStudentData& oStudent);
+	bool EditStudent(CStudentData& oStudent);
 	bool LoadStudent(const int nClassNumber, CStudentData& oStudent);
 	bool DeleteStudent(const int nClassNumber);
 	void PrintStudent_(list<STUDENT>& m_listStudent);
@@ -67,5 +63,4 @@ public:
 	void PeopleHaveBirthday(list<REFERENCE>& m_listReference);
 	void remedialExaminationBySub(list<REFERENCE>& m_listReference);
 	void remedialExaminationByMoreSub(list<REFERENCE>& m_listReference);
-	int CountStudent();
 };

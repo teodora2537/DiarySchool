@@ -42,6 +42,6 @@ public:
 	bool AddSubject(const CSubjectData& oSubjectData);
 	bool EditSubject(const CSubjectData& oSubject);
 	bool LoadSubject(const int nRoomId, CSubjectData& oSubject);
-	bool DeleteSubject(const int nClassNumber);
+	bool DeleteSubject(const int nRoom);
 	void PrintSub(list<SUBJECT>& listSub);
 };

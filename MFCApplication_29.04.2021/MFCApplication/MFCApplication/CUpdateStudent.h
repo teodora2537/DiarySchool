@@ -20,9 +20,9 @@ public:
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	virtual	BOOL OnInitDialog() override;
+	COleDateTime time;
 
 	DECLARE_MESSAGE_MAP()
-
 private:
 	CString m_strClassNum;
 	CString m_strFn;
@@ -35,5 +35,5 @@ private:
 	CStudentData& m_oStudent;
 	DialogMode m_eMode;
 	afx_msg void OnBnClickedOk();
-	void DoFieldExchange(CFieldExchange* pFx);
+	//void DoFieldExchange(CFieldExchange* pFx);
 };

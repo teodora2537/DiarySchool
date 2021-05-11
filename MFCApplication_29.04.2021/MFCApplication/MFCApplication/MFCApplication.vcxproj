@@ -185,6 +185,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CListMethods.h" />
+    <ClInclude Include="CStudentTable.h" />
     <ClInclude Include="CTabControl.h" />
     <ClInclude Include="CTabReference.h" />
     <ClInclude Include="CTabScore.h" />
@@ -206,6 +207,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CListMethods.cpp" />
+    <ClCompile Include="CStudentTable.cpp" />
     <ClCompile Include="CTabControl.cpp" />
     <ClCompile Include="CTabReference.cpp" />
     <ClCompile Include="CTabScore.cpp" />

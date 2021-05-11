@@ -81,13 +81,25 @@ bool CSubject::LoadSubject(const int nRoomId, CSubjectData& oSubject)
 	}
 	catch (exception e)
 	{
-		AfxMessageBox("Error!", MB_ICONEXCLAMATION);
+		AfxMessageBox("Error load subject!", MB_ICONEXCLAMATION);
 	}
 	return true;
 }
 
-bool CSubject::DeleteSubject(const int nClassNumber) {
-
+bool CSubject::DeleteSubject(const int nRoom) {
+	CRecordset recset(&g_dbConnection);
+	CString sqlString;
+	sqlString.Format("SELECT * FROM Subject WHERE id = '%d'", nRoom);
+	try
+	{
+		recset.Open(CRecordset::dynaset, sqlString);
+		recset.Delete();
+	}
+	catch (exception e)
+	{
+		AfxMessageBox("Error delete subject!", MB_ICONEXCLAMATION);
+	}
+	/*
 	Library oLib;
 	CString SqlString = "DELETE FROM Subject WHERE id = '" + oLib.IntToCString(nClassNumber) + "';";
 
@@ -100,6 +112,7 @@ bool CSubject::DeleteSubject(const int nClassNumber) {
 	{
 		AfxMessageBox("Error!", MB_ICONEXCLAMATION);
 	}
+	*/
 	return true;
 }
 
@@ -133,6 +146,6 @@ void CSubject::PrintSub(list<SUBJECT>& listSub)
 	}
 	catch (exception e)
 	{
-		AfxMessageBox("Error!", MB_ICONEXCLAMATION);
+		AfxMessageBox("Error load sybjects!", MB_ICONEXCLAMATION);
 	}
 }

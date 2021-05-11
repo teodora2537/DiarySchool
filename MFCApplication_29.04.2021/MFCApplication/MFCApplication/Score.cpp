@@ -126,13 +126,27 @@ bool CScore::LoadScore(const int nIdScore, CScoreData& oScore)
 	}
 	catch (exception e)
 	{
-		AfxMessageBox("Error!", MB_ICONEXCLAMATION);
+		AfxMessageBox("Error load score!", MB_ICONEXCLAMATION);
 	}
 	return true;
 }
 
 bool CScore::DeleteScore(const int nIdScore)
 {
+	CRecordset recset(&g_dbConnection);
+	CString sqlString;
+	sqlString.Format("SELECT * FROM Score WHERE id = '%d'", nIdScore);
+	try
+	{
+		recset.Open(CRecordset::dynaset, sqlString);
+		recset.Delete();
+	}
+	catch (exception e)
+	{
+		AfxMessageBox("Error delete score!", MB_ICONEXCLAMATION);
+	}
+
+	/*
 	Library oLib;
 	CString sqlString;
 
@@ -147,6 +161,7 @@ bool CScore::DeleteScore(const int nIdScore)
 	{
 		AfxMessageBox("Error!", MB_ICONEXCLAMATION);
 	}
+	*/
 	return true;
 }
 
@@ -192,7 +207,7 @@ void CScore::Print_Score(list<SCORE>& listScore)
 	}
 	catch (exception e)
 	{
-		AfxMessageBox("Error!", MB_ICONEXCLAMATION);
+		AfxMessageBox("Error load scors!", MB_ICONEXCLAMATION);
 	}
 }
 

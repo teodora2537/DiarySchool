@@ -116,6 +116,23 @@ void CStudentDlg::OnBnClickedOk()
 
 	CDialogEx::OnOK();
 }
+/*
+void CStudentDlg::DoFieldExchange(CFieldExchange* pFx)
+{
+	Library oLib;
+	pFx->SetFieldType(CFieldExchange::outputColumn);
+	int m_classNum;
+	RFX_Int(pFx, "[id]", m_classNum);
+	m_strClassNum = oLib.IntToCString(m_classNum);
+	RFX_Text(pFx, "[first_name]", m_strFn);
+	RFX_Text(pFx, "[last_name]", m_strLn);
+
+	m_dtCtrlBirthday.GetTime(time);
+	RFX_Date(pFx, "[birth_date]", time);
+
+	pFx->SetFieldType(CFieldExchange::inputParam);
+}
+*/
 
 /*
 void CStudentDlg::DoFieldExchange(CFieldExchange* pFX)
@@ -124,9 +141,9 @@ void CStudentDlg::DoFieldExchange(CFieldExchange* pFX)
 	Library oLib;
 	int m_classNum = atoi(m_strClassNum);
 	RFX_Int(pFX, "[id]", m_classNum);
-	RFX_Text(pFX, "[first_name]", m_strFn);
-	RFX_Text(pFX, "[last_name]", m_strLn);
-	RFX_Date(pFX, "[birth_date]", oLib.CStringToDate(m_strBirthday));
+	RFX_Text(pFx, "[first_name]", m_strFn);
+	RFX_Text(pFx, "[last_name]", m_strLn);
+	RFX_Date(pFx, "[birth_date]", oLib.CStringToDate(m_strBirthday));
 
 	pFX->SetFieldType(CFieldExchange::inputParam);
 }

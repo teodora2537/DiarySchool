@@ -72,6 +72,9 @@
     <ClInclude Include="CListMethods.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CStudentTable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MFCApplication.cpp">
@@ -120,6 +123,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CListMethods.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CStudentTable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

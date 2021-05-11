@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Student.h"
+#include "CStudentTable.h"
 #include "CUpdateStudent.h"
 #include <afxwin.h>
 using namespace std;
@@ -46,9 +47,41 @@ CStudent::~CStudent()
 
 bool CStudent::AddStudent(CStudentData& oStudent)
 {
+	////////////////////////////////////
+	Library oLib;
+	
+	try {
+	CStudentTable recset(&g_dbConnection);
+	recset.Open(CRecordset::dynaset, "SELECT * FROM Student", CRecordset::none);
+	
+	if (!recset.CanAppend())
+		return false;
+
+	if (!recset.CanUpdate())
+		return false;
+
+		recset.AddNew(); // ERROR
+		recset.m_strFn = oStudent.m_strFirstName;
+		recset.m_strFn = oStudent.m_strLastName;
+		recset.time = oStudent.m_strBirthday;
+
+		if (!recset.CanUpdate()) {
+			AfxMessageBox("Record not added; no fiels values were set..");
+			return false;
+		}
+	}
+	catch (exception e)
+	{
+		AfxMessageBox("Error!", MB_ICONEXCLAMATION);
+	}
+	/////////////////////////////////
+		/*
 	CString sqlString;
+	
+	{
 	sqlString.Format("INSERT INTO Student (first_name, last_name, birth_date) VALUES ('%s', '%s','%s')", 
 								 oStudent.m_strFirstName, oStudent.m_strLastName, oStudent.m_strBirthday);
+	}
 
 	try
 	{
@@ -58,17 +91,40 @@ bool CStudent::AddStudent(CStudentData& oStudent)
 	{
 		AfxMessageBox("Error!", MB_ICONEXCLAMATION);
 	}
-
+	*/
 	return true;
 }
 
-bool CStudent::EditStudent(const CStudentData& oStudent) {
+bool CStudent::EditStudent(CStudentData& oStudent) {
 
+	CStudentTable recset(&g_dbConnection);
+	
+	CString sqlString;
+	
+	try {
+	sqlString.Format("SELECT * FROM Student WHERE id='%d'", oStudent.m_iClassNumber);
+	recset.Open(CRecordset::dynaset, sqlString, CRecordset::none);
+	
+	recset.Edit();
+	recset.m_strFn  = oStudent.m_strFirstName;
+	recset.m_strLn = oStudent.m_strLastName;
+	recset.time = oStudent.m_strBirthday;
+	
+	if (!recset.UpdateData()) {
+		AfxMessageBox("Record not updated; no fiels values were set.");
+	}
+	}
+	catch (exception e) {
+		AfxMessageBox("Error!", MB_ICONEXCLAMATION);
+	}
+
+	return true;
+	
+	/*
 	Library oLib;
 	CString sqlString;
 	sqlString.Format("UPDATE Student SET first_name = '%s', last_name = '%s', birth_date = '%s' WHERE id = %s;", 
 		oStudent.m_strFirstName, oStudent.m_strLastName, oStudent.m_strBirthday, oLib.IntToCString(oStudent.m_iClassNumber));
-
 	try
 	 {
 		g_dbConnection.ExecuteSQL(sqlString);
@@ -78,6 +134,39 @@ bool CStudent::EditStudent(const CStudentData& oStudent) {
 		 AfxMessageBox("Error!", MB_ICONEXCLAMATION);
 	 }
 
+	*/
+}
+
+bool CStudent::DeleteStudent(const int nClassNumber) {
+	
+	CString sqlString;
+	try 
+	{
+		CRecordset recset(&g_dbConnection);
+		sqlString.Format("SELECT * FROM Student WHERE id = '%d'", nClassNumber);
+		
+		recset.Open(CRecordset::dynaset, sqlString);
+		recset.Delete();
+	}
+	catch (exception e)
+	{
+		AfxMessageBox("Error delete student!", MB_ICONEXCLAMATION);
+	}
+
+	/*
+	Library oLib;
+	CString SqlString = "DELETE FROM Student WHERE id = '" + oLib.IntToCString(nClassNumber) + "';";
+
+	try
+	{
+		g_dbConnection.ExecuteSQL(SqlString);
+	}
+	catch(exception e)
+	{
+		AfxMessageBox("Error!", MB_ICONEXCLAMATION);
+	}
+	*/
+	
 	return true;
 }
 
@@ -91,45 +180,73 @@ bool CStudent::LoadStudent(const int nClassNumber, CStudentData& oStudent)
 	{
 		CRecordset recset(&g_dbConnection);
 		recset.Open(CRecordset::forwardOnly, "SELECT * FROM Student WHERE id = '" + oLib.IntToCString(nClassNumber) + "';", CRecordset::readOnly);
-
+	
 		recset.GetFieldValue("id",m_strClassNum);
 		oStudent.m_iClassNumber = atoi(m_strClassNum);
 		recset.GetFieldValue("first_name", oStudent.m_strFirstName);
 		recset.GetFieldValue("last_name", oStudent.m_strLastName);
 		recset.GetFieldValue("birth_date", varValueBirthday);
-		oStudent.m_strBirthday = oLib.CDBVariantToCOleDT(varValueBirthday);
-		//oStudent.m_strBirthday = oLib.CDBVariantToCString(varValueBirthday);
+		oStudent.m_strBirthday = oLib.CDBVariantToCOleDT(varValueBirthday);		
 	}
 	catch (exception e)
 	{
-		AfxMessageBox("Error!", MB_ICONEXCLAMATION);
+		AfxMessageBox("Error load student!", MB_ICONEXCLAMATION);
 	}
 
-	return true;
-}
-
-bool CStudent::DeleteStudent(const int nClassNumber) {
-	
-	Library oLib;
-	CString SqlString = "DELETE FROM Student WHERE id = '" + oLib.IntToCString(nClassNumber) + "';";
-
-	try
-	{
-		g_dbConnection.ExecuteSQL(SqlString);
-	}
-	catch(exception e)
-	{
-		AfxMessageBox("Error!", MB_ICONEXCLAMATION);
-	}
 	return true;
 }
 
 void CStudent::PrintStudent_(list<STUDENT>& m_listStudent)
 {
+	//test 
+/*
+	CStudentTable rs(&g_dbConnection);
+	
+	rs.Open(CRecordset::forwardOnly,
+		"select * from Student",
+		CRecordset::readOnly);
+
+	
+	while (!rs.IsEOF())
+	{
+		CString strFieldValue;
+		//int r = rs.GetODBCFieldCount();
+		for (short nIndex = 0; nIndex < rs.GetODBCFieldCount(); nIndex++)
+		{
+			rs.GetFieldValue(nIndex, strFieldValue);
+			// TO DO: Use field value string.
+		}
+		rs.MoveNext();
+	}
+	
+	
+	int n = rs.FlushResultSet();
+	while (rs.FlushResultSet())
+	{
+		// must call MoveNext because cursor is invalid
+		rs.MoveNext();
+
+		while (!rs.IsEOF())
+		{
+			CString strFieldValue;
+			for (short nIndex = 0; nIndex < rs.GetODBCFieldCount(); nIndex++)
+			{
+				rs.GetFieldValue(nIndex, strFieldValue);
+
+				// TO DO: Use field value string.
+			}
+			rs.MoveNext();
+		}
+	}
+
+	rs.Close();
+
+*/
+
 	Library oLib;
 	CString m_strID, m_strFName, m_strLName;
-	CDBVariant varValueBirthday;
 	CString SqlString = "SELECT * FROM Student";
+	CDBVariant varValueBirthday;
 
 	try 
 	{
@@ -154,7 +271,7 @@ void CStudent::PrintStudent_(list<STUDENT>& m_listStudent)
 	}
 	catch (exception e)
 	{
-		AfxMessageBox("Error!", MB_ICONEXCLAMATION);
+		AfxMessageBox("Error load students!", MB_ICONEXCLAMATION);
 	}
 }
 
@@ -198,7 +315,7 @@ void CStudent::AvgScoreBySubject(list<REFERENCE>& m_listReference)
 	}
 	catch (exception e)
 	{
-		AfxMessageBox("Error!", MB_ICONEXCLAMATION);
+		AfxMessageBox("Error load students!", MB_ICONEXCLAMATION);
 	}
 }
 
@@ -237,7 +354,7 @@ void CStudent::AvgScoreByAllSubject(list<REFERENCE>& m_listReference) {
 	}
 	catch (exception e)
 	{
-		AfxMessageBox("Error!", MB_ICONEXCLAMATION);
+		AfxMessageBox("Error average score!", MB_ICONEXCLAMATION);
 	}
 }
 
@@ -271,7 +388,7 @@ void CStudent::ExcellentStud(list<REFERENCE>& m_listReference) {
 	}
 	catch (exception e)
 	{
-		AfxMessageBox("Error!", MB_ICONEXCLAMATION);
+		AfxMessageBox("Error load students!", MB_ICONEXCLAMATION);
 	}
 }
 
@@ -305,7 +422,7 @@ void CStudent::PeopleHaveBirthday(list<REFERENCE>& m_listReference) {
 	}
 	catch (exception e)
 	{
-		AfxMessageBox("Error!", MB_ICONEXCLAMATION);
+		AfxMessageBox("Error load students!", MB_ICONEXCLAMATION);
 	}
 }
 
@@ -343,7 +460,7 @@ void CStudent::remedialExaminationBySub(list<REFERENCE>& m_listReference) {
 	}
 	catch (exception e)
 	{
-		AfxMessageBox("Error!", MB_ICONEXCLAMATION);
+		AfxMessageBox("Error load students!", MB_ICONEXCLAMATION);
 	}
 }
 
@@ -378,6 +495,6 @@ void CStudent::remedialExaminationByMoreSub(list<REFERENCE>& m_listReference) {
 	}
 	catch (exception e)
 	{
-		AfxMessageBox("Error!", MB_ICONEXCLAMATION);
+		AfxMessageBox("Error load students!", MB_ICONEXCLAMATION);
 	}
 }
