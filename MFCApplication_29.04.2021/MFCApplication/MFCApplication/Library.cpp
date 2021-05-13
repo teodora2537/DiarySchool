@@ -29,6 +29,12 @@ CString Library::IntToCString(int input) {
 	return str;
 }
 
+CString Library::OleDTToCString(COleDateTime input) {
+	CString str;
+	str.Format("%d/%d/%d" ,input.GetMonth(), input.GetDay(), input.GetYear());
+	return str;
+}
+
 COleDateTime Library::CStringToDate(CString input) {
 	COleDateTime date;
 	date.ParseDateTime(input, 0, MAKELANGID(LANG_ENGLISH, SUBLANG_ENGLISH_US));

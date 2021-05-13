@@ -9,6 +9,7 @@ class CStudentDlg : public CDialogEx
 	DECLARE_DYNAMIC(CStudentDlg)
 
 public:
+	//CStudentDlg();   // standard constructor
 	CStudentDlg(CStudentData& oSubject, const DialogMode eMode);   // standard constructor
 	virtual ~CStudentDlg();
 
@@ -23,17 +24,17 @@ protected:
 	COleDateTime time;
 
 	DECLARE_MESSAGE_MAP()
-private:
+public:
 	CString m_strClassNum;
 	CString m_strFn;
 	CString m_strLn;
 	CString m_strBirthday;
 	
 	CDateTimeCtrl m_dtCtrlBirthday;
+	COleDateTime m_oleDT;
 
 	BOOL ValidateData();
 	CStudentData& m_oStudent;
 	DialogMode m_eMode;
 	afx_msg void OnBnClickedOk();
-	//void DoFieldExchange(CFieldExchange* pFx);
 };

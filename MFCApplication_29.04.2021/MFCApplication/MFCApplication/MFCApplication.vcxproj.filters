@@ -75,6 +75,12 @@
     <ClInclude Include="CStudentTable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CSubjectTable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CScoreTable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MFCApplication.cpp">
@@ -126,6 +132,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CStudentTable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CSubjectTable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CScoreTable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

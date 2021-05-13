@@ -2,6 +2,7 @@
 #include "Subject.h"
 #include "Student.h"
 #include <afxwin.h>
+#include "CSubjectTable.h"
 using namespace std;
 
 CSubjectData::CSubjectData(int _roomNumber, CString _nameSubject, CString _fNameTeacher, CString _lNameTeacher)
@@ -29,22 +30,65 @@ extern CDatabase g_dbConnection;
 
 bool CSubject::AddSubject(const CSubjectData& oSubjectData)
 {
+	try
+	{
+		CSubjectTable recset(&g_dbConnection);
+		recset.Open();
+
+		recset.AddNew(); // ERROR
+
+		recset.m_strNameSubject = oSubjectData.m_strNameSubject;
+		recset.m_strFNameTeacher = oSubjectData.m_strFNameTeacher;
+		recset.m_strLNameTeacher = oSubjectData.m_strLNameTeacher;
+
+		if (!recset.Update())
+			return false;
+
+		recset.Close();
+	}
+	catch (exception e)
+	{
+		AfxMessageBox("Error!", MB_ICONEXCLAMATION);
+	}
+
+	/*
 	CString sqlString;
 	sqlString.Format("INSERT INTO Student (first_name, last_name, birth_date) VALUES ('%s', '%s', '%s')", 
 			  oSubjectData.m_strNameSubject, oSubjectData.m_strFNameTeacher, oSubjectData.m_strLNameTeacher);
 
 	try{
 		g_dbConnection.ExecuteSQL(sqlString);
+	*/
+	
+	return true;
+}
+
+bool CSubject::EditSubject(const CSubjectData& oSubjectData) {
+	
+	CSubjectTable recset(&g_dbConnection);
+	CString whereClause;
+
+	try
+	{
+		whereClause.Format("id='%d'", oSubjectData.m_iRoomNumber);
+		recset.m_strFilter = whereClause;
+		recset.Open();
+		recset.Edit();
+
+		recset.m_strNameSubject = oSubjectData.m_strNameSubject;
+		recset.m_strFNameTeacher = oSubjectData.m_strFNameTeacher;
+		recset.m_strLNameTeacher = oSubjectData.m_strLNameTeacher;
+		
+		if (!recset.Update()) {
+			AfxMessageBox("Record not updated; no fiels values were set.");
+		}
 	}
 	catch (exception e)
 	{
 		AfxMessageBox("Error!", MB_ICONEXCLAMATION);
 	}
-	return true;
-}
 
-bool CSubject::EditSubject(const CSubjectData& oSubject) {
-
+	/*
 	Library oLib;
 	CString sqlString;
 	
@@ -54,11 +98,40 @@ bool CSubject::EditSubject(const CSubjectData& oSubject) {
 	try
 	{
 		g_dbConnection.ExecuteSQL(sqlString);
+	*/
+	
+	return true;
+}
+
+bool CSubject::DeleteSubject(const int nRoom) {
+	
+	try
+	{
+	
+		CSubjectTable recset(&g_dbConnection);
+		CString sqlString;
+		sqlString.Format("id = '%d'", nRoom);
+		recset.Open();
+		recset.Delete();
+	}
+	catch (exception e)
+	{
+		AfxMessageBox("Error delete subject!", MB_ICONEXCLAMATION);
+	}
+	/*
+	Library oLib;
+	CString SqlString = "DELETE FROM Subject WHERE id = '" + oLib.IntToCString(nClassNumber) + "';";
+
+	try{
+	CRecordset recset(&g_dbConnection);
+
+	g_dbConnection.ExecuteSQL(SqlString);
 	}
 	catch (exception e)
 	{
 		AfxMessageBox("Error!", MB_ICONEXCLAMATION);
 	}
+	*/
 	return true;
 }
 
@@ -83,36 +156,6 @@ bool CSubject::LoadSubject(const int nRoomId, CSubjectData& oSubject)
 	{
 		AfxMessageBox("Error load subject!", MB_ICONEXCLAMATION);
 	}
-	return true;
-}
-
-bool CSubject::DeleteSubject(const int nRoom) {
-	CRecordset recset(&g_dbConnection);
-	CString sqlString;
-	sqlString.Format("SELECT * FROM Subject WHERE id = '%d'", nRoom);
-	try
-	{
-		recset.Open(CRecordset::dynaset, sqlString);
-		recset.Delete();
-	}
-	catch (exception e)
-	{
-		AfxMessageBox("Error delete subject!", MB_ICONEXCLAMATION);
-	}
-	/*
-	Library oLib;
-	CString SqlString = "DELETE FROM Subject WHERE id = '" + oLib.IntToCString(nClassNumber) + "';";
-
-	try{
-	CRecordset recset(&g_dbConnection);
-
-	g_dbConnection.ExecuteSQL(SqlString);
-	}
-	catch (exception e)
-	{
-		AfxMessageBox("Error!", MB_ICONEXCLAMATION);
-	}
-	*/
 	return true;
 }
 

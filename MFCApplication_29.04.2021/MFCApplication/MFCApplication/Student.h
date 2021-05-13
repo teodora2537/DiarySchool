@@ -38,7 +38,7 @@ public:
 
 	CString m_strFirstName;
 	CString m_strLastName;
-	COleDateTime m_strBirthday;
+	COleDateTime m_oleDT_Birthday;
 	CString m_strFullName;
 	int m_iClassNumber;
 };

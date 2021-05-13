@@ -105,7 +105,7 @@ BOOL CScoreDlg::OnInitDialog()
 	m_dtCtrlDate.EnableWindow(bEnable);
 	
 	Library oLib;
-	m_strClassNum = oLib.IntToCString(m_oScore.m_iClassNum);
+	m_strClassNum = oLib.IntToCString(m_oScore.m_iIdStudent);
 	m_strScore = oLib.IntToCString(m_oScore.m_iScore);
 	m_strSubject = m_oScore.m_strSubject;
 
@@ -116,7 +116,7 @@ BOOL CScoreDlg::OnInitDialog()
 		CString strDate = m_oScore.m_strDate;
 		date.ParseDateTime(strDate);
 		*/
-		m_dtCtrlDate.SetTime(m_oScore.m_strDate);
+		m_dtCtrlDate.SetTime(m_oScore.m_oleDateTime);
 	}
 	else {
 	
@@ -183,10 +183,10 @@ void CScoreDlg::OnBnClickedOk()
 	if (m_eMode != eDialogMode_View && !ValidateData())
 		return;
 
-	m_oScore.m_iClassNum = atoi(m_strClassNum);
+	m_oScore.m_iIdStudent = atoi(m_strClassNum);
 	m_oScore.m_strSubject = m_strSubject;
 	m_oScore.m_iScore = atoi(m_strScore);
-	m_oScore.m_strDate = m_strDate;
+	m_oScore.m_oleDateTime = m_strDate;
 
 	CDialogEx::OnOK();
 }

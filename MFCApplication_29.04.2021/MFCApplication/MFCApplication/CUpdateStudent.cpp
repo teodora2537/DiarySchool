@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "MFCApplication.h"
 #include "CUpdateStudent.h"
-
+#include "CStudentTable.h"
 // CUpdateStudent dialog
 
 IMPLEMENT_DYNAMIC(CStudentDlg, CDialogEx)
@@ -11,6 +11,10 @@ CStudentDlg::CStudentDlg(CStudentData& oStudent, const DialogMode eMode)
 	, m_oStudent(oStudent)
 	, m_eMode(eMode)
 {
+	m_strClassNum="";
+	m_strFn	="";
+	m_strLn	="";
+	m_strBirthday="";
 }
 
 CStudentDlg::~CStudentDlg()
@@ -57,12 +61,7 @@ BOOL CStudentDlg::OnInitDialog()
 
 	if (m_eMode != eDialogMode_Add)
 	{
-		/*
-	COleDateTime date;
-	CString strDate = m_oStudent.m_strBirthday;
-	date.ParseDateTime(strDate);
-		*/
-	m_dtCtrlBirthday.SetTime(m_oStudent.m_strBirthday);
+	m_dtCtrlBirthday.SetTime(m_oStudent.m_oleDT_Birthday);
 	}
 
 	SetDlgItemText(IDC_EDIT_UPDATE_STUDENT_CLASS_NUM, m_strClassNum);
@@ -112,39 +111,7 @@ void CStudentDlg::OnBnClickedOk()
 	m_oStudent.m_iClassNumber = atoi(m_strClassNum);
 	m_oStudent.m_strFirstName = m_strFn;
 	m_oStudent.m_strLastName = m_strLn;
-	m_dtCtrlBirthday.GetTime(m_oStudent.m_strBirthday);
+	m_dtCtrlBirthday.GetTime(m_oStudent.m_oleDT_Birthday);
 
 	CDialogEx::OnOK();
 }
-/*
-void CStudentDlg::DoFieldExchange(CFieldExchange* pFx)
-{
-	Library oLib;
-	pFx->SetFieldType(CFieldExchange::outputColumn);
-	int m_classNum;
-	RFX_Int(pFx, "[id]", m_classNum);
-	m_strClassNum = oLib.IntToCString(m_classNum);
-	RFX_Text(pFx, "[first_name]", m_strFn);
-	RFX_Text(pFx, "[last_name]", m_strLn);
-
-	m_dtCtrlBirthday.GetTime(time);
-	RFX_Date(pFx, "[birth_date]", time);
-
-	pFx->SetFieldType(CFieldExchange::inputParam);
-}
-*/
-
-/*
-void CStudentDlg::DoFieldExchange(CFieldExchange* pFX)
-{
-	pFX->SetFieldType(CFieldExchange::outputColumn);
-	Library oLib;
-	int m_classNum = atoi(m_strClassNum);
-	RFX_Int(pFX, "[id]", m_classNum);
-	RFX_Text(pFx, "[first_name]", m_strFn);
-	RFX_Text(pFx, "[last_name]", m_strLn);
-	RFX_Date(pFx, "[birth_date]", oLib.CStringToDate(m_strBirthday));
-
-	pFX->SetFieldType(CFieldExchange::inputParam);
-}
-*/

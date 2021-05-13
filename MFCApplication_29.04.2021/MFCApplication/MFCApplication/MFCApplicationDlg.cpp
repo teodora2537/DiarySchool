@@ -52,7 +52,7 @@ END_MESSAGE_MAP()
 
 // CMFCApplicationDlg dialog
 
-CMFCApplicationDlg::CMFCApplicationDlg(CWnd* pParent /*=nullptr*/)
+CMFCApplicationDlg::CMFCApplicationDlg(CWnd* pParent)
 	: CDialogEx(IDD_MFCAPPLICATION_DIALOG, pParent)
 {
 	//m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);

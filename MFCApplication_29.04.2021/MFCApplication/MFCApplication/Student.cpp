@@ -1,8 +1,10 @@
 #include "pch.h"
 #include "Student.h"
 #include "CStudentTable.h"
-#include "CUpdateStudent.h"
 #include <afxwin.h>
+#include "CUpdateStudent.h"
+#include "CScoreTable.h"
+#include "CSubjectTable.h"
 using namespace std;
 
 CStudentData::CStudentData(int _classNum, CString _fName, CString _lName, COleDateTime _birthday)
@@ -10,7 +12,7 @@ CStudentData::CStudentData(int _classNum, CString _fName, CString _lName, COleDa
 	m_iClassNumber = _classNum;
 	m_strFirstName = _fName;
 	m_strLastName = _lName;
-	m_strBirthday = _birthday;
+	m_oleDT_Birthday = _birthday;
 }
 
 CStudentData::CStudentData()
@@ -46,35 +48,32 @@ CStudent::~CStudent()
 }
 
 bool CStudent::AddStudent(CStudentData& oStudent)
-{
-	////////////////////////////////////
-	Library oLib;
-	
+{	
 	try {
-	CStudentTable recset(&g_dbConnection);
-	recset.Open(CRecordset::dynaset, "SELECT * FROM Student", CRecordset::none);
-	
-	if (!recset.CanAppend())
-		return false;
-
-	if (!recset.CanUpdate())
-		return false;
+		CStudentTable recset(&g_dbConnection);
+		recset.Open();
 
 		recset.AddNew(); // ERROR
-		recset.m_strFn = oStudent.m_strFirstName;
-		recset.m_strFn = oStudent.m_strLastName;
-		recset.time = oStudent.m_strBirthday;
-
-		if (!recset.CanUpdate()) {
-			AfxMessageBox("Record not added; no fiels values were set..");
+			
+		recset.m_str_First_name = oStudent.m_strFirstName;
+		recset.m_str_Last_name = oStudent.m_strLastName;
+		recset.m_oleDT_Birthday = oStudent.m_oleDT_Birthday;
+	
+		if (!recset.Update())
 			return false;
+
+		recset.Close();
+
+		//if (!recset.CanAppend())
+		//return false;
+		//
+		//if (!recset.CanUpdate())
+		//	return false;
 		}
-	}
 	catch (exception e)
 	{
 		AfxMessageBox("Error!", MB_ICONEXCLAMATION);
 	}
-	/////////////////////////////////
 		/*
 	CString sqlString;
 	
@@ -99,18 +98,20 @@ bool CStudent::EditStudent(CStudentData& oStudent) {
 
 	CStudentTable recset(&g_dbConnection);
 	
-	CString sqlString;
+	CString whereClause;
 	
-	try {
-	sqlString.Format("SELECT * FROM Student WHERE id='%d'", oStudent.m_iClassNumber);
-	recset.Open(CRecordset::dynaset, sqlString, CRecordset::none);
-	
+	try 
+	{
+	whereClause.Format("id='%d'", oStudent.m_iClassNumber);
+	recset.m_strFilter = whereClause;
+	recset.Open();
 	recset.Edit();
-	recset.m_strFn  = oStudent.m_strFirstName;
-	recset.m_strLn = oStudent.m_strLastName;
-	recset.time = oStudent.m_strBirthday;
+
+	recset.m_str_First_name = oStudent.m_strFirstName;
+	recset.m_str_Last_name = oStudent.m_strLastName;
+	recset.m_oleDT_Birthday = oStudent.m_oleDT_Birthday;
 	
-	if (!recset.UpdateData()) {
+	if (!recset.Update()) {
 		AfxMessageBox("Record not updated; no fiels values were set.");
 	}
 	}
@@ -142,11 +143,13 @@ bool CStudent::DeleteStudent(const int nClassNumber) {
 	CString sqlString;
 	try 
 	{
-		CRecordset recset(&g_dbConnection);
-		sqlString.Format("SELECT * FROM Student WHERE id = '%d'", nClassNumber);
-		
-		recset.Open(CRecordset::dynaset, sqlString);
+		CStudentTable recset(&g_dbConnection);
+		sqlString.Format("id = '%d'", nClassNumber);
+		recset.m_strFilter = sqlString;
+		recset.Open(); 
 		recset.Delete();
+		//sqlString.Format("SELECT * FROM Student WHERE id = '%d'", nClassNumber);
+		//recset.Open(CRecordset::dynaset, sqlString);
 	}
 	catch (exception e)
 	{
@@ -178,15 +181,25 @@ bool CStudent::LoadStudent(const int nClassNumber, CStudentData& oStudent)
 
 	try
 	{
-		CRecordset recset(&g_dbConnection);
-		recset.Open(CRecordset::forwardOnly, "SELECT * FROM Student WHERE id = '" + oLib.IntToCString(nClassNumber) + "';", CRecordset::readOnly);
-	
-		recset.GetFieldValue("id",m_strClassNum);
-		oStudent.m_iClassNumber = atoi(m_strClassNum);
-		recset.GetFieldValue("first_name", oStudent.m_strFirstName);
-		recset.GetFieldValue("last_name", oStudent.m_strLastName);
-		recset.GetFieldValue("birth_date", varValueBirthday);
-		oStudent.m_strBirthday = oLib.CDBVariantToCOleDT(varValueBirthday);		
+		CStudentTable recset(&g_dbConnection);
+		CString whereClause;
+		whereClause.Format("id = '%d'", nClassNumber);
+		recset.m_strFilter = whereClause;
+		recset.Open();
+
+		oStudent.m_iClassNumber = nClassNumber;
+		oStudent.m_strFirstName = recset.m_str_First_name;
+		oStudent.m_strLastName = recset.m_str_Last_name;
+		oStudent.m_oleDT_Birthday = recset.m_oleDT_Birthday;
+		
+		//recset.Open(CRecordset::forwardOnly, "SELECT * FROM Student WHERE id = '" + oLib.IntToCString(nClassNumber) + "';", CRecordset::readOnly);
+	 	//
+		//recset.GetFieldValue("id",m_strClassNum);
+		//oStudent.m_iClassNumber = atoi(m_strClassNum);
+		//recset.GetFieldValue("first_name", oStudent.m_strFirstName);
+		//recset.GetFieldValue("last_name", oStudent.m_strLastName);
+		//recset.GetFieldValue("birth_date", varValueBirthday);
+		//oStudent.m_strBirthday = oLib.CDBVariantToCOleDT(varValueBirthday);		
 	}
 	catch (exception e)
 	{
@@ -198,72 +211,20 @@ bool CStudent::LoadStudent(const int nClassNumber, CStudentData& oStudent)
 
 void CStudent::PrintStudent_(list<STUDENT>& m_listStudent)
 {
-	//test 
-/*
-	CStudentTable rs(&g_dbConnection);
-	
-	rs.Open(CRecordset::forwardOnly,
-		"select * from Student",
-		CRecordset::readOnly);
-
-	
-	while (!rs.IsEOF())
-	{
-		CString strFieldValue;
-		//int r = rs.GetODBCFieldCount();
-		for (short nIndex = 0; nIndex < rs.GetODBCFieldCount(); nIndex++)
-		{
-			rs.GetFieldValue(nIndex, strFieldValue);
-			// TO DO: Use field value string.
-		}
-		rs.MoveNext();
-	}
-	
-	
-	int n = rs.FlushResultSet();
-	while (rs.FlushResultSet())
-	{
-		// must call MoveNext because cursor is invalid
-		rs.MoveNext();
-
-		while (!rs.IsEOF())
-		{
-			CString strFieldValue;
-			for (short nIndex = 0; nIndex < rs.GetODBCFieldCount(); nIndex++)
-			{
-				rs.GetFieldValue(nIndex, strFieldValue);
-
-				// TO DO: Use field value string.
-			}
-			rs.MoveNext();
-		}
-	}
-
-	rs.Close();
-
-*/
-
 	Library oLib;
-	CString m_strID, m_strFName, m_strLName;
-	CString SqlString = "SELECT * FROM Student";
-	CDBVariant varValueBirthday;
 
 	try 
 	{
-		CRecordset recset(&g_dbConnection);
-		recset.Open(CRecordset::forwardOnly, SqlString, CRecordset::readOnly);
+		CStudentTable recset(&g_dbConnection);
+		recset.Open();
 
 		while (!recset.IsEOF()) 
 		{
-			recset.GetFieldValue("id", m_strID);
-			recset.GetFieldValue("first_name", m_strFName);
-			recset.GetFieldValue("last_name", m_strLName);
-			recset.GetFieldValue("birth_date", varValueBirthday);
-
 			STUDENT studentStruct;
-			studentStruct.iId = atoi(m_strID);
-			sprintf(studentStruct.szName, "%s", m_strFName + " " + m_strLName);
-			sprintf(studentStruct.szDate, "%s", oLib.CDBVariantToCString(varValueBirthday));
+			studentStruct.iId = atoi(recset.m_str_IdStudent);
+			sprintf(studentStruct.szName, "%s", recset.m_str_First_name + " " + recset.m_str_Last_name);
+			sprintf(studentStruct.szDate, "%s", oLib.OleDTToCString(recset.m_oleDT_Birthday));
+
 			m_listStudent.push_back(studentStruct);
 
 			recset.MoveNext();

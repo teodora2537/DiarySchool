@@ -1,5 +1,6 @@
 #pragma once
 #include "afxdb.h"
+//#include "afxdialogex.h"
 using namespace std;
 // CStudentTable dialog
 
@@ -19,16 +20,22 @@ public:
 #endif
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual CString GetDefaultConnection();
+	virtual CString GetDefaultSQL();
+	virtual void DoFieldExchange(CFieldExchange* pFX);
 	DECLARE_MESSAGE_MAP()
 
 public:
-	int m_iClassNum;
-	CString m_strFn;
-	CString m_strLn;
-	CDateTimeCtrl m_dtCtrlBirthday;
-	COleDateTime time;
-
-public:
-	virtual void DoFieldExchange(CFieldExchange* pFX);
+	CString m_str_IdStudent;
+	CString m_str_First_name;
+	CString m_str_Last_name;
+	COleDateTime m_oleDT_Birthday;
+	int m_iCountStudent;
+//public:
+//
+//#ifdef _DEBUG
+//	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+//	virtual void AssertValid() const;
+//	virtual void Dump(CDumpContext& dc) const;
+//#endif
 };

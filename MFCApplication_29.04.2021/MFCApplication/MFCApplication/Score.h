@@ -30,10 +30,11 @@ public:
 	CScoreData();
 
 	int m_iIdScore;
-	int m_iClassNum;
+	int m_iIdStudent;
+	int m_iIdSubject;
 	int m_iScore;
 	CString m_strSubject;
-	COleDateTime m_strDate;
+	COleDateTime m_oleDateTime;
 	CString m_strNameStudent;
 };
 
@@ -45,7 +46,7 @@ public:
 
 public:
 	bool AddScore(CScoreData& oScoreData);
-	bool EditScore(const CScoreData& oScore);
+	bool EditScore(CScoreData& oScore);
 	bool LoadScore(const int nIdScore, CScoreData& oScore);
 	bool DeleteScore(const int nIdScore);
 	void Print_Score(list<SCORE>& listScore);
@@ -64,3 +65,11 @@ public:
 
 	int GetSelectedValue(CComboBox& m_combo) const;
 };
+
+void isContainAStudent(CString& sqlString, CScoreData& oScoreData, CString& isContains);
+
+void GetIdSubject(CScoreData& oScoreData, int& m_strIdSub);
+
+void GetStudentName(CString& whereClause, CScoreData& oScore);
+
+void GetSubject(CString& whereClause, CScoreData& oScore);
