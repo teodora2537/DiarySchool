@@ -17,6 +17,10 @@ CScoreData::CScoreData(int _idScore, int _classNum, CString _subject, int _score
 
 CScoreData::CScoreData()
 {
+	m_iIdScore = 0;
+	m_iIdStudent = 0;
+	m_iIdSubject = 0;
+	m_iScore = 0;
 }
 
 extern CDatabase g_dbConnection;
@@ -30,7 +34,7 @@ CScore::~CScore()
 }
 
 	// is valid id student
-bool IsContainAStudent(CScoreData& oScoreData)
+bool CScore::IsContainAStudent(CScoreData& oScoreData)
 {	
 	CString sqlString;
 	CString isContains;
@@ -46,7 +50,7 @@ bool IsContainAStudent(CScoreData& oScoreData)
 }
 
 //Get id subject
-void GetIdSubject(CString& strSubject, int& m_strIdSub)
+void CScore::GetIdSubject(CString& strSubject, int& m_strIdSub)
 {
 	//get id subject
 	CString whereClause;
@@ -89,16 +93,15 @@ bool CScore::AddScore(CScoreData& oScoreData)
 	catch (exception e)
 	{
 		AfxMessageBox("Error!", MB_ICONEXCLAMATION);
+		return false;
 	}
 
 	return true;
 }
 
 bool CScore::EditScore(CScoreData& oScore) {
-	
-
-	try {
 		CString whereClause;
+	try {
 		CScoreTable recset(&g_dbConnection);
 		
 		//get id subject
@@ -116,12 +119,14 @@ bool CScore::EditScore(CScoreData& oScore) {
 		recset.m_oleDateTime = oScore.m_oleDateTime;
 
 		if (!recset.Update()) {
-			AfxMessageBox("Record not updated; no fiels values were set.");
+			return false;
+			//AfxMessageBox("Record not updated; no fiels values were set.");
 		}
 	}
 	catch (exception e)
 	{
 		AfxMessageBox("Error!", MB_ICONEXCLAMATION);
+		return false;
 	}
 	return true;
 }
@@ -145,7 +150,7 @@ bool CScore::DeleteScore(const int nIdScore)
 }
 
 //get student name
-void GetStudentName(CScoreData& oScore)
+void CScore::GetStudentName(CScoreData& oScore)
 {
 	CString whereClause;
 	whereClause.Format("id = '%d'", oScore.m_iIdStudent);
@@ -157,7 +162,7 @@ void GetStudentName(CScoreData& oScore)
 }
 
 //get subject
-void GetSubject(CScoreData& oScore)
+void CScore::GetSubject(CScoreData& oScore)
 {
 	CString whereClause;
 	whereClause.Format("id = '%d'", oScore.m_iIdSubject);

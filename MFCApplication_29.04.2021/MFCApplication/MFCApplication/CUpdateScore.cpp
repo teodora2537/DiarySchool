@@ -23,7 +23,6 @@ void CScoreDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT_UPDATE_SCORE_CLASS_NUMBER, m_strClassNum);
 	DDV_MaxChars(pDX, m_strClassNum, 2);//Size of class number
 	DDX_Text(pDX, IDC_COMBO_SCORE, m_strScore);
-	DDX_Text(pDX, IDC_DATETIMEPICKER, m_strDate);
 	DDX_Text(pDX, IDC_COMBO_SUBJECT, m_strSubject);
 	
 	DDX_Control(pDX, IDC_DATETIMEPICKER, m_dtCtrlDate);
@@ -34,76 +33,59 @@ void CScoreDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_COMBO_SCORE, m_comboBoxScore);
 }
 
-/*virtual*/
-BOOL CScoreDlg::OnInitDialog()
+/*Set range of date time picker*/
+void CScoreDlg::SetRangeOfDTPicker()
 {
-	if (!__super::OnInitDialog())
-		return FALSE;
-	
-	//////////////////Range date//////////
 	COleDateTime currentDate = COleDateTime::GetCurrentTime();
 	COleDateTime dtMinRange;
 	COleDateTime dtMaxRange;
 
 	dtMaxRange.SetDate(currentDate.GetYear(), currentDate.GetMonth(), currentDate.GetDay());
 	m_dtCtrlDate.SetRange(&dtMinRange, &dtMaxRange);
-	/////////////////////////////////////
-	
-	///////////Fill combo box////////////
+}
+
+/*Fill combo boxes*/
+void CScoreDlg::FillComboBox()
+{
 	list<SUBJECT> m_listSub;
 
 	CSubject oSubject;
 	oSubject.PrintSub(m_listSub);
 	m_comboBoxSubject.SetItemHeight(5, 20);
 
-	
+
 	CArray<COMBO_DATA> arrData;
 	int iId = 0;
 	for (auto& i = m_listSub.begin(); i != m_listSub.end(); i++)
-	{	
+	{
 		COMBO_DATA combo_data;
 		combo_data.nID = iId;
 		sprintf(combo_data.szName, "%s", i->szSubject);
 		arrData.Add(combo_data);
 		iId++;
-
-		//m_comboBoxSubject.AddString(i->szSubject);
 	}
 	CMyComboBox subjectCombo;
 	subjectCombo.LoadData(arrData, m_comboBoxSubject);
-		
+
 	m_comboBoxScore.SetItemHeight(5, 20);
 
 	iId = 0;
 	arrData.RemoveAll();
 
 	for (int i = 2; i <= 6; i++) {
-	
+
 		COMBO_DATA combo_data;
 		combo_data.nID = iId;
 		sprintf(combo_data.szName, "%d", i);
 		arrData.Add(combo_data);
-
-		//m_comboBoxScore.AddString(oLib.IntToCString(i));
-}
+	}
 
 	subjectCombo.LoadData(arrData, m_comboBoxScore);
-	
+}
 
-	/////////////////////////////////
-
-	if (m_eMode == eDialogMode_Edit)
-		this->SetWindowText("Update Score");
-	else if (m_eMode == eDialogMode_View)
-		this->SetWindowText("Score");
-
-	BOOL bEnable = m_eMode != eDialogMode_View;
-		
-	GetDlgItem(IDC_EDIT_UPDATE_SCORE_CLASS_NUMBER)->EnableWindow(FALSE);
-	m_comboBoxSubject.EnableWindow(bEnable);
-	m_comboBoxScore.EnableWindow(bEnable);
-	m_dtCtrlDate.EnableWindow(bEnable);
-	
+/*Fill edit boxes*/
+void CScoreDlg::FillEditBoxes()
+{
 	Library oLib;
 	m_strClassNum = oLib.IntToCString(m_oScore.m_iIdStudent);
 	m_strScore = oLib.IntToCString(m_oScore.m_iScore);
@@ -111,18 +93,13 @@ BOOL CScoreDlg::OnInitDialog()
 
 	if (m_eMode != eDialogMode_Add)
 	{
-		/*
-		COleDateTime date;
-		CString strDate = m_oScore.m_strDate;
-		date.ParseDateTime(strDate);
-		*/
 		m_dtCtrlDate.SetTime(m_oScore.m_oleDateTime);
 	}
 	else {
-	
+
 		this->SetWindowText("Add Score");
-		GetDlgItem(IDC_EDIT_UPDATE_SCORE_CLASS_NUMBER)->EnableWindow(TRUE);	
-		
+		GetDlgItem(IDC_EDIT_UPDATE_SCORE_CLASS_NUMBER)->EnableWindow(TRUE);
+
 		m_strClassNum.Empty();
 		m_strScore.Empty();
 
@@ -133,6 +110,41 @@ BOOL CScoreDlg::OnInitDialog()
 	SetDlgItemText(IDC_EDIT_UPDATE_SCORE_CLASS_NUMBER, m_strClassNum);
 	SetDlgItemText(IDC_COMBO_SUBJECT, m_strSubject);
 	SetDlgItemText(IDC_COMBO_SCORE, m_strScore);
+}
+
+/*Set enable/disable of edit boxes*/
+void CScoreDlg::EnableDisableBoxes()
+{
+	BOOL bEnable = m_eMode != eDialogMode_View;
+
+	GetDlgItem(IDC_EDIT_UPDATE_SCORE_CLASS_NUMBER)->EnableWindow(FALSE);
+	m_comboBoxSubject.EnableWindow(bEnable);
+	m_comboBoxScore.EnableWindow(bEnable);
+	m_dtCtrlDate.EnableWindow(bEnable);
+}
+
+/*virtual*/
+BOOL CScoreDlg::OnInitDialog()
+{
+	if (!__super::OnInitDialog())
+		return FALSE;
+	
+	/*Range date*/
+	SetRangeOfDTPicker();
+	
+	/*Fill combo box*/
+	FillComboBox();
+
+	if (m_eMode == eDialogMode_Edit)
+		this->SetWindowText("Update Score");
+	else if (m_eMode == eDialogMode_View)
+		this->SetWindowText("Score");
+
+	/*Set enable/disable of edit boxes*/
+	EnableDisableBoxes();
+	
+	/*Fill edit boxes*/
+	FillEditBoxes();
 
 	return TRUE;
 }
@@ -145,8 +157,6 @@ END_MESSAGE_MAP()
 BOOL CScoreDlg::ValidateData()
 {
 	CMyComboBox myCombo;
-	//int nIndexSub = m_comboBoxSubject.FindStringExact(0, m_strSubject);
-	//int nIndexScore = m_comboBoxScore.FindStringExact(0, m_strScore);
 	
 	int nIndexSub = myCombo.GetSelectedValue(m_comboBoxSubject);
 	int nIndexScore = myCombo.GetSelectedValue(m_comboBoxScore);
@@ -186,7 +196,7 @@ void CScoreDlg::OnBnClickedOk()
 	m_oScore.m_iIdStudent = atoi(m_strClassNum);
 	m_oScore.m_strSubject = m_strSubject;
 	m_oScore.m_iScore = atoi(m_strScore);
-	m_oScore.m_oleDateTime = m_strDate;
+	m_dtCtrlDate.GetTime(m_oScore.m_oleDateTime);
 
 	CDialogEx::OnOK();
 }

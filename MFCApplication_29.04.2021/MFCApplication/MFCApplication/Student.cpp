@@ -67,33 +67,35 @@ bool CStudent::AddStudent(CStudentData& oStudent)
 	catch (exception e)
 	{
 		AfxMessageBox("Error!", MB_ICONEXCLAMATION);
+		return false;
 	}
 	return true;
 }
 
 bool CStudent::EditStudent(CStudentData& oStudent) {
 
-	CStudentTable recset(&g_dbConnection);
 	
 	CString whereClause;
-	
+	//Don't edit if record is not change
 	try 
 	{
-	whereClause.Format("id='%d'", oStudent.m_iClassNumber);
-	recset.m_strFilter = whereClause;
-	recset.Open();
-	recset.Edit();
+		CStudentTable recset(&g_dbConnection);
+		whereClause.Format("id='%d'", oStudent.m_iClassNumber);
+		recset.m_strFilter = whereClause;
+		recset.Open();
+		recset.Edit();
 
-	recset.m_str_First_name = oStudent.m_strFirstName;
-	recset.m_str_Last_name = oStudent.m_strLastName;
-	recset.m_oleDT_Birthday = oStudent.m_oleDT_Birthday;
-	
-	if (!recset.Update()) {
-		AfxMessageBox("Record not updated; no fiels values were set.");
-	}
+		recset.m_str_First_name = oStudent.m_strFirstName;
+		recset.m_str_Last_name = oStudent.m_strLastName;
+		recset.m_oleDT_Birthday = oStudent.m_oleDT_Birthday;
+		
+		if (!recset.Update()) {
+			return false;
+		}
 	}
 	catch (exception e) {
 		AfxMessageBox("Error!", MB_ICONEXCLAMATION);
+		return false;
 	}
 
 	return true;

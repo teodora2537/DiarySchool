@@ -49,6 +49,7 @@ bool CSubject::AddSubject(const CSubjectData& oSubjectData)
 	catch (exception e)
 	{
 		AfxMessageBox("Error!", MB_ICONEXCLAMATION);
+		return false;
 	}
 	
 	return true;
@@ -77,6 +78,7 @@ bool CSubject::EditSubject(const CSubjectData& oSubjectData) {
 	catch (exception e)
 	{
 		AfxMessageBox("Error!", MB_ICONEXCLAMATION);
+		return false;
 	}
 	
 	return true;

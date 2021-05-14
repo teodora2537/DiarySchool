@@ -1,17 +1,13 @@
 #pragma once
 #include <afxdb.h>
 
-
-// CSubjectTable dialog
-
-class CSubjectTable : public CDialogEx, public CRecordset
+class CSubjectTable : public CRecordset, public CDialogEx
 {
 public:
 	CSubjectTable(CDatabase* pDatabase = NULL);
 	DECLARE_DYNAMIC(CSubjectTable)
 
 public:
-	CSubjectTable(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CSubjectTable();
 
 // Dialog Data

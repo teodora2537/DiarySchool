@@ -16,6 +16,32 @@ CSubjectDlg::~CSubjectDlg()
 {
 }
 
+/*Fill edit boxes*/
+void CSubjectDlg::FillEditBoxes()
+{
+	Library oLib;
+	m_strRoomNum = oLib.IntToCString(m_oSubject.m_iRoomNumber);
+	m_strSubject = m_oSubject.m_strNameSubject;
+	m_strFN = m_oSubject.m_strFNameTeacher;
+	m_strLN = m_oSubject.m_strLNameTeacher;
+
+	SetDlgItemText(IDC_EDIT_UPDATE_SUBJECT_ROOM_NUM, m_strRoomNum);
+	SetDlgItemText(IDC_EDIT_UPDATE_SUBJECT_SUBJECT, m_strSubject);
+	SetDlgItemText(IDC_EDIT_UPDATE_SUBJECT_FN, m_strFN);
+	SetDlgItemText(IDC_EDIT_UPDATE_SUBJECT_LN, m_strLN);
+}
+
+/*Set enable/disable of edit boxes*/
+void CSubjectDlg::EnableDisableBoxes()
+{
+	BOOL bEnable = m_eMode != eDialogMode_View;
+
+	GetDlgItem(IDC_EDIT_UPDATE_SUBJECT_ROOM_NUM)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_UPDATE_SUBJECT_SUBJECT)->EnableWindow(bEnable);
+	GetDlgItem(IDC_EDIT_UPDATE_SUBJECT_FN)->EnableWindow(bEnable);
+	GetDlgItem(IDC_EDIT_UPDATE_SUBJECT_LN)->EnableWindow(bEnable);
+}
+
 /*virtual*/
 BOOL CSubjectDlg::OnInitDialog()
 {
@@ -29,23 +55,11 @@ BOOL CSubjectDlg::OnInitDialog()
 	else if (m_eMode == eDialogMode_View)
 		this->SetWindowText("Subject");
 
-	BOOL bEnable = m_eMode != eDialogMode_View;
+	/*Set enable/disable of edit boxes*/
+	EnableDisableBoxes();
 
-	GetDlgItem(IDC_EDIT_UPDATE_SUBJECT_ROOM_NUM)->EnableWindow(FALSE);
-	GetDlgItem(IDC_EDIT_UPDATE_SUBJECT_SUBJECT)->EnableWindow(bEnable);
-	GetDlgItem(IDC_EDIT_UPDATE_SUBJECT_FN)->EnableWindow(bEnable);
-	GetDlgItem(IDC_EDIT_UPDATE_SUBJECT_LN)->EnableWindow(bEnable);
-
-	Library oLib;
-	m_strRoomNum = oLib.IntToCString(m_oSubject.m_iRoomNumber);
-	m_strSubject = m_oSubject.m_strNameSubject;
-	m_strFN = m_oSubject.m_strFNameTeacher;
-	m_strLN = m_oSubject.m_strLNameTeacher;
-
-	SetDlgItemText(IDC_EDIT_UPDATE_SUBJECT_ROOM_NUM, m_strRoomNum);
-	SetDlgItemText(IDC_EDIT_UPDATE_SUBJECT_SUBJECT, m_strSubject);
-	SetDlgItemText(IDC_EDIT_UPDATE_SUBJECT_FN, m_strFN);
-	SetDlgItemText(IDC_EDIT_UPDATE_SUBJECT_LN, m_strLN);
+	/*Fill edit boxes*/
+	FillEditBoxes();
 
 	return TRUE;
 }

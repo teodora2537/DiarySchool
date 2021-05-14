@@ -1,11 +1,7 @@
-// CScoreTable.cpp : implementation file
-//
-
 #include "pch.h"
 #include "MFCApplication.h"
 #include "CScoreTable.h"
-#include "afxdialogex.h"
-#include <exception>
+
 // CScoreTable dialog
 
 IMPLEMENT_DYNAMIC(CScoreTable, CRecordset)
@@ -14,6 +10,11 @@ CScoreTable::CScoreTable(CDatabase* pdb)
 	: CDialogEx(IDD_DIALOG_UPDATE_SCORE)
 	, CRecordset(pdb)
 {
+	m_iIdScore = 0;
+	m_iIdStudent = 0;
+	m_iIdSubject = 0;
+	m_iScore = 0;
+
 	m_nFields = 5;
 	m_nParams = 5;
 	m_nDefaultType = dynaset;
@@ -55,8 +56,5 @@ CString CScoreTable::GetDefaultSQL()
 	return "[Score]";
 }
 
-
 BEGIN_MESSAGE_MAP(CScoreTable, CDialogEx)
 END_MESSAGE_MAP()
-
-// CScoreTable message handlers

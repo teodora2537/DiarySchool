@@ -20,6 +20,8 @@ public:
 #endif
 
 protected:
+	void FillEditBoxes();
+	void EnableDisableBoxes();
 	virtual	BOOL OnInitDialog() override;
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 

@@ -7,13 +7,12 @@
 #include <list>
 using namespace std;
 
-class CTabStudent : public CDialogEx, public CDatabase, public CRecordset
+class CTabStudent : public CDialogEx
 {
 	DECLARE_DYNAMIC(CTabStudent)
 
 public:
-	CTabStudent(CWnd* pParent = nullptr);   // standard constructor
-	//afx_msg void OnInitialUpdate();
+	CTabStudent(); 
 	virtual ~CTabStudent();
 
 	// Dialog Data
@@ -39,4 +38,11 @@ private:
 	afx_msg void OnNMDblclkList(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnLvnColumnclickList(NMHDR* pNMHDR, LRESULT* pResult);
 	void LoadData(bool isFromFile);
+
+protected: //sort
+	SortOrder idStudentOrder = SORT_None;
+	SortOrder nameStudOrder = SORT_None;
+	SortOrder birthdayOrder = SORT_None;
+	SortOrder sortOrderStudent = SORT_None;
+	list<STUDENT> m_listStudent;
 };

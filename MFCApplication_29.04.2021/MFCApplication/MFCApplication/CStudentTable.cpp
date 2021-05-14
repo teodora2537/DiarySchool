@@ -1,18 +1,17 @@
 #include "pch.h"
 #include "MFCApplication.h"
 #include "CStudentTable.h"
-//#include "CUpdateStudent.h"
-#include "Student.h"
 using namespace std;
 // CStudentTable dialog
 
-IMPLEMENT_DYNAMIC(CStudentTable, /*CDialogEx*/CRecordset)
+IMPLEMENT_DYNAMIC(CStudentTable, CRecordset)
 
 
 CStudentTable::CStudentTable(CDatabase* pdb)
 	: CDialogEx(IDD_DIALOG_UPDATE_STUDENT)
 	,CRecordset(pdb)
 {
+	m_iCountStudent = 0;
 	m_nFields = 4;
 	m_nParams = 4;
 	m_nDefaultType = dynaset;
@@ -46,6 +45,7 @@ void CStudentTable::DoFieldExchange(CFieldExchange* pFX)
 	RFX_Text(pFX, "[last_name]", m_str_Last_name);
 	RFX_Date(pFX, "[birth_date]", m_oleDT_Birthday);
 }
+
 extern CDatabase g_dbConnection;
 
 /*virtual*/
@@ -57,17 +57,3 @@ CString CStudentTable::GetDefaultConnection() {
 CString CStudentTable::GetDefaultSQL() {
 	return "[Student]";
 }
- 
-//void CStudentTable::DoDataExchange(CDataExchange* pDX)
-//{
-//	CDialogEx::DoDataExchange(pDX);
-//}
-// 
-//void CStudentTable::AssertValid() const{
-//	//CStudentTable::AssertValid();
-//	ASSERT(true);
-//}
-//
-//void CStudentTable::Dump(CDumpContext& dc) const {
-//
-//}

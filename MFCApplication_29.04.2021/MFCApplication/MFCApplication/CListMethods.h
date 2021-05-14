@@ -28,37 +28,3 @@ public:
     void SortListReference(const int sortClm, list<REFERENCE>& listFromStruct, SortOrder order, bool bIsNames);
     void SortListStudent(const int sortClm, list<STUDENT>& listFromStruct, SortOrder order);
 };
-
-
-/*
-struct SubStruct {
-    
-    int nIdRoom;
-    CString strSubject;
-    CString strNameTeacher;
-};
-*/
-/*
- typedef struct StudentStruct {
-    int nIdStudent;
-    CString strNameStudent;
-    CString strBirthday;
-};
-
-typedef struct ReferenceStruct {
-    int nIdStudent;
-    CString strClm0;
-    CString strClm1;
-    CString strClm2;
-    CString strClm3;
-};
-
-typedef struct ScoreStruct {
-    int nIdScore;
-    int nIdStudent;
-    CString strNameStudent;
-    CString strSubject;
-    CString strScore;
-    CString strDate;
-};
-*/

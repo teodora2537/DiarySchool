@@ -9,7 +9,6 @@ class CStudentDlg : public CDialogEx
 	DECLARE_DYNAMIC(CStudentDlg)
 
 public:
-	//CStudentDlg();   // standard constructor
 	CStudentDlg(CStudentData& oSubject, const DialogMode eMode);   // standard constructor
 	virtual ~CStudentDlg();
 
@@ -19,19 +18,19 @@ public:
 #endif
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX);
+	void SetRangeOfDTPicker();
+	void FillEditBoxes();
+	void EnableDisableBoxes();
+	// DDX/DDV support
 	virtual	BOOL OnInitDialog() override;
-	COleDateTime time;
 
 	DECLARE_MESSAGE_MAP()
 public:
 	CString m_strClassNum;
 	CString m_strFn;
 	CString m_strLn;
-	CString m_strBirthday;
-	
 	CDateTimeCtrl m_dtCtrlBirthday;
-	COleDateTime m_oleDT;
 
 	BOOL ValidateData();
 	CStudentData& m_oStudent;

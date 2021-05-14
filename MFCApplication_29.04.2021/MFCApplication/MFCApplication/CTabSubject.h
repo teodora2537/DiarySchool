@@ -11,7 +11,7 @@ class CTabSubject : public CDialogEx
 	DECLARE_DYNAMIC(CTabSubject)
 
 public:
-	CTabSubject(CWnd* pParent = nullptr);   // standard constructor
+	CTabSubject();   // standard constructor
 	virtual ~CTabSubject();
 
 	// Dialog Data
@@ -39,4 +39,12 @@ private:
 	afx_msg void OnLvnColumnclickList(NMHDR* pNMHDR, LRESULT* pResult);
 
 	void LoadData(bool isFromFile);
+
+protected: //sort
+	SortOrder orderIdRoom = SORT_None;
+	SortOrder orderSubs = SORT_None;
+	SortOrder orderTeachers = SORT_None;
+	SortOrder sortOrderSubject = SORT_None;
+
+	list<SUBJECT> m_listSubject;
 };

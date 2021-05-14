@@ -6,8 +6,8 @@ using namespace std;
 
 IMPLEMENT_DYNAMIC(CTabScore, CDialogEx)
 
-CTabScore::CTabScore(CWnd* pParent)
-	: CDialogEx(IDD_TAB_SCORE, pParent)
+CTabScore::CTabScore()
+	: CDialogEx(IDD_TAB_SCORE)
 {
 
 }
@@ -107,26 +107,26 @@ void CTabScore::OnEditScore()
 	int nRoomId = (int)m_listCtrl.GetItemData(nItem);
 
 	CScoreData oScoreData;
-
+	oScoreData.m_iIdScore = nRoomId;
 	CScore oScore;
 
 	if (!oScore.LoadScore(nRoomId, oScoreData))
-	{
-		MessageBox("The score not updated!", "Error", MB_RETRYCANCEL | MB_ICONERROR);
-
-		if (IDRETRY)
-			OnEditScore();
-
 		return;
-	}
+	
 
 	CScoreDlg dlg(oScoreData, eDialogMode_Edit);
 
 	if (dlg.DoModal() != IDOK)
 		return;
 
-	if (!oScore.EditScore(oScoreData))
+	if (!oScore.EditScore(oScoreData)) 
+	{
+		MessageBox("The score not updated!", "Error", MB_RETRYCANCEL | MB_ICONERROR);
+
+		if (IDRETRY)
+			OnEditScore();
 		return;
+	}
 
 	LoadData("file");
 }
@@ -154,13 +154,9 @@ void CTabScore::OnDeleteScore()
 	if (result != IDYES)
 		return;
 
-	if (!oScore.DeleteScore(nRoomId)) {
-		MessageBox("The score not added!", "Error", MB_RETRYCANCEL | MB_ICONERROR);
-
-		if (IDRETRY)
-			OnDeleteScore();
+	if (!oScore.DeleteScore(nRoomId))
 		return;
-	}
+	
 
 	m_listCtrl.DeleteItem(nItem);
 }
@@ -202,15 +198,6 @@ void CTabScore::OnNMDblclkList(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	OnViewScore();
 }
-
-SortOrder idStudOrder = SORT_None;
-SortOrder nameStudentOrder = SORT_None;
-SortOrder subOrder = SORT_None;
-SortOrder scoreOrder = SORT_None;
-SortOrder dateOrder = SORT_None;
-SortOrder sortOrderScore = SORT_None;
-
-list<SCORE> m_listScore;
 
 void CTabScore::OnLvnColumnclickList(NMHDR* pNMHDR, LRESULT* pResult)
 {

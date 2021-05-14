@@ -5,8 +5,8 @@ using namespace std;
 
 IMPLEMENT_DYNAMIC(CTabStudent, CDialogEx)
 
-CTabStudent::CTabStudent(CWnd* pParent)
-	: CDialogEx(IDD_TAB_STUDENT, pParent)
+CTabStudent::CTabStudent()
+	: CDialogEx(IDD_TAB_STUDENT)
 {
 
 }
@@ -82,7 +82,13 @@ void CTabStudent::OnAddStudent()
 		return;
 
 	if (!oStudent.AddStudent(oStudentData))
+	{
+		MessageBox("The student not added!", "Error", MB_RETRYCANCEL | MB_ICONERROR);
+
+		if (IDRETRY)
+			OnAddStudent();
 		return;
+	}
 
 	LoadData(true);
 }
@@ -114,8 +120,13 @@ void CTabStudent::OnEditStudent()
 		return;
 
 
-	if (!oStudent.EditStudent(oStudentData))
+	if (!oStudent.EditStudent(oStudentData)) {
+		MessageBox("The student not updated!", "Error", MB_RETRYCANCEL | MB_ICONERROR);
+
+		if (IDRETRY)
+			OnEditStudent();
 		return;
+	}
 
 	LoadData(true);
 }
@@ -186,14 +197,6 @@ void CTabStudent::OnNMDblclkList(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	OnViewStudent();
 }
-
-SortOrder idStudentOrder = SORT_None;
-SortOrder nameStudOrder = SORT_None;
-SortOrder birthdayOrder = SORT_None;
-SortOrder sortOrderStudent = SORT_None;
-
-list<STUDENT> m_listStudent;
-
 
 void CTabStudent::OnLvnColumnclickList(NMHDR* pNMHDR, LRESULT* pResult)
 {

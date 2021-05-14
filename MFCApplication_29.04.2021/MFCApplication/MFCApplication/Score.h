@@ -44,12 +44,19 @@ public:
 	CScore();
 	virtual ~CScore();
 
+	bool IsContainAStudent(CScoreData& oScoreData);
+
 public:
+	void GetIdSubject(CString& strSubject, int& m_strIdSub);
 	bool AddScore(CScoreData& oScoreData);
 	bool EditScore(CScoreData& oScore);
+	void GetSubject(CScoreData& oScore);
 	bool LoadScore(const int nIdScore, CScoreData& oScore);
 	bool DeleteScore(const int nIdScore);
+	void GetStudentName(CScoreData& oScore);
 	void Print_Score(list<SCORE>& listScore);
+
+
 };
 
 struct COMBO_DATA
@@ -65,11 +72,3 @@ public:
 
 	int GetSelectedValue(CComboBox& m_combo) const;
 };
-
-void isContainAStudent(CString& sqlString, CScoreData& oScoreData, CString& isContains);
-
-void GetIdSubject(CScoreData& oScoreData, int& m_strIdSub);
-
-void GetStudentName(CString& whereClause, CScoreData& oScore);
-
-void GetSubject(CString& whereClause, CScoreData& oScore);

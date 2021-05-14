@@ -15,7 +15,7 @@ class CTabReference : public CDialogEx
 	DECLARE_DYNAMIC(CTabReference)
 
 public:
-	CTabReference(CWnd* pParent = nullptr);   // standard constructor
+	CTabReference();   // standard constructor
 	virtual ~CTabReference();
 
 	// Dialog Data
@@ -43,4 +43,18 @@ private:
 	void LoadData(CString name);
 
 	CListCtrl m_listCtrl;
+
+protected:
+	bool isOnlyNames = false;
+	CString name;
+
+	//sort
+	SortOrder orderClm0 = SORT_None;
+	SortOrder orderClm1 = SORT_None;
+	SortOrder orderClm2 = SORT_None;
+	SortOrder orderClm3 = SORT_None;
+	SortOrder sortOrderReference = SORT_None;
+	list<REFERENCE> m_listReference;
+	int sortClmReference = -1;
+
 };

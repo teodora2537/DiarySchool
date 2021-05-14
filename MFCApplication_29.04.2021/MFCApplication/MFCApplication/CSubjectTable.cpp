@@ -1,11 +1,6 @@
-// CSubjectTable.cpp : implementation file
-//
-
 #include "pch.h"
 #include "MFCApplication.h"
 #include "CSubjectTable.h"
-#include "afxdialogex.h"
-
 
 // CSubjectTable dialog
 
@@ -15,6 +10,7 @@ CSubjectTable::CSubjectTable(CDatabase* pdb)
 	: CDialogEx(IDD_DIALOG_UPDATE_SUBJECT)
 	,CRecordset(pdb)
 {
+	m_iRoomNumber = 0;
 	m_nFields = 5;
 	m_nParams = 5;
 	m_nDefaultType = dynaset;

@@ -5,8 +5,8 @@ using namespace std;
 
 IMPLEMENT_DYNAMIC(CTabReference, CDialogEx)
 
-CTabReference::CTabReference(CWnd* pParent)
-	: CDialogEx(IDD_TAB_REFERENCES, pParent)
+CTabReference::CTabReference()
+	: CDialogEx(IDD_TAB_REFERENCES)
 {
 
 }
@@ -32,19 +32,6 @@ BEGIN_MESSAGE_MAP(CTabReference, CDialogEx)
 	ON_NOTIFY(LVN_COLUMNCLICK, IDC_LIST, &CTabReference::OnLvnColumnclickList)
 END_MESSAGE_MAP()
 
-	int nCount = 0;
-	int nItemIndex = 0;
-	int nIndex = 0;
-	bool isOnlyNames = false;
-	CString name;
-
-	list<REFERENCE> m_listReference;
-
-	SortOrder orderClm0 = SORT_None;
-	SortOrder orderClm1 = SORT_None;
-	SortOrder orderClm2 = SORT_None;
-	SortOrder orderClm3 = SORT_None;
-	
 // Print average score by subject
 void CTabReference::OnBnClickedButtonAvgscorebysubject()
 {
@@ -53,10 +40,7 @@ void CTabReference::OnBnClickedButtonAvgscorebysubject()
 
 	m_listReference.clear();
 
-	orderClm0 = SORT_None;
-	orderClm1 = SORT_None;
-	orderClm2 = SORT_None;
-	orderClm3 = SORT_None;
+	orderClm0 = orderClm1 = orderClm2 = orderClm3 = SORT_None;
 
 	oLib.ClearListCtrl(m_listCtrl);
 
@@ -64,11 +48,6 @@ void CTabReference::OnBnClickedButtonAvgscorebysubject()
 	m_listCtrl.InsertColumn(1, "Name", LVCFMT_LEFT, 100);
 	m_listCtrl.InsertColumn(2, "Subject", LVCFMT_LEFT, 100);
 	m_listCtrl.InsertColumn(3, "Avg score", LVCFMT_LEFT, 70);
-
-	SortOrder orderIdStudent = SORT_None;
-	SortOrder orderStudents = SORT_None;
-	SortOrder orderSub = SORT_None;
-	SortOrder orderScore = SORT_None;
 
 	name = "Avg score by subject";
 	LoadData(name);
@@ -82,21 +61,13 @@ void CTabReference::OnBnClickedButtonAvgscorebyallsubjects()
 
 	m_listReference.clear();
 
-	orderClm0 = SORT_None;
-	orderClm1 = SORT_None;
-	orderClm2 = SORT_None;
-	orderClm3 = SORT_None;
+	orderClm0 = orderClm1 = orderClm2 = orderClm3 = SORT_None;
 
 	oLib.ClearListCtrl(m_listCtrl);
 	
 	m_listCtrl.InsertColumn(0, "#", LVCFMT_LEFT, 30);
 	m_listCtrl.InsertColumn(1, "Name", LVCFMT_LEFT, 100);
 	m_listCtrl.InsertColumn(2, "Avg score", LVCFMT_LEFT, 70);
-	
-	SortOrder orderIdStudent = SORT_None;
-	SortOrder orderStudents = SORT_None;
-	SortOrder orderSub = SORT_None;
-	SortOrder orderScore = SORT_None;
 	
 	name = "Avg score";
 	LoadData(name);
@@ -111,21 +82,13 @@ void CTabReference::OnBnClickedButton()
 
 	m_listReference.clear();
 
-	orderClm0 = SORT_None;
-	orderClm1 = SORT_None;
-	orderClm2 = SORT_None;
-	orderClm3 = SORT_None;
-	
+	orderClm0 = orderClm1 = orderClm2 = orderClm3 = SORT_None;
+
 	oLib.ClearListCtrl(m_listCtrl);
 	
 	m_listCtrl.InsertColumn(0, "#", LVCFMT_LEFT, 30);
 	m_listCtrl.InsertColumn(1, "Name", LVCFMT_LEFT, 100);
 	m_listCtrl.InsertColumn(2, "Subject", LVCFMT_LEFT, 100);
-
-	SortOrder orderIdStudent = SORT_None;
-	SortOrder orderStudents = SORT_None;
-	SortOrder orderSub = SORT_None;
-	SortOrder orderScore = SORT_None;
 
 	name = "Correct by subject";
 	LoadData(name);
@@ -183,10 +146,6 @@ void CTabReference::OnBnClickedButtonByMoreSubjects()
 	name = "Correct by more subject";
 	LoadData(name);
 }
-
-SortOrder sortOrderReference = SORT_None;
-
-int sortClmReference = -1; 
 
 void CTabReference::OnLvnColumnclickList(NMHDR* pNMHDR, LRESULT* pResult)
 {
@@ -254,8 +213,8 @@ void CTabReference::LoadData(CString name) {
 		}
 	}
 
-	nCount = 0;
-	nItemIndex = 0;
+	int nCount = 0;
+	int nItemIndex = 0;
 	int iId = 0;
 
 	for (auto& it = m_listReference.begin(); it != m_listReference.end(); it++)

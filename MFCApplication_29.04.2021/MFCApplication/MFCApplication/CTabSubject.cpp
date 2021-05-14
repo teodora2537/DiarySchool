@@ -7,8 +7,8 @@ using namespace std;
 
 IMPLEMENT_DYNAMIC(CTabSubject, CDialogEx)
 
-CTabSubject::CTabSubject(CWnd* pParent)
-	: CDialogEx(IDD_TAB_SUBJECT, pParent)
+CTabSubject::CTabSubject()
+	: CDialogEx(IDD_TAB_SUBJECT)
 {
 
 }
@@ -83,7 +83,14 @@ void CTabSubject::OnAddSubject()
 		return;
 
 	if (!oSubject.AddSubject(oSubjectData))
+	{
+		MessageBox("The subject not added!", "Error", MB_RETRYCANCEL | MB_ICONERROR);
+
+		if (IDRETRY)
+			OnAddSubject();
 		return;
+	}
+
 
 	LoadData(true);
 }
@@ -116,7 +123,14 @@ void CTabSubject::OnEditSubject()
 
 
 	if (!oSubject.EditSubject(oSubjectData))
+	{
+		MessageBox("The subject not updated!", "Error", MB_RETRYCANCEL | MB_ICONERROR);
+
+		if (IDRETRY)
+			OnEditSubject();
 		return;
+	}
+
 
 	LoadData(true);
 }
@@ -188,13 +202,6 @@ void CTabSubject::OnNMDblclkList(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	OnViewSubject();
 }
-
-SortOrder orderIdRoom = SORT_None;
-SortOrder orderSubs = SORT_None;
-SortOrder orderTeachers = SORT_None;
-SortOrder sortOrderSubject = SORT_None;
-
-list<SUBJECT> m_listSubject;
 
 void CTabSubject::LoadData(bool isFromFile)
 {

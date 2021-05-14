@@ -11,10 +11,6 @@ CStudentDlg::CStudentDlg(CStudentData& oStudent, const DialogMode eMode)
 	, m_oStudent(oStudent)
 	, m_eMode(eMode)
 {
-	m_strClassNum="";
-	m_strFn	="";
-	m_strLn	="";
-	m_strBirthday="";
 }
 
 CStudentDlg::~CStudentDlg()
@@ -28,11 +24,51 @@ void CStudentDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT_UPDATE_STUDENT_FN, m_strFn);
 	DDV_MaxChars(pDX, m_strFn, 20);//Size of FN student
 	DDX_Text(pDX, IDC_EDIT_UPDATE_STUDENT_LN, m_strLn);
-	DDX_Text(pDX, IDC_DATETIMEPICKER1, m_strBirthday);
 	DDV_MaxChars(pDX, m_strLn, 15);//Size of LN student
 	DDX_Control(pDX, IDC_DATETIMEPICKER1, m_dtCtrlBirthday);
 	CString formatStr = _T("MM'/'dd'/'yyyy");
 	m_dtCtrlBirthday.SetFormat(formatStr);
+}
+
+/*Set range date*/
+void CStudentDlg::SetRangeOfDTPicker()
+{
+	COleDateTime currentDate = COleDateTime::GetCurrentTime();
+	COleDateTime dtMinRange;
+	COleDateTime dtMaxRange;
+
+	dtMinRange.SetDate(currentDate.GetYear() - 100, currentDate.GetMonth(), currentDate.GetDay());
+	dtMaxRange.SetDate(currentDate.GetYear(), currentDate.GetMonth(), currentDate.GetDay());
+	m_dtCtrlBirthday.SetRange(&dtMinRange, &dtMaxRange);
+}
+
+/*Fill edit boxes*/
+void CStudentDlg::FillEditBoxes()
+{
+	Library oLib;
+	m_strClassNum = oLib.IntToCString(m_oStudent.m_iClassNumber);
+	m_strFn = m_oStudent.m_strFirstName;
+	m_strLn = m_oStudent.m_strLastName;
+
+	if (m_eMode != eDialogMode_Add)
+	{
+		m_dtCtrlBirthday.SetTime(m_oStudent.m_oleDT_Birthday);
+	}
+
+	SetDlgItemText(IDC_EDIT_UPDATE_STUDENT_CLASS_NUM, m_strClassNum);
+	SetDlgItemText(IDC_EDIT_UPDATE_STUDENT_FN, m_strFn);
+	SetDlgItemText(IDC_EDIT_UPDATE_STUDENT_LN, m_strLn);
+}
+
+/*Set enable/disable of edit boxes*/
+void CStudentDlg::EnableDisableBoxes()
+{
+	BOOL bEnable = m_eMode != eDialogMode_View;
+
+	GetDlgItem(IDC_EDIT_UPDATE_STUDENT_CLASS_NUM)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_UPDATE_STUDENT_FN)->EnableWindow(bEnable);
+	GetDlgItem(IDC_EDIT_UPDATE_STUDENT_LN)->EnableWindow(bEnable);
+	m_dtCtrlBirthday.EnableWindow(bEnable);
 }
 
 BOOL CStudentDlg::OnInitDialog()
@@ -47,36 +83,14 @@ BOOL CStudentDlg::OnInitDialog()
 	else if (m_eMode == eDialogMode_View)
 		this->SetWindowText("Student");
 
-	BOOL bEnable = m_eMode != eDialogMode_View;
-
-	GetDlgItem(IDC_EDIT_UPDATE_STUDENT_CLASS_NUM)->EnableWindow(FALSE);
-	GetDlgItem(IDC_EDIT_UPDATE_STUDENT_FN)->EnableWindow(bEnable);
-	GetDlgItem(IDC_EDIT_UPDATE_STUDENT_LN)->EnableWindow(bEnable);
-	m_dtCtrlBirthday.EnableWindow(bEnable);
+	/*Set enable/disable of edit boxes*/
+	EnableDisableBoxes();
 	
-	Library oLib;
-	m_strClassNum = oLib.IntToCString(m_oStudent.m_iClassNumber);
-	m_strFn = m_oStudent.m_strFirstName;
-	m_strLn = m_oStudent.m_strLastName;
+	/*Fill edit boxes*/
+	FillEditBoxes();
 
-	if (m_eMode != eDialogMode_Add)
-	{
-	m_dtCtrlBirthday.SetTime(m_oStudent.m_oleDT_Birthday);
-	}
-
-	SetDlgItemText(IDC_EDIT_UPDATE_STUDENT_CLASS_NUM, m_strClassNum);
-	SetDlgItemText(IDC_EDIT_UPDATE_STUDENT_FN, m_strFn);
-	SetDlgItemText(IDC_EDIT_UPDATE_STUDENT_LN, m_strLn);
-
-	//////////////////Range date///////////
-	COleDateTime currentDate = COleDateTime::GetCurrentTime();
-	COleDateTime dtMinRange;
-	COleDateTime dtMaxRange;
-
-	dtMinRange.SetDate(currentDate.GetYear()-100, currentDate.GetMonth(), currentDate.GetDay());
-	dtMaxRange.SetDate(currentDate.GetYear(), currentDate.GetMonth(), currentDate.GetDay());
-	m_dtCtrlBirthday.SetRange(&dtMinRange, &dtMaxRange);
-	/////////////////
+	/*Set range date*/
+	SetRangeOfDTPicker();
 
 	return TRUE;
 }
