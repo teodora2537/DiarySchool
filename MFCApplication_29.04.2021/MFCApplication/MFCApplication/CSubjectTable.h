@@ -30,4 +30,5 @@ public:
 	CString m_strNameSubject;
 	CString m_strFNameTeacher;
 	CString m_strLNameTeacher;
+	CString m_strStatus;
 };

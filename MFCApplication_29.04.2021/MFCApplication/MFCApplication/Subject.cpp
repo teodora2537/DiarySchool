@@ -35,12 +35,12 @@ bool CSubject::AddSubject(const CSubjectData& oSubjectData)
 		CSubjectTable recset(&g_dbConnection);
 		recset.Open();
 
-		recset.AddNew(); // ERROR
+		recset.AddNew();
 
 		recset.m_strNameSubject = oSubjectData.m_strNameSubject;
 		recset.m_strFNameTeacher = oSubjectData.m_strFNameTeacher;
 		recset.m_strLNameTeacher = oSubjectData.m_strLNameTeacher;
-
+	
 		if (!recset.Update())
 			return false;
 
@@ -50,15 +50,6 @@ bool CSubject::AddSubject(const CSubjectData& oSubjectData)
 	{
 		AfxMessageBox("Error!", MB_ICONEXCLAMATION);
 	}
-
-	/*
-	CString sqlString;
-	sqlString.Format("INSERT INTO Student (first_name, last_name, birth_date) VALUES ('%s', '%s', '%s')", 
-			  oSubjectData.m_strNameSubject, oSubjectData.m_strFNameTeacher, oSubjectData.m_strLNameTeacher);
-
-	try{
-		g_dbConnection.ExecuteSQL(sqlString);
-	*/
 	
 	return true;
 }
@@ -87,18 +78,6 @@ bool CSubject::EditSubject(const CSubjectData& oSubjectData) {
 	{
 		AfxMessageBox("Error!", MB_ICONEXCLAMATION);
 	}
-
-	/*
-	Library oLib;
-	CString sqlString;
-	
-	sqlString.Format("UPDATE Subject SET subject ='%s' , first_name_teacher ='%s', last_name_teacher ='%s'  WHERE id = '%s'", 
-	oSubject.m_strNameSubject, oSubject.m_strFNameTeacher, oSubject.m_strLNameTeacher, oLib.IntToCString(oSubject.m_iRoomNumber));
-	
-	try
-	{
-		g_dbConnection.ExecuteSQL(sqlString);
-	*/
 	
 	return true;
 }
@@ -107,50 +86,45 @@ bool CSubject::DeleteSubject(const int nRoom) {
 	
 	try
 	{
-	
 		CSubjectTable recset(&g_dbConnection);
-		CString sqlString;
-		sqlString.Format("id = '%d'", nRoom);
-		recset.Open();
-		recset.Delete();
+		CString whereClause;
+
+			whereClause.Format("id='%d'", nRoom);
+			recset.m_strFilter = whereClause;
+			recset.Open();
+			recset.Edit();
+
+			recset.m_strNameSubject;
+			recset.m_strFNameTeacher;
+			recset.m_strLNameTeacher;
+			recset.m_strStatus = "unactiv";
+
+			if (!recset.Update()) {
+				AfxMessageBox("Record not updated; no fiels values were set.");
+			}
 	}
 	catch (exception e)
 	{
 		AfxMessageBox("Error delete subject!", MB_ICONEXCLAMATION);
 	}
-	/*
-	Library oLib;
-	CString SqlString = "DELETE FROM Subject WHERE id = '" + oLib.IntToCString(nClassNumber) + "';";
 
-	try{
-	CRecordset recset(&g_dbConnection);
-
-	g_dbConnection.ExecuteSQL(SqlString);
-	}
-	catch (exception e)
-	{
-		AfxMessageBox("Error!", MB_ICONEXCLAMATION);
-	}
-	*/
 	return true;
 }
 
 bool CSubject::LoadSubject(const int nRoomId, CSubjectData& oSubject)
 {
-
 	try{
 
-	Library oLib;
-	CRecordset recset(&g_dbConnection);
+		CSubjectTable recset(&g_dbConnection);
+		CString whereClause;
+		whereClause.Format("id = '%d'", nRoomId);
+		recset.m_strFilter = whereClause;
+		recset.Open();
 
-	recset.Open(CRecordset::forwardOnly, "SELECT * FROM Subject WHERE id = '" + oLib.IntToCString(nRoomId) + "';", CRecordset::readOnly);
-
-	CString m_strIdRoom;
-	recset.GetFieldValue("id",m_strIdRoom);
-	oSubject.m_iRoomNumber = atoi(m_strIdRoom);
-	recset.GetFieldValue("subject", oSubject.m_strNameSubject);
-	recset.GetFieldValue("first_name_teacher", oSubject.m_strFNameTeacher);
-	recset.GetFieldValue("last_name_teacher", oSubject.m_strLNameTeacher);
+		oSubject.m_iRoomNumber = recset.m_iRoomNumber;
+		oSubject.m_strNameSubject = recset.m_strNameSubject;
+		oSubject.m_strFNameTeacher = recset.m_strFNameTeacher;
+		oSubject.m_strLNameTeacher = recset.m_strLNameTeacher;
 	}
 	catch (exception e)
 	{
@@ -167,20 +141,18 @@ void CSubject::PrintSub(list<SUBJECT>& listSub)
 
 	try 
 	{
-		CRecordset recset(&g_dbConnection);
-		recset.Open(CRecordset::forwardOnly, SqlString, CRecordset::readOnly);
+		CSubjectTable recset(&g_dbConnection);
+		CString whereClause;
+		whereClause.Format("status = '%s'", "active");
+		recset.m_strFilter = whereClause;
+		recset.Open();
 
 		while (!recset.IsEOF()) 
 		{
-			recset.GetFieldValue("id", m_strID);
-			recset.GetFieldValue("subject", m_strSub);
-			recset.GetFieldValue("first_name_teacher", m_strFName);
-			recset.GetFieldValue("last_name_teacher", m_strLName);
-
 			SUBJECT subStruct;
-			subStruct.iId = atoi(m_strID);
-			sprintf(subStruct.szSubject, "%s", m_strSub);
-			sprintf(subStruct.szTeacher, "%s", m_strFName + " " + m_strLName);
+			subStruct.iId = recset.m_iRoomNumber;
+			sprintf(subStruct.szSubject, "%s", recset.m_strNameSubject);
+			sprintf(subStruct.szTeacher, "%s", recset.m_strFNameTeacher + " " + recset.m_strLNameTeacher);
 
 			listSub.push_back(subStruct);
 
