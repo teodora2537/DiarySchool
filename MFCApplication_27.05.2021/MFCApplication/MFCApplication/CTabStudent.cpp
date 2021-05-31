@@ -273,11 +273,22 @@ void CTabStudent::LoadData(bool isFromFile)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 int  CTabStudent::GetSortedColumn() const { return m_iSortColumn; }
-BOOL CTabStudent::IsSortAscending() const { return m_bSortAscending; }
 void CTabStudent::SetSortAscending(BOOL bAscending) { m_bSortAscending = bAscending; }
 void CTabStudent::SetSortedColumn(int nCol) { m_iSortColumn = nCol; }
+BOOL CTabStudent::IsSortAscending() const { return m_bSortAscending; }
 BOOL CTabStudent::_IsValidIndex(int nIndex) const { return nIndex >= 0 && nIndex < m_listCtrl.GetItemCount(); }
-
+BOOL CTabStudent::_IsNumber(const CString& strItem)
+{
+	if (strItem.SpanIncluding("0123456789") == strItem)
+		return true;
+	return false;
+}
+BOOL CTabStudent::_IsDate(CString strItem)
+{
+	COleDateTime date;
+	date.ParseDateTime(strItem);
+	return date.GetStatus() == COleDateTime::valid;
+}
 int  CTabStudent::_StringCompare(const CString& s1, const CString& s2)
 {
 	if (s1 < s2)
@@ -288,12 +299,15 @@ int  CTabStudent::_StringCompare(const CString& s1, const CString& s2)
 
 	return 0;
 }
-int  CTabStudent::_NumberCompare(int num1, int num2)//LPCTSTR pszNumber1, LPCTSTR pszNumber2)
+int  CTabStudent::_NumberCompare(CString strItem1, CString strItem2)//LPCTSTR pszNumber1, LPCTSTR pszNumber2)
 {
-	if (num1 < num2)
+	Library oLib;
+	int nNum1 = atoi(strItem1);
+	int nNum2 = atoi(strItem2);
+	if (nNum1 < nNum2)
 		return -1;
 
-	if (num1 > num2)
+	if (nNum1 > nNum2)
 		return 1;
 
 	return 0;
@@ -327,125 +341,52 @@ void CTabStudent::OnLvnColumnclickList(NMHDR* pNMHDR, LRESULT* pResult)
 }
 void CTabStudent::Sort(int iColumn, BOOL bAscending)
 {
-	//if (iColumn < 0 || iColumn >= GetColumnCount())
-	//	return;
-
 	SetSortedColumn(iColumn);
 	SetSortAscending(bAscending);
 
 	int item1 = 0;
 	int item2 = 1;
-	bool bIdDiffZero = false; //id different from zero
+	bool bDecrement = false;
 	CStudentData oStudent;
 	Library oLib;
 	bool flag = false;
 
-	if (iColumn == 0) 
-	{
-		while (true) {
-	
-			if (bAscending) 
-				flag = _NumberCompare(atoi(m_listCtrl.GetItemText(item1, iColumn)), atoi(m_listCtrl.GetItemText(item2, iColumn))) < 0;
-			else
-				flag = _NumberCompare(atoi(m_listCtrl.GetItemText(item1, iColumn)), atoi(m_listCtrl.GetItemText(item2, iColumn))) == 1;
-			
-			if(flag)
-				SwapItems(oStudent, item1, item2, bIdDiffZero);
+	while (true) {
 
-			if (!bIdDiffZero)
-			{ 
-				item1++; 
-				item2++; 
-			}
-			else 
-				bIdDiffZero = false;
-
-			if (item1 == m_listCtrl.GetItemCount())
-				break;
-		}
-		
-		if (m_nClm0 == 0) 
+		if ((bAscending && _CompareFunction(m_listCtrl.GetItemText(item1, iColumn), m_listCtrl.GetItemText(item2, iColumn), iColumn) == -1))
 		{
-			m_bSortAscending = m_nClm0;
-			m_nClm0 = 1;
+			SwapItems(oStudent, item1, item2, bDecrement);
+		}
+		else if (!bAscending && _CompareFunction(m_listCtrl.GetItemText(item1, iColumn), m_listCtrl.GetItemText(item2, iColumn), iColumn) == 1)
+		{
+			SwapItems(oStudent, item1, item2, bDecrement);
+		}
+		if (!bDecrement)
+		{
+			item1++;
+			item2++;
 		}
 		else
-		{
-			m_bSortAscending = m_nClm0;
-			m_nClm0 = 0;
-		}
-	}
-	else if (iColumn == 1)
-	{
-		while (true) {
+			bDecrement = false;
 
-			if (bAscending)
-				flag = _StringCompare(m_listCtrl.GetItemText(item1, iColumn), m_listCtrl.GetItemText(item2, iColumn)) < 0;
-			else
-				flag = _StringCompare(m_listCtrl.GetItemText(item1, iColumn), m_listCtrl.GetItemText(item2, iColumn)) == 1;
-
-			if (flag)
-				SwapItems(oStudent, item1, item2, bIdDiffZero);
-
-			if (!bIdDiffZero)
-			{ 
-				item1++;
-				item2++; 
-			}
-			else 
-				bIdDiffZero = false;
-
-			if (item1 == m_listCtrl.GetItemCount())
-				break;
-		}
-		if (m_nClm1 == 0)
-		{
-			m_bSortAscending = m_nClm1;
-			m_nClm1 = 1;
-		}
-		else
-		{
-			m_bSortAscending = m_nClm1;
-			m_nClm1 = 0;
-		}
-	}
-	else if (iColumn == 2)
-	{
-		while (true) {
-
-			if (bAscending)
-				flag = _DateCompare(m_listCtrl.GetItemText(item1, iColumn), m_listCtrl.GetItemText(item2, iColumn)) < 0;
-			else
-				flag = _DateCompare(m_listCtrl.GetItemText(item1, iColumn), m_listCtrl.GetItemText(item2, iColumn)) == 1;
-
-			if (flag)
-				SwapItems(oStudent, item1, item2, bIdDiffZero);
-
-			if (!bIdDiffZero)
-			{
-				item1++; 
-				item2++; 
-			}
-			else 
-				bIdDiffZero = false;
-
-			if (item1 == m_listCtrl.GetItemCount())
-				break;
-		}
-	}
-	if (m_nClm2 == 0)
-	{
-		m_bSortAscending = m_nClm2;
-		m_nClm2 = 1;
-	}
-	else
-	{
-		m_bSortAscending = m_nClm2;
-		m_nClm2 = 0;
+		if (item1 == m_listCtrl.GetItemCount())
+			break;
 	}
 }
 
-BOOL CTabStudent::SwapItems(CStudentData &oStudent, int& nItem1, int& nItem2, bool& flag)//(int nItem1, int nItem2)
+int CALLBACK CTabStudent::_CompareFunction(CString& strItem1, CString& strItem2, int iColumn)
+{
+	CListMethods oMethod;
+
+	if (_IsNumber(m_listCtrl.GetItemText(0, iColumn)))
+		return _NumberCompare(strItem1, strItem2);
+	else if (_IsDate(m_listCtrl.GetItemText(0, iColumn)))
+		return _DateCompare(strItem1, strItem2);
+	else
+		return _StringCompare(strItem1, strItem2);
+}
+
+BOOL CTabStudent::SwapItems(CStudentData &oStudent,int& nItem1,int& nItem2, bool& flag)//(int nItem1, int nItem2)
 {
 	Library oLib;
 	
@@ -454,7 +395,6 @@ BOOL CTabStudent::SwapItems(CStudentData &oStudent, int& nItem1, int& nItem2, bo
 
 	const DWORD dwData1 = m_listCtrl.GetItemData(nItem1);
 	const DWORD dwData2 = m_listCtrl.GetItemData(nItem2);
-
 
 	oStudent.m_iId = atoi(m_listCtrl.GetItemText(nItem1, 0));
 	m_listCtrl.SetItemText(nItem1, 0, m_listCtrl.GetItemText(nItem2, 0));

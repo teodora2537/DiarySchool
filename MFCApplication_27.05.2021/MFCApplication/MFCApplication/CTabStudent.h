@@ -52,6 +52,7 @@ private: //sort
 private:
 	int  m_iSortColumn;
 	bool m_bSortAscending;
+	map<int, bool> mapSortColumn;
 	int m_nClm0 = 0;
 	int m_nClm1 = 0;
 	int m_nClm2 = 0;
@@ -61,10 +62,13 @@ private:
 	void SetSortAscending(BOOL bAscending);
 	void SetSortedColumn(int nCol);
 	BOOL _IsValidIndex(int nIndex) const;
+	BOOL _IsNumber(const CString& strItem);
+	BOOL _IsDate(CString strItem);
 	int  _StringCompare(const CString& s1, const CString& s2);
-	int  _NumberCompare(int num1, int num2);//LPCTSTR pszNumber1, LPCTSTR pszNumber2);
+	int  _NumberCompare(CString strItem1, CString strItem2);//LPCTSTR pszNumber1, LPCTSTR pszNumber2);
 	int  _DateCompare(const CString& strDate1, const CString& strDate2);
 	void Sort(int iColumn, BOOL bAscending);
-	BOOL SwapItems(CStudentData& oStudent,int& nItem1, int& nItem2, bool& flag);
+	int _CompareFunction(CString& strItem1, CString& strItem2, int iColumn);
+	BOOL SwapItems(CStudentData& oStudent,int& nItem1,int& nItem2, bool& flag);
 };
 
