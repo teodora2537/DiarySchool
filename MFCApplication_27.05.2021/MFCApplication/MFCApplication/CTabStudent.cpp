@@ -270,7 +270,6 @@ void CTabStudent::LoadData(bool isFromFile)
 	}
 }
 
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 int  CTabStudent::GetSortedColumn() const { return m_iSortColumn; }
@@ -453,6 +452,10 @@ BOOL CTabStudent::SwapItems(CStudentData &oStudent, int& nItem1, int& nItem2, bo
 	if (!_IsValidIndex(nItem1) || !_IsValidIndex(nItem2))
 		return FALSE;
 
+	const DWORD dwData1 = m_listCtrl.GetItemData(nItem1);
+	const DWORD dwData2 = m_listCtrl.GetItemData(nItem2);
+
+
 	oStudent.m_iId = atoi(m_listCtrl.GetItemText(nItem1, 0));
 	m_listCtrl.SetItemText(nItem1, 0, m_listCtrl.GetItemText(nItem2, 0));
 	m_listCtrl.SetItemText(nItem2, 0, oLib.IntToCString(oStudent.m_iId));
@@ -464,6 +467,10 @@ BOOL CTabStudent::SwapItems(CStudentData &oStudent, int& nItem1, int& nItem2, bo
 	oStudent.m_oleDT_Birthday = oLib.CStringToDate(m_listCtrl.GetItemText(nItem1, 2));
 	m_listCtrl.SetItemText(nItem1, 2, m_listCtrl.GetItemText(nItem2, 2));
 	m_listCtrl.SetItemText(nItem2, 2, oLib.OleDTToCString(oStudent.m_oleDT_Birthday));
+
+	// swap item data
+	m_listCtrl.SetItemData(nItem1, dwData2);
+	m_listCtrl.SetItemData(nItem2, dwData1);
 
 	if (nItem1 != 0) { nItem1 -= 1; nItem2 -= 1; flag = true; }
 

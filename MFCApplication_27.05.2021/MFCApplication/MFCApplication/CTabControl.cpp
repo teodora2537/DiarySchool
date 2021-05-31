@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "MFCApplication.h"
 #include "CTabControl.h"
-#include "CTabCRUD.h"
 #include "CTabReference.h"
 #include "CTabStudent.h"
 #include "CTabSubject.h"
