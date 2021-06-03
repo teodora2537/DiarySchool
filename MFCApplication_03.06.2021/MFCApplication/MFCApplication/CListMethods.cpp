@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "CListMethods.h"
 #include "resource.h"
-#include "CTabStudent.h"
 using namespace std;
 
 CListMethods::CListMethods()
@@ -49,20 +48,6 @@ int CListMethods::InsertColumnAtEnd(
 BOOL CListMethods::IsSortAscending() const
 {
 	return m_bSortAscending;
-}
-
-BOOL CListMethods::_IsNumber(const CString& strItem)
-{
-	if (strItem.SpanIncluding("0123456789") == strItem)
-		return true;
-	return false;
-}
-
-BOOL CListMethods::_IsDate(CString strItem)
-{
-	COleDateTime date;
-	date.ParseDateTime(strItem);
-	return date.GetStatus() == COleDateTime::valid;
 }
 
 int  CListMethods::_StringCompare(const CString& s1, const CString& s2)
@@ -113,11 +98,15 @@ BOOL CListMethods::OnLvnColumnclick(NMHDR* pNMHDR, LRESULT* pResult)
 	NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
 	const int iColumn = pNMListView->iSubItem;
 
+	if (GetItemCount() == 0) 
+	{
+		MessageBox("You don't sort empty list", "Error sort!", MB_OK | MB_ICONWARNING);
+		return FALSE;
+	}
+
 	ListCtrlColumnTypeData eColDataType = eListCtrlColumnTypeData_None;
 
 	m_mpColumnTypeData.Lookup(iColumn, eColDataType);
-
-	eColDataType;
 
 	Sort(iColumn, iColumn == GetSortedColumn() ? !IsSortAscending() : TRUE, eColDataType);
 	*pResult = 0;
@@ -133,20 +122,18 @@ void CListMethods::Sort(int iColumn, BOOL bAscending, ListCtrlColumnTypeData eCo
 	int item1 = 0;
 	int item2 = 1;
 	int iCountSwap = 0;
-	CStudentData oStudent;
-	Library oLib;
 	bool flag = false;
 
 	while (true) {
 
 		if (bAscending && _CompareFunction(GetItem(item1, iColumn), GetItem(item2, iColumn), eColDataType) == -1)
 		{
-			if (SwapItems(oStudent, item1, item2))
+			if (SwapItems(item1, item2))
 				iCountSwap++;
 		}
 		else if (!bAscending && _CompareFunction(GetItem(item1, iColumn), GetItem(item2, iColumn), eColDataType) == 1)
 		{
-			if (SwapItems(oStudent, item1, item2))
+			if (SwapItems(item1, item2))
 				iCountSwap++;
 		}
 
@@ -167,34 +154,24 @@ void CListMethods::Sort(int iColumn, BOOL bAscending, ListCtrlColumnTypeData eCo
 	}
 }
 
-BOOL CListMethods::SwapItems(CStudentData& oStudent, int& nItem1, int& nItem2)
+BOOL CListMethods::SwapItems(int& nItem1, int& nItem2)
 {
 	const DWORD dwData1 = GetItemData(nItem1);
 	const DWORD dwData2 = GetItemData(nItem2);
 
-	SwapItemText(oStudent, nItem1, nItem2);
+	CString tempVar;
+	for (int i = 0; i < m_mpColumnTypeData.GetSize(); i++)
+	{
+			tempVar = GetItem(nItem1, i);
+			SetItemText(nItem1, i, GetItem(nItem2, i));
+			SetItemText(nItem2, i, tempVar);
+	}
 
 	// swap item data
 	SetItemData(nItem1, dwData2);
 	SetItemData(nItem2, dwData1);
 
 	return TRUE;
-}
-
-void CListMethods::SwapItemText(CStudentData& oStudent, int& nItem1, int& nItem2)
-{
-	Library oLib;
-	oStudent.m_iId = atoi(GetItem(nItem1, 0));
-	SetItemText(nItem1, 0, GetItem(nItem2, 0));
-	SetItemText(nItem2, 0, oLib.IntToCString(oStudent.m_iId));
-
-	oStudent.m_strFirstName = GetItem(nItem1, 1);
-	SetItemText(nItem1, 1, GetItem(nItem2, 1));
-	SetItemText(nItem2, 1, oStudent.m_strFirstName);
-
-	oStudent.m_oleDT_Birthday = oLib.CStringToDate(GetItem(nItem1, 2));
-	SetItemText(nItem1, 2, GetItem(nItem2, 2));
-	SetItemText(nItem2, 2, oLib.OleDTToCString(oStudent.m_oleDT_Birthday));
 }
 
 int CALLBACK CListMethods::_CompareFunction(CString& strItem1, CString& strItem2, ListCtrlColumnTypeData eColDataType)

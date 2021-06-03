@@ -35,13 +35,10 @@ private:
 	afx_msg void OnBnClickedButtonBirtdays();
 	afx_msg void OnBnClickedButton();
 	afx_msg void OnBnClickedButtonByMoreSubjects();
-	
-	//load functions and clicked column
-	afx_msg void OnLvnColumnclickList(NMHDR* pNMHDR, LRESULT* pResult);
 
 	void LoadData(CString name);
 
-	CListCtrl m_listCtrl;
+	CListMethods m_listCtrl;
 
 private:
 	bool m_bIsOnlyNames = false;

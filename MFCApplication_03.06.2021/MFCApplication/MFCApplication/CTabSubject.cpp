@@ -2,7 +2,6 @@
 #include "MFCApplication.h"
 #include "CTabSubject.h"
 #include "Subject.h"
-#include "CListMethods.h"
 using namespace std;
 
 IMPLEMENT_DYNAMIC(CTabSubject, CDialogEx)
@@ -38,9 +37,9 @@ BOOL CTabSubject::OnInitDialog() {
 		return FALSE;
 	
 	m_listCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
-	m_listCtrl.InsertColumn(0, "#", LVCFMT_LEFT, 30);
-	m_listCtrl.InsertColumn(1, "Subject", LVCFMT_LEFT, 100);
-	m_listCtrl.InsertColumn(2, "Teacher", LVCFMT_LEFT, 100);
+	m_listCtrl.InsertColumnAtEnd("#", eListCtrlColumnTypeData_Int, LVCFMT_LEFT, 30);
+	m_listCtrl.InsertColumnAtEnd("Subject", eListCtrlColumnTypeData_String, LVCFMT_LEFT, 100);
+	m_listCtrl.InsertColumnAtEnd("Teacher", eListCtrlColumnTypeData_String, LVCFMT_LEFT, 100);
 	
 	LoadData(true);
 

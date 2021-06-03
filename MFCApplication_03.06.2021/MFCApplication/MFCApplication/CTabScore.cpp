@@ -30,8 +30,6 @@ BEGIN_MESSAGE_MAP(CTabScore, CDialogEx)
 	ON_BN_CLICKED(IDC_MENU_DEL_SCORE, OnDeleteScore)
 	ON_BN_CLICKED(IDC_MENU_VIEW_SCORE, OnViewScore)
 	ON_NOTIFY(NM_DBLCLK, IDC_LIST, &CTabScore::OnNMDblclkList)
-	//ON_NOTIFY(LVN_COLUMNCLICK, IDC_LIST, &CListMethods::OnLvnColumnclick)
-	//ON_NOTIFY(LVN_COLUMNCLICK, IDC_LIST, &CTabScore::OnLvnColumnclickList)
 END_MESSAGE_MAP()
 
 /*virtual*/
@@ -41,11 +39,11 @@ BOOL CTabScore::OnInitDialog() {
 		return FALSE;
 
 	m_listCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
-	m_listCtrl.InsertColumn(0, "#", LVCFMT_LEFT, 30);
-	m_listCtrl.InsertColumn(1, "Name", LVCFMT_LEFT, 100);
-	m_listCtrl.InsertColumn(2, "Subject", LVCFMT_LEFT, 100);
-	m_listCtrl.InsertColumn(3, "Score", LVCFMT_LEFT, 50);
-	m_listCtrl.InsertColumn(4, "Date", LVCFMT_LEFT, 100);
+	m_listCtrl.InsertColumnAtEnd("#", eListCtrlColumnTypeData_Int, LVCFMT_LEFT, 30);
+	m_listCtrl.InsertColumnAtEnd("Name", eListCtrlColumnTypeData_String, LVCFMT_LEFT, 100);
+	m_listCtrl.InsertColumnAtEnd("Subject", eListCtrlColumnTypeData_String, LVCFMT_LEFT, 100);
+	m_listCtrl.InsertColumnAtEnd("Score", eListCtrlColumnTypeData_Int, LVCFMT_LEFT, 50);
+	m_listCtrl.InsertColumnAtEnd("Date", eListCtrlColumnTypeData_Date, LVCFMT_LEFT, 100);
 
 	LoadData(true);
 	return true;
@@ -199,17 +197,6 @@ void CTabScore::OnViewScore()
 void CTabScore::OnNMDblclkList(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	OnViewScore();
-}
-
-void CTabScore::OnLvnColumnclickList(NMHDR* pNMHDR, LRESULT* pResult)
-{
-	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
-	int sortClm = -1;
-	sortClm = pNMLV->iSubItem; //save column for the callback
-
-	LoadData(false);
-
-	*pResult = 0;
 }
 
 void CTabScore::LoadData(bool isFromFile) {

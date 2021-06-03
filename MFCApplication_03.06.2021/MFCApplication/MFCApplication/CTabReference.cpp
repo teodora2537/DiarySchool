@@ -29,7 +29,6 @@ BEGIN_MESSAGE_MAP(CTabReference, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_BIRTDAYS, &CTabReference::OnBnClickedButtonBirtdays)
 	ON_BN_CLICKED(IDC_BUTTON_, &CTabReference::OnBnClickedButton)
 	ON_BN_CLICKED(IDC_BUTTON_BY_MORE_SUBJECTS, &CTabReference::OnBnClickedButtonByMoreSubjects)
-	ON_NOTIFY(LVN_COLUMNCLICK, IDC_LIST, &CTabReference::OnLvnColumnclickList)
 END_MESSAGE_MAP()
 
 // Print average score by subject
@@ -42,10 +41,10 @@ void CTabReference::OnBnClickedButtonAvgscorebysubject()
 
 	oLib.ClearListCtrl(m_listCtrl);
 
-	m_listCtrl.InsertColumn(0, "#", LVCFMT_LEFT, 30);
-	m_listCtrl.InsertColumn(1, "Name", LVCFMT_LEFT, 100);
-	m_listCtrl.InsertColumn(2, "Subject", LVCFMT_LEFT, 100);
-	m_listCtrl.InsertColumn(3, "Avg score", LVCFMT_LEFT, 70);
+	m_listCtrl.InsertColumnAtEnd("#", eListCtrlColumnTypeData_Int,LVCFMT_LEFT, 30);
+	m_listCtrl.InsertColumnAtEnd("Name", eListCtrlColumnTypeData_String, LVCFMT_LEFT, 100);
+	m_listCtrl.InsertColumnAtEnd("Subject", eListCtrlColumnTypeData_String,LVCFMT_LEFT, 100);
+	m_listCtrl.InsertColumnAtEnd("Avg score", eListCtrlColumnTypeData_Int, LVCFMT_LEFT, 70);
 
 	m_strName = "Avg score by subject";
 	LoadData(m_strName);
@@ -61,9 +60,9 @@ void CTabReference::OnBnClickedButtonAvgscorebyallsubjects()
 
 	oLib.ClearListCtrl(m_listCtrl);
 	
-	m_listCtrl.InsertColumn(0, "#", LVCFMT_LEFT, 30);
-	m_listCtrl.InsertColumn(1, "Name", LVCFMT_LEFT, 100);
-	m_listCtrl.InsertColumn(2, "Avg score", LVCFMT_LEFT, 70);
+	m_listCtrl.InsertColumnAtEnd("#", eListCtrlColumnTypeData_Int, LVCFMT_LEFT, 30);
+	m_listCtrl.InsertColumnAtEnd("Name", eListCtrlColumnTypeData_String, LVCFMT_LEFT, 100);
+	m_listCtrl.InsertColumnAtEnd("Avg score", eListCtrlColumnTypeData_Int, LVCFMT_LEFT, 70);
 	
 	m_strName = "Avg score";
 	LoadData(m_strName);
@@ -80,9 +79,9 @@ void CTabReference::OnBnClickedButton()
 
 	oLib.ClearListCtrl(m_listCtrl);
 	
-	m_listCtrl.InsertColumn(0, "#", LVCFMT_LEFT, 30);
-	m_listCtrl.InsertColumn(1, "Name", LVCFMT_LEFT, 100);
-	m_listCtrl.InsertColumn(2, "Subject", LVCFMT_LEFT, 100);
+	m_listCtrl.InsertColumnAtEnd("#", eListCtrlColumnTypeData_Int, LVCFMT_LEFT, 30);
+	m_listCtrl.InsertColumnAtEnd("Name", eListCtrlColumnTypeData_String, LVCFMT_LEFT, 100);
+	m_listCtrl.InsertColumnAtEnd("Subject", eListCtrlColumnTypeData_String, LVCFMT_LEFT, 100);
 
 	m_strName = "Correct by subject";
 	LoadData(m_strName);
@@ -96,7 +95,7 @@ void CTabReference::OnBnClickedButtonExcellentstudent()
 
 	oLib.ClearListCtrl(m_listCtrl);
 
-	m_listCtrl.InsertColumn(0, "Name", LVCFMT_LEFT, 100);
+	m_listCtrl.InsertColumnAtEnd("Name", eListCtrlColumnTypeData_String, LVCFMT_LEFT, 100);
 	m_bIsOnlyNames = true;
 
 	m_strName = "Excellent";
@@ -113,7 +112,7 @@ void CTabReference::OnBnClickedButtonBirtdays()
 
 	oLib.ClearListCtrl(m_listCtrl);
 
-	m_listCtrl.InsertColumn(0, "Name", LVCFMT_LEFT, 100);
+	m_listCtrl.InsertColumnAtEnd("Name", eListCtrlColumnTypeData_String, LVCFMT_LEFT, 100);
 
 	m_strName = "Birthday";
 	LoadData(m_strName);
@@ -129,21 +128,10 @@ void CTabReference::OnBnClickedButtonByMoreSubjects()
 	
 	oLib.ClearListCtrl(m_listCtrl);
 
-	m_listCtrl.InsertColumn(0, "Name", LVCFMT_LEFT, 100);
+	m_listCtrl.InsertColumnAtEnd("Name", eListCtrlColumnTypeData_String, LVCFMT_LEFT, 100);
 
 	m_strName = "Correct by more subject";
 	LoadData(m_strName);
-}
-
-void CTabReference::OnLvnColumnclickList(NMHDR* pNMHDR, LRESULT* pResult)
-{
-	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
-	int iSortClmReference = -1;
-	iSortClmReference = pNMLV->iSubItem; //save column for the callback
-
-	LoadData(m_strName);
-
-	*pResult = 0;
 }
 
 void CTabReference::LoadData(CString name) {

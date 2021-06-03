@@ -34,7 +34,6 @@ BOOL CTabStudent::OnInitDialog() {
 	if (!__super::OnInitDialog())
 		return FALSE;
 
-	//CStudent oStude;
 	m_listCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
 	m_listCtrl.InsertColumnAtEnd("#", eListCtrlColumnTypeData_Int, LVCFMT_LEFT, 30);
 	m_listCtrl.InsertColumnAtEnd("Name", eListCtrlColumnTypeData_String, LVCFMT_LEFT, 100);

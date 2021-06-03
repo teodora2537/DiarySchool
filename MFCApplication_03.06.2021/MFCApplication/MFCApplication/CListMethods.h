@@ -28,11 +28,7 @@ public:
 
     afx_msg BOOL OnLvnColumnclick(NMHDR* pNMHDR, LRESULT* pResult);
 	BOOL IsSortAscending() const;
-	BOOL _IsNumber(const CString& strItem);
-	BOOL _IsDate(CString strItem);
-	BOOL SwapItems(CStudentData& oStudent, int& nItem1, int& nItem2);
-
-    void SwapItemText(CStudentData& oStudent, int& nItem1, int& nItem2);
+	BOOL SwapItems(int& nItem1, int& nItem2);
 	
     int GetSortedColumn() const;
 	int  _StringCompare(const CString& s1, const CString& s2);

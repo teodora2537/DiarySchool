@@ -33,10 +33,9 @@ private: //contex menu
 	afx_msg void OnViewScore();
 
 private:
-	CListCtrl m_listCtrl;
+	CListMethods m_listCtrl;
 	
 	void OnNMDblclkList(NMHDR* pNMHDR, LRESULT* pResult);
-	void OnLvnColumnclickList(NMHDR* pNMHDR, LRESULT* pResult);
 	void LoadData(bool isFromFile);
 
 private:
