@@ -1,41 +1,39 @@
 #include "pch.h"
 #include "MFCApplication.h"
-#include "CStudentTable.h"
+#include "CParentTable.h"
 using namespace std;
 
-IMPLEMENT_DYNAMIC(CStudentTable, CRecordset)
+IMPLEMENT_DYNAMIC(CParentTable, CRecordset)
 
-CStudentTable::CStudentTable(CDatabase* pdb)
+CParentTable::CParentTable(CDatabase* pdb)
 	: CDialogEx(IDD_DIALOG_UPDATE_STUDENT)
-	,CRecordset(pdb)
+	, CRecordset(pdb)
 {
-	//m_iCountStudent = 0;
-	m_nFields = 11;
-	m_nParams = 11;
+	m_nFields = 10;
+	m_nParams = 10;
 	m_nDefaultType = dynaset;
 }
 
 /*virtual*/
-CStudentTable::~CStudentTable()
+CParentTable::~CParentTable()
 {
 }
 
-BEGIN_MESSAGE_MAP(CStudentTable, CDialogEx)
+BEGIN_MESSAGE_MAP(CParentTable, CDialogEx)
 END_MESSAGE_MAP()
 
 /*virtual*/
-void CStudentTable::DoFieldExchange(CFieldExchange* pFX)
+void CParentTable::DoFieldExchange(CFieldExchange* pFX)
 {
 	__super::DoFieldExchange(pFX);
-	
+
 	pFX->SetFieldType(CFieldExchange::outputColumn);
 	RFX_Int(pFX, "[id]", m_iId);
-	RFX_Text(pFX, "[first_name]", m_str_First_name);
-	RFX_Text(pFX, "[last_name]", m_str_Last_name);
-	RFX_Date(pFX, "[birth_date]", m_oleDT_Birthday);
-	RFX_Text(pFX, "[email]", m_str_email);
+	RFX_Int(pFX, "[student_id]", m_iIdStudent);
+	RFX_Text(pFX, "[first_name]", m_str_first_name);
+	RFX_Text(pFX, "[last_name]", m_str_last_name);
 	RFX_Text(pFX, "[phone_number]", m_str_phone_number);
-	RFX_Text(pFX, "[egn]", m_str_egn);
+	RFX_Text(pFX, "[email]", m_str_email);
 	RFX_Text(pFX, "[city]", m_str_city);
 	RFX_Text(pFX, "[post_code]", m_str_post_code);
 	RFX_Text(pFX, "[neighborhood]", m_str_neighborhood);
@@ -43,12 +41,11 @@ void CStudentTable::DoFieldExchange(CFieldExchange* pFX)
 
 	pFX->SetFieldType(CFieldExchange::inputParam);
 	RFX_Int(pFX, "[id]", m_iId);
-	RFX_Text(pFX, "[first_name]", m_str_First_name);
-	RFX_Text(pFX, "[last_name]", m_str_Last_name);
-	RFX_Date(pFX, "[birth_date]", m_oleDT_Birthday);
-	RFX_Text(pFX, "[email]", m_str_email);
+	RFX_Int(pFX, "[student_id]", m_iIdStudent);
+	RFX_Text(pFX, "[first_name]", m_str_first_name);
+	RFX_Text(pFX, "[last_name]", m_str_last_name);
 	RFX_Text(pFX, "[phone_number]", m_str_phone_number);
-	RFX_Text(pFX, "[egn]", m_str_egn);
+	RFX_Text(pFX, "[email]", m_str_email);
 	RFX_Text(pFX, "[city]", m_str_city);
 	RFX_Text(pFX, "[post_code]", m_str_post_code);
 	RFX_Text(pFX, "[neighborhood]", m_str_neighborhood);
@@ -58,11 +55,11 @@ void CStudentTable::DoFieldExchange(CFieldExchange* pFX)
 extern CDatabase g_dbConnection;
 
 /*virtual*/
-CString CStudentTable::GetDefaultConnection() {
+CString CParentTable::GetDefaultConnection() {
 	return g_dbConnection.GetConnect();
 }
 
 /*virtual*/
-CString CStudentTable::GetDefaultSQL() {
-	return "[Student]";
+CString CParentTable::GetDefaultSQL() {
+	return "[Parent]";
 }

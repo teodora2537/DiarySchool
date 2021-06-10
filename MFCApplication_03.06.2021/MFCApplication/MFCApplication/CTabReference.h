@@ -8,6 +8,7 @@
 #include "CUpdateScore.h"
 #include "CUpdateStudent.h"
 #include "CUpdateSubject.h"
+#include "resource.h"
 using namespace std;
 // CTabReference dialog
 class CTabReference : public CDialogEx
@@ -43,6 +44,6 @@ private:
 private:
 	bool m_bIsOnlyNames = false;
 	CString m_strName;
-
+	int m_iIdButton= IDC_BUTTON_AvgScoreBySubject;
 	list<REFERENCE> m_listReference;
 };

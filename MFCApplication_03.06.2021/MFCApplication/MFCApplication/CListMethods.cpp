@@ -108,7 +108,35 @@ BOOL CListMethods::OnLvnColumnclick(NMHDR* pNMHDR, LRESULT* pResult)
 
 	m_mpColumnTypeData.Lookup(iColumn, eColDataType);
 
-	Sort(iColumn, iColumn == GetSortedColumn() ? !IsSortAscending() : TRUE, eColDataType);
+	//Sort(iColumn, iColumn == GetSortedColumn() ? !IsSortAscending() : TRUE, eColDataType);
+	Sort(iColumn, IsSortAscending() ? !IsSortAscending() : TRUE, eColDataType);
+
+	//look sort arrow
+	CHeaderCtrl* pHDR = GetHeaderCtrl();
+	HDITEM headerItem;
+	headerItem.mask = HDI_FORMAT;
+	GetHeaderCtrl()->GetItem(m_iSortColumn, &headerItem);
+
+	if (m_iSortColumn == iColumn)
+	{
+		headerItem.fmt &= ~(m_bSortAscending ? HDF_SORTUP : HDF_SORTDOWN);
+		m_iSortColumn = !m_bSortAscending;
+		headerItem.fmt |= (m_bSortAscending ? HDF_SORTUP :
+			HDF_SORTDOWN) | HDF_BITMAP_ON_RIGHT;
+		GetHeaderCtrl()->SetItem(m_iSortColumn, &headerItem);
+	}
+	else
+	{
+		headerItem.fmt &= ~(HDF_SORTDOWN | HDF_SORTUP | HDF_BITMAP_ON_RIGHT);
+		GetHeaderCtrl()->SetItem(m_iSortColumn, &headerItem);
+		m_iSortColumn = iColumn;
+		m_bSortAscending = true;
+		GetHeaderCtrl()->GetItem(m_iSortColumn, &headerItem);
+		headerItem.fmt |= (m_iSortColumn ? HDF_SORTUP :
+			HDF_SORTDOWN) | HDF_BITMAP_ON_RIGHT;
+		GetHeaderCtrl()->SetItem(m_iSortColumn, &headerItem);
+	}
+	//SortItems(SortTextItems, (LPARAM)(this));
 	*pResult = 0;
 
 	return TRUE;
@@ -126,26 +154,24 @@ void CListMethods::Sort(int iColumn, BOOL bAscending, ListCtrlColumnTypeData eCo
 
 	while (true) {
 
-		if (bAscending && _CompareFunction(GetItem(item1, iColumn), GetItem(item2, iColumn), eColDataType) == -1)
-		{
-			if (SwapItems(item1, item2))
-				iCountSwap++;
-		}
-		else if (!bAscending && _CompareFunction(GetItem(item1, iColumn), GetItem(item2, iColumn), eColDataType) == 1)
+		if ((bAscending && _CompareFunction(_GetItem(item1, iColumn), _GetItem(item2, iColumn), eColDataType) == -1) ||
+		   (!bAscending && _CompareFunction(_GetItem(item1, iColumn), _GetItem(item2, iColumn), eColDataType) == 1))
 		{
 			if (SwapItems(item1, item2))
 				iCountSwap++;
 		}
 
+		//if are last two elements
 		if (item1 == GetItemCount() - 2 && item2 == GetItemCount() - 1)
 		{
+			//reset
 			if (iCountSwap != 0)
 			{
 				item1 = 0;
 				item2 = 1;
 				iCountSwap = 0;
 				continue;
-			}
+			}//the list is sorted
 			else break;
 		}
 
@@ -162,8 +188,8 @@ BOOL CListMethods::SwapItems(int& nItem1, int& nItem2)
 	CString tempVar;
 	for (int i = 0; i < m_mpColumnTypeData.GetSize(); i++)
 	{
-			tempVar = GetItem(nItem1, i);
-			SetItemText(nItem1, i, GetItem(nItem2, i));
+			tempVar = _GetItem(nItem1, i);
+			SetItemText(nItem1, i, _GetItem(nItem2, i));
 			SetItemText(nItem2, i, tempVar);
 	}
 
@@ -190,6 +216,6 @@ int CALLBACK CListMethods::_CompareFunction(CString& strItem1, CString& strItem2
 	}
 }
 
-CString CListMethods::GetItem(const int& nRow, const int& nColumn) {
+CString CListMethods::_GetItem(const int& nRow, const int& nColumn) {
 	return GetItemText(nRow, nColumn);
 }

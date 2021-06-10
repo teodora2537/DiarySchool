@@ -1,18 +1,17 @@
 #pragma once
 #include "afxdb.h"
-
 using namespace std;
 
-class CStudentTable : public CDialogEx, public CRecordset
+class CParentTable : public CDialogEx, public CRecordset
 {
 public:
-	CStudentTable(CDatabase* pDatabase = NULL);
-	DECLARE_DYNAMIC(CStudentTable)
+	CParentTable(CDatabase* pDatabase = NULL);
+	DECLARE_DYNAMIC(CParentTable)
 
 public:
-	virtual ~CStudentTable();
+	virtual ~CParentTable();
 
-// Dialog Data
+	// Dialog Data
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_DIALOG_UPDATE_STUDENT };
 #endif
@@ -25,15 +24,13 @@ protected:
 
 public:
 	int m_iId;
-	CString m_str_First_name;
-	CString m_str_Last_name;
-	COleDateTime m_oleDT_Birthday;
-	CString m_str_email; 
+	int m_iIdStudent;
+	CString m_str_first_name;
+	CString m_str_last_name;
 	CString m_str_phone_number;
-	CString m_str_egn;
+	CString m_str_email;
 	CString m_str_city;
 	CString m_str_post_code;
 	CString m_str_neighborhood;
 	CString m_str_address;
-	//int m_iCountStudent;
-};	
+};

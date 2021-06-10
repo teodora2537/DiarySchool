@@ -134,13 +134,17 @@ void CTabReference::OnBnClickedButtonByMoreSubjects()
 	LoadData(m_strName);
 }
 
-void CTabReference::LoadData(CString name) {
-
+void CTabReference::LoadData(CString name) 
+{
 	Library oLib;
 	CStudent oStudent;
 
-	if (m_listReference.size() == 0)
+	if (m_listReference.size() != 0)
 	{
+		MessageBox("The list is not empty!");
+		return;
+	}
+	
 		if (name == "Excellent") {
 			oStudent.ExcellentStud(m_listReference);
 		}
@@ -159,7 +163,6 @@ void CTabReference::LoadData(CString name) {
 		else if (name == "Correct by subject") {
 			oStudent.RemedialExaminationBySub(m_listReference);
 		}
-	}
 
 	int nCount = 0;
 	int nItemIndex = 0;
@@ -169,7 +172,7 @@ void CTabReference::LoadData(CString name) {
 	{
 		nCount = m_listCtrl.GetItemCount();
 		
-		if (name == "Excellent" || name == "Birthday" || name == "Correct by more subject" || name == "")
+		if (name == "Excellent" || name == "Birthday" || name == "Correct by more subject")// || name == "")
 		{
 			nItemIndex = m_listCtrl.InsertItem(nCount, it->szClm0);
 			nItemIndex = m_listCtrl.SetItemData(nCount, (DWORD_PTR)iId);
@@ -183,6 +186,7 @@ void CTabReference::LoadData(CString name) {
 		{
 			m_listCtrl.SetItemText(nItemIndex, 1, it->szClm1);
 			m_listCtrl.SetItemText(nItemIndex, 2, it->szClm2);
+		
 			if (it->szClm3 != "")
 				m_listCtrl.SetItemText(nItemIndex, 3, it->szClm3);
 

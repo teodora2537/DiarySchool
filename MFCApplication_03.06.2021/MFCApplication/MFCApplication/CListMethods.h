@@ -20,27 +20,29 @@ private:
     int  m_iSortColumn;
     bool m_bSortAscending;
 
-    CString GetItem(const int& nRow, const int& nColumn);
+    CString _GetItem(const int& nRow, const int& nColumn);
 
 public:
-
     CListMethods();
-
     afx_msg BOOL OnLvnColumnclick(NMHDR* pNMHDR, LRESULT* pResult);
-	BOOL IsSortAscending() const;
-	BOOL SwapItems(int& nItem1, int& nItem2);
-	
-    int GetSortedColumn() const;
+
+private://compare function
 	int  _StringCompare(const CString& s1, const CString& s2);
 	int  _NumberCompare(CString strItem1, CString strItem2);
 	int  _DateCompare(const CString& strDate1, const CString& strDate2);
 	int _CompareFunction(CString& strItem1, CString& strItem2, ListCtrlColumnTypeData eColDataType);
 	
+private://sorting
+	BOOL SwapItems(int& nItem1, int& nItem2);
     void Sort(int iColumn, BOOL bAscending, ListCtrlColumnTypeData);
 
+private://get/set sorting ascending and column
+	BOOL IsSortAscending() const;
     void SetSortAscending(const BOOL& bAscending);
     void SetSortedColumn(const int& nCol);
+    int GetSortedColumn() const;
 
+public:
     int InsertColumnAtEnd(_In_z_ LPCTSTR lpszColumnHeading,
         const ListCtrlColumnTypeData eTypeData,
         _In_ int nFormat = LVCFMT_LEFT, _In_ int nWidth = -1, _In_ int nSubItem = -1);

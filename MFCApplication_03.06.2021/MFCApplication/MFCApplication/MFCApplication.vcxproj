@@ -185,6 +185,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CListMethods.h" />
+    <ClInclude Include="CParentTable.h" />
     <ClInclude Include="CScoreTable.h" />
     <ClInclude Include="CStudentTable.h" />
     <ClInclude Include="CSubjectTable.h" />
@@ -209,6 +210,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CListMethods.cpp" />
+    <ClCompile Include="CParentTable.cpp" />
     <ClCompile Include="CScoreTable.cpp" />
     <ClCompile Include="CStudentTable.cpp" />
     <ClCompile Include="CSubjectTable.cpp" />

@@ -38,6 +38,13 @@ BOOL CTabStudent::OnInitDialog() {
 	m_listCtrl.InsertColumnAtEnd("#", eListCtrlColumnTypeData_Int, LVCFMT_LEFT, 30);
 	m_listCtrl.InsertColumnAtEnd("Name", eListCtrlColumnTypeData_String, LVCFMT_LEFT, 100);
 	m_listCtrl.InsertColumnAtEnd("Date of birthday", eListCtrlColumnTypeData_Date, LVCFMT_LEFT, 100);
+	m_listCtrl.InsertColumnAtEnd("Email", eListCtrlColumnTypeData_String, LVCFMT_LEFT, 200);
+	m_listCtrl.InsertColumnAtEnd("Phone number", eListCtrlColumnTypeData_String, LVCFMT_LEFT, 100);
+	m_listCtrl.InsertColumnAtEnd("EGN", eListCtrlColumnTypeData_String, LVCFMT_LEFT, 100);
+	m_listCtrl.InsertColumnAtEnd("City", eListCtrlColumnTypeData_String, LVCFMT_LEFT, 70);
+	m_listCtrl.InsertColumnAtEnd("Post code", eListCtrlColumnTypeData_String, LVCFMT_LEFT, 70);
+	m_listCtrl.InsertColumnAtEnd("Neighborhood", eListCtrlColumnTypeData_String, LVCFMT_LEFT, 100);
+	m_listCtrl.InsertColumnAtEnd("Address", eListCtrlColumnTypeData_String, LVCFMT_LEFT, 600);
 
 	LoadData(true);
 
@@ -233,15 +240,16 @@ void CTabStudent::LoadData(bool isFromFile)
 		{
 			m_listCtrl.SetItemText(nItemIndex, 1, (*i).szName);
 			m_listCtrl.SetItemText(nItemIndex, 2, (*i).szDate);
+			m_listCtrl.SetItemText(nItemIndex, 3, (*i).szEmail);
+			m_listCtrl.SetItemText(nItemIndex, 4, (*i).szPhoneNumber);
+			m_listCtrl.SetItemText(nItemIndex, 5, (*i).szEGN);
+			m_listCtrl.SetItemText(nItemIndex, 6, (*i).szCity);
+			m_listCtrl.SetItemText(nItemIndex, 7, (*i).szPostCode);
+			m_listCtrl.SetItemText(nItemIndex, 8, (*i).szNeighborhood);
+			m_listCtrl.SetItemText(nItemIndex, 9, (*i).szAddress);
 			
 			//set index back item
 			nItemIndex = m_listCtrl.SetItemData(nCount, (DWORD_PTR)i->iId);
 		}
 	}
 }
-
-//CListCtrl& CTabStudent::GetListCtrl()
-//{
-//	CListCtrl& listCtrl = m_listCtrl;
-//	return listCtrl;
-//}

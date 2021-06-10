@@ -22,15 +22,30 @@ protected:
 	void SetRangeOfDTPicker();
 	void FillEditBoxes();
 	void EnableDisableBoxes();
-	// DDX/DDV support
 	virtual	BOOL OnInitDialog() override;
 
 	DECLARE_MESSAGE_MAP()
 public:
-	CString m_strClassNum;
-	CString m_strFn;
-	CString m_strLn;
-	CDateTimeCtrl m_dtCtrlBirthday;
+	CString m_strStudent_ClassNum;
+	CString m_strStudent_Fn;
+	CString m_strStudent_Ln;
+	CDateTimeCtrl m_dtStudent_CtrlBirthday;
+	CString m_strStudent_Email;
+	CString m_strStudent_PhoneNumber;
+	CString m_strStudent_EGN;
+	CString m_strStudent_City;
+	CString m_strStudent_PostCode;
+	CString m_strStudent_Neighborhood;
+	CString m_strStudent_Address;
+	
+	CString m_strParent_Fn;
+	CString m_strParent_Ln;
+	CString m_strParent_PhoneNumber;
+	CString m_strParent_Email;
+	CString m_strParent_City;
+	CString m_strParent_PostCode;
+	CString m_strParent_Neighborhood;
+	CString m_strParent_Address;
 
 	BOOL ValidateData();
 	CStudentData& m_oStudent;
