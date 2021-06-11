@@ -48,16 +48,16 @@ public:
 	CStudentData();
 
 	int m_iId;
-	CString m_strStudent_FirstName;
-	CString m_strStudent_LastName;
-	COleDateTime m_oleDT_Birthday;
-	CString m_strStudent_Email;
-	CString m_strStudent_PhoneNumber;
-	CString m_strStudent_Egn;
-	CString m_strStudent_City;
-	CString m_strStudent_PostCode;
-	CString m_strStudent_Neighborhood;
-	CString m_strStudent_Address;
+	CString m_strFirstName;
+	CString m_strLastName;
+	COleDateTime m_oleDTBirthday;
+	CString m_strEmail;
+	CString m_strPhoneNumber;
+	CString m_strEgn;
+	CString m_strCity;
+	CString m_strPostCode;
+	CString m_strNeighborhood;
+	CString m_strAddress;
 
 	list<CStudentData> m_objList;
 };

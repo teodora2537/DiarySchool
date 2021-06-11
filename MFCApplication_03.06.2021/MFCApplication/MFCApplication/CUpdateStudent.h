@@ -9,7 +9,7 @@ class CStudentDlg : public CDialogEx
 	DECLARE_DYNAMIC(CStudentDlg)
 
 public:
-	CStudentDlg(CStudentData& oSubject, const DialogMode eMode);   // standard constructor
+	CStudentDlg(CStudentData& oStudent, const DialogMode eMode);   // standard constructor
 	virtual ~CStudentDlg();
 
 	// Dialog Data
@@ -19,10 +19,11 @@ public:
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);
-	void SetRangeOfDTPicker();
-	void FillEditBoxes();
-	void EnableDisableBoxes();
 	virtual	BOOL OnInitDialog() override;
+	
+	void SetRangeOfDTPicker();
+	void EnableDisableBoxes();
+	void FillEditBoxes();
 
 	DECLARE_MESSAGE_MAP()
 public:

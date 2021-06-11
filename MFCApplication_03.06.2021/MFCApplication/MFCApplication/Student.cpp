@@ -69,7 +69,9 @@ bool CStudent::AddStudent(CStudentData& oStudent)
 
 		oStudentTable.AddNew();
 		oParentTable.AddNew();
-		
+
+		/*IF PARENT AND STUDENT EXIST*/
+		/////////////////////////////////////////////////////////////////////
 		int i = 0;
 		CString strEGN;
 		CString strParentFirstName;
@@ -79,17 +81,16 @@ bool CStudent::AddStudent(CStudentData& oStudent)
 		{
 			if (i == 0)
 			{
-				strEGN = student.m_strStudent_Egn;
+				strEGN = student.m_strEgn;
 				i++;
 				continue;
 			}
 			else if (i == 1)
 			{
-				strParentFirstName = student.m_strStudent_FirstName;
-				strParentLastName = student.m_strStudent_LastName;
+				strParentFirstName = student.m_strFirstName;
+				strParentLastName =  student.m_strLastName;
 			}
 		}
-
 
 		bool isStudentExist = false;
 		while (true)
@@ -105,27 +106,30 @@ bool CStudent::AddStudent(CStudentData& oStudent)
 			}
 					//student: exist	parent: not exist
 			else if (oStudentTable.m_str_egn == strEGN &&
-				(oParentTable.m_str_first_name != strParentFirstName ||
-				 oParentTable.m_str_last_name != strParentLastName))
+				(oParentTable.m_str_first_name != strParentFirstName || oParentTable.m_str_last_name != strParentLastName))
 				{
-				int i = 0;
-					//for (list<CStudentData>::iterator parent = oStudent.m_objList.begin(); parent != oStudent.m_objList.end(); ++parent) {
-				for (const auto& parent : oStudent.m_objList){
-				if (i == 0) {
+					int i = 0;
+						
+					for (const auto& parent : oStudent.m_objList)
+					{
+						if (i == 0) 
+						{
 							oParentTable.m_iIdStudent = oStudentTable.m_iId; i++;
 						}
-						else {
-						oParentTable.m_str_first_name = parent.m_strStudent_FirstName;
-						oParentTable.m_str_last_name = parent.m_strStudent_LastName;
-						oParentTable.m_str_email = parent.m_strStudent_Email;
-						oParentTable.m_str_phone_number = parent.m_strStudent_PhoneNumber;
-						oParentTable.m_str_city = parent.m_strStudent_City;
-						oParentTable.m_str_post_code = parent.m_strStudent_PostCode;
-						oParentTable.m_str_neighborhood = parent.m_strStudent_Neighborhood;
-						oParentTable.m_str_address = parent.m_strStudent_Address;
-						break;
+						else 
+						{
+							oParentTable.m_str_first_name =	parent.m_strFirstName;
+							oParentTable.m_str_last_name =	parent.m_strLastName;
+							oParentTable.m_str_email =	parent.m_strEmail;
+							oParentTable.m_str_phone_number = parent.m_strPhoneNumber;
+							oParentTable.m_str_city = parent.m_strCity;
+							oParentTable.m_str_post_code =	parent.m_strPostCode;
+							oParentTable.m_str_neighborhood = parent.m_strNeighborhood;
+							oParentTable.m_str_address = parent.m_strAddress;
+							break;
 						}
 					}
+
 					isStudentExist = true;
 					
 					if (!oParentTable.Update())
@@ -150,7 +154,8 @@ bool CStudent::AddStudent(CStudentData& oStudent)
 				return false;
 			}
 		}
-	
+		///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 		oStudentTable.Close();
 		oParentTable.Close();
 	}
@@ -189,7 +194,6 @@ bool CStudent::EditStudent(CStudentData& oStudent)
 		}
 
 		oStudentTable.Edit();
-		//oParentTable.Edit();
 
 		FillTables(oStudentTable, oParentTable, oStudent.m_objList);
 
@@ -259,16 +263,16 @@ bool CStudent::LoadStudent(const int nClassNumber, CStudentData& oStudent)
 		}
 
 		oStudent.m_iId = nClassNumber;
-		oStudent.m_strStudent_FirstName = oStudentTable.m_str_First_name;
-		oStudent.m_strStudent_LastName = oStudentTable.m_str_Last_name;
-		oStudent.m_oleDT_Birthday = oStudentTable.m_oleDT_Birthday;
-		oStudent.m_strStudent_Email= oStudentTable.m_str_email;
-		oStudent.m_strStudent_PhoneNumber = oStudentTable.m_str_phone_number;
-		oStudent.m_strStudent_Egn = oStudentTable.m_str_egn;
-		oStudent.m_strStudent_City = oStudentTable.m_str_city;
-		oStudent.m_strStudent_PostCode = oStudentTable.m_str_post_code;
-		oStudent.m_strStudent_Neighborhood = oStudentTable.m_str_neighborhood;
-		oStudent.m_strStudent_Address = oStudentTable.m_str_address;
+		oStudent.m_strFirstName = oStudentTable.m_str_First_name;
+		oStudent.m_strLastName = oStudentTable.m_str_Last_name;
+		oStudent.m_oleDTBirthday = oStudentTable.m_oleDT_Birthday;
+		oStudent.m_strEmail= oStudentTable.m_str_email;
+		oStudent.m_strPhoneNumber = oStudentTable.m_str_phone_number;
+		oStudent.m_strEgn = oStudentTable.m_str_egn;
+		oStudent.m_strCity = oStudentTable.m_str_city;
+		oStudent.m_strPostCode = oStudentTable.m_str_post_code;
+		oStudent.m_strNeighborhood = oStudentTable.m_str_neighborhood;
+		oStudent.m_strAddress = oStudentTable.m_str_address;
 		oStudent.m_objList.push_back(oStudent);
 	}
 	catch (exception e)
@@ -310,6 +314,7 @@ void CStudent::PrintStudent_(list<STUDENT>& listStudent)
 			sprintf(studentStruct.szAddress, "%s", oStudentTable.m_str_address);
 
 			listStudent.push_back(studentStruct);
+
 			oStudentTable.MoveNext();
 		}
 	}
@@ -327,29 +332,29 @@ void CStudent::FillTables(CStudentTable& oStudentTable, CParentTable& oParentTab
 	{
 		if (i == 0) 
 		{
-			oStudentTable.m_str_First_name = obj.m_strStudent_FirstName;
-			oStudentTable.m_str_Last_name = obj.m_strStudent_LastName;
-			oStudentTable.m_oleDT_Birthday = obj.m_oleDT_Birthday;
-			oStudentTable.m_str_email = obj.m_strStudent_Email;
-			oStudentTable.m_str_phone_number = obj.m_strStudent_PhoneNumber;
-			oStudentTable.m_str_egn = obj.m_strStudent_Egn;
-			oStudentTable.m_str_city = obj.m_strStudent_City;
-			oStudentTable.m_str_post_code = obj.m_strStudent_PostCode;
-			oStudentTable.m_str_neighborhood = obj.m_strStudent_Neighborhood;
-			oStudentTable.m_str_address = obj.m_strStudent_Address;
+			oStudentTable.m_str_First_name = obj.m_strFirstName;
+			oStudentTable.m_str_Last_name = obj.m_strLastName;
+			oStudentTable.m_oleDT_Birthday = obj.m_oleDTBirthday;
+			oStudentTable.m_str_email = obj.m_strEmail;
+			oStudentTable.m_str_phone_number = obj.m_strPhoneNumber;
+			oStudentTable.m_str_egn = obj.m_strEgn;
+			oStudentTable.m_str_city = obj.m_strCity;
+			oStudentTable.m_str_post_code = obj.m_strPostCode;
+			oStudentTable.m_str_neighborhood = obj.m_strNeighborhood;
+			oStudentTable.m_str_address = obj.m_strAddress;
 			i++;
 		}
 		else if (i == 1)
 		{
 			oParentTable.m_iIdStudent = obj.m_iId;
-			oParentTable.m_str_first_name = obj.m_strStudent_FirstName;
-			oParentTable.m_str_last_name = obj.m_strStudent_LastName;
-			oParentTable.m_str_email = obj.m_strStudent_Email;
-			oParentTable.m_str_phone_number = obj.m_strStudent_PhoneNumber;
-			oParentTable.m_str_city = obj.m_strStudent_City;
-			oParentTable.m_str_post_code = obj.m_strStudent_PostCode;
-			oParentTable.m_str_neighborhood = obj.m_strStudent_Neighborhood;
-			oParentTable.m_str_address = obj.m_strStudent_Address;
+			oParentTable.m_str_first_name = obj.m_strFirstName;
+			oParentTable.m_str_last_name = obj.m_strLastName;
+			oParentTable.m_str_email = obj.m_strEmail;
+			oParentTable.m_str_phone_number = obj.m_strPhoneNumber;
+			oParentTable.m_str_city = obj.m_strCity;
+			oParentTable.m_str_post_code = obj.m_strPostCode;
+			oParentTable.m_str_neighborhood = obj.m_strNeighborhood;
+			oParentTable.m_str_address = obj.m_strAddress;
 		}
 	}
 

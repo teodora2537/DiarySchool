@@ -212,7 +212,6 @@ void CTabStudent::OnLvnColumnclickList_(NMHDR* pNMHDR, LRESULT* pResult)
 	*pResult = 0;
 }
 
-
 void CTabStudent::LoadData(bool isFromFile)
 {
 	m_listCtrl.DeleteAllItems();
