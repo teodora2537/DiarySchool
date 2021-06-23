@@ -27,8 +27,8 @@ protected:
 	void SetRangeOfDTPicker();
 	void EnableDisableBoxes();
 	void FillEditBoxes();
-
 	DECLARE_MESSAGE_MAP()
+
 public:
 	CString m_strStudent_ClassNum;
 	CString m_strStudent_Fn;

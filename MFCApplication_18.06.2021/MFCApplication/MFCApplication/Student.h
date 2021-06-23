@@ -10,15 +10,14 @@
 using namespace std;
 
 #define DEF_SCORE_NAME_LEN 100
-#define DEF_LEN 100
 
 struct STUDENT {
 	int iId;
 	char szName[DEF_SCORE_NAME_LEN + 1]; // sz- char array ->name student
-	char szDate[9 + 1];//DBTIMESTAMP ->date of score
-	char szEmail[DEF_LEN + 1];
+	char szDate[10 + 1];//DBTIMESTAMP ->date of score
+	char szEmail[50 + 1];
 	char szPhoneNumber[20 + 1];
-	char szEGN[20 + 1];
+	char szEGN[50 + 1];
 	char szCity[70 + 1];
 	char szPostCode[10 + 1];
 	char szNeighborhood[70 + 1];
@@ -47,7 +46,7 @@ class CStudentData
 {
 public:
 	CStudentData();
-	CStudentData(int iStudentId, int iParentId, CString strFirstName, CString strLastName, COleDateTime oleDTBirthday,
+	CStudentData(int iParentId, int iStudentId, CString strFirstName, CString strLastName, COleDateTime oleDTBirthday,
 				 CString strEmail, CString strPhoneNumber, CString strEgn, CString strCity, 
 				 CString strPostCode, CString strNeighborhood, CString strAddress);
 	int m_iStudentId;
@@ -75,8 +74,8 @@ public:
 	bool isStudentExist(CString strEgn);
 
 public:
-	bool AddStudent(CStudentData& oStudent);// , list<CParentData>& arrParents);
-	bool EditStudent(CStudentData& oStudent);// , list<CParentData>& arrParents);
+	bool AddStudent(CStudentData& oStudent);
+	bool EditStudent(CStudentData& oStudent);
 	bool LoadStudent(const int nClassNumber, CStudentData& oStudent);
 	bool DeleteStudent(const int nClassNumber);
 	void PrintStudent_(list<STUDENT>& listStudent);

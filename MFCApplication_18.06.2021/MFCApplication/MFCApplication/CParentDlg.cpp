@@ -136,6 +136,8 @@ BOOL CParentDlg::ValidateData()
 		MessageBox("Missing address of parent!", "Error", MB_ICONHAND);
 		return FALSE;
 	}
+	
+	return TRUE;
 }
 
 BEGIN_MESSAGE_MAP(CParentDlg, CDialogEx)
@@ -147,29 +149,28 @@ void CParentDlg::OnBnClickedOk()
 {
 	UpdateData(TRUE);
 
-	if (m_eMode != eDialogMode_View || !ValidateData())
+	if (m_eMode == eDialogMode_View || !ValidateData())
 	{
-		CDialogEx::OnOK();
 		return;
 	}
 
-	//m_oParent.m_strFirstName = m_strFn;
-	//m_oParent.m_strLastName = m_strLn;
-	//m_oParent.m_strEmail = m_strEmail;
-	//m_oParent.m_strPhoneNumber = m_strPhoneNumber;
-	//m_oParent.m_strCity = m_strCity;
-	//m_oParent.m_strPostCode = m_strPostCode;
-	//m_oParent.m_strNeighborhood = m_strNeighborhood;
-	//m_oParent.m_strAddress = m_strAddress;
+	m_oParent.m_strFirstName = m_strFn;
+	m_oParent.m_strLastName = m_strLn;
+	m_oParent.m_strEmail = m_strEmail;
+	m_oParent.m_strPhoneNumber = m_strPhoneNumber;
+	m_oParent.m_strCity = m_strCity;
+	m_oParent.m_strPostCode = m_strPostCode;
+	m_oParent.m_strNeighborhood = m_strNeighborhood;
+	m_oParent.m_strAddress = m_strAddress;
 
-	m_oParent.m_strFirstName	= "Krasimira";
-	m_oParent.m_strLastName		= "Stoqnoca";
-	m_oParent.m_strEmail		= "Krasimira@mail.bg";
-	m_oParent.m_strPhoneNumber	= "0879456512";
-	m_oParent.m_strCity			= "Varna";
-	m_oParent.m_strPostCode		= "9000";
-	m_oParent.m_strNeighborhood = "Levski";
-	m_oParent.m_strAddress		= "jbkhbkjhbkjhkjgf";
+	//m_oParent.m_strFirstName		= "Krasimira";
+	//m_oParent.m_strLastName		= "Stoqnova";
+	//m_oParent.m_strEmail			= "Krasimira@mail.bg";
+	//m_oParent.m_strPhoneNumber	= "0879456512";
+	//m_oParent.m_strCity			= "Varna";
+	//m_oParent.m_strPostCode		= "9000";
+	//m_oParent.m_strNeighborhood	= "Levski";
+	//m_oParent.m_strAddress		= "jbkhbkjhbkjhkjgf";
 
 	CDialogEx::OnOK();
 }

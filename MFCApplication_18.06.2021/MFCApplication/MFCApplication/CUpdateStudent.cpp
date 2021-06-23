@@ -31,7 +31,7 @@ void CStudentDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT_UPDATE_STUDENT_LN, m_strStudent_Ln);
 	DDV_MaxChars(pDX, m_strStudent_Ln, 15);//Size of LN student
 	DDX_Control(pDX, IDC_DATETIMEPICKER1, m_dtStudent_CtrlBirthday);
-	CString formatStr = _T("MM'/'dd'/'yyyy");
+	CString formatStr = _T("yyyy'-'MM'-'dd");
 	m_dtStudent_CtrlBirthday.SetFormat(formatStr);
 	DDX_Text(pDX, IDC_EDIT_STUDENT_EMAIL, m_strStudent_Email);
 	DDX_Text(pDX, IDC_EDIT_STUDENT_PHONE_NUMBER, m_strStudent_PhoneNumber);
@@ -58,16 +58,16 @@ void CStudentDlg::SetRangeOfDTPicker()
 void CStudentDlg::FillEditBoxes()
 {
 	Library oLib;
-	m_strStudent_ClassNum =		oLib.IntToCString(m_oStudent.m_iStudentId);
-	m_strStudent_Fn =			m_oStudent.m_strFirstName;
-	m_strStudent_Ln =			m_oStudent.m_strLastName;
-	m_strStudent_PhoneNumber =	m_oStudent.m_strPhoneNumber;
-	m_strStudent_Email =		m_oStudent.m_strEmail;
-	m_strStudent_EGN =			m_oStudent.m_strEgn;
-	m_strStudent_City =			m_oStudent.m_strCity;
-	m_strStudent_PostCode =		m_oStudent.m_strPostCode;
+	m_strStudent_ClassNum =	oLib.IntToCString(m_oStudent.m_iStudentId);
+	m_strStudent_Fn = m_oStudent.m_strFirstName;
+	m_strStudent_Ln = m_oStudent.m_strLastName;
+	m_strStudent_PhoneNumber = m_oStudent.m_strPhoneNumber;
+	m_strStudent_Email = m_oStudent.m_strEmail;
+	m_strStudent_EGN = m_oStudent.m_strEgn;
+	m_strStudent_City =	m_oStudent.m_strCity;
+	m_strStudent_PostCode =	m_oStudent.m_strPostCode;
 	m_strStudent_Neighborhood = m_oStudent.m_strNeighborhood;
-	m_strStudent_Address =		m_oStudent.m_strAddress;
+	m_strStudent_Address = m_oStudent.m_strAddress;
 
 	if (m_eMode != eDialogMode_Add)
 	{
@@ -139,7 +139,7 @@ BOOL CStudentDlg::OnInitDialog()
 	m_listCtrl.InsertColumnAtEnd("City", eListCtrlColumnTypeData_String, LVCFMT_LEFT, 70);
 	m_listCtrl.InsertColumnAtEnd("Post code", eListCtrlColumnTypeData_String, LVCFMT_LEFT, 70);
 	m_listCtrl.InsertColumnAtEnd("Neighborhood", eListCtrlColumnTypeData_String, LVCFMT_LEFT, 100);
-	m_listCtrl.InsertColumnAtEnd("Address", eListCtrlColumnTypeData_String, LVCFMT_LEFT, 600);
+	m_listCtrl.InsertColumnAtEnd("Address", eListCtrlColumnTypeData_String, LVCFMT_LEFT, 300);
 
 	if (m_eMode != eDialogMode_Add)
 		LoadParents(m_oStudent.m_iStudentId);
@@ -213,34 +213,34 @@ void CStudentDlg::OnBnClickedOk()
 {
 	UpdateData(TRUE);
 
-	//if (m_eMode == eDialogMode_View || !ValidateStudent()) {
-	//	CDialogEx::OnOK();
-	//	return;
-	//}
-	
-	//m_oStudent.m_iStudentId = atoi(m_strStudent_ClassNum);
-	//m_oStudent.m_strFirstName = m_strStudent_Fn;
-	//m_oStudent.m_strLastName = m_strStudent_Ln;
-	//m_dtStudent_CtrlBirthday.GetTime(m_oStudent.m_oleDTBirthday);
-	//m_oStudent.m_strEmail = m_strStudent_Email;
-	//m_oStudent.m_strPhoneNumber = m_strStudent_PhoneNumber;
-	//m_oStudent.m_strEgn = m_strStudent_EGN;
-	//m_oStudent.m_strCity = m_strStudent_City;
-	//m_oStudent.m_strPostCode = m_strStudent_PostCode;
-	//m_oStudent.m_strNeighborhood = m_strStudent_Neighborhood;
-	//m_oStudent.m_strAddress = m_strStudent_Address;
+	if (m_eMode == eDialogMode_View || !ValidateStudent()) {
+		//CDialogEx::OnOK();
+		return;
+	}
 	
 	m_oStudent.m_iStudentId = atoi(m_strStudent_ClassNum);
-	m_oStudent.m_strFirstName = "test3";
-	m_oStudent.m_strLastName = "tets3";
+	m_oStudent.m_strFirstName = m_strStudent_Fn;
+	m_oStudent.m_strLastName = m_strStudent_Ln;
 	m_dtStudent_CtrlBirthday.GetTime(m_oStudent.m_oleDTBirthday);
-	m_oStudent.m_strEmail = "test@mail.bg";
-	m_oStudent.m_strPhoneNumber = "0896541235";
-	m_oStudent.m_strEgn = "9785644433";
-	m_oStudent.m_strCity = "Varna";
-	m_oStudent.m_strPostCode = "9000";
-	m_oStudent.m_strNeighborhood = "Mladost";
-	m_oStudent.m_strAddress = "fjkhfkhgkjdfhgkfjdh";
+	m_oStudent.m_strEmail = m_strStudent_Email;
+	m_oStudent.m_strPhoneNumber = m_strStudent_PhoneNumber;
+	m_oStudent.m_strEgn = m_strStudent_EGN;
+	m_oStudent.m_strCity = m_strStudent_City;
+	m_oStudent.m_strPostCode = m_strStudent_PostCode;
+	m_oStudent.m_strNeighborhood = m_strStudent_Neighborhood;
+	m_oStudent.m_strAddress = m_strStudent_Address;
+	
+	//m_oStudent.m_iStudentId		= atoi(m_strStudent_ClassNum);
+	//m_oStudent.m_strFirstName		= "test3";
+	//m_oStudent.m_strLastName		= "tets3";
+	//m_dtStudent_CtrlBirthday.GetTime(m_oStudent.m_oleDTBirthday);
+	//m_oStudent.m_strEmail			= "test@mail.bg";
+	//m_oStudent.m_strPhoneNumber	= "0896541235";
+	//m_oStudent.m_strEgn			= "9785644433";
+	//m_oStudent.m_strCity			= "Varna";
+	//m_oStudent.m_strPostCode		= "9000";
+	//m_oStudent.m_strNeighborhood	= "Mladost";
+	//m_oStudent.m_strAddress		= "fjkhfkhgkjdfhgkfjdh";
 	
 	CDialogEx::OnOK();
 }
@@ -305,15 +305,20 @@ void CStudentDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 
 void CStudentDlg::OnAddParent()
 {
-	//CStudentData oStudentData;
-	CParentData oParent;
-	CParentDlg dlg(oParent, eDialogMode_Add);
+	CParentData oParentData;
+	CParentDlg dlg(oParentData, eDialogMode_Add);
 	
 	if (dlg.DoModal() != IDOK) {
 		return;
 	}
-	oParent.m_iStudentId = m_oStudent.m_iStudentId;
-	m_oStudent.m_arrParents.push_back(oParent);
+	oParentData.m_iStudentId = m_oStudent.m_iStudentId;
+	m_oStudent.m_arrParents.push_back(oParentData);
+
+	if (m_eMode == eDialogMode_Edit || m_eMode == eDialogMode_View)
+	{
+		CParent oParent;
+		oParent.AddParent(m_oStudent.m_arrParents);
+	}
 }
 
 void CStudentDlg::OnEditParent()
@@ -345,8 +350,15 @@ void CStudentDlg::OnEditParent()
 	
 	m_oStudent.m_arrParents.erase(remove_if(m_oStudent.m_arrParents.begin(), m_oStudent.m_arrParents.end(),
 		[&](CParentData const& p) { return p.m_iParentId == nId; }));
+
 	//set oParentData by nId in m_oStudent.m_arrParents
 	m_oStudent.m_arrParents.push_back(oParentData);
+
+	if (m_eMode == eDialogMode_View)
+	{
+		CParent oParent;
+		oParent.EditParent(m_oStudent.m_arrParents);
+	}
 }
 
 void CStudentDlg::OnDeleteParent()
@@ -376,8 +388,14 @@ void CStudentDlg::OnDeleteParent()
 	if (result != IDYES)
 		return;
 
-	if (!oStudent.DeleteStudent(nId))
+	if (m_eMode == eDialogMode_Edit || m_eMode == eDialogMode_View )
+	{
+		CParent oParent;
+		oParent.DeleteOneParent(nId);
+	}
+	else if (!oStudent.DeleteStudent(nId)){
 		return;
+	}
 
 	m_listCtrl.DeleteItem(nItem);
 }

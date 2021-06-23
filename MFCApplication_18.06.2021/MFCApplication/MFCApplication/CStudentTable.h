@@ -27,7 +27,8 @@ public:
 	int m_iId;
 	CString m_str_First_name;
 	CString m_str_Last_name;
-	COleDateTime m_oleDT_Birthday;
+	//COleDateTime m_oleDT_Birthday;
+	CString m_oleDT_Birthday;
 	CString m_str_email; 
 	CString m_str_phone_number;
 	CString m_str_egn;

@@ -16,12 +16,7 @@ CScoreData::CScoreData(int _idScore, int _classNum, CString _subject, int _score
 }
 
 CScoreData::CScoreData()
-{
-	m_iIdScore = 0;
-	m_iIdStudent = 0;
-	m_iIdSubject = 0;
-	m_iScore = 0;
-}
+{}
 
 extern CDatabase g_dbConnection;
 
@@ -38,22 +33,20 @@ bool CScore::IsContainAStudent(CScoreData& oScoreData)
 {	
 	try 
 	{
-		CString strWhere;
-		strWhere.Format("id = '%d'", oScoreData.m_iIdStudent);
+		CStudentTable oStudentTable(&g_dbConnection);
+		oStudentTable.m_strFilter.Format("id = '%d'", oScoreData.m_iIdStudent);
+		oStudentTable.Open();
 		
-		CScoreTable oScoreTable(&g_dbConnection);
-		oScoreTable.m_strFilter = strWhere;
-		oScoreTable.Open();
-		
-		if (!oScoreTable.IsOpen()) 
+		if (!oStudentTable.IsOpen()) 
 		{
 			MessageBox(NULL, "The table Score isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
 			return false;
 		}
 
-		if (!oScoreTable.m_iIdStudent) 
+		if (!oStudentTable.m_iId) 
 		{
 			MessageBox(NULL, "The student isn't exist!", "Isn't exist", MB_OK | MB_ICONERROR);
+			oStudentTable.Close();
 			return false;
 		}
 	}
@@ -92,7 +85,7 @@ bool CScore::GetIdSubject(CString& strSubject, int& m_strIdSub)
 		AfxMessageBox("Error delete subject!", MB_ICONEXCLAMATION);
 		return false;
 	}
-	return false;
+	return true;
 }
 
 bool CScore::AddScore(CScoreData& oScoreData)
@@ -124,15 +117,17 @@ bool CScore::AddScore(CScoreData& oScoreData)
 		}
 
 		oScoreTable.AddNew();
-
+		Library oLib;
 		oScoreTable.m_iIdStudent = oScoreData.m_iIdStudent;
 		oScoreTable.m_iIdSubject = nIdSub;
 		oScoreTable.m_iScore = oScoreData.m_iScore;
-		oScoreTable.m_oleDateTime = oScoreData.m_oleDateTime;
+		//oScoreTable.m_oleDateTime = oScoreData.m_oleDateTime;
+		oScoreTable.m_oleDateTime = oLib.OleDTToCString(oScoreData.m_oleDateTime);
 		
 		if (!oScoreTable.Update()) 
 		{
 			MessageBox(NULL, "The record can't update!", "Can't update", MB_OK | MB_ICONERROR);
+			oScoreTable.Close();
 			return false;
 		}
 
@@ -149,7 +144,6 @@ bool CScore::AddScore(CScoreData& oScoreData)
 
 bool CScore::EditScore(CScoreData& oScore) {
 		
-	
 	try 
 	{
 		//get id subject
@@ -170,15 +164,17 @@ bool CScore::EditScore(CScoreData& oScore) {
 		}
 
 		oScoreTable.Edit();
-
+		Library oLib;
 		oScoreTable.m_iIdStudent = oScore.m_iIdStudent;
 		oScoreTable.m_iIdSubject = nIdSub;
 		oScoreTable.m_iScore = oScore.m_iScore;
-		oScoreTable.m_oleDateTime = oScore.m_oleDateTime;
+		//oScoreTable.m_oleDateTime = oScore.m_oleDateTime;
+		oScoreTable.m_oleDateTime = oLib.OleDTToCString(oScore.m_oleDateTime);
 
 		if (!oScoreTable.Update())
 		{
 			MessageBox(NULL, "The record can't update!", "Can't update", MB_OK | MB_ICONERROR);
+			oScoreTable.Close();
 			return false;
 		}
 	}
@@ -212,6 +208,7 @@ bool CScore::DeleteScore(const int nIdScore)
 		if (!oScoreTable.IsDeleted())
 		{
 			MessageBox(NULL, "The record isn't deleted!", "Isn't deleted", MB_OK | MB_ICONERROR);
+			oScoreTable.Close();
 			return false;
 		}
 	}
@@ -220,6 +217,41 @@ bool CScore::DeleteScore(const int nIdScore)
 		AfxMessageBox("Error delete score!", MB_ICONEXCLAMATION);
 		return false;
 	}
+	return true;
+}
+
+bool CScore::DeleteScoreByStudent(int nIdStudent) 
+{
+	try
+	{
+		CScoreTable oScoreTable(&g_dbConnection);
+		oScoreTable.m_strFilter.Format("student_id = '%d'", nIdStudent);
+		oScoreTable.Open();
+
+		if (!oScoreTable.IsOpen())
+		{
+			MessageBox(NULL, "The table Student isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
+			return false;
+		}
+		while (!oScoreTable.IsEOF())
+		{
+			oScoreTable.Delete();
+			oScoreTable.MoveNext();
+		}
+
+		if (!oScoreTable.IsDeleted())
+		{
+			MessageBox(NULL, "The record isn't deleted!", "Isn't deleted", MB_OK | MB_ICONERROR);
+			oScoreTable.Close();
+			return false;
+		}
+	}
+	catch (exception e)
+	{
+		AfxMessageBox("Error delete student!", MB_ICONEXCLAMATION);
+		return false;
+	}
+
 	return true;
 }
 
@@ -295,11 +327,12 @@ bool CScore::LoadScore(const int nIdScore, CScoreData& oScore)
 			MessageBox(NULL, "The table Score isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
 			return false;
 		}
-
+		Library oLib;
 		oScore.m_iIdStudent = oScoreTable.m_iIdStudent;
 		oScore.m_iIdSubject = oScoreTable.m_iIdSubject;
 		oScore.m_iScore = oScoreTable.m_iScore;
-		oScore.m_oleDateTime = oScoreTable.m_oleDateTime;
+		//oScore.m_oleDateTime = oScoreTable.m_oleDateTime;
+		oScore.m_oleDateTime = oLib.CStringToDate(oScoreTable.m_oleDateTime);
 		oScoreTable.Close();
 
 		//get student name
@@ -345,12 +378,15 @@ void CScore::Print_Score(list<SCORE>& listScore)
 			sprintf(scoreStruct.szName, "%s", oScoreData.m_strNameStudent);
 			sprintf(scoreStruct.szSubject, "%s", oScoreData.m_strSubject);
 			scoreStruct.iScore = oScoreTable.m_iScore;
-			sprintf(scoreStruct.szDate, "%s", oLib.OleDTToCString(oScoreTable.m_oleDateTime));
+			//sprintf(scoreStruct.szDate, "%s", oLib.OleDTToCString(oScoreTable.m_oleDateTime));
+			sprintf(scoreStruct.szDate, "%s", oScoreTable.m_oleDateTime);
 
 			listScore.push_back(scoreStruct);
 
 			oScoreTable.MoveNext();
 		}
+
+		oScoreTable.Close();
 	}
 	catch (exception e)
 	{

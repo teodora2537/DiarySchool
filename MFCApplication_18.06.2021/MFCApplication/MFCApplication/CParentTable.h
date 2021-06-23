@@ -33,4 +33,5 @@ public:
 	CString m_str_post_code;
 	CString m_str_neighborhood;
 	CString m_str_address;
+	afx_msg void OnDtnDatetimechangeDatetimepicker1(NMHDR* pNMHDR, LRESULT* pResult);
 };

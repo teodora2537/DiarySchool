@@ -44,7 +44,9 @@ bool CSubject::IsContainsSubject(CSubjectData& oSubject)
 
 		oSubjectTable.MoveNext();
 	}
-	
+
+	oSubjectTable.Close();
+
 	return false;
 }
 
@@ -64,6 +66,7 @@ bool CSubject::AddSubject(CSubjectData& oSubjectData)
 		if (!oSubjectTable.CanAppend())
 		{
 			MessageBox(NULL, "The record can't append!", "Can't append", MB_OK | MB_ICONERROR);
+			oSubjectTable.Close();
 			return false;
 		}
 
@@ -81,6 +84,7 @@ bool CSubject::AddSubject(CSubjectData& oSubjectData)
 		if (!oSubjectTable.Update())
 		{
 			MessageBox(NULL, "The record can't update!", "Can't update", MB_OK | MB_ICONERROR);
+			oSubjectTable.Close();
 			return false;
 		}
 
@@ -121,6 +125,7 @@ bool CSubject::EditSubject(CSubjectData& oSubjectData)
 		if (!oSubjectTable.Update())
 		{
 			MessageBox(NULL, "The record can't update!", "Can't update", MB_OK | MB_ICONERROR);
+			oSubjectTable.Close();
 			return false;
 		}
 	}
@@ -159,6 +164,7 @@ bool CSubject::DeleteSubject(const int nRoom)
 
 		if (!oSubjectTable.Update()) {
 			MessageBox(NULL, "The record can't delete!", "Can't delete", MB_OK | MB_ICONERROR);
+			oSubjectTable.Close();
 			return false;
 		}
 	}
@@ -191,6 +197,8 @@ bool CSubject::LoadSubject(const int nRoomId, CSubjectData& oSubject)
 		oSubject.m_strSubject = oSubjectTable.m_strSubject;
 		oSubject.m_strFNameTeacher = oSubjectTable.m_strFNameTeacher;
 		oSubject.m_strLNameTeacher = oSubjectTable.m_strLNameTeacher;
+
+		oSubjectTable.Close();
 	}
 	catch (exception e)
 	{
@@ -228,6 +236,9 @@ void CSubject::PrintSub(list<SUBJECT>& listSub)
 
 			oSubjectTable.MoveNext();
 		}
+
+		oSubjectTable.Close();
+
 	}
 	catch (exception e)
 	{
@@ -250,6 +261,8 @@ void CSubject::GetLastId(CSubjectData& oSubject)
 
 		oSubjectTable.MoveLast();
 		oSubject.m_iId = oSubjectTable.m_iId;
+
+		oSubjectTable.Close();
 
 	}
 	catch (exception e) {

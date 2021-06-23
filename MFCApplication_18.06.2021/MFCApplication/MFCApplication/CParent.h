@@ -46,6 +46,7 @@ public:
 	bool EditParent(list<CParentData>& m_arrParents);
 	bool LoadParent(const int nId, CParentData& oParent);
 	bool DeleteParent(const int nId);
+	bool DeleteOneParent(const int nIdParent);
 	bool PrintParent(const int& nIdParent, list<PARENT>& lParent);
 	bool PrintParent_(const int& nIdStudent, list<CParentData>& lParent);
 	list<PARENT> listStudents;

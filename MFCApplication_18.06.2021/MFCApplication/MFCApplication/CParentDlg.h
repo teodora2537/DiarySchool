@@ -41,7 +41,6 @@ public:
 	CString m_strAddress;
 
 	DialogMode m_eMode;
-	//list<CParentData>& m_arrParents;
 	CParentData& m_oParent;
 	afx_msg void OnBnClickedOk();
 };

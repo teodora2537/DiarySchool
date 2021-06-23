@@ -5,7 +5,6 @@
 
 extern CDatabase g_dbConnection;
 
-//Не приема ид на студент с номер 34(текущият въвеждан), но приема родител с  ид на стуеднт 33(който вече съществува)
 bool CParent::AddParent(list<CParentData>& arrParents)
 {
 	CParentTable oParentTable(&g_dbConnection);
@@ -17,12 +16,10 @@ bool CParent::AddParent(list<CParentData>& arrParents)
 		return false;
 	}
 
-	if (arrParents.size() == 0)
-		return true;
-
 	if(!oParentTable.CanAppend())
 	{
 		MessageBox(NULL, "The table parent can't append!", "Can't append", MB_OK | MB_ICONERROR);
+		oParentTable.Close();
 		return true;
 	}
 
@@ -35,19 +32,23 @@ bool CParent::AddParent(list<CParentData>& arrParents)
 				oParentTable.m_str_first_name == it->m_strFirstName &&
 				oParentTable.m_str_last_name == it->m_strLastName)
 			{
-				CString msg;
-				msg.Format("The parent %s %s exist!", oParentTable.m_str_first_name, oParentTable.m_str_last_name);
-				MessageBox(NULL, msg, "IsExist", MB_OK | MB_ICONERROR);
+				//CString msg;
+				//msg.Format("The parent %s %s exist!", oParentTable.m_str_first_name, oParentTable.m_str_last_name);
+				//MessageBox(NULL, msg, "IsExist", MB_OK | MB_ICONERROR);
 				arrParents.erase(it);
+				it = arrParents.begin();
+				oParentTable.MoveFirst();
 			}
 		oParentTable.MoveNext();
 		}
 	}
 		
 	oParentTable.AddNew();
-	for (auto it = arrParents.begin(); it != arrParents.end(); it++)
-	{
-			oParentTable.m_iId;
+
+	auto it = arrParents.begin();
+		while (arrParents.size() != 0) 
+		{
+			it = arrParents.begin();
 			oParentTable.m_iIdStudent = it->m_iStudentId;
 			oParentTable.m_str_first_name = it->m_strFirstName;
 			oParentTable.m_str_last_name = it->m_strLastName;
@@ -62,14 +63,14 @@ bool CParent::AddParent(list<CParentData>& arrParents)
 			{
 				MessageBox(NULL, "The record can't update!", "Can't update", MB_OK | MB_ICONERROR);
 				g_dbConnection.Rollback();
+				oParentTable.Close();
 				return true;
 			}
-	}
+			arrParents.erase(it);
+		}
+	
 
 	oParentTable.Close();
-	
-	//destruct array here
-	
 	return false;
 }
 
@@ -124,6 +125,7 @@ bool CParent::EditParent(list<CParentData>& m_arrParents)
 		{
 			MessageBox(NULL, "The record can't update!", "Can't update", MB_OK | MB_ICONERROR);
 			g_dbConnection.Rollback();
+			oParentTable.Close();
 			return false;
 		}
 
@@ -132,13 +134,55 @@ bool CParent::EditParent(list<CParentData>& m_arrParents)
    
    	return true;
 }
- 
+
  bool CParent::DeleteParent(const int nIdStudent)
  {
 	 try
 	 {
+		 CParentTable oParentTable(&g_dbConnection);
+		 oParentTable.m_strFilter.Format("student_id = '%d'", nIdStudent);
+		 oParentTable.Open();
+
+		 if (!oParentTable.IsOpen())
+		 {
+			 MessageBox(NULL, "The table Student isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
+			 return false;
+		 }
+
+		 if (!oParentTable)
+		 {
+			 oParentTable.Close();
+			 return true;
+		 }
+
+		 while (!oParentTable.IsEOF())
+		 {
+			oParentTable.Delete();
+			oParentTable.MoveNext();
+		 }
+		
+		 if (!oParentTable.IsDeleted())
+		 {
+			 MessageBox(NULL, "The record isn't deleted!", "Isn't deleted", MB_OK | MB_ICONERROR);
+			 oParentTable.Close();
+			 return false;
+		 }
+	 }
+	 catch (exception e)
+	 {
+		 AfxMessageBox("Error delete student!", MB_ICONEXCLAMATION);
+		 return false;
+	 }
+
+	 return true;
+ }
+
+ bool CParent::DeleteOneParent(const int nIdParent)
+ {
+	 try
+	 {
 		 CString strWhere;
-		 strWhere.Format("student_id = '%d'", nIdStudent);
+		 strWhere.Format("id = '%d'", nIdParent);
 
 		 CParentTable oParentTable(&g_dbConnection);
 		 oParentTable.m_strFilter = strWhere;
@@ -150,11 +194,12 @@ bool CParent::EditParent(list<CParentData>& m_arrParents)
 			 return false;
 		 }
 
-		oParentTable.Delete();
+			 oParentTable.Delete();
 		
-		 if (!oParentTable.IsDeleted())
+			 if (!oParentTable.IsDeleted())
 		 {
 			 MessageBox(NULL, "The record isn't deleted!", "Isn't deleted", MB_OK | MB_ICONERROR);
+			 oParentTable.Close();
 			 return false;
 		 }
 	 }

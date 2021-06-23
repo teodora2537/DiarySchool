@@ -32,7 +32,7 @@ void CStudentTable::DoFieldExchange(CFieldExchange* pFX)
 	RFX_Int(pFX, "[id]", m_iId);
 	RFX_Text(pFX, "[first_name]", m_str_First_name);
 	RFX_Text(pFX, "[last_name]", m_str_Last_name);
-	RFX_Date(pFX, "[birth_date]", m_oleDT_Birthday);
+	RFX_Text(pFX, "[birth_date]", m_oleDT_Birthday);
 	RFX_Text(pFX, "[email]", m_str_email);
 	RFX_Text(pFX, "[phone_number]", m_str_phone_number);
 	RFX_Text(pFX, "[egn]", m_str_egn);
@@ -44,7 +44,7 @@ void CStudentTable::DoFieldExchange(CFieldExchange* pFX)
 	pFX->SetFieldType(CFieldExchange::inputParam);
 	RFX_Text(pFX, "[first_name]", m_str_First_name);
 	RFX_Text(pFX, "[last_name]", m_str_Last_name);
-	RFX_Date(pFX, "[birth_date]", m_oleDT_Birthday);
+	RFX_Text(pFX, "[birth_date]", m_oleDT_Birthday);
 	RFX_Text(pFX, "[email]", m_str_email);
 	RFX_Text(pFX, "[phone_number]", m_str_phone_number);
 	RFX_Text(pFX, "[egn]", m_str_egn);

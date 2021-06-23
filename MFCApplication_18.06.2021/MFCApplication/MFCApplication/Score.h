@@ -49,6 +49,7 @@ public:
 	bool AddScore(CScoreData& oScoreData);
 	bool EditScore(CScoreData& oScore);
 	bool DeleteScore(const int nIdScore);
+	bool DeleteScoreByStudent(int nStudentID);
 	bool LoadScore(const int nIdScore, CScoreData& oScore);
 	
 	void Print_Score(list<SCORE>& listScore);
