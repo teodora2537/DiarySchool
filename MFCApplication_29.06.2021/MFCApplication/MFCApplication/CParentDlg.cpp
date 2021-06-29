@@ -27,14 +27,14 @@ void CParentDlg::DoDataExchange(CDataExchange* pDX)
 {
 
 	CDialogEx::DoDataExchange(pDX);	
-	DDX_Text(pDX, IDC_EDIT_PARENT_FN,			m_strFn);
-	DDX_Text(pDX, IDC_EDIT_PARENT_LN,			m_strLn);
-	DDX_Text(pDX, IDC_EDIT_PARENT_EMAIL,		m_strEmail);
+	DDX_Text(pDX, IDC_EDIT_PARENT_FN, m_strFn);
+	DDX_Text(pDX, IDC_EDIT_PARENT_LN, m_strLn);
+	DDX_Text(pDX, IDC_EDIT_PARENT_EMAIL, m_strEmail);
 	DDX_Text(pDX, IDC_EDIT_PARENT_PHONE_NUMBER, m_strPhoneNumber);
-	DDX_Text(pDX, IDC_EDIT_PARENT_CITY,			m_strCity);
-	DDX_Text(pDX, IDC_EDIT_PARENT_POST_CODE,	m_strPostCode);
+	DDX_Text(pDX, IDC_EDIT_PARENT_CITY, m_strCity);
+	DDX_Text(pDX, IDC_EDIT_PARENT_POST_CODE, m_strPostCode);
 	DDX_Text(pDX, IDC_EDIT_PARENT_NEIGHBORHOOD, m_strNeighborhood);
-	DDX_Text(pDX, IDC_EDIT_PARENT_ADDRESS,		m_strAddress);
+	DDX_Text(pDX, IDC_EDIT_PARENT_ADDRESS, m_strAddress);
 }
 
 BOOL CParentDlg::OnInitDialog()
@@ -49,7 +49,6 @@ BOOL CParentDlg::OnInitDialog()
 		this->SetWindowText("Edit Parent");
 	else if (m_eMode == eDialogMode_View)
 		this->SetWindowText("Parent");
-
 
 	/*Set enable/disable of edit boxes*/
 	EnableDisableBoxes();
@@ -78,14 +77,14 @@ void CParentDlg::EnableDisableBoxes()
 /*Fill edit boxes*/
 void CParentDlg::FillEditBoxes()
 {
-	m_strFn				= m_oParent.m_strFirstName;
-	m_strLn				= m_oParent.m_strLastName;
-	m_strPhoneNumber	= m_oParent.m_strPhoneNumber;
-	m_strEmail			= m_oParent.m_strEmail;
-	m_strCity			= m_oParent.m_strCity;
-	m_strPostCode		= m_oParent.m_strPostCode;
-	m_strNeighborhood	= m_oParent.m_strNeighborhood;
-	m_strAddress		= m_oParent.m_strAddress;
+	m_strFn	= m_oParent.m_strFirstName;
+	m_strLn	= m_oParent.m_strLastName;
+	m_strPhoneNumber = m_oParent.m_strPhoneNumber;
+	m_strEmail = m_oParent.m_strEmail;
+	m_strCity = m_oParent.m_strCity;
+	m_strPostCode = m_oParent.m_strPostCode;
+	m_strNeighborhood = m_oParent.m_strNeighborhood;
+	m_strAddress = m_oParent.m_strAddress;
 	
 	SetDlgItemText(IDC_EDIT_PARENT_FN, m_strFn);
 	SetDlgItemText(IDC_EDIT_PARENT_LN, m_strLn);

@@ -38,18 +38,22 @@ BOOL CTabStudent::OnInitDialog() {
 	//1 == 2 ? b=true : 2 == 2 ? b=true : b=false;
 
 	m_listCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
-	m_listCtrl.InsertColumnAtEnd("#", eListCtrlColumnTypeData_Int, LVCFMT_LEFT, 30);
-	m_listCtrl.InsertColumnAtEnd("Name", eListCtrlColumnTypeData_String, LVCFMT_LEFT, 100);
-	m_listCtrl.InsertColumnAtEnd("Date of birthday", eListCtrlColumnTypeData_Date, LVCFMT_LEFT, 100);
-	m_listCtrl.InsertColumnAtEnd("Email", eListCtrlColumnTypeData_String, LVCFMT_LEFT, 200);
-	m_listCtrl.InsertColumnAtEnd("Phone number", eListCtrlColumnTypeData_String, LVCFMT_LEFT, 100);
-	m_listCtrl.InsertColumnAtEnd("EGN", eListCtrlColumnTypeData_String, LVCFMT_LEFT, 110);
-	m_listCtrl.InsertColumnAtEnd("City", eListCtrlColumnTypeData_String, LVCFMT_LEFT, 70);
-	m_listCtrl.InsertColumnAtEnd("Post code", eListCtrlColumnTypeData_String, LVCFMT_LEFT, 70);
-	m_listCtrl.InsertColumnAtEnd("Neighborhood", eListCtrlColumnTypeData_String, LVCFMT_LEFT, 100);
-	m_listCtrl.InsertColumnAtEnd("Address", eListCtrlColumnTypeData_String, LVCFMT_LEFT, 300);
+	m_listCtrl.InsertColumnAtEnd("#", eListCtrlColumnTypeData_Int, LVCFMT_LEFT);// , 30);
+	m_listCtrl.InsertColumnAtEnd("Name", eListCtrlColumnTypeData_String, LVCFMT_LEFT);// , 100);
+	m_listCtrl.InsertColumnAtEnd("Date of birthday", eListCtrlColumnTypeData_Date, LVCFMT_LEFT);//, 100);
+	m_listCtrl.InsertColumnAtEnd("Email", eListCtrlColumnTypeData_String, LVCFMT_LEFT);//, 200);
+	m_listCtrl.InsertColumnAtEnd("Phone number", eListCtrlColumnTypeData_String, LVCFMT_LEFT);//, 100);
+	m_listCtrl.InsertColumnAtEnd("EGN", eListCtrlColumnTypeData_String, LVCFMT_LEFT);//, 110);
+	m_listCtrl.InsertColumnAtEnd("City", eListCtrlColumnTypeData_String, LVCFMT_LEFT);//, 70);
+	m_listCtrl.InsertColumnAtEnd("Post code", eListCtrlColumnTypeData_String, LVCFMT_LEFT);//, 70);
+	m_listCtrl.InsertColumnAtEnd("Neighborhood", eListCtrlColumnTypeData_String, LVCFMT_LEFT);//, 100);
+	m_listCtrl.InsertColumnAtEnd("Address", eListCtrlColumnTypeData_String, LVCFMT_LEFT);//, 300);
 	
 	LoadData(true);
+
+	//autosize column
+	for (int i = 0; i < m_listCtrl.GetHeaderCtrl()->GetItemCount(); ++i)
+		m_listCtrl.SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
 
 	return true;
 }

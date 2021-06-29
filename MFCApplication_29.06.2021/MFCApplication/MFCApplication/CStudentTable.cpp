@@ -9,7 +9,6 @@ CStudentTable::CStudentTable(CDatabase* pdb)
 	: CDialogEx(IDD_DIALOG_UPDATE_STUDENT)
 	,CRecordset(pdb)
 {
-	//m_iCountStudent = 0;
 	m_nFields = 11;
 	m_nParams = 10;
 	m_nDefaultType = dynaset;

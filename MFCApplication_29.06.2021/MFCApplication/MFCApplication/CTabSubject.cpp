@@ -38,11 +38,15 @@ BOOL CTabSubject::OnInitDialog() {
 
 	m_listCtrl.SetBkColor(GetSysColor(COLOR_3DFACE));
 	m_listCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
-	m_listCtrl.InsertColumnAtEnd("#", eListCtrlColumnTypeData_Int, LVCFMT_LEFT, 30);
-	m_listCtrl.InsertColumnAtEnd("Subject", eListCtrlColumnTypeData_String, LVCFMT_LEFT, 100);
-	m_listCtrl.InsertColumnAtEnd("Teacher", eListCtrlColumnTypeData_String, LVCFMT_LEFT, 100);
+	m_listCtrl.InsertColumnAtEnd("#", eListCtrlColumnTypeData_Int, LVCFMT_LEFT);//, 30);
+	m_listCtrl.InsertColumnAtEnd("Subject", eListCtrlColumnTypeData_String, LVCFMT_LEFT);//, 100);
+	m_listCtrl.InsertColumnAtEnd("Teacher", eListCtrlColumnTypeData_String, LVCFMT_LEFT);//, 100);
 	
 	LoadData(true);
+
+	//autosize column
+	for (int i = 0; i < m_listCtrl.GetHeaderCtrl()->GetItemCount(); ++i)
+		m_listCtrl.SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
 
 	return true;
 }

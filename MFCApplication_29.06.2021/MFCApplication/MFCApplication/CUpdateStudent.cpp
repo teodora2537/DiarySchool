@@ -42,6 +42,55 @@ void CStudentDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT_STUDENT_ADDRESS, m_strStudent_Address);
 }
 
+
+BOOL CStudentDlg::OnInitDialog()
+{
+	if (!__super::OnInitDialog())
+		return FALSE;
+	
+	//BOXES
+	if (m_eMode == eDialogMode_Add) {
+		this->SetWindowText("Add Student");
+	}
+	else if (m_eMode == eDialogMode_Edit) {
+		this->SetWindowText("Edit Student");
+	}
+	else if (m_eMode == eDialogMode_View) {
+		this->SetWindowText("Student");
+	}
+
+	/*Set enable/disable of edit boxes*/
+	EnableDisableBoxes();
+	
+	/*Fill edit boxes*/
+	FillEditBoxes();
+
+	/*Set range date*/
+	SetRangeOfDTPicker();
+
+	//LIST
+	m_listCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES | LVGF_SUBSETITEMS);
+	m_listCtrl.InsertColumnAtEnd("#", eListCtrlColumnTypeData_Int, LVCFMT_LEFT);// , 30);
+	m_listCtrl.InsertColumnAtEnd("Name", eListCtrlColumnTypeData_String, LVCFMT_LEFT);// , 100);
+	m_listCtrl.InsertColumnAtEnd("Email", eListCtrlColumnTypeData_String, LVCFMT_LEFT);// , 200);
+	m_listCtrl.InsertColumnAtEnd("Phone number", eListCtrlColumnTypeData_String, LVCFMT_LEFT);// , 100);
+	m_listCtrl.InsertColumnAtEnd("City", eListCtrlColumnTypeData_String, LVCFMT_LEFT);// , 70);
+	m_listCtrl.InsertColumnAtEnd("Post code", eListCtrlColumnTypeData_String, LVCFMT_LEFT);// , 70);
+	m_listCtrl.InsertColumnAtEnd("Neighborhood", eListCtrlColumnTypeData_String, LVCFMT_LEFT);// , 100);
+	m_listCtrl.InsertColumnAtEnd("Address", eListCtrlColumnTypeData_String, LVCFMT_LEFT);// , 300);
+
+	if (m_eMode != eDialogMode_Add)
+		LoadParents(m_oStudent.m_iStudentId);
+
+	m_listCtrl.SetBkColor(GetSysColor(COLOR_3DFACE));
+
+	//autosize column
+	for (int i = 0; i < m_listCtrl.GetHeaderCtrl()->GetItemCount(); ++i)
+		m_listCtrl.SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
+
+	return TRUE;
+}
+
 /*Set range date*/
 void CStudentDlg::SetRangeOfDTPicker()
 {
@@ -105,50 +154,6 @@ void CStudentDlg::EnableDisableBoxes()
 	GetDlgItem(IDC_EDIT_STUDENT_ADDRESS)->EnableWindow(bEnable);
 }
 
-BOOL CStudentDlg::OnInitDialog()
-{
-	if (!__super::OnInitDialog())
-		return FALSE;
-	
-	//BOXES
-	if (m_eMode == eDialogMode_Add) {
-		this->SetWindowText("Add Student");
-	}
-	else if (m_eMode == eDialogMode_Edit) {
-		this->SetWindowText("Edit Student");
-	}
-	else if (m_eMode == eDialogMode_View) {
-		this->SetWindowText("Student");
-	}
-
-	/*Set enable/disable of edit boxes*/
-	EnableDisableBoxes();
-	
-	/*Fill edit boxes*/
-	FillEditBoxes();
-
-	/*Set range date*/
-	SetRangeOfDTPicker();
-
-	//LIST
-	m_listCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES | LVGF_SUBSETITEMS);
-	m_listCtrl.InsertColumnAtEnd("#", eListCtrlColumnTypeData_Int, LVCFMT_LEFT, 30);
-	m_listCtrl.InsertColumnAtEnd("Name", eListCtrlColumnTypeData_String, LVCFMT_LEFT, 100);
-	m_listCtrl.InsertColumnAtEnd("Email", eListCtrlColumnTypeData_String, LVCFMT_LEFT, 200);
-	m_listCtrl.InsertColumnAtEnd("Phone number", eListCtrlColumnTypeData_String, LVCFMT_LEFT, 100);
-	m_listCtrl.InsertColumnAtEnd("City", eListCtrlColumnTypeData_String, LVCFMT_LEFT, 70);
-	m_listCtrl.InsertColumnAtEnd("Post code", eListCtrlColumnTypeData_String, LVCFMT_LEFT, 70);
-	m_listCtrl.InsertColumnAtEnd("Neighborhood", eListCtrlColumnTypeData_String, LVCFMT_LEFT, 100);
-	m_listCtrl.InsertColumnAtEnd("Address", eListCtrlColumnTypeData_String, LVCFMT_LEFT, 300);
-
-	if (m_eMode != eDialogMode_Add)
-		LoadParents(m_oStudent.m_iStudentId);
-
-	m_listCtrl.SetBkColor(GetSysColor(COLOR_3DFACE));
-
-	return TRUE;
-}
-
 BEGIN_MESSAGE_MAP(CStudentDlg, CDialogEx)
 	ON_WM_CONTEXTMENU()
 	ON_BN_CLICKED(IDC_MENU_ADD_PARENT, OnAddParent)
@@ -158,142 +163,6 @@ BEGIN_MESSAGE_MAP(CStudentDlg, CDialogEx)
 	ON_BN_CLICKED(IDOK, &CStudentDlg::OnBnClickedOk)
 	ON_NOTIFY(NM_DBLCLK, IDC_LIST_PARENT, &CStudentDlg::OnNMDblclkList)
 END_MESSAGE_MAP()
-
-BOOL CStudentDlg::ValidateStudent()
-{
-	{
-		if (m_strStudent_Fn.IsEmpty())
-		{
-			MessageBox("Missing first name of student!", "Error", MB_ICONHAND);
-			return FALSE;
-		}
-		else if (m_strStudent_Ln.IsEmpty())
-		{
-			MessageBox("Missing last name of student!", "Error", MB_ICONHAND);
-			return FALSE;
-		}
-		else if (m_strStudent_Email.IsEmpty())
-		{
-			MessageBox("Missing email of student!", "Error", MB_ICONHAND);
-			return FALSE;
-		}
-		else if (m_strStudent_PhoneNumber.IsEmpty() || m_strStudent_PhoneNumber.GetLength() < 8)
-		{
-			MessageBox("Error phone number of student!", "Error", MB_ICONHAND);
-			return FALSE;
-		}
-		else if (m_strStudent_EGN.IsEmpty())
-		{
-			MessageBox("Missing egn of student!", "Error", MB_ICONHAND);
-			return FALSE;
-		}
-		else if (m_strStudent_City.IsEmpty())
-		{
-			MessageBox("Missing city of student!", "Error", MB_ICONHAND);
-			return FALSE;
-		}
-		else if (m_strStudent_PostCode.IsEmpty())
-		{
-			MessageBox("Missing post code  of student!", "Error", MB_ICONHAND);
-			return FALSE;
-		}
-		else if (m_strStudent_Neighborhood.IsEmpty())
-		{
-			MessageBox("Missing neighborhood  of student!", "Error", MB_ICONHAND);
-			return FALSE;
-		}
-		else if (m_strStudent_Address.IsEmpty())
-		{
-			MessageBox("Missing address  of student!", "Error", MB_ICONHAND);
-			return FALSE;
-		}
-	}
-	return TRUE;
-}
-
-void CStudentDlg::OnBnClickedOk()
-{
-	UpdateData(TRUE);
-
-	if (m_eMode != eDialogMode_View && !ValidateStudent()) {
-		return;
-	}
-	
-	m_oStudent.m_iStudentId = atoi(m_strStudent_ClassNum);
-	m_oStudent.m_strFirstName = m_strStudent_Fn;
-	m_oStudent.m_strLastName = m_strStudent_Ln;
-	m_dtStudent_CtrlBirthday.GetTime(m_oStudent.m_oleDTBirthday);
-	m_oStudent.m_strEmail = m_strStudent_Email;
-	m_oStudent.m_strPhoneNumber = m_strStudent_PhoneNumber;
-	m_oStudent.m_strEgn = m_strStudent_EGN;
-	m_oStudent.m_strCity = m_strStudent_City;
-	m_oStudent.m_strPostCode = m_strStudent_PostCode;
-	m_oStudent.m_strNeighborhood = m_strStudent_Neighborhood;
-	m_oStudent.m_strAddress = m_strStudent_Address;
-	
-	CDialogEx::OnOK();
-}
-
-void CStudentDlg::LoadParents(const int& nIdStudent) 
-{
-	m_listCtrl.DeleteAllItems();
-	m_lParents.clear();
-
-
-	Library oLib;
-
-	int nCount = 0;
-	int nItemIndex = 0;
-
-	for (auto& i = m_oStudent.m_arrParents.begin(); i != m_oStudent.m_arrParents.end(); i++)
-	{
-		//get Count list items
-		nCount = m_listCtrl.GetItemCount();
-
-		nItemIndex = m_listCtrl.InsertItem(nCount, oLib.IntToCString((*i).m_iParentId));
-
-		if (nItemIndex > -1)
-		{
-			CString strName = (*i).m_strFirstName + " " + (*i).m_strLastName;
-			m_listCtrl.SetItemText(nItemIndex, 1, strName);
-			m_listCtrl.SetItemText(nItemIndex, 2, (*i).m_strEmail);
-			m_listCtrl.SetItemText(nItemIndex, 3, (*i).m_strPhoneNumber);
-			m_listCtrl.SetItemText(nItemIndex, 4, (*i).m_strCity);
-			m_listCtrl.SetItemText(nItemIndex, 5, (*i).m_strPostCode);
-			m_listCtrl.SetItemText(nItemIndex, 6, (*i).m_strNeighborhood);
-			m_listCtrl.SetItemText(nItemIndex, 7, (*i).m_strAddress);
-
-			//set index back item
-			nItemIndex = m_listCtrl.SetItemData(nCount, (DWORD_PTR)i->m_iParentId);
-		}
-	}
-
-	/*DATA FROM STRUCT*/
-	//list<PARENT> listStudents;
-	//CParent oParent;
-	//oParent.PrintParent(nIdStudent, m_lParents);
-	//for (auto& i = m_lParents.begin(); i != m_lParents.end(); i++)
-	//{
-	//	//get Count list items
-	//	nCount = m_listCtrl.GetItemCount();
-	//
-	//	nItemIndex = m_listCtrl.InsertItem(nCount, oLib.IntToCString((*i).iId));
-	//
-	//	if (nItemIndex > -1)
-	//	{
-	//		m_listCtrl.SetItemText(nItemIndex, 1, (*i).szName);
-	//		m_listCtrl.SetItemText(nItemIndex, 2, (*i).szEmail);
-	//		m_listCtrl.SetItemText(nItemIndex, 3, (*i).szPhoneNumber);
-	//		m_listCtrl.SetItemText(nItemIndex, 4, (*i).szCity);
-	//		m_listCtrl.SetItemText(nItemIndex, 5, (*i).szPostCode);
-	//		m_listCtrl.SetItemText(nItemIndex, 6, (*i).szNeighborhood);
-	//		m_listCtrl.SetItemText(nItemIndex, 7, (*i).szAddress);
-	//
-	//		//set index back item
-	//		nItemIndex = m_listCtrl.SetItemData(nCount, (DWORD_PTR)i->iId);
-	//	}
-	//}
-}
 
 void CStudentDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 {
@@ -373,7 +242,6 @@ void CStudentDlg::OnEditParent()
 	CParentData oParentData;
 	CParentData oOldParentData;
 
-	//oParentData = find nId in m_oStudent.m_arrParents
 	oParentData =  *find_if(std::begin(m_oStudent.m_arrParents), std::end(m_oStudent.m_arrParents),
 		[&](CParentData const& p) { return p.m_iParentId == nId; });
 
@@ -385,7 +253,6 @@ void CStudentDlg::OnEditParent()
 	m_oStudent.m_arrParents.erase(remove_if(m_oStudent.m_arrParents.begin(), m_oStudent.m_arrParents.end(),
 		[&](CParentData const& p) { return p.m_iParentId == nId; }));
 
-	//set oParentData by nId in m_oStudent.m_arrParents
 	oParentData.m_eRecordMode = eRecordMode_Edit;
 	m_oStudent.m_arrParents.push_back(oParentData);
 
@@ -431,6 +298,7 @@ void CStudentDlg::OnDeleteParent()
 	oParentData.m_eRecordMode = eRecordMode_Delete;
 	oParentData.m_iParentId = nId;
 
+	//Remove old 
 	m_oStudent.m_arrParents.erase(remove_if(m_oStudent.m_arrParents.begin(), m_oStudent.m_arrParents.end(),
 		[&](CParentData const& p) { return p.m_iParentId == nId; }));
 	
@@ -473,4 +341,140 @@ void CStudentDlg::OnViewParent()
 void CStudentDlg::OnNMDblclkList(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	OnViewParent();
+}
+
+void CStudentDlg::LoadParents(const int& nIdStudent) 
+{
+	m_listCtrl.DeleteAllItems();
+	m_lParents.clear();
+
+
+	Library oLib;
+
+	int nCount = 0;
+	int nItemIndex = 0;
+
+	for (auto& i = m_oStudent.m_arrParents.begin(); i != m_oStudent.m_arrParents.end(); i++)
+	{
+		//get Count list items
+		nCount = m_listCtrl.GetItemCount();
+
+		nItemIndex = m_listCtrl.InsertItem(nCount, oLib.IntToCString((*i).m_iParentId));
+
+		if (nItemIndex > -1)
+		{
+			CString strName = (*i).m_strFirstName + " " + (*i).m_strLastName;
+			m_listCtrl.SetItemText(nItemIndex, 1, strName);
+			m_listCtrl.SetItemText(nItemIndex, 2, (*i).m_strEmail);
+			m_listCtrl.SetItemText(nItemIndex, 3, (*i).m_strPhoneNumber);
+			m_listCtrl.SetItemText(nItemIndex, 4, (*i).m_strCity);
+			m_listCtrl.SetItemText(nItemIndex, 5, (*i).m_strPostCode);
+			m_listCtrl.SetItemText(nItemIndex, 6, (*i).m_strNeighborhood);
+			m_listCtrl.SetItemText(nItemIndex, 7, (*i).m_strAddress);
+
+			//set index back item
+			nItemIndex = m_listCtrl.SetItemData(nCount, (DWORD_PTR)i->m_iParentId);
+		}
+	}
+
+	/*DATA FROM STRUCT*/
+	//list<PARENT> listStudents;
+	//CParent oParent;
+	//oParent.PrintParent(nIdStudent, m_lParents);
+	//for (auto& i = m_lParents.begin(); i != m_lParents.end(); i++)
+	//{
+	//	//get Count list items
+	//	nCount = m_listCtrl.GetItemCount();
+	//
+	//	nItemIndex = m_listCtrl.InsertItem(nCount, oLib.IntToCString((*i).iId));
+	//
+	//	if (nItemIndex > -1)
+	//	{
+	//		m_listCtrl.SetItemText(nItemIndex, 1, (*i).szName);
+	//		m_listCtrl.SetItemText(nItemIndex, 2, (*i).szEmail);
+	//		m_listCtrl.SetItemText(nItemIndex, 3, (*i).szPhoneNumber);
+	//		m_listCtrl.SetItemText(nItemIndex, 4, (*i).szCity);
+	//		m_listCtrl.SetItemText(nItemIndex, 5, (*i).szPostCode);
+	//		m_listCtrl.SetItemText(nItemIndex, 6, (*i).szNeighborhood);
+	//		m_listCtrl.SetItemText(nItemIndex, 7, (*i).szAddress);
+	//
+	//		//set index back item
+	//		nItemIndex = m_listCtrl.SetItemData(nCount, (DWORD_PTR)i->iId);
+	//	}
+	//}
+}
+
+BOOL CStudentDlg::ValidateStudent()
+{
+	{
+		if (m_strStudent_Fn.IsEmpty())
+		{
+			MessageBox("Missing first name of student!", "Error", MB_ICONHAND);
+			return FALSE;
+		}
+		else if (m_strStudent_Ln.IsEmpty())
+		{
+			MessageBox("Missing last name of student!", "Error", MB_ICONHAND);
+			return FALSE;
+		}
+		else if (m_strStudent_Email.IsEmpty())
+		{
+			MessageBox("Missing email of student!", "Error", MB_ICONHAND);
+			return FALSE;
+		}
+		else if (m_strStudent_PhoneNumber.IsEmpty() || m_strStudent_PhoneNumber.GetLength() < 8)
+		{
+			MessageBox("Error phone number of student!", "Error", MB_ICONHAND);
+			return FALSE;
+		}
+		else if (m_strStudent_EGN.IsEmpty())
+		{
+			MessageBox("Missing egn of student!", "Error", MB_ICONHAND);
+			return FALSE;
+		}
+		else if (m_strStudent_City.IsEmpty())
+		{
+			MessageBox("Missing city of student!", "Error", MB_ICONHAND);
+			return FALSE;
+		}
+		else if (m_strStudent_PostCode.IsEmpty())
+		{
+			MessageBox("Missing post code  of student!", "Error", MB_ICONHAND);
+			return FALSE;
+		}
+		else if (m_strStudent_Neighborhood.IsEmpty())
+		{
+			MessageBox("Missing neighborhood  of student!", "Error", MB_ICONHAND);
+			return FALSE;
+		}
+		else if (m_strStudent_Address.IsEmpty())
+		{
+			MessageBox("Missing address  of student!", "Error", MB_ICONHAND);
+			return FALSE;
+		}
+	}
+	return TRUE;
+}
+
+void CStudentDlg::OnBnClickedOk()
+{
+	UpdateData(TRUE);
+
+	if (m_eMode != eDialogMode_View && !ValidateStudent()) {
+		return;
+	}
+	
+	m_oStudent.m_iStudentId = atoi(m_strStudent_ClassNum);
+	m_oStudent.m_strFirstName = m_strStudent_Fn;
+	m_oStudent.m_strLastName = m_strStudent_Ln;
+	m_dtStudent_CtrlBirthday.GetTime(m_oStudent.m_oleDTBirthday);
+	m_oStudent.m_strEmail = m_strStudent_Email;
+	m_oStudent.m_strPhoneNumber = m_strStudent_PhoneNumber;
+	m_oStudent.m_strEgn = m_strStudent_EGN;
+	m_oStudent.m_strCity = m_strStudent_City;
+	m_oStudent.m_strPostCode = m_strStudent_PostCode;
+	m_oStudent.m_strNeighborhood = m_strStudent_Neighborhood;
+	m_oStudent.m_strAddress = m_strStudent_Address;
+	
+	CDialogEx::OnOK();
 }
