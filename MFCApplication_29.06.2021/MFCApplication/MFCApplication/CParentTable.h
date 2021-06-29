@@ -1,8 +1,9 @@
 #pragma once
 #include "afxdb.h"
+#include "CParent.h"
 using namespace std;
 
-class CParentTable : public CDialogEx, public CRecordset
+class CParentTable : public CRecordset
 {
 public:
 	CParentTable(CDatabase* pDatabase = NULL);
@@ -11,16 +12,10 @@ public:
 public:
 	virtual ~CParentTable();
 
-	// Dialog Data
-#ifdef AFX_DESIGN_TIME
-	enum { IDD = IDD_DIALOG_UPDATE_STUDENT };
-#endif
-
 protected:
 	virtual CString GetDefaultConnection();
 	virtual CString GetDefaultSQL();
 	virtual void DoFieldExchange(CFieldExchange* pFX);
-	DECLARE_MESSAGE_MAP()
 
 public:
 	int m_iId;
@@ -33,4 +28,8 @@ public:
 	CString m_str_post_code;
 	CString m_str_neighborhood;
 	CString m_str_address;
+	void LoadParent(CParentData& oParent);
+	void AddParent(CParentData& oParent);
+	void EditParent(CParentData& oParent);
+	bool IsExist(CParentData& oParent);
 };

@@ -1,13 +1,13 @@
 #include "pch.h"
 #include "MFCApplication.h"
 #include "CParentTable.h"
+#include "CParent.h"
 using namespace std;
 
 IMPLEMENT_DYNAMIC(CParentTable, CRecordset)
 
-CParentTable::CParentTable(CDatabase* pdb)
-	: CDialogEx(IDD_DIALOG_UPDATE_STUDENT)
-	, CRecordset(pdb)
+CParentTable::CParentTable(CDatabase* pdb) 
+	:CRecordset(pdb)
 {
 	m_nFields = 10;
 	m_nParams = 9;
@@ -18,10 +18,6 @@ CParentTable::CParentTable(CDatabase* pdb)
 CParentTable::~CParentTable()
 {
 }
-
-BEGIN_MESSAGE_MAP(CParentTable, CDialogEx)
-	
-END_MESSAGE_MAP()
 
 /*virtual*/
 void CParentTable::DoFieldExchange(CFieldExchange* pFX)
@@ -62,4 +58,60 @@ CString CParentTable::GetDefaultConnection() {
 /*virtual*/
 CString CParentTable::GetDefaultSQL() {
 	return "[Parent]";
+}
+
+void CParentTable::LoadParent(CParentData& oParent)
+{
+	oParent.m_iParentId = m_iId;
+	oParent.m_iStudentId = m_iIdStudent;
+	oParent.m_strFirstName = m_str_first_name;
+	oParent.m_strLastName =	m_str_last_name;
+	oParent.m_strPhoneNumber = m_str_phone_number;
+	oParent.m_strEmail = m_str_email;
+	oParent.m_strCity =	m_str_city;
+	oParent.m_strPostCode = m_str_post_code;
+	oParent.m_strNeighborhood = m_str_neighborhood;
+	oParent.m_strAddress = m_str_address;
+}
+
+void CParentTable::AddParent(CParentData& oParent)
+{
+	m_iIdStudent = oParent.m_iStudentId;
+	m_str_first_name = oParent.m_strFirstName;
+	m_str_last_name = oParent.m_strLastName;
+	m_str_phone_number = oParent.m_strPhoneNumber;
+	m_str_email = oParent.m_strEmail;
+	m_str_city = oParent.m_strCity;
+	m_str_post_code = oParent.m_strPostCode;
+	m_str_neighborhood = oParent.m_strNeighborhood;
+	m_str_address = oParent.m_strAddress;
+}
+
+void CParentTable::EditParent(CParentData& oParent)
+{
+	m_iIdStudent = oParent.m_iStudentId;
+	m_str_first_name = oParent.m_strFirstName;
+	m_str_last_name = oParent.m_strLastName;
+	m_str_phone_number = oParent.m_strPhoneNumber;
+	m_str_email = oParent.m_strEmail;
+	m_str_city = oParent.m_strCity;
+	m_str_post_code = oParent.m_strPostCode;
+	m_str_neighborhood = oParent.m_strNeighborhood;
+	m_str_address = oParent.m_strAddress;	
+}
+
+bool CParentTable::IsExist(CParentData& oParent) 
+{
+	if (m_iIdStudent == oParent.m_iStudentId &&
+		m_str_first_name == oParent.m_strFirstName &&
+		m_str_last_name == oParent.m_strLastName &&
+		m_str_phone_number == oParent.m_strPhoneNumber &&
+		m_str_email == oParent.m_strEmail &&
+		m_str_city == oParent.m_strCity &&
+		m_str_post_code == oParent.m_strPostCode &&
+		m_str_neighborhood == oParent.m_strNeighborhood &&
+		m_str_address == oParent.m_strAddress) {
+		return true;
+	}
+	else return false;
 }

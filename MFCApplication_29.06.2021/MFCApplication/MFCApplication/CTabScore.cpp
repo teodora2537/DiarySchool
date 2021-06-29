@@ -40,17 +40,18 @@ BOOL CTabScore::OnInitDialog() {
 
 	m_listCtrl.SetBkColor(GetSysColor(COLOR_3DFACE));
 	m_listCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
-	m_listCtrl.InsertColumnAtEnd("#", eListCtrlColumnTypeData_Int, LVCFMT_LEFT);// , 30);
-	m_listCtrl.InsertColumnAtEnd("Name", eListCtrlColumnTypeData_String, LVCFMT_LEFT);//, 100);
-	m_listCtrl.InsertColumnAtEnd("Subject", eListCtrlColumnTypeData_String, LVCFMT_LEFT);//, 100);
-	m_listCtrl.InsertColumnAtEnd("Score", eListCtrlColumnTypeData_Int, LVCFMT_LEFT);//, 50);
-	m_listCtrl.InsertColumnAtEnd("Date", eListCtrlColumnTypeData_Date, LVCFMT_LEFT);//, 100);
+	m_listCtrl.InsertColumnAtEnd("#", eListCtrlColumnTypeData_Int, LVCFMT_LEFT);
+	m_listCtrl.InsertColumnAtEnd("Name", eListCtrlColumnTypeData_String, LVCFMT_LEFT);
+	m_listCtrl.InsertColumnAtEnd("Subject", eListCtrlColumnTypeData_String, LVCFMT_LEFT);
+	m_listCtrl.InsertColumnAtEnd("Score", eListCtrlColumnTypeData_Int, LVCFMT_LEFT);
+	m_listCtrl.InsertColumnAtEnd("Date", eListCtrlColumnTypeData_Date, LVCFMT_LEFT);
 
 	LoadData(true);
 	
 	//autosize column
-	for (int i = 0; i < m_listCtrl.GetHeaderCtrl()->GetItemCount(); ++i)
+	for (int i = 0; i < m_listCtrl.GetHeaderCtrl()->GetItemCount(); ++i) {
 		m_listCtrl.SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
+	}
 
 	return true;
 }
@@ -58,6 +59,7 @@ BOOL CTabScore::OnInitDialog() {
 void CTabScore::OnContextMenu(CWnd* pWnd, CPoint point)
 {
 	POSITION pos = m_listCtrl.GetFirstSelectedItemPosition();
+	
 	bool bIsItemSelected = pos != NULL;
 
 	CMenu submenu;

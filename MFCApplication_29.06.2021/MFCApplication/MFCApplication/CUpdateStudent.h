@@ -46,6 +46,7 @@ public:
 	CStudentData& m_oStudent;
 	//CStudentData m_oParent;
 	DialogMode m_eMode;
+	RecordMode m_eParentMode;
 	CListMethods m_listCtrl;
 	afx_msg void OnBnClickedOk();
 	afx_msg void LoadParents(const int& nIdStudent);

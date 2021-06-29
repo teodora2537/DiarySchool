@@ -13,8 +13,8 @@ CStudentData::CStudentData()
 }
 
 CStudentData::CStudentData(int iParentId, int iStudentId, CString strFirstName, CString strLastName, COleDateTime oleDTBirthday,
-						CString strEmail, CString strPhoneNumber, CString strEgn, CString strCity, 
-						CString strPostCode, CString strNeighborhood, CString strAddress)
+						   CString strEmail, CString strPhoneNumber, CString strEgn, CString strCity, 
+						   CString strPostCode, CString strNeighborhood, CString strAddress)
 {
 	m_iParentId = iParentId;
 	m_iStudentId = iStudentId;
@@ -43,6 +43,7 @@ BOOL CWinApp::InitInstance()
 		try 
 		{
 			g_dbConnection.Open(NULL, FALSE, FALSE, ConnectionString, TRUE);
+			
 			if (!g_dbConnection.IsOpen()) {
 				MessageBox(NULL, "The database isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
 				return false;
@@ -75,8 +76,10 @@ bool CStudent::isStudentExist(CString strEgn)
 		MessageBox(NULL, "The table student isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
 		return false;
 	}
+
 	bool isStudentExist = !oStudentTable.m_str_First_name.IsEmpty();
 	oStudentTable.Close();
+
 	return isStudentExist;
 }
 
@@ -85,30 +88,35 @@ bool CStudent::AddStudent(CStudentData& oStudent)
 	try
 	{
 		g_dbConnection.BeginTrans();
+		
 		CStudentTable oStudentTable(&g_dbConnection);
-
+		
 		oStudentTable.Open();
 		
 		if (!oStudentTable.IsOpen())
 		{
 			MessageBox(NULL, "The table student isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
+			
 			g_dbConnection.Rollback(); 
 			oStudentTable.Close();
+		
 			return false;
 		}
-
+		
 		if (!oStudentTable.CanAppend())
 		{
 			MessageBox(NULL, "The table student can't append!", "Can't append", MB_OK | MB_ICONERROR);
+			
 			g_dbConnection.Rollback();
 			oStudentTable.Close();
+			
 			return false;
 		}
-
+		
 		oStudentTable.AddNew();
-
+		
 		bool isExist = isStudentExist(oStudent.m_strEgn);
-
+		
 		// save student if not exist
 		Library oLib;
 		if (!isExist)
@@ -123,35 +131,38 @@ bool CStudent::AddStudent(CStudentData& oStudent)
 			oStudentTable.m_str_post_code = oStudent.m_strPostCode;
 			oStudentTable.m_str_neighborhood = oStudent.m_strNeighborhood;
 			oStudentTable.m_str_address = oStudent.m_strAddress;
-
+		
 			if (!oStudentTable.Update())
 			{
 				MessageBox(NULL, "The record can't update!", "Can't update", MB_OK | MB_ICONERROR);
+				
 				g_dbConnection.Rollback();
 				oStudentTable.Close();
+				
 				return false;
 			}
 		}
-
+		
 		CParent oParent;
 		if (oStudent.m_arrParents.size() == 0) {
+		
 			g_dbConnection.CommitTrans();
 			oStudentTable.Close();
+			
 			return true;
 		}
 		
 		CString nIdStudent;
 		GetLastAddedID(nIdStudent);
-
+		
 		if (!oParent.Func(atoi(nIdStudent),oStudent.m_arrParents) && !isExist){
 			g_dbConnection.Rollback();
 		}
 		else{
 			g_dbConnection.CommitTrans();
 		}
-
-	 oStudentTable.Close();
-	
+		
+		oStudentTable.Close();
 	}
 	catch (exception e)
 	{
@@ -165,11 +176,14 @@ bool CStudent::AddStudent(CStudentData& oStudent)
 bool CStudent::GetLastAddedID(CString& nIdStudent) 
 {
 	CRecordset oRecord(&g_dbConnection);
+
 	oRecord.Open(CRecordset::forwardOnly, "select @@IDENTITY as idStudent", CRecordset::readOnly);
 
 	if (!oRecord.IsOpen())
 	{
 		MessageBox(NULL, "The recordset isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
+		oRecord.Close();
+
 		return false;
 	}
 
@@ -178,7 +192,6 @@ bool CStudent::GetLastAddedID(CString& nIdStudent)
 
 bool CStudent::EditStudent(CStudentData& oStudent)
 {
-	//Don't edit if record is not change
 	try
 	{
 		g_dbConnection.BeginTrans();
@@ -192,6 +205,7 @@ bool CStudent::EditStudent(CStudentData& oStudent)
 		{
 			MessageBox(NULL, "The table Student isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
 			oStudentTable.Close();
+
 			return false;
 		}
 
@@ -209,8 +223,7 @@ bool CStudent::EditStudent(CStudentData& oStudent)
 			oStudentTable.m_str_city == oStudent.m_strCity &&
 			oStudentTable.m_str_post_code == oStudent.m_strPostCode &&
 			oStudentTable.m_str_neighborhood == oStudent.m_strNeighborhood &&
-			oStudentTable.m_str_address == oStudent.m_strAddress)
-			{ 
+			oStudentTable.m_str_address == oStudent.m_strAddress) { 
 				bIsChange = false;
 			}
 
@@ -231,6 +244,7 @@ bool CStudent::EditStudent(CStudentData& oStudent)
 				{
 					MessageBox(NULL, "The record can't update!", "Can't update", MB_OK | MB_ICONERROR);
 					oStudentTable.Close();
+					
 					return false;
 				}
 			}
@@ -239,11 +253,12 @@ bool CStudent::EditStudent(CStudentData& oStudent)
 		{
 			g_dbConnection.CommitTrans();
 			oStudentTable.Close();
+			
 			return true;
 		}
 
 		CParent oParent;
-		if (!oParent.Func(oStudent.m_iStudentId, oStudent.m_arrParents)){
+		if (!oParent.Func(oStudent.m_iStudentId, oStudent.m_arrParents)) {
 			g_dbConnection.Rollback();
 		}
 		else {
@@ -253,8 +268,10 @@ bool CStudent::EditStudent(CStudentData& oStudent)
 		oStudentTable.Close();
 
 	}
-	catch (exception e) {
+	catch (exception e) 
+	{
 		AfxMessageBox("Error!", MB_ICONEXCLAMATION);
+		
 		return false;
 	}
 	return true;
@@ -270,12 +287,15 @@ bool CStudent::DeleteStudent(const int nClassNumber)
 		if (!oScore.DeleteScoreByStudent(nClassNumber))
 		{
 			g_dbConnection.Rollback();
+			
 			return false;
 		}
 
 		CParent oParent;
-		if (!oParent.DeleteParent(nClassNumber)) {
+		if (!oParent.DeleteParent(nClassNumber)) 
+		{
 			g_dbConnection.Rollback();
+			
 			return false;
 		}
 
@@ -286,9 +306,11 @@ bool CStudent::DeleteStudent(const int nClassNumber)
 
 		if (!oStudentTable.IsOpen())
 		{
-			g_dbConnection.Rollback();
 			MessageBox(NULL, "The table Student isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
+			
+			g_dbConnection.Rollback();
 			oStudentTable.Close();
+		
 			return false;
 		}
 
@@ -296,9 +318,11 @@ bool CStudent::DeleteStudent(const int nClassNumber)
 		
 		if (!oStudentTable.IsDeleted()) 
 		{
-			g_dbConnection.Rollback();
 			MessageBox(NULL, "The record isn't deleted!", "Isn't deleted", MB_OK | MB_ICONERROR);
+			
+			g_dbConnection.Rollback();
 			oStudentTable.Close();
+			
 			return false;
 		}
 
@@ -342,6 +366,8 @@ bool CStudent::LoadStudent(const int nClassNumber, CStudentData& oStudent)
 		oStudent.m_strAddress = oStudentTable.m_str_address;
 
 		CParent oParent;
+
+		//Print by class
 		oParent.PrintParentByStudent(nClassNumber, oStudent.m_arrParents);
 
 		oStudentTable.Close();
@@ -356,7 +382,7 @@ bool CStudent::LoadStudent(const int nClassNumber, CStudentData& oStudent)
 	return true;
 }
 
-void CStudent::PrintStudent_(list<STUDENT>& listStudent)
+void CStudent::PrintStudent(list<STUDENT>& listStudent)
 {
 	Library oLib;
 

@@ -1,7 +1,7 @@
 #pragma once
 #include "afxdb.h"
 
-class CScoreTable : public CDialogEx, public CRecordset
+class CScoreTable : public CRecordset
 {
 public:
 	CScoreTable(CDatabase* pDatabase = NULL);
@@ -10,16 +10,10 @@ public:
 public:
 	virtual ~CScoreTable();
 
-// Dialog Data
-#ifdef AFX_DESIGN_TIME
-	enum { IDD = IDD_DIALOG_UPDATE_SCORE };
-#endif
-
 protected:
 	virtual CString GetDefaultConnection();
 	virtual CString GetDefaultSQL();
 	virtual void DoFieldExchange(CFieldExchange* pFX);
-	DECLARE_MESSAGE_MAP()
 
 public:
 	int m_iIdScore;

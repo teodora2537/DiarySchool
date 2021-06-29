@@ -1,14 +1,9 @@
-// CParentDlg.cpp : implementation file
-//
-
 #include "pch.h"
 #include "MFCApplication.h"
 #include "CParentDlg.h"
 #include "afxdialogex.h"
 #include "Library.h"
 #include "CUpdateStudent.h"
-
-// CParentDlg dialog
 
 IMPLEMENT_DYNAMIC(CParentDlg, CDialogEx)
 
@@ -37,12 +32,16 @@ void CParentDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT_PARENT_ADDRESS, m_strAddress);
 }
 
+BEGIN_MESSAGE_MAP(CParentDlg, CDialogEx)
+	ON_BN_CLICKED(IDOK, &CParentDlg::OnBnClickedOk)
+END_MESSAGE_MAP()
+
 BOOL CParentDlg::OnInitDialog()
 {
 	if (!__super::OnInitDialog())
 		return FALSE;
 
-	//BOXES
+	//Title of dialog
 	if (m_eMode == eDialogMode_Add)
 		this->SetWindowText("Add Parent");
 	else if (m_eMode == eDialogMode_Edit)
@@ -137,9 +136,6 @@ BOOL CParentDlg::ValidateData()
 	return TRUE;
 }
 
-BEGIN_MESSAGE_MAP(CParentDlg, CDialogEx)
-	ON_BN_CLICKED(IDOK, &CParentDlg::OnBnClickedOk)
-END_MESSAGE_MAP()
 
 // CParentDlg message handlers
 void CParentDlg::OnBnClickedOk()

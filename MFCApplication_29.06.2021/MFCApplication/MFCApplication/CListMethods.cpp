@@ -98,9 +98,9 @@ BOOL CListMethods::OnLvnColumnclick(NMHDR* pNMHDR, LRESULT* pResult)
 	NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
 	const int iColumn = pNMListView->iSubItem;
 
-	if (GetItemCount() == 0) 
+	if (GetItemCount() == 0 || GetItemCount() == 1) 
 	{
-		MessageBox("You don't sort empty list", "Error sort!", MB_OK | MB_ICONWARNING);
+		MessageBox("You don't sort the list", "Error sort!", MB_OK | MB_ICONWARNING);
 		return FALSE;
 	}
 

@@ -24,11 +24,11 @@ void CScoreDlg::DoDataExchange(CDataExchange* pDX)
 	DDV_MaxChars(pDX, m_strClassNum, 2);//Size of class number
 	DDX_Text(pDX, IDC_COMBO_SCORE, m_strScore);
 	DDX_Text(pDX, IDC_COMBO_SUBJECT, m_strSubject);
-	
+	//date
 	DDX_Control(pDX, IDC_DATETIMEPICKER, m_dtCtrlDate);
 	CString formatStr = _T("MM'/'dd'/'yyyy");
 	m_dtCtrlDate.SetFormat(formatStr);
-
+	//combobox
 	DDX_Control(pDX, IDC_COMBO_SUBJECT, m_comboBoxSubject);
 	DDX_Control(pDX, IDC_COMBO_SCORE, m_comboBoxScore);
 }
@@ -50,7 +50,7 @@ void CScoreDlg::FillComboBox()
 	list<SUBJECT> listSub;
 
 	CSubject oSubject;
-	oSubject.PrintSub(listSub);
+	oSubject.PrintSubject(listSub);
 	m_comboBoxSubject.SetItemHeight(5, 20);
 
 
@@ -64,12 +64,14 @@ void CScoreDlg::FillComboBox()
 		arrData.Add(combo_data);
 		iId++;
 	}
+	
 	CMyComboBox subjectCombo;
 	subjectCombo.LoadData(arrData, m_comboBoxSubject);
 
 	m_comboBoxScore.SetItemHeight(5, 20);
 
 	iId = 0;
+	
 	arrData.RemoveAll();
 
 	for (int i = 2; i <= 6; i++) {

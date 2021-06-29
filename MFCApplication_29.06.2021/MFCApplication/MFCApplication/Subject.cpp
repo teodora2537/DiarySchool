@@ -103,16 +103,15 @@ bool CSubject::EditSubject(CSubjectData& oSubjectData)
 {	
 	try
 	{
-		CString strWhere;
-		strWhere.Format("id='%d'", oSubjectData.m_iId);
 		
 		CSubjectTable oSubjectTable(&g_dbConnection);
-		oSubjectTable.m_strFilter = strWhere;
+		oSubjectTable.m_strFilter.Format("id='%d'", oSubjectData.m_iId);
 		oSubjectTable.Open();
 
 		if (!oSubjectTable.IsOpen())
 		{
 			MessageBox(NULL, "The table Subject isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
+			oSubjectTable.Close();
 			return false;
 		}
 
@@ -142,16 +141,16 @@ bool CSubject::DeleteSubject(const int nRoom)
 {
 	try
 	{
-		CString strWhere;
-		strWhere.Format("id='%d'", nRoom);
 
 		CSubjectTable oSubjectTable(&g_dbConnection);
-		oSubjectTable.m_strFilter = strWhere;
+		oSubjectTable.m_strFilter.Format("id='%d'", nRoom);
 		oSubjectTable.Open();
 
 		if (!oSubjectTable.IsOpen())
 		{
 			MessageBox(NULL, "The table Subject isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
+			oSubjectTable.Close();
+
 			return false;
 		}
 
@@ -165,6 +164,7 @@ bool CSubject::DeleteSubject(const int nRoom)
 		if (!oSubjectTable.Update()) {
 			MessageBox(NULL, "The record can't delete!", "Can't delete", MB_OK | MB_ICONERROR);
 			oSubjectTable.Close();
+
 			return false;
 		}
 	}
@@ -180,16 +180,16 @@ bool CSubject::DeleteSubject(const int nRoom)
 bool CSubject::LoadSubject(const int nRoomId, CSubjectData& oSubject)
 {
 	try{
-		CString strWhere;
-		strWhere.Format("id = '%d'", nRoomId);
 
 		CSubjectTable oSubjectTable(&g_dbConnection);
-		oSubjectTable.m_strFilter = strWhere;
+		oSubjectTable.m_strFilter.Format("id = '%d'", nRoomId);
 		oSubjectTable.Open();
 
 		if (!oSubjectTable.IsOpen())
 		{
 			MessageBox(NULL, "The table Subject isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
+			oSubjectTable.Close();
+			
 			return false;
 		}
 
@@ -208,20 +208,19 @@ bool CSubject::LoadSubject(const int nRoomId, CSubjectData& oSubject)
 	return true;
 }
 
-void CSubject::PrintSub(list<SUBJECT>& listSub)
+void CSubject::PrintSubject(list<SUBJECT>& listSub)
 {
 	try 
 	{
-		CString strWhere;
-		strWhere.Format("status = '%s'", "active");
-
 		CSubjectTable oSubjectTable(&g_dbConnection);
-		oSubjectTable.m_strFilter = strWhere;
+		oSubjectTable.m_strFilter.Format("status = '%s'", "active");
 		oSubjectTable.Open();
 		
 		if (!oSubjectTable.IsOpen())
 		{
 			MessageBox(NULL, "The table Subject isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
+			oSubjectTable.Close();
+		
 			return;
 		}
 		
@@ -256,6 +255,8 @@ void CSubject::GetLastId(CSubjectData& oSubject)
 		if (!oSubjectTable.IsOpen())
 		{
 			MessageBox(NULL, "The recordset isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
+			oSubjectTable.Close();
+
 			return;
 		}
 
@@ -263,7 +264,6 @@ void CSubject::GetLastId(CSubjectData& oSubject)
 		oSubject.m_iId = oSubjectTable.m_iId;
 
 		oSubjectTable.Close();
-
 	}
 	catch (exception e) {
 		AfxMessageBox("Don't get last id of student!", MB_ICONEXCLAMATION);

@@ -3,7 +3,27 @@
 #include "Student.h"
 #include "CParentTable.h"
 
-extern CDatabase g_dbConnection;
+
+ CParentData::CParentData()
+ {
+ }
+ 
+ CParentData::CParentData(int iParentId, int iStudentId, CString strFirstName, CString strLastName, CString strPhoneNumber, 
+					CString strEmail, CString strCity, CString strPostCode, CString strNeighborhood, CString strAddress)
+ {
+ 	m_iParentId = iParentId;
+ 	m_iStudentId = iStudentId;
+ 	m_strFirstName = strFirstName;
+ 	m_strLastName = strLastName;
+ 	m_strEmail = strEmail;
+ 	m_strPhoneNumber = strPhoneNumber;
+ 	m_strCity = strCity;
+ 	m_strPostCode = strPostCode;
+ 	m_strNeighborhood = strNeighborhood;
+ 	m_strAddress = strAddress;
+ }
+
+ extern CDatabase g_dbConnection;
 
 bool CParent::Func(int nIdStudent, list<CParentData>& arrParents)
 {
@@ -12,7 +32,8 @@ bool CParent::Func(int nIdStudent, list<CParentData>& arrParents)
 		switch (it->m_eRecordMode)
 		{
 		case eRecordMode_Add:
-			if (!AddParent(nIdStudent, *it)) {
+			it->m_iStudentId = nIdStudent;
+			if (!AddParent(*it)) {
 				return false;
 			}
 			break;
@@ -27,7 +48,7 @@ bool CParent::Func(int nIdStudent, list<CParentData>& arrParents)
 			}
 			break;
 		case eRecordMode_View:
-			if (!LoadParent(it->m_iStudentId, *it)) {
+			if (!LoadParent(*it)) {
 				return false;
 			}
 			break;
@@ -38,7 +59,7 @@ bool CParent::Func(int nIdStudent, list<CParentData>& arrParents)
 	return true;
 }
 
-bool CParent::AddParent(int nIdStudent, CParentData& arrParents)
+bool CParent::AddParent(CParentData& oParent)
 {
 	CParentTable oParentTable(&g_dbConnection);
 	oParentTable.Open();
@@ -46,6 +67,8 @@ bool CParent::AddParent(int nIdStudent, CParentData& arrParents)
 	if(!oParentTable.IsOpen())
 	{
 		MessageBox(NULL, "The table parent isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
+		oParentTable.Close();
+
 		return false;
 	}
 
@@ -53,44 +76,40 @@ bool CParent::AddParent(int nIdStudent, CParentData& arrParents)
 	{
 		MessageBox(NULL, "The table parent can't append!", "Can't append", MB_OK | MB_ICONERROR);
 		oParentTable.Close();
+		
 		return false;
 	}
 
-	//Проверява всеки родител от листа дали съществува в базата с данни към даден студент
-	while (!oParentTable.IsEOF())
-	{
-		if (oParentTable.m_iIdStudent == nIdStudent &&
-			oParentTable.m_str_first_name == arrParents.m_strFirstName &&
-			oParentTable.m_str_last_name == arrParents.m_strLastName)
-		{
-			oParentTable.Close();
-			return false;
-		}
-
-	oParentTable.MoveNext();
+	if (oParentTable.IsExist(oParent)) {
+		return true;
 	}
 
 	oParentTable.AddNew();
+	
+	oParentTable.AddParent(oParent);
 
-	oParentTable.m_iIdStudent = nIdStudent;
-	oParentTable.m_str_first_name = arrParents.m_strFirstName;
-	oParentTable.m_str_last_name = arrParents.m_strLastName;
-	oParentTable.m_str_phone_number = arrParents.m_strPhoneNumber;
-	oParentTable.m_str_email = arrParents.m_strEmail;
-	oParentTable.m_str_city = arrParents.m_strCity;
-	oParentTable.m_str_post_code = arrParents.m_strPostCode;
-	oParentTable.m_str_neighborhood = arrParents.m_strNeighborhood;
-	oParentTable.m_str_address = arrParents.m_strAddress;
+	//oParentTable.m_iIdStudent = nIdStudent;
+	//oParentTable.m_str_first_name = arrParents.m_strFirstName;
+	//oParentTable.m_str_last_name = arrParents.m_strLastName;
+	//oParentTable.m_str_phone_number = arrParents.m_strPhoneNumber;
+	//oParentTable.m_str_email = arrParents.m_strEmail;
+	//oParentTable.m_str_city = arrParents.m_strCity;
+	//oParentTable.m_str_post_code = arrParents.m_strPostCode;
+	//oParentTable.m_str_neighborhood = arrParents.m_strNeighborhood;
+	//oParentTable.m_str_address = arrParents.m_strAddress;
 
 	if (!oParentTable.Update())
 	{
 		MessageBox(NULL, "The record can't update!", "Can't update", MB_OK | MB_ICONERROR);
+		
 		g_dbConnection.Rollback();
 		oParentTable.Close();
+		
 		return false;
 	}
 
 	oParentTable.Close();
+	
 	return true;
 }
 
@@ -106,42 +125,51 @@ bool CParent::EditParent(CParentData& oParent)
 	{
 		MessageBox(NULL, "The table Parent isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
 		oParentTable.Close();
+		
 		return false;
 	}
 	
 	oParentTable.Edit();
 	
-	//if datas is not change
-	if (oParentTable.m_iIdStudent == oParent.m_iStudentId &&
-		oParentTable.m_str_first_name == oParent.m_strFirstName &&
-		oParentTable.m_str_last_name == oParent.m_strLastName &&
-		oParentTable.m_str_phone_number == oParent.m_strPhoneNumber &&
-		oParentTable.m_str_email == oParent.m_strEmail &&
-		oParentTable.m_str_city == oParent.m_strCity &&
-		oParentTable.m_str_post_code == oParent.m_strPostCode &&
-		oParentTable.m_str_neighborhood == oParent.m_strNeighborhood &&
-		oParentTable.m_str_address == oParent.m_strAddress)
-	{
-		oParentTable.Close();
-		return false;
+	if (oParentTable.IsExist(oParent)) {
+		return true;
 	}
 
+	oParentTable.EditParent(oParent);
+
+	//if datas is not change
+	//if (oParentTable.m_iIdStudent == oParent.m_iStudentId &&
+	//	oParentTable.m_str_first_name == oParent.m_strFirstName &&
+	//	oParentTable.m_str_last_name == oParent.m_strLastName &&
+	//	oParentTable.m_str_phone_number == oParent.m_strPhoneNumber &&
+	//	oParentTable.m_str_email == oParent.m_strEmail &&
+	//	oParentTable.m_str_city == oParent.m_strCity &&
+	//	oParentTable.m_str_post_code == oParent.m_strPostCode &&
+	//	oParentTable.m_str_neighborhood == oParent.m_strNeighborhood &&
+	//	oParentTable.m_str_address == oParent.m_strAddress)
+	//{
+	//	oParentTable.Close();
+	//
+	//	return false;
+	//}
 	//save changes datas
-	oParentTable.m_iIdStudent = oParent.m_iStudentId;
-	oParentTable.m_str_first_name = oParent.m_strFirstName;
-	oParentTable.m_str_last_name = oParent.m_strLastName;
-	oParentTable.m_str_phone_number = oParent.m_strPhoneNumber;
-	oParentTable.m_str_email = oParent.m_strEmail;
-	oParentTable.m_str_city = oParent.m_strCity;
-	oParentTable.m_str_post_code = oParent.m_strPostCode;
-	oParentTable.m_str_neighborhood = oParent.m_strNeighborhood;
-	oParentTable.m_str_address = oParent.m_strAddress;
+	//oParentTable.m_iIdStudent = oParent.m_iStudentId;
+	//oParentTable.m_str_first_name = oParent.m_strFirstName;
+	//oParentTable.m_str_last_name = oParent.m_strLastName;
+	//oParentTable.m_str_phone_number = oParent.m_strPhoneNumber;
+	//oParentTable.m_str_email = oParent.m_strEmail;
+	//oParentTable.m_str_city = oParent.m_strCity;
+	//oParentTable.m_str_post_code = oParent.m_strPostCode;
+	//oParentTable.m_str_neighborhood = oParent.m_strNeighborhood;
+	//oParentTable.m_str_address = oParent.m_strAddress;
 
 	if (!oParentTable.Update())
 	{
 		MessageBox(NULL, "The record can't update!", "Can't update", MB_OK | MB_ICONERROR);
+		
 		g_dbConnection.Rollback();
 		oParentTable.Close();
+		
 		return false;
 	}
 
@@ -161,12 +189,15 @@ bool CParent::EditParent(CParentData& oParent)
 		 if (!oParentTable.IsOpen())
 		 {
 			 MessageBox(NULL, "The table Student isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
+			 oParentTable.Close();
+
 			 return false;
 		 }
 
-		 if (!oParentTable)
+		 if (oParentTable.m_str_first_name.IsEmpty())
 		 {
 			 oParentTable.Close();
+			 
 			 return true;
 		 }
 
@@ -180,12 +211,14 @@ bool CParent::EditParent(CParentData& oParent)
 		 {
 			 MessageBox(NULL, "The record isn't deleted!", "Isn't deleted", MB_OK | MB_ICONERROR);
 			 oParentTable.Close();
+			 
 			 return false;
 		 }
 	 }
 	 catch (exception e)
 	 {
 		 AfxMessageBox("Error delete student!", MB_ICONEXCLAMATION);
+		 
 		 return false;
 	 }
 
@@ -205,6 +238,7 @@ bool CParent::EditParent(CParentData& oParent)
 		{
 			MessageBox(NULL, "The table Student isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
 			oParentTable.Close();
+		
 			return false;
 		}
 
@@ -214,18 +248,21 @@ bool CParent::EditParent(CParentData& oParent)
 		 {
 			 MessageBox(NULL, "The record isn't deleted!", "Isn't deleted", MB_OK | MB_ICONERROR);
 			 oParentTable.Close();
+			
 			 return false;
 		 }
 	 }
 	 catch (exception e)
 	 {
 		 AfxMessageBox("Error delete student!", MB_ICONEXCLAMATION);
+		 
 		 return false;
 	 }
 
 	 return true;
  }
 
+ //Print by struct
  bool CParent::PrintParent(const int& nIdStudent, list<PARENT>& lParent)
  {
 	 CParentTable oParentTable(&g_dbConnection);
@@ -237,6 +274,8 @@ bool CParent::EditParent(CParentData& oParent)
 	 if (!oParentTable.IsOpen())
 	 {
 		 MessageBox(NULL, "The table parent isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
+		 oParentTable.Close();
+
 		 return false;
 	 }
 
@@ -256,8 +295,11 @@ bool CParent::EditParent(CParentData& oParent)
 
 		 oParentTable.MoveNext();
 	 }
+
+	 oParentTable.Close();
  }
 
+ //Print by class
  bool CParent::PrintParentByStudent(const int& nIdStudent, list<CParentData>& lParent)
  {
 	 CParentTable oParentTable(&g_dbConnection);
@@ -269,36 +311,41 @@ bool CParent::EditParent(CParentData& oParent)
 	 if (!oParentTable.IsOpen())
 	 {
 		 MessageBox(NULL, "The table parent isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
+		 oParentTable.Close();
+
 		 return false;
 	 }
 
 	 while (!oParentTable.IsEOF())
 	 {
 		 CParentData oParent;
-		 oParent.m_iParentId = oParentTable.m_iId;
-		 oParent.m_iStudentId = oParentTable.m_iIdStudent;
-		 oParent.m_strFirstName = oParentTable.m_str_first_name;
-		 oParent.m_strLastName = oParentTable.m_str_last_name;
-		 oParent.m_strEmail = oParentTable.m_str_email;
-		 oParent.m_strPhoneNumber = oParentTable.m_str_phone_number;
-		 oParent.m_strCity = oParentTable.m_str_city;
-		 oParent.m_strPostCode = oParentTable.m_str_post_code;
-		 oParent.m_strNeighborhood = oParentTable.m_str_neighborhood;
-		 oParent.m_strAddress = oParentTable.m_str_address;
+		 //oParent.m_iParentId = oParentTable.m_iId;
+		 //oParent.m_iStudentId = oParentTable.m_iIdStudent;
+		 //oParent.m_strFirstName = oParentTable.m_str_first_name;
+		 //oParent.m_strLastName = oParentTable.m_str_last_name;
+		 //oParent.m_strEmail = oParentTable.m_str_email;
+		 //oParent.m_strPhoneNumber = oParentTable.m_str_phone_number;
+		 //oParent.m_strCity = oParentTable.m_str_city;
+		 //oParent.m_strPostCode = oParentTable.m_str_post_code;
+		 //oParent.m_strNeighborhood = oParentTable.m_str_neighborhood;
+		 //oParent.m_strAddress = oParentTable.m_str_address;
+		 oParentTable.LoadParent(oParent);
 		 oParent.m_eRecordMode = eRecordMode_None;
 		 lParent.push_back(oParent);
 
 		 oParentTable.MoveNext();
 	 }
+
+	 oParentTable.Close();
  }
 
 
- bool CParent::LoadParent(const int nStudentId, CParentData& oParent)
+ bool CParent::LoadParent(CParentData& oParent)
  {
 	 try
 	 {
 		 CParentTable oParentTable(&g_dbConnection);
-		 oParentTable.m_strFilter.Format("id = '%d'", nStudentId);
+		 oParentTable.m_strFilter.Format("id = '%d'", oParent.m_iParentId);
 
 		 oParentTable.Open();
 
@@ -306,42 +353,31 @@ bool CParent::EditParent(CParentData& oParent)
 		 {
 			 MessageBox(NULL, "The table Parent isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
 			 oParentTable.Close();
+		
 			 return false;
 		 }
 
-		 oParent.m_iParentId = oParentTable.m_iId;
-		 oParent.m_iStudentId = oParentTable.m_iIdStudent;
-		 oParent.m_strFirstName = oParentTable.m_str_first_name;
-		 oParent.m_strLastName = oParentTable.m_str_last_name;
-		 oParent.m_strPhoneNumber = oParentTable.m_str_phone_number;
-		 oParent.m_strEmail = oParentTable.m_str_email;
-		 oParent.m_strCity = oParentTable.m_str_city;
-		 oParent.m_strPostCode =  oParentTable.m_str_post_code;
-		 oParent.m_strNeighborhood =  oParentTable.m_str_neighborhood;
-		 oParent.m_strAddress = oParentTable.m_str_address;
+		 oParentTable.LoadParent(oParent);
+
+		 //oParent.m_iParentId = oParentTable.m_iId;
+		 //oParent.m_iStudentId = oParentTable.m_iIdStudent;
+		 //oParent.m_strFirstName = oParentTable.m_str_first_name;
+		 //oParent.m_strLastName = oParentTable.m_str_last_name;
+		 //oParent.m_strPhoneNumber = oParentTable.m_str_phone_number;
+		 //oParent.m_strEmail = oParentTable.m_str_email;
+		 //oParent.m_strCity = oParentTable.m_str_city;
+		 //oParent.m_strPostCode =  oParentTable.m_str_post_code;
+		 //oParent.m_strNeighborhood =  oParentTable.m_str_neighborhood;
+		 //oParent.m_strAddress = oParentTable.m_str_address;
+	
+		 oParentTable.Close();
 	 }
 	 catch (exception e)
 	 {
 		 AfxMessageBox("Error load parent!", MB_ICONEXCLAMATION);
+		 
 		 return false;
 	 }
 	 return true;
  }
  
- CParentData::CParentData()
- {
- }
- 
- CParentData::CParentData(int iParentId, int iStudentId, CString strFirstName, CString strLastName, CString strPhoneNumber, CString strEmail, CString strCity, CString strPostCode, CString strNeighborhood, CString strAddress)
- {
- 	m_iParentId = iParentId;
- 	m_iStudentId = iStudentId;
- 	m_strFirstName = strFirstName;
- 	m_strLastName = strLastName;
- 	m_strEmail = strEmail;
- 	m_strPhoneNumber = strPhoneNumber;
- 	m_strCity = strCity;
- 	m_strPostCode = strPostCode;
- 	m_strNeighborhood = strNeighborhood;
- 	m_strAddress = strAddress;
- }

@@ -38,9 +38,9 @@ BOOL CTabSubject::OnInitDialog() {
 
 	m_listCtrl.SetBkColor(GetSysColor(COLOR_3DFACE));
 	m_listCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
-	m_listCtrl.InsertColumnAtEnd("#", eListCtrlColumnTypeData_Int, LVCFMT_LEFT);//, 30);
-	m_listCtrl.InsertColumnAtEnd("Subject", eListCtrlColumnTypeData_String, LVCFMT_LEFT);//, 100);
-	m_listCtrl.InsertColumnAtEnd("Teacher", eListCtrlColumnTypeData_String, LVCFMT_LEFT);//, 100);
+	m_listCtrl.InsertColumnAtEnd("#", eListCtrlColumnTypeData_Int, LVCFMT_LEFT);
+	m_listCtrl.InsertColumnAtEnd("Subject", eListCtrlColumnTypeData_String, LVCFMT_LEFT);
+	m_listCtrl.InsertColumnAtEnd("Teacher", eListCtrlColumnTypeData_String, LVCFMT_LEFT);
 	
 	LoadData(true);
 
@@ -127,7 +127,7 @@ void CTabSubject::OnEditSubject()
 
 	if (!oSubject.EditSubject(oSubjectData))
 	{
-		//MessageBox("The subject not updated!", "Error", MB_RETRYCANCEL | MB_ICONERROR);
+		MessageBox("The subject not updated!", "Error", MB_RETRYCANCEL | MB_ICONERROR);
 		if (IDRETRY)
 			OnEditSubject();
 		return;
@@ -212,7 +212,7 @@ void CTabSubject::LoadData(bool isFromFile)
 	{
 		m_listSubject.clear();
 		CSubject oSubject;
-		oSubject.PrintSub(m_listSubject);
+		oSubject.PrintSubject(m_listSubject);
 	}
 	
 	Library oLib; 

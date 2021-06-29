@@ -7,8 +7,7 @@
 IMPLEMENT_DYNAMIC(CScoreTable, CRecordset)
 
 CScoreTable::CScoreTable(CDatabase* pdb)
-	: CDialogEx(IDD_DIALOG_UPDATE_SCORE)
-	, CRecordset(pdb)
+	:CRecordset(pdb)
 {
 	m_nFields = 5;
 	m_nParams = 4;
@@ -28,7 +27,6 @@ void CScoreTable::DoFieldExchange(CFieldExchange* pFX)
 	RFX_Int(pFX, "[student_id]", m_iIdStudent);
 	RFX_Int(pFX, "[subject_id]", m_iIdSubject);
 	RFX_Int(pFX, "[score]", m_iScore);
-	//RFX_Date(pFX, "[date_score]", m_oleDateTime);
 	RFX_Text(pFX, "[date_score]", m_oleDateTime);
 
 	pFX->SetFieldType(CFieldExchange::inputParam);
@@ -41,15 +39,10 @@ void CScoreTable::DoFieldExchange(CFieldExchange* pFX)
 
 extern CDatabase g_dbConnection;
 
-CString CScoreTable::GetDefaultConnection()
-{
+CString CScoreTable::GetDefaultConnection() {
 	return g_dbConnection.GetConnect();
 }
 
-CString CScoreTable::GetDefaultSQL()
-{
+CString CScoreTable::GetDefaultSQL() {
 	return "[Score]";
 }
-
-BEGIN_MESSAGE_MAP(CScoreTable, CDialogEx)
-END_MESSAGE_MAP()

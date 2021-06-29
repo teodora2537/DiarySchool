@@ -6,8 +6,7 @@ using namespace std;
 IMPLEMENT_DYNAMIC(CStudentTable, CRecordset)
 
 CStudentTable::CStudentTable(CDatabase* pdb)
-	: CDialogEx(IDD_DIALOG_UPDATE_STUDENT)
-	,CRecordset(pdb)
+	: CRecordset(pdb)
 {
 	m_nFields = 11;
 	m_nParams = 10;
@@ -18,9 +17,6 @@ CStudentTable::CStudentTable(CDatabase* pdb)
 CStudentTable::~CStudentTable()
 {
 }
-
-BEGIN_MESSAGE_MAP(CStudentTable, CDialogEx)
-END_MESSAGE_MAP()
 
 /*virtual*/
 void CStudentTable::DoFieldExchange(CFieldExchange* pFX)

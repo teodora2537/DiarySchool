@@ -1,7 +1,7 @@
 #pragma once
 #include <afxdb.h>
 
-class CSubjectTable : public CRecordset, public CDialogEx
+class CSubjectTable : public CRecordset
 {
 public:
 	CSubjectTable(CDatabase* pDatabase = NULL);
@@ -10,16 +10,10 @@ public:
 public:
 	virtual ~CSubjectTable();
 
-// Dialog Data
-#ifdef AFX_DESIGN_TIME
-	enum { IDD = IDD_DIALOG_UPDATE_SUBJECT };
-#endif
-
 protected:
 	virtual CString GetDefaultConnection();
 	virtual CString GetDefaultSQL();
 	virtual void DoFieldExchange(CFieldExchange* pFX);
-	DECLARE_MESSAGE_MAP()
 
 public:
 	int	m_iId;

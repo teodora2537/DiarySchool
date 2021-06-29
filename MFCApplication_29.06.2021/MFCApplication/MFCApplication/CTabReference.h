@@ -37,7 +37,7 @@ private:
 	afx_msg void OnBnClickedButton();
 	afx_msg void OnBnClickedButtonByMoreSubjects();
 
-	void LoadData(CString name);
+	void LoadData();
 
 	CListMethods m_listCtrl;
 

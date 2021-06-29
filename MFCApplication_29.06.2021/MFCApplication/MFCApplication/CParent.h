@@ -45,9 +45,9 @@ class CParent
 {
 public:
 	bool Func(int nIdStudent, list<CParentData>& arrParents);
-	bool AddParent(int nIdStudent, CParentData& oParent);
+	bool AddParent(CParentData& oParent);
 	bool EditParent(CParentData& oParent);
-	bool LoadParent(const int nIdStudent, CParentData& oParent);
+	bool LoadParent(CParentData& oParent);
 	bool DeleteParent(const int nId);
 	bool DeleteOneParent(const int nIdParent);
 	bool PrintParent(const int& nIdParent, list<PARENT>& lParent);

@@ -42,6 +42,6 @@ public:
 	bool EditSubject(CSubjectData& oSubject);
 	bool LoadSubject(const int nRoomId, CSubjectData& oSubject);
 	bool DeleteSubject(const int nRoom);
-	void PrintSub(list<SUBJECT>& listSub);
+	void PrintSubject(list<SUBJECT>& listSub);
 	void GetLastId(CSubjectData& oSubject);
 };

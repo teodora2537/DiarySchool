@@ -3,7 +3,7 @@
 
 using namespace std;
 
-class CStudentTable : public CDialogEx, public CRecordset
+class CStudentTable :  public CRecordset
 {
 public:
 	CStudentTable(CDatabase* pDatabase = NULL);
@@ -12,22 +12,15 @@ public:
 public:
 	virtual ~CStudentTable();
 
-// Dialog Data
-#ifdef AFX_DESIGN_TIME
-	enum { IDD = IDD_DIALOG_UPDATE_STUDENT };
-#endif
-
 protected:
 	virtual CString GetDefaultConnection();
 	virtual CString GetDefaultSQL();
 	virtual void DoFieldExchange(CFieldExchange* pFX);
-	DECLARE_MESSAGE_MAP()
 
 public:
 	int m_iId;
 	CString m_str_First_name;
 	CString m_str_Last_name;
-	//COleDateTime m_oleDT_Birthday;
 	CString m_oleDT_Birthday;
 	CString m_str_email; 
 	CString m_str_phone_number;

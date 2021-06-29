@@ -2,15 +2,11 @@
 #include "MFCApplication.h"
 #include "CSubjectTable.h"
 
-// CSubjectTable dialog
-
 IMPLEMENT_DYNAMIC(CSubjectTable, CRecordset)
 
 CSubjectTable::CSubjectTable(CDatabase* pdb)
-	: CDialogEx(IDD_DIALOG_UPDATE_SUBJECT)
-	,CRecordset(pdb)
+	: CRecordset(pdb)
 {
-	m_iId = 0;
 	m_nFields = 5;
 	m_nParams = 5;
 	m_nDefaultType = dynaset;
@@ -19,9 +15,6 @@ CSubjectTable::CSubjectTable(CDatabase* pdb)
 CSubjectTable::~CSubjectTable()
 {
 }
-
-BEGIN_MESSAGE_MAP(CSubjectTable, CDialogEx)
-END_MESSAGE_MAP()
 
 void CSubjectTable::DoFieldExchange(CFieldExchange* pFX)
 {
@@ -44,12 +37,10 @@ void CSubjectTable::DoFieldExchange(CFieldExchange* pFX)
 
 extern CDatabase g_dbConnection;
 
-CString CSubjectTable::GetDefaultConnection()
-{
+CString CSubjectTable::GetDefaultConnection() {
 	return g_dbConnection.GetConnect();
 }
 
-CString CSubjectTable::GetDefaultSQL()
-{
+CString CSubjectTable::GetDefaultSQL() {
 	return "[Subject]";
 }

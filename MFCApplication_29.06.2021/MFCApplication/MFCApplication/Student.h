@@ -81,7 +81,7 @@ public:
 	bool EditStudent(CStudentData& oStudent);
 	bool LoadStudent(const int nClassNumber, CStudentData& oStudent);
 	bool DeleteStudent(const int nClassNumber);
-	void PrintStudent_(list<STUDENT>& listStudent);
+	void PrintStudent(list<STUDENT>& listStudent);
 
 	void AvgScoreBySubject(list<REFERENCE>& listReference);
 	void AvgScoreByAllSubject(list<REFERENCE>& listReference);

@@ -13,7 +13,8 @@ CStudentDlg::CStudentDlg(CStudentData& oStudent, const DialogMode eMode)
 	: CDialogEx(IDD_DIALOG_UPDATE_STUDENT, NULL)
 	, m_oStudent(oStudent)
 	, m_eMode(eMode)
-{
+{	
+	m_eParentMode = eRecordMode_None;
 }
 
 CStudentDlg::~CStudentDlg()
@@ -48,7 +49,7 @@ BOOL CStudentDlg::OnInitDialog()
 	if (!__super::OnInitDialog())
 		return FALSE;
 	
-	//BOXES
+	//Set Title boxes
 	if (m_eMode == eDialogMode_Add) {
 		this->SetWindowText("Add Student");
 	}
@@ -70,14 +71,14 @@ BOOL CStudentDlg::OnInitDialog()
 
 	//LIST
 	m_listCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES | LVGF_SUBSETITEMS);
-	m_listCtrl.InsertColumnAtEnd("#", eListCtrlColumnTypeData_Int, LVCFMT_LEFT);// , 30);
-	m_listCtrl.InsertColumnAtEnd("Name", eListCtrlColumnTypeData_String, LVCFMT_LEFT);// , 100);
-	m_listCtrl.InsertColumnAtEnd("Email", eListCtrlColumnTypeData_String, LVCFMT_LEFT);// , 200);
-	m_listCtrl.InsertColumnAtEnd("Phone number", eListCtrlColumnTypeData_String, LVCFMT_LEFT);// , 100);
-	m_listCtrl.InsertColumnAtEnd("City", eListCtrlColumnTypeData_String, LVCFMT_LEFT);// , 70);
-	m_listCtrl.InsertColumnAtEnd("Post code", eListCtrlColumnTypeData_String, LVCFMT_LEFT);// , 70);
-	m_listCtrl.InsertColumnAtEnd("Neighborhood", eListCtrlColumnTypeData_String, LVCFMT_LEFT);// , 100);
-	m_listCtrl.InsertColumnAtEnd("Address", eListCtrlColumnTypeData_String, LVCFMT_LEFT);// , 300);
+	m_listCtrl.InsertColumnAtEnd("#", eListCtrlColumnTypeData_Int, LVCFMT_LEFT);
+	m_listCtrl.InsertColumnAtEnd("Name", eListCtrlColumnTypeData_String, LVCFMT_LEFT);
+	m_listCtrl.InsertColumnAtEnd("Email", eListCtrlColumnTypeData_String, LVCFMT_LEFT);
+	m_listCtrl.InsertColumnAtEnd("Phone number", eListCtrlColumnTypeData_String, LVCFMT_LEFT);
+	m_listCtrl.InsertColumnAtEnd("City", eListCtrlColumnTypeData_String, LVCFMT_LEFT);
+	m_listCtrl.InsertColumnAtEnd("Post code", eListCtrlColumnTypeData_String, LVCFMT_LEFT);
+	m_listCtrl.InsertColumnAtEnd("Neighborhood", eListCtrlColumnTypeData_String, LVCFMT_LEFT);
+	m_listCtrl.InsertColumnAtEnd("Address", eListCtrlColumnTypeData_String, LVCFMT_LEFT);
 
 	if (m_eMode != eDialogMode_Add)
 		LoadParents(m_oStudent.m_iStudentId);
@@ -87,6 +88,8 @@ BOOL CStudentDlg::OnInitDialog()
 	//autosize column
 	for (int i = 0; i < m_listCtrl.GetHeaderCtrl()->GetItemCount(); ++i)
 		m_listCtrl.SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
+
+
 
 	return TRUE;
 }
@@ -166,11 +169,22 @@ END_MESSAGE_MAP()
 
 void CStudentDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 {
-	if (m_eMode == eDialogMode_View)
+	if (m_eMode == eDialogMode_View) {
 		return;
+	}
 
 	POSITION pos = m_listCtrl.GetFirstSelectedItemPosition();
+	
 	bool bIsItemSelected = pos != NULL;
+
+	//if (m_eParentMode != eRecordMode_None) 
+	//{
+	//	int nItem = m_listCtrl.GetNextSelectedItem(pos);
+	//	int nId = (int)m_listCtrl.GetItemData(nItem);
+	//
+	//	if (nId == 0)
+	//		return;
+	//}
 
 	CMenu submenu;
 	submenu.CreatePopupMenu();
@@ -190,6 +204,8 @@ void CStudentDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 
 void CStudentDlg::OnAddParent()
 {
+	//m_eParentMode = eRecordMode_Add;
+
 	CParentData oParentData;
 	CParentDlg dlg(oParentData, eDialogMode_Add);
 	
@@ -225,7 +241,10 @@ void CStudentDlg::OnAddParent()
 
 void CStudentDlg::OnEditParent()
 {
+	//m_eParentMode = eRecordMode_Edit;
+
 	POSITION pos = m_listCtrl.GetFirstSelectedItemPosition();
+
 	if (pos == NULL)
 		return;
 
@@ -242,6 +261,7 @@ void CStudentDlg::OnEditParent()
 	CParentData oParentData;
 	CParentData oOldParentData;
 
+	//find parent in list
 	oParentData =  *find_if(std::begin(m_oStudent.m_arrParents), std::end(m_oStudent.m_arrParents),
 		[&](CParentData const& p) { return p.m_iParentId == nId; });
 
@@ -256,7 +276,7 @@ void CStudentDlg::OnEditParent()
 	oParentData.m_eRecordMode = eRecordMode_Edit;
 	m_oStudent.m_arrParents.push_back(oParentData);
 
-	//Show change
+	//Show change parent
 	CString strName = oParentData.m_strFirstName + " " + oParentData.m_strLastName;
 	m_listCtrl.SetItemText(nItem, 1, strName);
 	m_listCtrl.SetItemText(nItem, 2, oParentData.m_strEmail);
@@ -269,6 +289,8 @@ void CStudentDlg::OnEditParent()
 
 void CStudentDlg::OnDeleteParent()
 {
+	//m_eParentMode = eRecordMode_Delete;
+
 	POSITION pos = m_listCtrl.GetFirstSelectedItemPosition();
 
 	if (pos == NULL)
@@ -309,6 +331,8 @@ void CStudentDlg::OnDeleteParent()
 
 void CStudentDlg::OnViewParent()
 {
+	//m_eParentMode = eRecordMode_View;
+
 	POSITION pos = m_listCtrl.GetFirstSelectedItemPosition();
 
 	if (pos == NULL)
@@ -325,17 +349,22 @@ void CStudentDlg::OnViewParent()
 
 	int nId = (int)m_listCtrl.GetItemData(nItem);
 
+	if (nId == 0) {
+		return;
+	}
+
 	CParent oParent;
 	CParentData oParentData;
+	
+	oParentData.m_iParentId = nId;
 
-	if (!oParent.LoadParent(nId, oParentData))
+	if (!oParent.LoadParent(oParentData))
 		return;
 
 	CParentDlg dlg(oParentData, eDialogMode_View);
 
 	if (dlg.DoModal() != IDOK)
 		return;
-
 }
 
 void CStudentDlg::OnNMDblclkList(NMHDR* pNMHDR, LRESULT* pResult)
@@ -347,7 +376,6 @@ void CStudentDlg::LoadParents(const int& nIdStudent)
 {
 	m_listCtrl.DeleteAllItems();
 	m_lParents.clear();
-
 
 	Library oLib;
 
