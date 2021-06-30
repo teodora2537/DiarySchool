@@ -177,14 +177,14 @@ void CStudentDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 	
 	bool bIsItemSelected = pos != NULL;
 
-	//if (m_eParentMode != eRecordMode_None) 
-	//{
-	//	int nItem = m_listCtrl.GetNextSelectedItem(pos);
-	//	int nId = (int)m_listCtrl.GetItemData(nItem);
-	//
-	//	if (nId == 0)
-	//		return;
-	//}
+	if (m_eParentMode == eRecordMode_Add) 
+	{
+		int nItem = m_listCtrl.GetNextSelectedItem(pos);
+		int nId = (int)m_listCtrl.GetItemData(nItem);
+	
+		if (nId < 0)
+			return;
+	}
 
 	CMenu submenu;
 	submenu.CreatePopupMenu();
@@ -204,7 +204,7 @@ void CStudentDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 
 void CStudentDlg::OnAddParent()
 {
-	//m_eParentMode = eRecordMode_Add;
+	m_eParentMode = eRecordMode_Add;
 
 	CParentData oParentData;
 	CParentDlg dlg(oParentData, eDialogMode_Add);
@@ -241,8 +241,6 @@ void CStudentDlg::OnAddParent()
 
 void CStudentDlg::OnEditParent()
 {
-	//m_eParentMode = eRecordMode_Edit;
-
 	POSITION pos = m_listCtrl.GetFirstSelectedItemPosition();
 
 	if (pos == NULL)
@@ -289,8 +287,6 @@ void CStudentDlg::OnEditParent()
 
 void CStudentDlg::OnDeleteParent()
 {
-	//m_eParentMode = eRecordMode_Delete;
-
 	POSITION pos = m_listCtrl.GetFirstSelectedItemPosition();
 
 	if (pos == NULL)
@@ -331,8 +327,6 @@ void CStudentDlg::OnDeleteParent()
 
 void CStudentDlg::OnViewParent()
 {
-	//m_eParentMode = eRecordMode_View;
-
 	POSITION pos = m_listCtrl.GetFirstSelectedItemPosition();
 
 	if (pos == NULL)
