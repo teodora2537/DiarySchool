@@ -86,7 +86,7 @@ bool CParent::AddParent(CParentData& oParent)
 
 	oParentTable.AddNew();
 	
-	oParentTable.AddParent(oParent);
+	oParentTable.Add_Edit_Parent(oParent);
 
 	//oParentTable.m_iIdStudent = nIdStudent;
 	//oParentTable.m_str_first_name = arrParents.m_strFirstName;
@@ -135,7 +135,7 @@ bool CParent::EditParent(CParentData& oParent)
 		return true;
 	}
 
-	oParentTable.EditParent(oParent);
+	oParentTable.Add_Edit_Parent(oParent);
 
 	//if datas is not change
 	//if (oParentTable.m_iIdStudent == oParent.m_iStudentId &&
@@ -303,7 +303,6 @@ bool CParent::EditParent(CParentData& oParent)
  bool CParent::PrintParentByStudent(const int& nIdStudent, list<CParentData>& lParent)
  {
 	 CParentTable oParentTable(&g_dbConnection);
-
 	 oParentTable.m_strFilter.Format("student_id = %d", nIdStudent);
 
 	 oParentTable.Open();
@@ -380,4 +379,3 @@ bool CParent::EditParent(CParentData& oParent)
 	 }
 	 return true;
  }
- 

@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "MFCApplication.h"
 #include "CScoreTable.h"
+#include "Score.h"
+#include "Library.h"
 
 // CScoreTable dialog
 
@@ -45,4 +47,22 @@ CString CScoreTable::GetDefaultConnection() {
 
 CString CScoreTable::GetDefaultSQL() {
 	return "[Score]";
+}
+
+void CScoreTable::Add_Edit_Score(CScoreData& oScore) 
+{
+	Library oLib;
+	m_iIdStudent = oScore.m_iIdStudent;
+	m_iIdSubject = oScore.m_iIdSubject;
+	m_iScore = oScore.m_iScore;
+	m_oleDateTime = oLib.OleDTToCString(oScore.m_oleDateTime);
+}
+
+void CScoreTable::LoadScore(CScoreData& oScore) 
+{
+	Library oLib;
+	oScore.m_iIdStudent = m_iIdStudent;
+	oScore.m_iIdSubject = m_iIdSubject;
+	oScore.m_iScore = m_iScore;
+	oScore.m_oleDateTime = oLib.CStringToDate(m_oleDateTime);
 }

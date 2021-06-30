@@ -130,12 +130,9 @@ bool CScore::AddScore(CScoreData& oScoreData)
 		}
 
 		oScoreTable.AddNew();
-		Library oLib;
-		oScoreTable.m_iIdStudent = oScoreData.m_iIdStudent;
-		oScoreTable.m_iIdSubject = nIdSub;
-		oScoreTable.m_iScore = oScoreData.m_iScore;
-		//oScoreTable.m_oleDateTime = oScoreData.m_oleDateTime;
-		oScoreTable.m_oleDateTime = oLib.OleDTToCString(oScoreData.m_oleDateTime);
+
+		oScoreData.m_iIdSubject = nIdSub;
+		oScoreTable.Add_Edit_Score(oScoreData);
 		
 		if (!oScoreTable.Update()) 
 		{
@@ -180,12 +177,9 @@ bool CScore::EditScore(CScoreData& oScore) {
 		}
 
 		oScoreTable.Edit();
-		Library oLib;
-		oScoreTable.m_iIdStudent = oScore.m_iIdStudent;
-		oScoreTable.m_iIdSubject = nIdSub;
-		oScoreTable.m_iScore = oScore.m_iScore;
-		//oScoreTable.m_oleDateTime = oScore.m_oleDateTime;
-		oScoreTable.m_oleDateTime = oLib.OleDTToCString(oScore.m_oleDateTime);
+
+		oScore.m_iIdSubject = nIdSub;
+		oScoreTable.Add_Edit_Score(oScore);
 
 		if (!oScoreTable.Update())
 		{
@@ -352,11 +346,9 @@ bool CScore::LoadScore(const int nIdScore, CScoreData& oScore)
 			
 			return false;
 		}
-		Library oLib;
-		oScore.m_iIdStudent = oScoreTable.m_iIdStudent;
-		oScore.m_iIdSubject = oScoreTable.m_iIdSubject;
-		oScore.m_iScore = oScoreTable.m_iScore;
-		oScore.m_oleDateTime = oLib.CStringToDate(oScoreTable.m_oleDateTime);
+		
+		oScoreTable.LoadScore(oScore);
+
 		oScoreTable.Close();
 
 		//get student name

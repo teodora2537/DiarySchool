@@ -4,8 +4,6 @@
 #include <string>
 #include "Score.h"
 #include "Library.h"
-#include "CStudentTable.h"
-#include "CParentTable.h"
 #include "CParent.h"
 using namespace std;
 

@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "MFCApplication.h"
 #include "CSubjectTable.h"
+#include "Subject.h"
 
 IMPLEMENT_DYNAMIC(CSubjectTable, CRecordset)
 
@@ -43,4 +44,41 @@ CString CSubjectTable::GetDefaultConnection() {
 
 CString CSubjectTable::GetDefaultSQL() {
 	return "[Subject]";
+}
+
+void CSubjectTable::Add(CSubjectData& oSubject) 
+{
+	m_strSubject = oSubject.m_strSubject;
+	m_strFNameTeacher = oSubject.m_strFNameTeacher;
+	m_strLNameTeacher = oSubject.m_strLNameTeacher;
+}
+
+void CSubjectTable::EditSubject(CSubjectData& oSubject) 
+{
+	m_strSubject = oSubject.m_strSubject;
+	m_strFNameTeacher = oSubject.m_strFNameTeacher;
+	m_strLNameTeacher = oSubject.m_strLNameTeacher;
+}
+
+void CSubjectTable::DeleteSubject() {
+	m_strStatus = "unactiv";
+}
+
+void CSubjectTable::Load(CSubjectData& oSubject) 
+{
+	oSubject.m_iId = m_iId;
+	oSubject.m_strSubject = m_strSubject;
+	oSubject.m_strFNameTeacher = m_strFNameTeacher;
+	oSubject.m_strLNameTeacher = m_strLNameTeacher;
+}
+
+bool CSubjectTable::IsExist(CSubjectData& oSubject) 
+{
+		if (m_strSubject == oSubject.m_strSubject &&
+			m_strFNameTeacher ==  oSubject.m_strFNameTeacher &&
+			m_strLNameTeacher == oSubject.m_strLNameTeacher) {
+				return true;
+			}
+
+	return false;
 }

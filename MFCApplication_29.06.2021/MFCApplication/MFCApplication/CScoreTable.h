@@ -1,5 +1,6 @@
 #pragma once
 #include "afxdb.h"
+#include "Score.h"
 
 class CScoreTable : public CRecordset
 {
@@ -22,4 +23,6 @@ public:
 	int m_iScore;
 	COleDateTime _oleDateTime;
 	CString m_oleDateTime;
+	void Add_Edit_Score(CScoreData& oScore);
+	void LoadScore(CScoreData& oScore);
 };

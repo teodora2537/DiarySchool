@@ -29,7 +29,6 @@ public:
 	CString m_str_neighborhood;
 	CString m_str_address;
 	void LoadParent(CParentData& oParent);
-	void AddParent(CParentData& oParent);
-	void EditParent(CParentData& oParent);
+	void Add_Edit_Parent(CParentData& oParent);
 	bool IsExist(CParentData& oParent);
 };

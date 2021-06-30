@@ -35,12 +35,9 @@ bool CSubject::IsContainsSubject(CSubjectData& oSubject)
 
 	while (!oSubjectTable.IsEOF())
 	{
-		if (oSubjectTable.m_strSubject == oSubject.m_strSubject &&
-			oSubjectTable.m_strFNameTeacher ==  oSubject.m_strFNameTeacher &&
-			oSubjectTable.m_strLNameTeacher == oSubject.m_strLNameTeacher)
-		{
+		if (oSubjectTable.IsExist(oSubject)) {
 			return true;
-		}
+	}
 
 		oSubjectTable.MoveNext();
 	}
@@ -77,9 +74,7 @@ bool CSubject::AddSubject(CSubjectData& oSubjectData)
 
 		oSubjectTable.AddNew();
 
-		oSubjectTable.m_strSubject = oSubjectData.m_strSubject;
-		oSubjectTable.m_strFNameTeacher = oSubjectData.m_strFNameTeacher;
-		oSubjectTable.m_strLNameTeacher = oSubjectData.m_strLNameTeacher;
+		oSubjectTable.Add(oSubjectData);
 	
 		if (!oSubjectTable.Update())
 		{
@@ -117,9 +112,7 @@ bool CSubject::EditSubject(CSubjectData& oSubjectData)
 
 		oSubjectTable.Edit();
 
-		oSubjectTable.m_strSubject = oSubjectData.m_strSubject;
-		oSubjectTable.m_strFNameTeacher = oSubjectData.m_strFNameTeacher;
-		oSubjectTable.m_strLNameTeacher = oSubjectData.m_strLNameTeacher;
+		oSubjectTable.EditSubject(oSubjectData);
 		
 		if (!oSubjectTable.Update())
 		{
@@ -156,10 +149,7 @@ bool CSubject::DeleteSubject(const int nRoom)
 
 		oSubjectTable.Edit();
 
-		oSubjectTable.m_strSubject;
-		oSubjectTable.m_strFNameTeacher;
-		oSubjectTable.m_strLNameTeacher;
-		oSubjectTable.m_strStatus = "unactiv";
+		oSubjectTable.DeleteSubject();
 
 		if (!oSubjectTable.Update()) {
 			MessageBox(NULL, "The record can't delete!", "Can't delete", MB_OK | MB_ICONERROR);
@@ -193,10 +183,7 @@ bool CSubject::LoadSubject(const int nRoomId, CSubjectData& oSubject)
 			return false;
 		}
 
-		oSubject.m_iId = oSubjectTable.m_iId;
-		oSubject.m_strSubject = oSubjectTable.m_strSubject;
-		oSubject.m_strFNameTeacher = oSubjectTable.m_strFNameTeacher;
-		oSubject.m_strLNameTeacher = oSubjectTable.m_strLNameTeacher;
+		oSubjectTable.Load(oSubject);
 
 		oSubjectTable.Close();
 	}

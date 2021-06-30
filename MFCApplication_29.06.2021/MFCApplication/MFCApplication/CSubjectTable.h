@@ -1,5 +1,6 @@
 #pragma once
 #include <afxdb.h>
+#include "Subject.h"
 
 class CSubjectTable : public CRecordset
 {
@@ -21,4 +22,9 @@ public:
 	CString m_strFNameTeacher;
 	CString m_strLNameTeacher;
 	CString m_strStatus;
+	void Add(CSubjectData& oSubject);
+	void EditSubject(CSubjectData& oSubject);
+	void DeleteSubject();
+	void Load(CSubjectData& oSubject);
+	bool IsExist(CSubjectData& oSubject);
 };

@@ -89,8 +89,6 @@ BOOL CStudentDlg::OnInitDialog()
 	for (int i = 0; i < m_listCtrl.GetHeaderCtrl()->GetItemCount(); ++i)
 		m_listCtrl.SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
 
-
-
 	return TRUE;
 }
 
@@ -343,7 +341,7 @@ void CStudentDlg::OnViewParent()
 
 	int nId = (int)m_listCtrl.GetItemData(nItem);
 
-	if (nId == 0) {
+	if (nId < 0) {
 		return;
 	}
 

@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "MFCApplication.h"
 #include "CStudentTable.h"
+#include "Student.h"
 using namespace std;
 
 IMPLEMENT_DYNAMIC(CStudentTable, CRecordset)
@@ -59,4 +60,53 @@ CString CStudentTable::GetDefaultConnection() {
 /*virtual*/
 CString CStudentTable::GetDefaultSQL() {
 	return "[Student]";
+}
+
+void CStudentTable::Add_Edit_Student(CStudentData& oStudent)
+{
+	Library oLib;
+	m_str_First_name = oStudent.m_strFirstName;
+	m_str_Last_name = oStudent.m_strLastName;
+	m_oleDT_Birthday = oLib.OleDTToCString(oStudent.m_oleDTBirthday);
+	m_str_email = oStudent.m_strEmail;
+	m_str_phone_number = oStudent.m_strPhoneNumber;
+	m_str_egn = oStudent.m_strEgn;
+	m_str_city = oStudent.m_strCity;
+	m_str_post_code = oStudent.m_strPostCode;
+	m_str_neighborhood = oStudent.m_strNeighborhood;
+	m_str_address = oStudent.m_strAddress;
+}
+
+void CStudentTable::LoadStudent(CStudentData& oStudent) 
+{		
+	Library oLib;
+	oStudent.m_strFirstName = m_str_First_name;
+	oStudent.m_strLastName = m_str_Last_name;
+	oStudent.m_oleDTBirthday = oLib.CStringToDate(m_oleDT_Birthday);
+	oStudent.m_strEmail= m_str_email;
+	oStudent.m_strPhoneNumber = m_str_phone_number;
+	oStudent.m_strEgn = m_str_egn;
+	oStudent.m_strCity = m_str_city;
+	oStudent.m_strPostCode = m_str_post_code;
+	oStudent.m_strNeighborhood = m_str_neighborhood;
+	oStudent.m_strAddress = m_str_address;
+}
+
+bool CStudentTable::IsExist(CStudentData& oStudent) 
+{
+		Library oLib;
+		if (m_str_First_name == oStudent.m_strFirstName &&
+			m_str_Last_name == oStudent.m_strLastName &&
+			m_oleDT_Birthday == oLib.OleDTToCString(oStudent.m_oleDTBirthday) &&
+			m_str_email == oStudent.m_strEmail &&
+			m_str_phone_number == oStudent.m_strPhoneNumber &&
+			m_str_egn == oStudent.m_strEgn &&
+			m_str_city == oStudent.m_strCity &&
+			m_str_post_code == oStudent.m_strPostCode &&
+			m_str_neighborhood == oStudent.m_strNeighborhood &&
+			m_str_address == oStudent.m_strAddress) { 
+			return true;
+			}
+		
+		return false;
 }

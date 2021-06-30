@@ -1,6 +1,6 @@
 #pragma once
 #include "afxdb.h"
-
+#include "Student.h"
 using namespace std;
 
 class CStudentTable :  public CRecordset
@@ -29,4 +29,8 @@ public:
 	CString m_str_post_code;
 	CString m_str_neighborhood;
 	CString m_str_address;
+    void Add_Edit_Student(CStudentData& oStudent);
+	void LoadStudent(CStudentData& oStudent);
+	bool IsExist(CStudentData& oStudent);
 };
+

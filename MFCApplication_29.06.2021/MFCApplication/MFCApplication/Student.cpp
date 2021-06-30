@@ -6,7 +6,6 @@
 #include "CUpdateStudent.h"
 #include "CScoreTable.h"
 #include "CSubjectTable.h"
-using namespace std;
 
 CStudentData::CStudentData()
 {
@@ -63,25 +62,6 @@ CStudent::~CStudent()
 {
 }
 
-bool CStudent::isStudentExist(CString strEgn) 
-{
-	CStudentTable oStudentTable(&g_dbConnection);
-
-	oStudentTable.m_strFilter.Format("egn = '%s'", strEgn);
-
-	oStudentTable.Open();
-
-	if (!oStudentTable.IsOpen())
-	{
-		MessageBox(NULL, "The table student isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
-		return false;
-	}
-
-	bool isStudentExist = !oStudentTable.m_str_First_name.IsEmpty();
-	oStudentTable.Close();
-
-	return isStudentExist;
-}
 
 bool CStudent::AddStudent(CStudentData& oStudent)
 {	
@@ -118,19 +98,10 @@ bool CStudent::AddStudent(CStudentData& oStudent)
 		bool isExist = isStudentExist(oStudent.m_strEgn);
 		
 		// save student if not exist
-		Library oLib;
+	
 		if (!isExist)
 		{
-			oStudentTable.m_str_First_name = oStudent.m_strFirstName;
-			oStudentTable.m_str_Last_name = oStudent.m_strLastName;
-			oStudentTable.m_oleDT_Birthday = oLib.OleDTToCString(oStudent.m_oleDTBirthday);
-			oStudentTable.m_str_email = oStudent.m_strEmail;
-			oStudentTable.m_str_phone_number = oStudent.m_strPhoneNumber;
-			oStudentTable.m_str_egn = oStudent.m_strEgn;
-			oStudentTable.m_str_city = oStudent.m_strCity;
-			oStudentTable.m_str_post_code = oStudent.m_strPostCode;
-			oStudentTable.m_str_neighborhood = oStudent.m_strNeighborhood;
-			oStudentTable.m_str_address = oStudent.m_strAddress;
+			oStudentTable.Add_Edit_Student(oStudent);
 		
 			if (!oStudentTable.Update())
 			{
@@ -143,7 +114,7 @@ bool CStudent::AddStudent(CStudentData& oStudent)
 			}
 		}
 		
-		CParent oParent;
+		//List 'Parents' is empty
 		if (oStudent.m_arrParents.size() == 0) {
 		
 			g_dbConnection.CommitTrans();
@@ -155,6 +126,7 @@ bool CStudent::AddStudent(CStudentData& oStudent)
 		CString nIdStudent;
 		GetLastAddedID(nIdStudent);
 		
+		CParent oParent;
 		if (!oParent.Func(atoi(nIdStudent),oStudent.m_arrParents) && !isExist){
 			g_dbConnection.Rollback();
 		}
@@ -171,23 +143,6 @@ bool CStudent::AddStudent(CStudentData& oStudent)
 	}
 
 	return true;
-}
-
-bool CStudent::GetLastAddedID(CString& nIdStudent) 
-{
-	CRecordset oRecord(&g_dbConnection);
-
-	oRecord.Open(CRecordset::forwardOnly, "select @@IDENTITY as idStudent", CRecordset::readOnly);
-
-	if (!oRecord.IsOpen())
-	{
-		MessageBox(NULL, "The recordset isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
-		oRecord.Close();
-
-		return false;
-	}
-
-	oRecord.GetFieldValue("idStudent", nIdStudent);
 }
 
 bool CStudent::EditStudent(CStudentData& oStudent)
@@ -211,34 +166,10 @@ bool CStudent::EditStudent(CStudentData& oStudent)
 
 		oStudentTable.Edit();
 
-		bool bIsChange = true;
-		Library oLib;
-		
-			if (oStudentTable.m_str_First_name == oStudent.m_strFirstName &&
-			oStudentTable.m_str_Last_name == oStudent.m_strLastName &&
-			oStudentTable.m_oleDT_Birthday == oLib.OleDTToCString(oStudent.m_oleDTBirthday) &&
-			oStudentTable.m_str_email == oStudent.m_strEmail &&
-			oStudentTable.m_str_phone_number == oStudent.m_strPhoneNumber &&
-			oStudentTable.m_str_egn == oStudent.m_strEgn &&
-			oStudentTable.m_str_city == oStudent.m_strCity &&
-			oStudentTable.m_str_post_code == oStudent.m_strPostCode &&
-			oStudentTable.m_str_neighborhood == oStudent.m_strNeighborhood &&
-			oStudentTable.m_str_address == oStudent.m_strAddress) { 
-				bIsChange = false;
-			}
 
-			if(bIsChange)
+			if(!oStudentTable.IsExist(oStudent))
 			{
-				oStudentTable.m_str_First_name = oStudent.m_strFirstName;
-				oStudentTable.m_str_Last_name = oStudent.m_strLastName;
-				oStudentTable.m_oleDT_Birthday = oLib.OleDTToCString(oStudent.m_oleDTBirthday);
-				oStudentTable.m_str_email = oStudent.m_strEmail;
-				oStudentTable.m_str_phone_number = oStudent.m_strPhoneNumber;
-				oStudentTable.m_str_egn = oStudent.m_strEgn;
-				oStudentTable.m_str_city = oStudent.m_strCity;
-				oStudentTable.m_str_post_code = oStudent.m_strPostCode;
-				oStudentTable.m_str_neighborhood = oStudent.m_strNeighborhood;
-				oStudentTable.m_str_address = oStudent.m_strAddress;
+				oStudentTable.Add_Edit_Student(oStudent);
 		
 				if (!oStudentTable.Update())
 				{
@@ -249,6 +180,7 @@ bool CStudent::EditStudent(CStudentData& oStudent)
 				}
 			}
 
+		// List 'Parent' is Empty
 		if (oStudent.m_arrParents.size() == 0) 
 		{
 			g_dbConnection.CommitTrans();
@@ -351,19 +283,9 @@ bool CStudent::LoadStudent(const int nClassNumber, CStudentData& oStudent)
 			MessageBox(NULL, "The table Student isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
 			return false;
 		}
-
-		Library oLib;
+		
 		oStudent.m_iStudentId = nClassNumber;
-		oStudent.m_strFirstName = oStudentTable.m_str_First_name;
-		oStudent.m_strLastName = oStudentTable.m_str_Last_name;
-		oStudent.m_oleDTBirthday = oLib.CStringToDate(oStudentTable.m_oleDT_Birthday);
-		oStudent.m_strEmail= oStudentTable.m_str_email;
-		oStudent.m_strPhoneNumber = oStudentTable.m_str_phone_number;
-		oStudent.m_strEgn = oStudentTable.m_str_egn;
-		oStudent.m_strCity = oStudentTable.m_str_city;
-		oStudent.m_strPostCode = oStudentTable.m_str_post_code;
-		oStudent.m_strNeighborhood = oStudentTable.m_str_neighborhood;
-		oStudent.m_strAddress = oStudentTable.m_str_address;
+		oStudentTable.LoadStudent(oStudent);
 
 		CParent oParent;
 
@@ -424,6 +346,43 @@ void CStudent::PrintStudent(list<STUDENT>& listStudent)
 	}
 }
 
+bool CStudent::isStudentExist(CString strEgn) 
+{
+	CStudentTable oStudentTable(&g_dbConnection);
+
+	oStudentTable.m_strFilter.Format("egn = '%s'", strEgn);
+
+	oStudentTable.Open();
+
+	if (!oStudentTable.IsOpen())
+	{
+		MessageBox(NULL, "The table student isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
+		return false;
+	}
+
+	bool isStudentExist = !oStudentTable.m_str_First_name.IsEmpty();
+	oStudentTable.Close();
+
+	return isStudentExist;
+}
+
+bool CStudent::GetLastAddedID(CString& nIdStudent) 
+{
+	CRecordset oRecord(&g_dbConnection);
+
+	oRecord.Open(CRecordset::forwardOnly, "select @@IDENTITY as idStudent", CRecordset::readOnly);
+
+	if (!oRecord.IsOpen())
+	{
+		MessageBox(NULL, "The recordset isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
+		oRecord.Close();
+
+		return false;
+	}
+
+	oRecord.GetFieldValue("idStudent", nIdStudent);
+}
+
 //Reference
 void CStudent::AvgScoreBySubject(list<REFERENCE>& listReference)
 {
@@ -431,10 +390,10 @@ void CStudent::AvgScoreBySubject(list<REFERENCE>& listReference)
 	Library oLib;
 	CString strSubject, strFN, strLN, strStudentId, strAvgScore;
 	CString strSql =  "SELECT Student.first_name, Student.last_name, Subject.subject, Score.student_id, AVG(Score.score) as avgScore "
-							"FROM Student "
-							"INNER JOIN Score ON Score.student_id = Student.id "
-							"INNER JOIN Subject ON Score.subject_id = Subject.id "
-							"GROUP BY first_name, last_name, subject, student_id";
+					  "FROM Student "
+					  "INNER JOIN Score ON Score.student_id = Student.id "
+					  "INNER JOIN Subject ON Score.subject_id = Subject.id "
+					  "GROUP BY first_name, last_name, subject, student_id";
 	try 
 	{	
 		CRecordset recset(&g_dbConnection);
