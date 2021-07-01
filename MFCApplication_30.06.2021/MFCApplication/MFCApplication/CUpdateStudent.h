@@ -44,7 +44,6 @@ public:
 
 	BOOL ValidateStudent();
 	CStudentData& m_oStudent;
-	//CStudentData m_oParent;
 	DialogMode m_eMode;
 	RecordMode m_eParentMode;
 	CListMethods m_listCtrl;
@@ -56,5 +55,5 @@ public:
 	afx_msg void OnDeleteParent();
 	afx_msg void OnViewParent();
 	void OnNMDblclkList(NMHDR* pNMHDR, LRESULT* pResult);
-	list<PARENT> m_lParents;
+	list<CParentData> m_lParents;
 };

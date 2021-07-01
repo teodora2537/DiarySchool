@@ -41,6 +41,6 @@ private:
 	void LoadData(bool isFromFile);
 
 private: 
-	list<STUDENT> m_listStudent;
+	list<CStudentData> m_listStudent;
 };
 

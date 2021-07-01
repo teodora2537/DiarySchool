@@ -63,6 +63,22 @@ CStudent::~CStudent()
 }
 
 
+void FillStructWithObjectData(STUDENT& stStudent, CStudentData& oStudent)
+{
+	Library oLib;
+	stStudent.iId = oStudent.m_iStudentId;
+	strcpy_s(stStudent.sz_First_Name, CStringA(oStudent.m_strFirstName).GetString());
+	strcpy_s(stStudent.sz_Last_Name, CStringA(oStudent.m_strLastName).GetString());
+	strcpy_s(stStudent.szDate, CStringA(oLib.OleDTToCString(oStudent.m_oleDTBirthday)).GetString());
+	strcpy_s(stStudent.szEmail, CStringA(oStudent.m_strEmail).GetString());
+	strcpy_s(stStudent.szPhoneNumber, CStringA(oStudent.m_strPhoneNumber).GetString());
+	strcpy_s(stStudent.szEGN, CStringA(oStudent.m_strEgn).GetString());
+	strcpy_s(stStudent.szCity, CStringA(oStudent.m_strCity).GetString());
+	strcpy_s(stStudent.szPostCode, CStringA(oStudent.m_strPostCode).GetString());
+	strcpy_s(stStudent.szNeighborhood, CStringA(oStudent.m_strNeighborhood).GetString());
+	strcpy_s(stStudent.szAddress, CStringA(oStudent.m_strAddress).GetString());
+}
+
 bool CStudent::AddStudent(CStudentData& oStudent)
 {	
 	try
@@ -100,7 +116,11 @@ bool CStudent::AddStudent(CStudentData& oStudent)
 		// save student if not exist
 		if (!isExist)
 		{
-			oStudentTable.Add_Edit_Student(oStudent);
+			STUDENT stStudent;
+
+			FillStructWithObjectData(stStudent, oStudent);
+
+			oStudentTable.Add_Edit_Student(stStudent);
 		
 			if (!oStudentTable.Update())
 			{
@@ -171,7 +191,10 @@ bool CStudent::EditStudent(CStudentData& oStudent)
 
 			if(!oStudentTable.IsExist(oStudent))
 			{
-				oStudentTable.Add_Edit_Student(oStudent);
+
+				STUDENT stStudent;
+				FillStructWithObjectData(stStudent, oStudent);
+				oStudentTable.Add_Edit_Student(stStudent);
 		
 				if (!oStudentTable.Update())
 				{
@@ -306,7 +329,7 @@ bool CStudent::LoadStudent(const int nClassNumber, CStudentData& oStudent)
 	return true;
 }
 
-void CStudent::PrintStudent(list<STUDENT>& listStudent)
+void CStudent::PrintStudent(list<CStudentData>& listStudent)
 {
 	Library oLib;
 
@@ -323,19 +346,19 @@ void CStudent::PrintStudent(list<STUDENT>& listStudent)
 
 		while (!oStudentTable.IsEOF())
 		{
-			STUDENT studentStruct;
-			studentStruct.iId = oStudentTable.m_iId;
-			sprintf(studentStruct.szName, "%s", oStudentTable.m_str_First_name + " " + oStudentTable.m_str_Last_name);
-			sprintf(studentStruct.szDate, "%s", oStudentTable.m_oleDT_Birthday);
-			sprintf(studentStruct.szEmail, "%s", oStudentTable.m_str_email);
-			sprintf(studentStruct.szPhoneNumber, "%s",	oStudentTable.m_str_phone_number);
-			sprintf(studentStruct.szEGN, "%s", oStudentTable.m_str_egn);
-			sprintf(studentStruct.szCity, "%s", oStudentTable.m_str_city);
-			sprintf(studentStruct.szPostCode, "%s", oStudentTable.m_str_post_code);
-			sprintf(studentStruct.szNeighborhood, "%s", oStudentTable.m_str_neighborhood);
-			sprintf(studentStruct.szAddress, "%s", oStudentTable.m_str_address);
+			CStudentData oStudent;
+			oStudent.m_iStudentId = oStudentTable.m_iId;
+			oStudent.m_strName = oStudentTable.m_str_First_name + " " + oStudentTable.m_str_Last_name;
+			oStudent.m_oleDTBirthday = oLib.CStringToDate(oStudentTable.m_oleDT_Birthday);
+			oStudent.m_strEmail = oStudentTable.m_str_email;
+			oStudent.m_strPhoneNumber = oStudentTable.m_str_phone_number;
+			oStudent.m_strEgn = oStudentTable.m_str_egn;
+			oStudent.m_strCity = oStudentTable.m_str_city;
+			oStudent.m_strPostCode = oStudentTable.m_str_post_code;
+			oStudent.m_strNeighborhood = oStudentTable.m_str_neighborhood;
+			oStudent.m_strAddress = oStudentTable.m_str_address;
 
-			listStudent.push_back(studentStruct);
+			listStudent.push_back(oStudent);
 
 			oStudentTable.MoveNext();
 		}

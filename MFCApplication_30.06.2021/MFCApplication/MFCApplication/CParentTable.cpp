@@ -74,17 +74,17 @@ void CParentTable::LoadParent(CParentData& oParent)
 	oParent.m_strAddress = m_str_address;
 }
 
-void CParentTable::Add_Edit_Parent(CParentData& oParent)
+void CParentTable::Add_Edit_Parent(PARENT& stParent)
 {
-	m_iIdStudent = oParent.m_iStudentId;
-	m_str_first_name = oParent.m_strFirstName;
-	m_str_last_name = oParent.m_strLastName;
-	m_str_phone_number = oParent.m_strPhoneNumber;
-	m_str_email = oParent.m_strEmail;
-	m_str_city = oParent.m_strCity;
-	m_str_post_code = oParent.m_strPostCode;
-	m_str_neighborhood = oParent.m_strNeighborhood;
-	m_str_address = oParent.m_strAddress;
+	m_iIdStudent =		stParent.iStudentID;
+	m_str_first_name =	stParent.sz_First_Name;
+	m_str_last_name =	stParent.sz_Last_Name;
+	m_str_phone_number =stParent.szPhoneNumber;
+	m_str_email =		stParent.szEmail;
+	m_str_city =		stParent.szCity;
+	m_str_post_code =	stParent.szPostCode;
+	m_str_neighborhood =stParent.szNeighborhood;
+	m_str_address =		stParent.szAddress;
 }
 
 bool CParentTable::IsExist(CParentData& oParent)

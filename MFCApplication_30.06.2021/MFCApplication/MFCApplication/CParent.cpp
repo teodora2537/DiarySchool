@@ -59,6 +59,20 @@ bool CParent::Func(int nIdStudent, list<CParentData>& arrParents)
 		return true;
 }
 
+void FillStructWithObjectData(PARENT& stParent, CParentData& oParent)
+{
+	stParent.iId = oParent.m_iParentId;
+	stParent.iStudentID = oParent.m_iStudentId;
+	strcpy_s(stParent.sz_First_Name, CStringA(oParent.m_strFirstName).GetString());
+	strcpy_s(stParent.sz_Last_Name, CStringA(oParent.m_strLastName).GetString());
+	strcpy_s(stParent.szEmail, CStringA(oParent.m_strEmail).GetString());
+	strcpy_s(stParent.szPhoneNumber, CStringA(oParent.m_strPhoneNumber).GetString());
+	strcpy_s(stParent.szCity, CStringA(oParent.m_strCity).GetString());
+	strcpy_s(stParent.szPostCode, CStringA(oParent.m_strPostCode).GetString());
+	strcpy_s(stParent.szNeighborhood, CStringA(oParent.m_strNeighborhood).GetString());
+	strcpy_s(stParent.szAddress, CStringA(oParent.m_strAddress).GetString());
+}
+
 bool CParent::AddParent(CParentData & oParent)
 {
 	CParentTable oParentTable(&g_dbConnection);
@@ -86,7 +100,10 @@ bool CParent::AddParent(CParentData & oParent)
 
 	oParentTable.AddNew();
 	
-	oParentTable.Add_Edit_Parent(oParent);
+	PARENT stParent;
+	FillStructWithObjectData(stParent, oParent);
+
+	oParentTable.Add_Edit_Parent(stParent);
 
 	if (!oParentTable.Update())
 	{
@@ -125,7 +142,10 @@ bool CParent::EditParent(CParentData& oParent)
 		return true;
 	}
 
-	oParentTable.Add_Edit_Parent(oParent);
+	PARENT stParent;
+	FillStructWithObjectData(stParent, oParent);
+
+	oParentTable.Add_Edit_Parent(stParent);
 
 	if (!oParentTable.Update())
 	{
@@ -227,41 +247,41 @@ bool CParent::EditParent(CParentData& oParent)
  }
 
  //Print by struct
- bool CParent::PrintParent(const int& nIdStudent, list<PARENT>& lParent)
- {
-	 CParentTable oParentTable(&g_dbConnection);
-
-	 oParentTable.m_strFilter.Format("student_id = %d", nIdStudent);
-	 
-	 oParentTable.Open();
-
-	 if (!oParentTable.IsOpen())
-	 {
-		 MessageBox(NULL, "The table parent isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
-		 oParentTable.Close();
-
-		 return false;
-	 }
-
-	 while (!oParentTable.IsEOF())
-	 {
-		 PARENT stParent;
-		 stParent.iId = oParentTable.m_iId;
-		 stParent.iStudentID = oParentTable.m_iIdStudent;
-		 sprintf(stParent.szName, "%s", oParentTable.m_str_first_name + " " + oParentTable.m_str_last_name);
-		 sprintf(stParent.szEmail, "%s", oParentTable.m_str_email);
-		 sprintf(stParent.szPhoneNumber, "%s", oParentTable.m_str_phone_number);
-		 sprintf(stParent.szCity, "%s", oParentTable.m_str_city);
-		 sprintf(stParent.szPostCode, "%s", oParentTable.m_str_post_code);
-		 sprintf(stParent.szNeighborhood, "%s", oParentTable.m_str_neighborhood);
-		 sprintf(stParent.szAddress, "%s", oParentTable.m_str_address);
-		 lParent.push_back(stParent);
-
-		 oParentTable.MoveNext();
-	 }
-
-	 oParentTable.Close();
- }
+ //bool CParent::PrintParent(const int& nIdStudent, list<PARENT>& lParent)
+ //{
+//	 CParentTable oParentTable(&g_dbConnection);
+ //
+//	 oParentTable.m_strFilter.Format("student_id = %d", nIdStudent);
+//	 
+//	 oParentTable.Open();
+ //
+//	 if (!oParentTable.IsOpen())
+//	 {
+//		 MessageBox(NULL, "The table parent isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
+//		 oParentTable.Close();
+ //
+//		 return false;
+//	 }
+ //
+//	 while (!oParentTable.IsEOF())
+//	 {
+//		 PARENT stParent;
+//		 stParent.iId = oParentTable.m_iId;
+//		 stParent.iStudentID = oParentTable.m_iIdStudent;
+//		 sprintf(stParent.szName, "%s", oParentTable.m_str_first_name + " " + oParentTable.m_str_last_name);
+//		 sprintf(stParent.szEmail, "%s", oParentTable.m_str_email);
+//		 sprintf(stParent.szPhoneNumber, "%s", oParentTable.m_str_phone_number);
+//		 sprintf(stParent.szCity, "%s", oParentTable.m_str_city);
+//		 sprintf(stParent.szPostCode, "%s", oParentTable.m_str_post_code);
+//		 sprintf(stParent.szNeighborhood, "%s", oParentTable.m_str_neighborhood);
+//		 sprintf(stParent.szAddress, "%s", oParentTable.m_str_address);
+//		 lParent.push_back(stParent);
+ //
+//		 oParentTable.MoveNext();
+//	 }
+ //
+//	 oParentTable.Close();
+ //}
 
  //Print by class
  bool CParent::PrintParentByStudent(const int& nIdStudent, list<CParentData>& lParent)

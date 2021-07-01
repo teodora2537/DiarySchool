@@ -47,6 +47,14 @@ bool CSubject::IsContainsSubject(CSubjectData& oSubject)
 	return false;
 }
 
+void FillStructWithObjectData(SUBJECT& stSubject, CSubjectData& oSubjectData)
+{
+	stSubject.iId = oSubjectData.m_iId;
+	strcpy_s(stSubject.szSubject, CStringA(oSubjectData.m_strSubject).GetString());
+	strcpy_s(stSubject.sz_First_Name, CStringA(oSubjectData.m_strFNameTeacher).GetString());
+	strcpy_s(stSubject.sz_Last_Name, CStringA(oSubjectData.m_strLNameTeacher).GetString());
+}
+
 bool CSubject::AddSubject(CSubjectData& oSubjectData)
 {
 	try
@@ -75,10 +83,7 @@ bool CSubject::AddSubject(CSubjectData& oSubjectData)
 		oSubjectTable.AddNew();
 
 		SUBJECT stSubject;
-		stSubject.iId = oSubjectData.m_iId;
-		strcpy_s(stSubject.szSubject, CStringA(oSubjectData.m_strSubject).GetString());
-		strcpy_s(stSubject.sz_First_Name, CStringA(oSubjectData.m_strFNameTeacher).GetString());
-		strcpy_s(stSubject.sz_Last_Name, CStringA(oSubjectData.m_strLNameTeacher).GetString());
+		FillStructWithObjectData(stSubject, oSubjectData);
 
 		oSubjectTable.Add_Edit(stSubject);
 	
@@ -118,10 +123,7 @@ bool CSubject::EditSubject(CSubjectData& oSubjectData)
 		oSubjectTable.Edit();
 
 		SUBJECT stSubject;
-		stSubject.iId = oSubjectData.m_iId;
-		strcpy_s(stSubject.szSubject, CStringA(oSubjectData.m_strSubject).GetString());
-		strcpy_s(stSubject.sz_First_Name, CStringA(oSubjectData.m_strFNameTeacher).GetString());
-		strcpy_s(stSubject.sz_Last_Name, CStringA(oSubjectData.m_strLNameTeacher).GetString());
+		FillStructWithObjectData(stSubject, oSubjectData);
 
 		oSubjectTable.Add_Edit(stSubject);
 		
@@ -145,7 +147,6 @@ bool CSubject::DeleteSubject(const int nRoom)
 {
 	try
 	{
-
 		CSubjectTable oSubjectTable(&g_dbConnection);
 		oSubjectTable.m_strFilter.Format("id='%d'", nRoom);
 		oSubjectTable.Open();

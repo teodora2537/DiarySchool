@@ -242,22 +242,22 @@ void CTabStudent::LoadData(bool isFromFile)
 		//get Count list items
 		nCount = m_listCtrl.GetItemCount();
 
-		nItemIndex = m_listCtrl.InsertItem(nCount, oLib.IntToCString((*i).iId));
+		nItemIndex = m_listCtrl.InsertItem(nCount, oLib.IntToCString((*i).m_iStudentId));
 
 		if (nItemIndex > -1)
 		{
-			m_listCtrl.SetItemText(nItemIndex, 1, (*i).szName);
-			m_listCtrl.SetItemText(nItemIndex, 2, (*i).szDate);
-			m_listCtrl.SetItemText(nItemIndex, 3, (*i).szEmail);
-			m_listCtrl.SetItemText(nItemIndex, 4, (*i).szPhoneNumber);
-			m_listCtrl.SetItemText(nItemIndex, 5, (*i).szEGN);
-			m_listCtrl.SetItemText(nItemIndex, 6, (*i).szCity);
-			m_listCtrl.SetItemText(nItemIndex, 7, (*i).szPostCode);
-			m_listCtrl.SetItemText(nItemIndex, 8, (*i).szNeighborhood);
-			m_listCtrl.SetItemText(nItemIndex, 9, (*i).szAddress);
+			m_listCtrl.SetItemText(nItemIndex, 1, (*i).m_strName);
+			m_listCtrl.SetItemText(nItemIndex, 2, oLib.OleDTToCString((*i).m_oleDTBirthday));
+			m_listCtrl.SetItemText(nItemIndex, 3, (*i).m_strEmail);
+			m_listCtrl.SetItemText(nItemIndex, 4, (*i).m_strPhoneNumber);
+			m_listCtrl.SetItemText(nItemIndex, 5, (*i).m_strEgn);
+			m_listCtrl.SetItemText(nItemIndex, 6, (*i).m_strCity);
+			m_listCtrl.SetItemText(nItemIndex, 7, (*i).m_strPostCode);
+			m_listCtrl.SetItemText(nItemIndex, 8, (*i).m_strNeighborhood);
+			m_listCtrl.SetItemText(nItemIndex, 9, (*i).m_strAddress);
 			
 			//set index back item
-			nItemIndex = m_listCtrl.SetItemData(nCount, (DWORD_PTR)(*i).iId);
+			nItemIndex = m_listCtrl.SetItemData(nCount, (DWORD_PTR)(*i).m_iStudentId);
 		}
 	}
 }

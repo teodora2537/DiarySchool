@@ -62,19 +62,19 @@ CString CStudentTable::GetDefaultSQL() {
 	return "[Student]";
 }
 
-void CStudentTable::Add_Edit_Student(CStudentData& oStudent)
+void CStudentTable::Add_Edit_Student(STUDENT& stStudent)
 {
 	Library oLib;
-	m_str_First_name = oStudent.m_strFirstName;
-	m_str_Last_name = oStudent.m_strLastName;
-	m_oleDT_Birthday = oLib.OleDTToCString(oStudent.m_oleDTBirthday);
-	m_str_email = oStudent.m_strEmail;
-	m_str_phone_number = oStudent.m_strPhoneNumber;
-	m_str_egn = oStudent.m_strEgn;
-	m_str_city = oStudent.m_strCity;
-	m_str_post_code = oStudent.m_strPostCode;
-	m_str_neighborhood = oStudent.m_strNeighborhood;
-	m_str_address = oStudent.m_strAddress;
+	m_str_First_name = stStudent.sz_First_Name;
+	m_str_Last_name = stStudent.sz_Last_Name;
+	m_oleDT_Birthday = stStudent.szDate;
+	m_str_email = stStudent.szEmail;
+	m_str_phone_number = stStudent.szPhoneNumber;
+	m_str_egn = stStudent.szEGN;
+	m_str_city = stStudent.szCity;
+	m_str_post_code = stStudent.szPostCode;
+	m_str_neighborhood = stStudent.szNeighborhood;
+	m_str_address = stStudent.szAddress;
 }
 
 void CStudentTable::LoadStudent(CStudentData& oStudent) 

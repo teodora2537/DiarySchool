@@ -3,6 +3,28 @@
 #include "Student.h"
 using namespace std;
 
+#define DEF_SCORE_NAME_LEN 100
+
+struct STUDENT {
+	int iId;
+	char szName[DEF_SCORE_NAME_LEN + 1]; // sz- char array ->name student
+	char sz_First_Name[50 + 1];
+	char sz_Last_Name[50 + 1];
+	char szDate[10 + 1];//DBTIMESTAMP ->date of score
+	char szEmail[50 + 1];
+	char szPhoneNumber[20 + 1];
+	char szEGN[50 + 1];
+	char szCity[70 + 1];
+	char szPostCode[10 + 1];
+	char szNeighborhood[70 + 1];
+	char szAddress[1000 + 1]; //max size
+
+	STUDENT()
+	{
+		SecureZeroMemory(this, sizeof(*this));
+	}
+};
+
 class CStudentTable :  public CRecordset
 {
 public:
@@ -29,8 +51,8 @@ public:
 	CString m_str_post_code;
 	CString m_str_neighborhood;
 	CString m_str_address;
-    void Add_Edit_Student(CStudentData& oStudent);
+
+    void Add_Edit_Student(STUDENT& stStudent);
 	void LoadStudent(CStudentData& oStudent);
 	bool IsExist(CStudentData& oStudent);
 };
-
