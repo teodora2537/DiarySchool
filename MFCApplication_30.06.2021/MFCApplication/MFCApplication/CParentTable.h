@@ -7,8 +7,8 @@ struct PARENT {
 	int  iId;
 	int  iStudentID;
 	char szName[100 + 1]; // sz- char array ->name student
-	char sz_First_Name[50 + 1]; // sz- char array ->name student
-	char sz_Last_Name[50 + 1]; // sz- char array ->name student
+	char sz_First_Name[50 + 1];
+	char sz_Last_Name[50 + 1];
 	char szEmail[100 + 1];
 	char szPhoneNumber[20 + 1];
 	char szCity[70 + 1];

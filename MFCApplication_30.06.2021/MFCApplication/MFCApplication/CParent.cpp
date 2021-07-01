@@ -23,7 +23,7 @@ CParentData::CParentData(int iParentId, int iStudentId, CString strFirstName, CS
  	m_strAddress = strAddress;
  }
 
- extern CDatabase g_dbConnection;
+extern CDatabase g_dbConnection;
 
 bool CParent::Func(int nIdStudent, list<CParentData>& arrParents)
 {
@@ -138,7 +138,8 @@ bool CParent::EditParent(CParentData& oParent)
 	
 	oParentTable.Edit();
 	
-	if (oParentTable.IsExist(oParent)) {
+	//if (oParentTable.IsExist(oParent)) {
+	if (!oParent.m_strFirstName.IsEmpty()) {
 		return true;
 	}
 

@@ -109,19 +109,17 @@ bool CStudent::AddStudent(CStudentData& oStudent)
 			return false;
 		}
 		
-		oStudentTable.AddNew();
-		
-		bool isExist = isStudentExist(oStudent.m_strEgn);
-		
-		// save student if not exist
-		if (!isExist)
-		{
-			STUDENT stStudent;
+		bool bIsExist = oStudentTable.IsExist(oStudent);
 
+		if (!bIsExist) 
+		{
+			oStudentTable.AddNew();
+
+			STUDENT stStudent;
 			FillStructWithObjectData(stStudent, oStudent);
 
 			oStudentTable.Add_Edit_Student(stStudent);
-		
+			
 			if (!oStudentTable.Update())
 			{
 				MessageBox(NULL, "The record can't update!", "Can't update", MB_OK | MB_ICONERROR);
@@ -149,7 +147,7 @@ bool CStudent::AddStudent(CStudentData& oStudent)
 
 		CParent oParent;
 
-		if (!oParent.Func(atoi(strIdStudent), oStudent.m_arrParents) && !isExist){
+		if (!oParent.Func(atoi(strIdStudent), oStudent.m_arrParents) && !bIsExist){
 			g_dbConnection.Rollback();
 		}
 		else{
@@ -188,22 +186,20 @@ bool CStudent::EditStudent(CStudentData& oStudent)
 
 		oStudentTable.Edit();
 
-
-			if(!oStudentTable.IsExist(oStudent))
-			{
-
-				STUDENT stStudent;
-				FillStructWithObjectData(stStudent, oStudent);
-				oStudentTable.Add_Edit_Student(stStudent);
+		if(!oStudentTable.IsExist(oStudent))
+		{
+			STUDENT stStudent;
+			FillStructWithObjectData(stStudent, oStudent);
+			oStudentTable.Add_Edit_Student(stStudent);
 		
-				if (!oStudentTable.Update())
-				{
-					MessageBox(NULL, "The record can't update!", "Can't update", MB_OK | MB_ICONERROR);
-					oStudentTable.Close();
-					
-					return false;
-				}
+			if (!oStudentTable.Update())
+			{
+				MessageBox(NULL, "The record can't update!", "Can't update", MB_OK | MB_ICONERROR);
+				oStudentTable.Close();
+				
+				return false;
 			}
+		}
 
 		// List 'Parent' is Empty
 		if (oStudent.m_arrParents.size() == 0) 
@@ -369,26 +365,6 @@ void CStudent::PrintStudent(list<CStudentData>& listStudent)
 	{
 		AfxMessageBox("Error load students!", MB_ICONEXCLAMATION);
 	}
-}
-
-bool CStudent::isStudentExist(CString strEgn) 
-{
-	CStudentTable oStudentTable(&g_dbConnection);
-
-	oStudentTable.m_strFilter.Format("egn = '%s'", strEgn);
-
-	oStudentTable.Open();
-
-	if (!oStudentTable.IsOpen())
-	{
-		MessageBox(NULL, "The table student isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
-		return false;
-	}
-
-	bool isStudentExist = !oStudentTable.m_str_First_name.IsEmpty();
-	oStudentTable.Close();
-
-	return isStudentExist;
 }
 
 bool CStudent::GetLastAddedID(CString& nIdStudent) 

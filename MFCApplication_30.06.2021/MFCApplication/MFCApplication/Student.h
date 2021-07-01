@@ -53,8 +53,6 @@ public:
 	CStudent();
 	virtual ~CStudent();
 
-	bool isStudentExist(CString strEgn);
-
 public:
 	bool AddStudent(CStudentData& oStudent);
 	bool GetLastAddedID(CString& nIdStudent);
