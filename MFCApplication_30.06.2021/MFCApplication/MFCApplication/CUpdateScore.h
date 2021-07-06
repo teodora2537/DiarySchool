@@ -1,9 +1,7 @@
 #pragma once
-#include "Score.h"
-#include "Library.h"
+#include "MFCApplication.h"
 #include "Student.h"
 #include "Subject.h"
-using namespace std;
 
 class CScoreDlg : public CDialogEx
 {
@@ -18,33 +16,33 @@ public:
 	enum { IDD = IDD_DIALOG_UPDATE_SCORE };
 #endif
 
-protected:
+protected: //mehods
 	virtual void DoDataExchange(CDataExchange* pDX);
+	virtual	BOOL OnInitDialog() override;
+	
+private: //methods
 	void SetRangeOfDTPicker();
 	void FillComboBox();
-
 	void FillEditBoxes();
-
 	void EnableDisableBoxes();
-
-	virtual	BOOL OnInitDialog() override;
+	BOOL ValidateData();
+	afx_msg void OnBnClickedOk();
 	DECLARE_MESSAGE_MAP()
 
-private:
+
+private: //member
+	//string
 	CString m_strClassNum;
 	CString m_strSubject;
 	CString m_strScore;
+	//date
 	COleDateTime m_oleDateTime;
 	CDateTimeCtrl m_dtCtrlDate;
-
+	//combobox
 	CComboBox m_comboBoxSubject;
 	CComboBox m_comboBoxScore;
-
-	BOOL ValidateData();
-
+	//object
 	CScoreData& m_oScore;
+	//dialogMode
 	DialogMode m_eMode;
-	afx_msg void OnBnClickedOk();
-
-
 };

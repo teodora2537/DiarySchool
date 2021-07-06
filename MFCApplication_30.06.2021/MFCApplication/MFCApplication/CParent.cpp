@@ -32,25 +32,34 @@ bool CParent::Func(int nIdStudent, list<CParentData>& arrParents)
 			switch (it->m_eRecordMode)
 			{
 			case eRecordMode_Add:
+				
 				it->m_iStudentId = nIdStudent;
+				
 				if (!AddParent(*it)) {
 					return false;
 				}
+				
 				break;
 			case eRecordMode_Edit:
+			
 				if (!EditParent(*it)) {
 					return false;
 				}
+				
 				break;
 			case eRecordMode_Delete:
+				
 				if (!DeleteOneParent(it->m_iParentId)) {
 					return false;
 				}
+			
 				break;
 			case eRecordMode_View:
+				
 				if (!LoadParent(*it)) {
 					return false;
 				}
+				
 				break;
 			default:
 				break;
@@ -138,7 +147,6 @@ bool CParent::EditParent(CParentData& oParent)
 	
 	oParentTable.Edit();
 	
-	//if (oParentTable.IsExist(oParent)) {
 	if (!oParent.m_strFirstName.IsEmpty()) {
 		return true;
 	}
@@ -247,43 +255,6 @@ bool CParent::EditParent(CParentData& oParent)
 	 return true;
  }
 
- //Print by struct
- //bool CParent::PrintParent(const int& nIdStudent, list<PARENT>& lParent)
- //{
-//	 CParentTable oParentTable(&g_dbConnection);
- //
-//	 oParentTable.m_strFilter.Format("student_id = %d", nIdStudent);
-//	 
-//	 oParentTable.Open();
- //
-//	 if (!oParentTable.IsOpen())
-//	 {
-//		 MessageBox(NULL, "The table parent isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
-//		 oParentTable.Close();
- //
-//		 return false;
-//	 }
- //
-//	 while (!oParentTable.IsEOF())
-//	 {
-//		 PARENT stParent;
-//		 stParent.iId = oParentTable.m_iId;
-//		 stParent.iStudentID = oParentTable.m_iIdStudent;
-//		 sprintf(stParent.szName, "%s", oParentTable.m_str_first_name + " " + oParentTable.m_str_last_name);
-//		 sprintf(stParent.szEmail, "%s", oParentTable.m_str_email);
-//		 sprintf(stParent.szPhoneNumber, "%s", oParentTable.m_str_phone_number);
-//		 sprintf(stParent.szCity, "%s", oParentTable.m_str_city);
-//		 sprintf(stParent.szPostCode, "%s", oParentTable.m_str_post_code);
-//		 sprintf(stParent.szNeighborhood, "%s", oParentTable.m_str_neighborhood);
-//		 sprintf(stParent.szAddress, "%s", oParentTable.m_str_address);
-//		 lParent.push_back(stParent);
- //
-//		 oParentTable.MoveNext();
-//	 }
- //
-//	 oParentTable.Close();
- //}
-
  //Print by class
  bool CParent::PrintParentByStudent(const int& nIdStudent, list<CParentData>& lParent)
  {
@@ -339,7 +310,6 @@ bool CParent::EditParent(CParentData& oParent)
 	 catch (exception e)
 	 {
 		 AfxMessageBox("Error load parent!", MB_ICONEXCLAMATION);
-		 
 		 return false;
 	 }
 	 return true;

@@ -27,9 +27,9 @@ public:
     afx_msg BOOL OnLvnColumnclick(NMHDR* pNMHDR, LRESULT* pResult);
 
 private://compare function
-	int  _StringCompare(const CString& s1, const CString& s2);
-	int  _NumberCompare(CString strItem1, CString strItem2);
-	int  _DateCompare(const CString& strDate1, const CString& strDate2);
+	int _StringCompare(const CString& s1, const CString& s2);
+	int _NumberCompare(CString strItem1, CString strItem2);
+	int _DateCompare(const CString& strDate1, const CString& strDate2);
 	int _CompareFunction(CString& strItem1, CString& strItem2, ListCtrlColumnTypeData eColDataType);
 	
 private://sorting
@@ -42,11 +42,12 @@ private://get/set sorting ascending and column
     void SetSortedColumn(const int& nCol);
     int GetSortedColumn() const;
 
-public:
+public: //InsertColumn
     int InsertColumnAtEnd(_In_z_ LPCTSTR lpszColumnHeading,
         const ListCtrlColumnTypeData eTypeData,
         _In_ int nFormat = LVCFMT_LEFT, _In_ int nWidth = -1, _In_ int nSubItem = -1);
 
+private: //CMAp
     CMap<int, int, ListCtrlColumnTypeData, ListCtrlColumnTypeData> m_mpColumnTypeData;
 
     DECLARE_MESSAGE_MAP()

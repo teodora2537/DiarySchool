@@ -1,8 +1,6 @@
 #pragma once
-#include<list>
 #include "Library.h"
 #include "Student.h"
-using namespace std;
 
 class CScoreData
 {
@@ -29,13 +27,13 @@ public:
 	bool IsContainAStudent(CScoreData& oScoreData);
 	bool AddScore(CScoreData& oScoreData);
 	bool EditScore(CScoreData& oScore);
+	bool LoadScore(const int nIdScore, CScoreData& oScore);
+	void Print_Score(list<CScoreData>& listScore);
+	//delete
 	bool DeleteScore(const int nIdScore);
 	bool DeleteScoreByStudent(int nStudentID);
-	bool LoadScore(const int nIdScore, CScoreData& oScore);
-	
-	void Print_Score(list<CScoreData>& listScore);
-	
-	bool GetIdSubject(CScoreData& oScore);//CString& strSubject, int& m_strIdSub);
+	//get
+	bool GetIdSubject(CScoreData& oScore);
 	void GetSubject(CScoreData& oScore);
 	void GetStudentName(CScoreData& oScore);
 	void GetLastId(CScoreData& oScore);

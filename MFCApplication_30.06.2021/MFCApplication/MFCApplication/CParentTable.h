@@ -34,11 +34,11 @@ public:
 	virtual ~CParentTable();
 
 protected:
+	virtual void DoFieldExchange(CFieldExchange* pFX);
 	virtual CString GetDefaultConnection();
 	virtual CString GetDefaultSQL();
-	virtual void DoFieldExchange(CFieldExchange* pFX);
 
-public:
+public: //member
 	int m_iId;
 	int m_iIdStudent;
 	CString m_str_first_name;
@@ -49,6 +49,8 @@ public:
 	CString m_str_post_code;
 	CString m_str_neighborhood;
 	CString m_str_address;
+
+public: //methods
 	void LoadParent(CParentData& oParent);
 	void Add_Edit_Parent(PARENT& oParent);
 	bool IsExist(CParentData& oParent);

@@ -1,9 +1,6 @@
 #include "pch.h"
 #include "Subject.h"
-#include "Student.h"
-#include <afxwin.h>
 #include "CSubjectTable.h"
-using namespace std;
 
 CSubjectData::CSubjectData(int _idSubject, CString _subject, CString _fNameTeacher, CString _lNameTeacher)
 {

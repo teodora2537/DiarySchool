@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "MFCApplication.h"
 #include "CSubjectTable.h"
-#include "Subject.h"
 
 IMPLEMENT_DYNAMIC(CSubjectTable, CRecordset)
 

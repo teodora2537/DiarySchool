@@ -1,8 +1,5 @@
 #include "pch.h"
-#include "MFCApplication.h"
 #include "CTabSubject.h"
-#include "Subject.h"
-using namespace std;
 
 IMPLEMENT_DYNAMIC(CTabSubject, CDialogEx)
 

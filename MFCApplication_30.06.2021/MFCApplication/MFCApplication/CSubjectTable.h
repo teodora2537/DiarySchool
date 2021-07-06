@@ -2,15 +2,14 @@
 #include <afxdb.h>
 #include "Subject.h"
 
-#define DEF_SUBJECT_NAME_LEN 100
-#define DEF_SUBJECT_TEACHER_NAME_LEN 100
+#define DEF_NAME_LEN 100
 
 struct SUBJECT {
 	int iId;
-	char szSubject[DEF_SUBJECT_NAME_LEN + 1];
-	char szTeacher[DEF_SUBJECT_TEACHER_NAME_LEN + 1];
-	char sz_First_Name[50 + 1];
-	char sz_Last_Name[50 + 1];
+	char szSubject[DEF_NAME_LEN + 1];
+	char szTeacher[DEF_NAME_LEN + 1];
+	char sz_First_Name[DEF_NAME_LEN + 1];
+	char sz_Last_Name[DEF_NAME_LEN + 1];
 
 	SUBJECT()
 	{
@@ -27,18 +26,19 @@ public:
 public:
 	virtual ~CSubjectTable();
 
-protected:
+protected: //methods
+	virtual void DoFieldExchange(CFieldExchange* pFX);
 	virtual CString GetDefaultConnection();
 	virtual CString GetDefaultSQL();
-	virtual void DoFieldExchange(CFieldExchange* pFX);
 
-public:
+public: //member
 	int	m_iId;
 	CString m_strSubject;
 	CString m_strFNameTeacher;
 	CString m_strLNameTeacher;
 	CString m_strStatus;
 	
+public: //methods
 	void Add_Edit(SUBJECT& stSubject);
 	void DeleteSubject();
 	void Load(CSubjectData& oSubject);

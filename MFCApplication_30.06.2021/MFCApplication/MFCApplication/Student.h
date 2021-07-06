@@ -5,7 +5,6 @@
 #include "Score.h"
 #include "Library.h"
 #include "CParent.h"
-using namespace std;
 
 struct REFERENCE {
 	int iId;
@@ -28,6 +27,7 @@ public:
 				 CString strEmail, CString strPhoneNumber, CString strEgn, CString strCity, 
 				 CString strPostCode, CString strNeighborhood, CString strAddress);
 	
+public: //member
 	int m_iStudentId;
 	int m_iParentId;
 	CString m_strFirstName;
@@ -41,7 +41,6 @@ public:
 	CString m_strPostCode;
 	CString m_strNeighborhood;
 	CString m_strAddress;
-
 	list<CParentData> m_arrParents;
 
 	//list<pair<int, int>> m_arrParentState;
@@ -53,19 +52,21 @@ public:
 	CStudent();
 	virtual ~CStudent();
 
-public:
+public: //methods
 	bool AddStudent(CStudentData& oStudent);
-	bool GetLastAddedID(CString& nIdStudent);
 	bool EditStudent(CStudentData& oStudent);
 	bool LoadStudent(const int nClassNumber, CStudentData& oStudent);
 	bool DeleteStudent(const int nClassNumber);
 	void PrintStudent(list<CStudentData>& listStudent);
 
+public://reference methods
 	void AvgScoreBySubject(list<REFERENCE>& listReference);
 	void AvgScoreByAllSubject(list<REFERENCE>& listReference);
 	void ExcellentStud(list<REFERENCE>& listReference);
 	void PeopleHaveBirthday(list<REFERENCE>& listReference);
 	void RemedialExaminationBySub(list<REFERENCE>& listReference);
 	void RemedialExaminationByMoreSub(list<REFERENCE>& listReference);
+	//get
+	bool GetLastAddedID(CString& nIdStudent);
 	void GetLastId(int& lastID);
 };

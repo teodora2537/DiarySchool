@@ -1,10 +1,9 @@
 #pragma once
-#include "Library.h"
-#include "Subject.h"
-#include "CUpdateSubject.h"
-#include <list>
+#include "MFCApplication.h"
 #include "CListMethods.h"
-using namespace std;
+#include "CUpdateSubject.h"
+#include "Library.h"
+#include <list>
 
 class CTabSubject : public CDialogEx
 {
@@ -21,23 +20,21 @@ public:
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-
 	BOOL OnInitDialog();
 	
+private: //Context Menu
 	void OnContextMenu(CWnd* pWnd, CPoint point);
 	void OnAddSubject();
 	void OnEditSubject();
 	void OnViewSubject();
 	void OnDeleteSubject();
+
+private: //methods 
+	afx_msg void OnNMDblclkList(NMHDR* pNMHDR, LRESULT* pResult);
+	void LoadData(bool isFromFile);
 	DECLARE_MESSAGE_MAP()
 
-private:
+private: //member
 	CListMethods m_listCtrl;
-
-	afx_msg void OnNMDblclkList(NMHDR* pNMHDR, LRESULT* pResult);
-
-	void LoadData(bool isFromFile);
-
-private:
 	list<CSubjectData> m_listSubject;
 };

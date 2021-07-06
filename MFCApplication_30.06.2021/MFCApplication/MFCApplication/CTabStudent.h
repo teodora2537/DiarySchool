@@ -1,10 +1,8 @@
 #pragma once
-#include <afxdb.h>
-#include "Library.h"
-#include "Student.h"
+#include "MFCApplication.h"
 #include "CUpdateStudent.h"
+#include "Library.h"
 #include <list>
-using namespace std;
 
 class CTabStudent : public CDialogEx
 {
@@ -19,11 +17,11 @@ public:
 	enum { IDD = IDD_TAB_STUDENT };
 #endif
 
-protected:
+protected: //metrhods
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-
 	BOOL OnInitDialog();
 
+private: //methods
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 	afx_msg void OnAddStudent();
 	afx_msg void OnEditStudent();
@@ -31,16 +29,12 @@ protected:
 	afx_msg void OnDeleteStudent();
 	DECLARE_MESSAGE_MAP()
 
-	public:
-		CListMethods m_listCtrl;
-
-private:
+private: //methods
 	afx_msg void OnNMDblclkList(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnLvnColumnclickList_(NMHDR* pNMHDR, LRESULT* pResult);
-
 	void LoadData(bool isFromFile);
 
-private: 
+private: //member 
+	CListMethods m_listCtrl;
 	list<CStudentData> m_listStudent;
 };
-

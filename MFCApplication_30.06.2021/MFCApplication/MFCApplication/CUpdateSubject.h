@@ -1,10 +1,6 @@
 #pragma once
-#include "Library.h"
-#include "Subject.h"
+#include "MFCApplication.h"
 #include "CTabSubject.h"
-#include "Score.h"
-#include <list>
-using namespace std;
 
 class CSubjectDlg : public CDialogEx
 {
@@ -19,24 +15,22 @@ public:
 	enum { IDD = IDD_DIALOG_UPDATE_SUBJECT };
 #endif
 
-protected:
-	void FillEditBoxes();
-	void EnableDisableBoxes();
-	virtual	BOOL OnInitDialog() override;
+protected: //methods
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-
+	virtual	BOOL OnInitDialog() override;
 	DECLARE_MESSAGE_MAP()
 
-private:
+private: //member
 	CString m_strRoomNum;
 	CString m_strSubject;
 	CString m_strFN;
 	CString m_strLN;
-
 	CSubjectData& m_oSubject;
 	DialogMode m_eMode;
 
-private:
+private: //methods
 	afx_msg void OnBnClickedOk();
 	afx_msg BOOL ValidateData();
+	void FillEditBoxes();
+	void EnableDisableBoxes();
 };

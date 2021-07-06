@@ -4,7 +4,6 @@
 #include "CScoreTable.h"
 #include "CSubjectTable.h"
 #include "CStudentTable.h"
-using namespace std;
 
 CScoreData::CScoreData(int _idScore, int _classNum, CString _subject, int _score, COleDateTime _date)
 {
@@ -28,7 +27,7 @@ CScore::~CScore()
 {
 }
 
-	// is valid id student
+// is valid id student
 bool CScore::IsContainAStudent(CScoreData& oScoreData)
 {	
 	try 
@@ -64,7 +63,7 @@ bool CScore::IsContainAStudent(CScoreData& oScoreData)
 }
 
 //Get id subject
-bool CScore::GetIdSubject(CScoreData& oScore)//CString& strSubject, int& m_strIdSub)
+bool CScore::GetIdSubject(CScoreData& oScore)
 {
 	try 
 	{

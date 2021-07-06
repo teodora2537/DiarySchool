@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "MFCApplication.h"
 #include "CUpdateSubject.h"
 
 // CUpdateSubject dialog

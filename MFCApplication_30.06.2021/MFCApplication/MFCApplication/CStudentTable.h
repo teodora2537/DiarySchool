@@ -34,12 +34,12 @@ public:
 public:
 	virtual ~CStudentTable();
 
-protected:
+protected: //methods
+	virtual void DoFieldExchange(CFieldExchange* pFX);
 	virtual CString GetDefaultConnection();
 	virtual CString GetDefaultSQL();
-	virtual void DoFieldExchange(CFieldExchange* pFX);
 
-public:
+public: //member
 	int m_iId;
 	CString m_str_First_name;
 	CString m_str_Last_name;
@@ -52,6 +52,8 @@ public:
 	CString m_str_neighborhood;
 	CString m_str_address;
 
+
+public: // methods
     void Add_Edit_Student(STUDENT& stStudent);
 	void LoadStudent(CStudentData& oStudent);
 	bool IsExist(CStudentData& oStudent);

@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "MFCApplication.h"
 #include "CStudentTable.h"
-#include "Student.h"
 using namespace std;
 
 IMPLEMENT_DYNAMIC(CStudentTable, CRecordset)

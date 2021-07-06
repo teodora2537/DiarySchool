@@ -1,8 +1,7 @@
 #include "pch.h"
 #include "MFCApplication.h"
 #include "CScoreTable.h"
-#include "Score.h"
-#include "Library.h"
+
 
 IMPLEMENT_DYNAMIC(CScoreTable, CRecordset)
 

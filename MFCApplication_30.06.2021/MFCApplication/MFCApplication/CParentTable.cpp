@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "MFCApplication.h"
 #include "CParentTable.h"
-#include "CParent.h"
 using namespace std;
 
 IMPLEMENT_DYNAMIC(CParentTable, CRecordset)
@@ -100,5 +99,6 @@ bool CParentTable::IsExist(CParentData& oParent)
 		m_str_address == oParent.m_strAddress) {
 		return true;
 	}
-	else return false;
+	
+	return false;
 }

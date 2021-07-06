@@ -1,10 +1,9 @@
 #pragma once
-#include <list>
-#include "Score.h"
+#include "MFCApplication.h"
+#include "CListMethods.h"
 #include "CUpdateScore.h"
 #include "Library.h"
-#include "CListMethods.h"
-using namespace std;
+#include <list>
 
 class CTabScore : public CDialogEx
 {
@@ -25,20 +24,18 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 
-private: //contex menu
+private: //contex menu methods
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 	afx_msg void OnAddScore();
 	afx_msg void OnEditScore();
 	afx_msg void OnDeleteScore();
 	afx_msg void OnViewScore();
 
-private:
-	CListMethods m_listCtrl;
-	
-	void OnNMDblclkList(NMHDR* pNMHDR, LRESULT* pResult);
+private: //methods
+	void afx_msg OnNMDblclkList(NMHDR* pNMHDR, LRESULT* pResult);
 	void LoadData(bool isFromFile);
 
-private:
+private: //member
+	CListMethods m_listCtrl;
 	list<CScoreData> m_listScore;
 };
-

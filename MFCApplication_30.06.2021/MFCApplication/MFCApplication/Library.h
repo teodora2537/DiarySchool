@@ -1,6 +1,7 @@
 #pragma once
 #include "afxdb.h"
 #include <afxwin.h>
+#include <string>
 
 using namespace std;
 

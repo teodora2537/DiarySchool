@@ -1,8 +1,5 @@
 #include "pch.h"
-#include "MFCApplication.h"
 #include "CUpdateScore.h"
-#include "Score.h"
-using namespace std;
 
 IMPLEMENT_DYNAMIC(CScoreDlg, CDialogEx)
 

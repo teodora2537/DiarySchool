@@ -1,9 +1,6 @@
 #include "pch.h"
 #include "MFCApplication.h"
 #include "CParentDlg.h"
-#include "afxdialogex.h"
-#include "Library.h"
-#include "CUpdateStudent.h"
 
 IMPLEMENT_DYNAMIC(CParentDlg, CDialogEx)
 
@@ -20,10 +17,9 @@ CParentDlg::~CParentDlg()
 
 void CParentDlg::DoDataExchange(CDataExchange* pDX)
 {
-
 	CDialogEx::DoDataExchange(pDX);	
-	DDX_Text(pDX, IDC_EDIT_PARENT_FN, m_strFn);
-	DDX_Text(pDX, IDC_EDIT_PARENT_LN, m_strLn);
+	DDX_Text(pDX, IDC_EDIT_PARENT_FN, m_strFisrt_name);
+	DDX_Text(pDX, IDC_EDIT_PARENT_LN, m_strLast_name);
 	DDX_Text(pDX, IDC_EDIT_PARENT_EMAIL, m_strEmail);
 	DDX_Text(pDX, IDC_EDIT_PARENT_PHONE_NUMBER, m_strPhoneNumber);
 	DDX_Text(pDX, IDC_EDIT_PARENT_CITY, m_strCity);
@@ -76,8 +72,8 @@ void CParentDlg::EnableDisableBoxes()
 /*Fill edit boxes*/
 void CParentDlg::FillEditBoxes()
 {
-	m_strFn	= m_oParent.m_strFirstName;
-	m_strLn	= m_oParent.m_strLastName;
+	m_strFisrt_name = m_oParent.m_strFirstName;
+	m_strLast_name = m_oParent.m_strLastName;
 	m_strPhoneNumber = m_oParent.m_strPhoneNumber;
 	m_strEmail = m_oParent.m_strEmail;
 	m_strCity = m_oParent.m_strCity;
@@ -85,8 +81,8 @@ void CParentDlg::FillEditBoxes()
 	m_strNeighborhood = m_oParent.m_strNeighborhood;
 	m_strAddress = m_oParent.m_strAddress;
 	
-	SetDlgItemText(IDC_EDIT_PARENT_FN, m_strFn);
-	SetDlgItemText(IDC_EDIT_PARENT_LN, m_strLn);
+	SetDlgItemText(IDC_EDIT_PARENT_FN, m_strFisrt_name);
+	SetDlgItemText(IDC_EDIT_PARENT_LN, m_strLast_name);
 	SetDlgItemText(IDC_EDIT_PARENT_EMAIL, m_strEmail);
 	SetDlgItemText(IDC_EDIT_PARENT_PHONE_NUMBER, m_strPhoneNumber);
 	SetDlgItemText(IDC_EDIT_PARENT_CITY, m_strCity);
@@ -97,12 +93,12 @@ void CParentDlg::FillEditBoxes()
 
 BOOL CParentDlg::ValidateData()
 {
-	if (m_strFn.IsEmpty())
+	if (m_strFisrt_name.IsEmpty())
 	{
 		MessageBox("Missing first name of parent!", "Error", MB_ICONHAND);
 		return FALSE;
 	}
-	else if (m_strLn.IsEmpty())
+	else if (m_strLast_name.IsEmpty())
 	{
 		MessageBox("Missing last name of parent!", "Error", MB_ICONHAND);
 		return FALSE;
@@ -136,7 +132,6 @@ BOOL CParentDlg::ValidateData()
 	return TRUE;
 }
 
-
 // CParentDlg message handlers
 void CParentDlg::OnBnClickedOk()
 {
@@ -146,8 +141,8 @@ void CParentDlg::OnBnClickedOk()
 		return;
 	}
 
-	m_oParent.m_strFirstName = m_strFn;
-	m_oParent.m_strLastName = m_strLn;
+	m_oParent.m_strFirstName = m_strFisrt_name;
+	m_oParent.m_strLastName = m_strLast_name;
 	m_oParent.m_strEmail = m_strEmail;
 	m_oParent.m_strPhoneNumber = m_strPhoneNumber;
 	m_oParent.m_strCity = m_strCity;

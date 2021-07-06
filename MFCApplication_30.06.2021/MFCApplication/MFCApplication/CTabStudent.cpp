@@ -1,7 +1,5 @@
 #include "pch.h"
-#include "MFCApplication.h"
 #include "CTabStudent.h"
-using namespace std;
 
 IMPLEMENT_DYNAMIC(CTabStudent, CDialogEx)
 
@@ -33,9 +31,6 @@ BOOL CTabStudent::OnInitDialog() {
 
 	if (!__super::OnInitDialog())
 		return FALSE;
-
-	//bool b = false;
-	//1 == 2 ? b=true : 2 == 2 ? b=true : b=false;
 
 	m_listCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
 	m_listCtrl.InsertColumnAtEnd("#", eListCtrlColumnTypeData_Int, LVCFMT_LEFT);
@@ -164,7 +159,6 @@ void CTabStudent::OnDeleteStudent()
 	message.Format("Do you want to delete subject with room # %d?", nId);
 	int result = MessageBox(message, "Delete student", MB_YESNO);
 
-	//button yes clicked
 	if (result != IDYES)
 		return;
 
@@ -256,7 +250,7 @@ void CTabStudent::LoadData(bool isFromFile)
 			m_listCtrl.SetItemText(nItemIndex, 8, (*i).m_strNeighborhood);
 			m_listCtrl.SetItemText(nItemIndex, 9, (*i).m_strAddress);
 			
-			//set index back item
+			//set index of back item
 			nItemIndex = m_listCtrl.SetItemData(nCount, (DWORD_PTR)(*i).m_iStudentId);
 		}
 	}

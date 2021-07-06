@@ -3,8 +3,6 @@
 #include "Student.h"
 #include "Subject.h"
 #include "Score.h"
-#include <string>
-using namespace std;
 
 Library::Library(void) {}
 Library::~Library(void) {}

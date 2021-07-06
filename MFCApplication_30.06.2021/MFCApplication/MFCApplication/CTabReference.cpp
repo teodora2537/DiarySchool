@@ -1,13 +1,12 @@
 #include "pch.h"
-#include "MFCApplication.h"
 #include "CTabReference.h"
-using namespace std;
 
 IMPLEMENT_DYNAMIC(CTabReference, CDialogEx)
 
 CTabReference::CTabReference()
 	: CDialogEx(IDD_TAB_REFERENCES)
 {
+	m_bIsOnlyNames = false;
 }
 
 CTabReference::~CTabReference()
@@ -18,7 +17,7 @@ void CTabReference::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_LIST, m_listCtrl);
-	m_listCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
+
 }
 
 BEGIN_MESSAGE_MAP(CTabReference, CDialogEx)
@@ -29,6 +28,14 @@ BEGIN_MESSAGE_MAP(CTabReference, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_, &CTabReference::OnBnClickedButton)
 	ON_BN_CLICKED(IDC_BUTTON_BY_MORE_SUBJECTS, &CTabReference::OnBnClickedButtonByMoreSubjects)
 END_MESSAGE_MAP()
+
+BOOL CTabReference::OnInitDialog()
+{
+	if (!__super::OnInitDialog())
+		return FALSE;
+
+	m_listCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
+}
 
 // Print average score by subject
 void CTabReference::OnBnClickedButtonAvgscorebysubject()

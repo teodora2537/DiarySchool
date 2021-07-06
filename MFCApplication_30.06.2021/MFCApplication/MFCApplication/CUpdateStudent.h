@@ -1,11 +1,7 @@
 #pragma once
-#include "Library.h"
-#include "Student.h"
-#include "CParent.h"
+#include "MFCApplication.h"
+#include "CParentDlg.h"
 #include "CTabReference.h"
-#include <list>
-
-using namespace std;
 
 class CStudentDlg : public CDialogEx
 {
@@ -20,40 +16,42 @@ public:
 	enum { IDD = IDD_DIALOG_UPDATE_STUDENT };
 #endif
 
-protected:
+protected: //methods
 	virtual void DoDataExchange(CDataExchange* pDX);
 	virtual	BOOL OnInitDialog() override;
-	
 	void SetRangeOfDTPicker();
 	void EnableDisableBoxes();
 	void FillEditBoxes();
 	DECLARE_MESSAGE_MAP()
 
-public:
-	CString m_strStudent_ClassNum;
-	CString m_strStudent_Fn;
-	CString m_strStudent_Ln;
-	CDateTimeCtrl m_dtStudent_CtrlBirthday;
-	CString m_strStudent_Email;
-	CString m_strStudent_PhoneNumber;
-	CString m_strStudent_EGN;
-	CString m_strStudent_City;
-	CString m_strStudent_PostCode;
-	CString m_strStudent_Neighborhood;
-	CString m_strStudent_Address;
-
-	BOOL ValidateStudent();
-	CStudentData& m_oStudent;
-	DialogMode m_eMode;
-	RecordMode m_eParentMode;
-	CListMethods m_listCtrl;
-	afx_msg void OnBnClickedOk();
-	afx_msg void LoadDatas(const int& nIdStudent);
+private: //context menu methods
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 	afx_msg void OnAddParent();
 	afx_msg void OnEditParent();
 	afx_msg void OnDeleteParent();
 	afx_msg void OnViewParent();
+
+private: //methods
+	BOOL ValidateStudent();
+	afx_msg void OnBnClickedOk();
+	afx_msg void LoadDatas(const int& nIdStudent);
 	void OnNMDblclkList(NMHDR* pNMHDR, LRESULT* pResult);
+
+public: //member
+	CString m_strStudentId;
+	CString m_strFirst_name;
+	CString m_strLast_name;
+	CString m_strEmail;
+	CString m_strPhoneNumber;
+	CString m_strEGN;
+	CString m_strCity;
+	CString m_strPostCode;
+	CString m_strNeighborhood;
+	CString m_strAddress;
+	DialogMode m_eMode;
+	RecordMode m_eParentMode;
+	CListMethods m_listCtrl;
+	CDateTimeCtrl m_dtCtrlBirthday;
+	CStudentData& m_oStudent;
 	list<CParentData> m_lParents;
 };
