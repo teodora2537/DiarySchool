@@ -34,8 +34,8 @@ protected: //methods
 public: //member
 	int	m_iId;
 	CString m_strSubject;
-	CString m_strFNameTeacher;
-	CString m_strLNameTeacher;
+	CString m_strFirstNameTeacher;
+	CString m_strLastNameTeacher;
 	CString m_strStatus;
 	
 public: //methods

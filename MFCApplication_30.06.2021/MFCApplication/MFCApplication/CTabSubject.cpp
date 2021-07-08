@@ -227,7 +227,7 @@ void CTabSubject::LoadData(bool isFromFile)
 		if (nItemIndex > -1)
 		{
 			m_listCtrl.SetItemText(nItemIndex, 1, it->m_strSubject);
-			m_listCtrl.SetItemText(nItemIndex, 2, it->m_strFNameTeacher+it->m_strLNameTeacher);
+			m_listCtrl.SetItemText(nItemIndex, 2, it->m_strFirstNameTeacher+it->m_strLastNameTeacher);
 
 			//set index back item
 			nItemIndex = m_listCtrl.SetItemData(nCount, (DWORD_PTR)it->m_iId);

@@ -5,7 +5,7 @@
 class CScoreData
 {
 public:
-	CScoreData(int _idScore, int _classNum, CString _subject, int _score, COleDateTime _date);
+	CScoreData(int _idScore, int _idStudent, CString _subject, int _score, COleDateTime _date);
 	CScoreData();
 
 	int m_iIdScore;

@@ -23,15 +23,15 @@ void CSubjectTable::DoFieldExchange(CFieldExchange* pFX)
 	pFX->SetFieldType(CFieldExchange::outputColumn);
 	RFX_Int(pFX, "[id]", m_iId);
 	RFX_Text(pFX, "[subject]", m_strSubject);
-	RFX_Text(pFX, "[first_name_teacher]", m_strFNameTeacher);
-	RFX_Text(pFX, "[last_name_teacher]", m_strLNameTeacher);
+	RFX_Text(pFX, "[first_name_teacher]", m_strFirstNameTeacher);
+	RFX_Text(pFX, "[last_name_teacher]", m_strLastNameTeacher);
 	RFX_Text(pFX, "[status]", m_strStatus);
 
 	pFX->SetFieldType(CFieldExchange::inputParam);
 	RFX_Int(pFX, "[id]", m_iId);
 	RFX_Text(pFX, "[subject]", m_strSubject);
-	RFX_Text(pFX, "[first_name_teacher]", m_strFNameTeacher);
-	RFX_Text(pFX, "[last_name_teacher]", m_strLNameTeacher);
+	RFX_Text(pFX, "[first_name_teacher]", m_strFirstNameTeacher);
+	RFX_Text(pFX, "[last_name_teacher]", m_strLastNameTeacher);
 	RFX_Text(pFX, "[status]", m_strStatus);
 }
 
@@ -48,8 +48,8 @@ CString CSubjectTable::GetDefaultSQL() {
 void CSubjectTable::Add_Edit(SUBJECT& stSubject) 
 {
 	m_strSubject = stSubject.szSubject;
-	m_strFNameTeacher = stSubject.sz_First_Name;
-	m_strLNameTeacher = stSubject.sz_Last_Name;
+	m_strFirstNameTeacher = stSubject.sz_First_Name;
+	m_strLastNameTeacher = stSubject.sz_Last_Name;
 }
 
 void CSubjectTable::DeleteSubject() {
@@ -60,15 +60,15 @@ void CSubjectTable::Load(CSubjectData& oSubject)
 {
 	oSubject.m_iId = m_iId;
 	oSubject.m_strSubject = m_strSubject;
-	oSubject.m_strFNameTeacher = m_strFNameTeacher;
-	oSubject.m_strLNameTeacher = m_strLNameTeacher;
+	oSubject.m_strFirstNameTeacher = m_strFirstNameTeacher;
+	oSubject.m_strLastNameTeacher = m_strLastNameTeacher;
 }
 
 bool CSubjectTable::IsExist(CSubjectData& oSubject) 
 {
 		if (m_strSubject == oSubject.m_strSubject &&
-			m_strFNameTeacher ==  oSubject.m_strFNameTeacher &&
-			m_strLNameTeacher == oSubject.m_strLNameTeacher) {
+			m_strFirstNameTeacher ==  oSubject.m_strFirstNameTeacher &&
+			m_strLastNameTeacher == oSubject.m_strLastNameTeacher) {
 				return true;
 			}
 

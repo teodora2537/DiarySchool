@@ -23,8 +23,8 @@ protected: //methods
 private: //member
 	CString m_strRoomNum;
 	CString m_strSubject;
-	CString m_strFN;
-	CString m_strLN;
+	CString m_strFirst_Name;
+	CString m_strLast_Name;
 	CSubjectData& m_oSubject;
 	DialogMode m_eMode;
 

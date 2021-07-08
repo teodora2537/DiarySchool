@@ -6,14 +6,14 @@
 class CSubjectData
 {
 public:
-	CSubjectData(int _idSubject, CString _subject, CString _fNameTeacher, CString _lNameTeacher);
+	CSubjectData(int _idSubject, CString _subject, CString _firstNameTeacher, CString _lastNameTeacher);
 	CSubjectData();
 
 public://member
 	int	m_iId;
 	CString m_strSubject;
-	CString m_strFNameTeacher;
-	CString m_strLNameTeacher;
+	CString m_strFirstNameTeacher;
+	CString m_strLastNameTeacher;
 };
 
 class CSubject{

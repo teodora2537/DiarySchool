@@ -22,10 +22,10 @@ void CStudentDlg::DoDataExchange(CDataExchange* pDX)
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_LIST_PARENT, m_listCtrl);
 	//student
-	DDX_Text(pDX, IDC_EDIT_UPDATE_STUDENT_CLASS_NUM, m_strStudentId);
-	DDX_Text(pDX, IDC_EDIT_UPDATE_STUDENT_FN, m_strFirst_name);
+	DDX_Text(pDX, IDC_EDIT_UPDATE_STUDENT_ID, m_strStudentId);
+	DDX_Text(pDX, IDC_EDIT_UPDATE_STUDENT_FIRST_NAME, m_strFirst_name);
 	DDV_MaxChars(pDX, m_strFirst_name, 20);//Size of FN student
-	DDX_Text(pDX, IDC_EDIT_UPDATE_STUDENT_LN, m_strLast_name);
+	DDX_Text(pDX, IDC_EDIT_UPDATE_STUDENT_LAST_NAME, m_strLast_name);
 	DDV_MaxChars(pDX, m_strLast_name, 15);//Size of LN student
 	DDX_Control(pDX, IDC_DATETIMEPICKER1, m_dtCtrlBirthday);
 	CString formatStr = _T("yyyy'-'MM'-'dd");
@@ -119,9 +119,9 @@ void CStudentDlg::FillEditBoxes()
 		m_dtCtrlBirthday.SetTime(m_oStudent.m_oleDTBirthday);
 	}
 
-	SetDlgItemText(IDC_EDIT_UPDATE_STUDENT_CLASS_NUM, m_strStudentId);
-	SetDlgItemText(IDC_EDIT_UPDATE_STUDENT_FN, m_strFirst_name);
-	SetDlgItemText(IDC_EDIT_UPDATE_STUDENT_LN, m_strLast_name);
+	SetDlgItemText(IDC_EDIT_UPDATE_STUDENT_ID, m_strStudentId);
+	SetDlgItemText(IDC_EDIT_UPDATE_STUDENT_FIRST_NAME, m_strFirst_name);
+	SetDlgItemText(IDC_EDIT_UPDATE_STUDENT_LAST_NAME, m_strLast_name);
 	SetDlgItemText(IDC_EDIT_STUDENT_EMAIL, m_strEmail);
 	SetDlgItemText(IDC_EDIT_STUDENT_PHONE_NUMBER, m_strPhoneNumber);
 	SetDlgItemText(IDC_EDIT_STUDENT_EGN, m_strEGN);
@@ -137,9 +137,9 @@ void CStudentDlg::EnableDisableBoxes()
 {
 	BOOL bEnable = m_eMode != eDialogMode_View;
 
-	GetDlgItem(IDC_EDIT_UPDATE_STUDENT_CLASS_NUM)->EnableWindow(FALSE);
-	GetDlgItem(IDC_EDIT_UPDATE_STUDENT_FN)->EnableWindow(bEnable);
-	GetDlgItem(IDC_EDIT_UPDATE_STUDENT_LN)->EnableWindow(bEnable);
+	GetDlgItem(IDC_EDIT_UPDATE_STUDENT_ID)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_UPDATE_STUDENT_FIRST_NAME)->EnableWindow(bEnable);
+	GetDlgItem(IDC_EDIT_UPDATE_STUDENT_LAST_NAME)->EnableWindow(bEnable);
 	m_dtCtrlBirthday.EnableWindow(bEnable);
 	GetDlgItem(IDC_EDIT_STUDENT_EMAIL)->EnableWindow(bEnable);
 	GetDlgItem(IDC_EDIT_STUDENT_PHONE_NUMBER)->EnableWindow(bEnable);

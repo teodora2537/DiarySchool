@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "CListMethods.h"
 #include "resource.h"
-using namespace std;
 
 CListMethods::CListMethods()
 {
@@ -82,7 +81,7 @@ int  CListMethods::_DateCompare(const CString& strDate1, const CString& strDate2
 	date2.ParseDateTime(strDate2);
 
 	if (date1.GetStatus() != COleDateTime::valid || date2.GetStatus() != COleDateTime::valid)
-		return _StringCompare(strDate1, strDate2); // not date
+		return _StringCompare(strDate1, strDate2); // isn't date
 
 	if (date1 < date2)
 		return -1;
@@ -108,7 +107,6 @@ BOOL CListMethods::OnLvnColumnclick(NMHDR* pNMHDR, LRESULT* pResult)
 
 	m_mpColumnTypeData.Lookup(iColumn, eColDataType);
 
-	//Sort(iColumn, iColumn == GetSortedColumn() ? !IsSortAscending() : TRUE, eColDataType);
 	Sort(iColumn, IsSortAscending() ? !IsSortAscending() : TRUE, eColDataType);
 
 	//look sort arrow
@@ -136,7 +134,6 @@ BOOL CListMethods::OnLvnColumnclick(NMHDR* pNMHDR, LRESULT* pResult)
 			HDF_SORTDOWN) | HDF_BITMAP_ON_RIGHT;
 		GetHeaderCtrl()->SetItem(m_iSortColumn, &headerItem);
 	}
-	//SortItems(SortTextItems, (LPARAM)(this));
 	*pResult = 0;
 
 	return TRUE;

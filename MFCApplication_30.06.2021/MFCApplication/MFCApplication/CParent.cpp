@@ -255,7 +255,6 @@ bool CParent::EditParent(CParentData& oParent)
 	 return true;
  }
 
- //Print by class
  bool CParent::PrintParentByStudent(const int& nIdStudent, list<CParentData>& lParent)
  {
 	 CParentTable oParentTable(&g_dbConnection);
@@ -284,7 +283,6 @@ bool CParent::EditParent(CParentData& oParent)
 
 	 oParentTable.Close();
  }
-
 
  bool CParent::LoadParent(CParentData& oParent)
  {

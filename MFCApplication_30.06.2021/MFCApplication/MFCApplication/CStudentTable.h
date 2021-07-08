@@ -1,7 +1,6 @@
 #pragma once
 #include "afxdb.h"
 #include "Student.h"
-using namespace std;
 
 #define DEF_SCORE_NAME_LEN 100
 

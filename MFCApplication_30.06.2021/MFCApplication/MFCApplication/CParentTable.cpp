@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "MFCApplication.h"
 #include "CParentTable.h"
-using namespace std;
+
 
 IMPLEMENT_DYNAMIC(CParentTable, CRecordset)
 

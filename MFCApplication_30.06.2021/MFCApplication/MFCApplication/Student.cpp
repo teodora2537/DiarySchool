@@ -230,14 +230,14 @@ bool CStudent::EditStudent(CStudentData& oStudent)
 	return true;
 	}
 
-bool CStudent::DeleteStudent(const int nClassNumber) 
+bool CStudent::DeleteStudent(const int nIdStudent) 
 {
 	try
 	{
 		g_dbConnection.BeginTrans();
 
 		CScore oScore;
-		if (!oScore.DeleteScoreByStudent(nClassNumber))
+		if (!oScore.DeleteScoreByStudent(nIdStudent))
 		{
 			g_dbConnection.Rollback();
 			
@@ -245,7 +245,7 @@ bool CStudent::DeleteStudent(const int nClassNumber)
 		}
 
 		CParent oParent;
-		if (!oParent.DeleteParent(nClassNumber)) 
+		if (!oParent.DeleteParent(nIdStudent)) 
 		{
 			g_dbConnection.Rollback();
 			
@@ -253,7 +253,7 @@ bool CStudent::DeleteStudent(const int nClassNumber)
 		}
 
 		CStudentTable oStudentTable(&g_dbConnection);
-		oStudentTable.m_strFilter.Format("id = %d", nClassNumber);
+		oStudentTable.m_strFilter.Format("id = %d", nIdStudent);
 
 		oStudentTable.Open();
 
@@ -291,12 +291,12 @@ bool CStudent::DeleteStudent(const int nClassNumber)
 	return true;
 }
 
-bool CStudent::LoadStudent(const int nClassNumber, CStudentData& oStudent)
+bool CStudent::LoadStudent(const int nIdStudent, CStudentData& oStudent)
 {
 	try
 	{
 		CStudentTable oStudentTable(&g_dbConnection);
-		oStudentTable.m_strFilter.Format("id = '%d'", nClassNumber);
+		oStudentTable.m_strFilter.Format("id = '%d'", nIdStudent);
 		oStudentTable.Open();
 
 		if (!oStudentTable.IsOpen())
@@ -305,13 +305,13 @@ bool CStudent::LoadStudent(const int nClassNumber, CStudentData& oStudent)
 			return false;
 		}
 		
-		oStudent.m_iStudentId = nClassNumber;
+		oStudent.m_iStudentId = nIdStudent;
 		oStudentTable.LoadStudent(oStudent);
 
 		CParent oParent;
 
 		//Print by class
-		oParent.PrintParentByStudent(nClassNumber, oStudent.m_arrParents);
+		oParent.PrintParentByStudent(nIdStudent, oStudent.m_arrParents);
 
 		oStudentTable.Close();
 
@@ -389,7 +389,7 @@ void CStudent::AvgScoreBySubject(list<REFERENCE>& listReference)
 {
 	listReference.clear();
 	Library oLib;
-	CString strSubject, strFN, strLN, strStudentId, strAvgScore;
+	CString strSubject, strFirst_Name, strLast_Name, strStudentId, strAvgScore;
 	CString strSql =  "SELECT Student.first_name, Student.last_name, Subject.subject, Score.student_id, AVG(Score.score) as avgScore "
 					  "FROM Student "
 					  "INNER JOIN Score ON Score.student_id = Student.id "
@@ -408,15 +408,15 @@ void CStudent::AvgScoreBySubject(list<REFERENCE>& listReference)
 
 		while (!recset.IsEOF()) 
 		{
-			recset.GetFieldValue("first_name", strFN);
-			recset.GetFieldValue("last_name", strLN);
+			recset.GetFieldValue("first_name", strFirst_Name);
+			recset.GetFieldValue("last_name", strLast_Name);
 			recset.GetFieldValue("subject", strSubject);
 			recset.GetFieldValue("student_id", strStudentId);
 			recset.GetFieldValue("avgScore", strAvgScore);
 	
 			REFERENCE refStruct;
 			refStruct.iId = atoi(strStudentId);
-			sprintf(refStruct.szClm1, "%s", strFN + " " + strLN);
+			sprintf(refStruct.szClm1, "%s", strFirst_Name + " " + strLast_Name);
 			sprintf(refStruct.szClm2, "%s", strSubject);
 			sprintf(refStruct.szClm3, "%s", strAvgScore);
 
@@ -433,7 +433,7 @@ void CStudent::AvgScoreBySubject(list<REFERENCE>& listReference)
 void CStudent::AvgScoreByAllSubject(list<REFERENCE>& listReference) {
 
 	listReference.clear();
-	CString strFN, strLN, strStudentId, strAvgScore;
+	CString strFirst_Name, strLast_Name, strStudentId, strAvgScore;
 	CString strSql = "SELECT Score.student_id, Student.first_name, Student.last_name, AVG(Score.score) as avgScore "
 					 "FROM Student "
 					 "INNER JOIN Score ON Score.student_id = Student.id "
@@ -453,13 +453,13 @@ void CStudent::AvgScoreByAllSubject(list<REFERENCE>& listReference) {
 		while (!recset.IsEOF()) 
 		{
 			recset.GetFieldValue("student_id", strStudentId);
-			recset.GetFieldValue("first_name", strFN);
-			recset.GetFieldValue("last_name", strLN);
+			recset.GetFieldValue("first_name", strFirst_Name);
+			recset.GetFieldValue("last_name", strLast_Name);
 			recset.GetFieldValue("avgScore", strAvgScore);
 		
 			REFERENCE refStruct;
 			refStruct.iId = atoi(strStudentId);
-			sprintf(refStruct.szClm1, "%s", strFN + " " + strLN);
+			sprintf(refStruct.szClm1, "%s", strFirst_Name + " " + strLast_Name);
 			sprintf(refStruct.szClm2, "%s", strAvgScore);
 
 			listReference.push_back(refStruct);
@@ -475,7 +475,7 @@ void CStudent::AvgScoreByAllSubject(list<REFERENCE>& listReference) {
 void CStudent::ExcellentStud(list<REFERENCE>& listReference) {
 	
 	listReference.clear();
-	CString strFN, strLN;
+	CString strFirst_Name, strLast_Name;
 	CString strSql = "SELECT Student.first_name, Student.last_name "
 					 "FROM Student "
 					 "INNER JOIN Score ON Score.student_id = Student.id "
@@ -494,11 +494,11 @@ void CStudent::ExcellentStud(list<REFERENCE>& listReference) {
 
 		while (!recset.IsEOF()) 
 		{
-			recset.GetFieldValue("first_name", strFN);
-			recset.GetFieldValue("last_name", strLN);
+			recset.GetFieldValue("first_name", strFirst_Name);
+			recset.GetFieldValue("last_name", strLast_Name);
 
 			REFERENCE refStruct;
-			sprintf(refStruct.szClm0, "%s", strFN + " " + strLN);
+			sprintf(refStruct.szClm0, "%s", strFirst_Name + " " + strLast_Name);
 			
 			listReference.push_back(refStruct);
 			recset.MoveNext();
@@ -515,7 +515,7 @@ void CStudent::PeopleHaveBirthday(list<REFERENCE>& listReference)
 	listReference.clear();
 
 	Library oLib;
-	CString strFN, strLN;
+	CString strFirst_Name, strLast_Name;
 	COleDateTime oleDate = COleDateTime::GetCurrentTime();	 
 	
 	try {
@@ -534,11 +534,11 @@ void CStudent::PeopleHaveBirthday(list<REFERENCE>& listReference)
 
 		while (!recset.IsEOF()) 
 		{
-			recset.GetFieldValue("first_name", strFN);
-			recset.GetFieldValue("last_name", strLN);
+			recset.GetFieldValue("first_name", strFirst_Name);
+			recset.GetFieldValue("last_name", strLast_Name);
 
 			REFERENCE refStruct;
-			sprintf(refStruct.szClm0, "%s", strFN + " " + strLN);
+			sprintf(refStruct.szClm0, "%s", strFirst_Name + " " + strLast_Name);
 			
 			listReference.push_back(refStruct);
 			recset.MoveNext();
@@ -553,7 +553,7 @@ void CStudent::PeopleHaveBirthday(list<REFERENCE>& listReference)
 void CStudent::RemedialExaminationBySub(list<REFERENCE>& listReference) 
 {
 	listReference.clear();
-	CString strFN, strLN, strSubject, strStudentId;
+	CString strFirst_Name, strLast_Name, strSubject, strStudentId;
 	CString strSql = "SELECT Student.first_name, Student.last_name, Subject.subject, Score.student_id "
 					 "FROM Student INNER JOIN Score ON Score.student_id = Student.id "
 					 "INNER JOIN Subject ON Score.subject_id = Subject.id "
@@ -572,14 +572,14 @@ void CStudent::RemedialExaminationBySub(list<REFERENCE>& listReference)
 
 		while (!recset.IsEOF()) 
 		{
-			recset.GetFieldValue("first_name", strFN);
-			recset.GetFieldValue("last_name", strLN);
+			recset.GetFieldValue("first_name", strFirst_Name);
+			recset.GetFieldValue("last_name", strLast_Name);
 			recset.GetFieldValue("subject", strSubject);
 			recset.GetFieldValue("student_id", strStudentId);
 
 			REFERENCE refStruct;
 			refStruct.iId = atoi(strStudentId);
-			sprintf(refStruct.szClm1, "%s", strFN + " " + strLN);
+			sprintf(refStruct.szClm1, "%s", strFirst_Name + " " + strLast_Name);
 			sprintf(refStruct.szClm2, "%s", strSubject);
 
 			listReference.push_back(refStruct);
@@ -596,7 +596,7 @@ void CStudent::RemedialExaminationBySub(list<REFERENCE>& listReference)
 void CStudent::RemedialExaminationByMoreSub(list<REFERENCE>& listReference) 
 {
 	listReference.clear();
-	CString strFN, strLN;
+	CString strFirst_Name, strLast_Name;
 	CString strSql = "SELECT first_name, last_name "
 					 "FROM( SELECT Student.first_name, Student.last_name, Subject.subject, Score.student_id "
 					 	  "FROM Student "
@@ -617,11 +617,11 @@ void CStudent::RemedialExaminationByMoreSub(list<REFERENCE>& listReference)
 
 		while (!recset.IsEOF()) 
 		{
-			recset.GetFieldValue("first_name", strFN);
-			recset.GetFieldValue("last_name", strLN);
+			recset.GetFieldValue("first_name", strFirst_Name);
+			recset.GetFieldValue("last_name", strLast_Name);
 
 			REFERENCE refStruct;
-			sprintf(refStruct.szClm0, "%s", strFN + " " + strLN);
+			sprintf(refStruct.szClm0, "%s", strFirst_Name + " " + strLast_Name);
 			
 			listReference.push_back(refStruct);
 			recset.MoveNext();

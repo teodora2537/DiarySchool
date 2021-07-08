@@ -18,8 +18,8 @@ CParentDlg::~CParentDlg()
 void CParentDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);	
-	DDX_Text(pDX, IDC_EDIT_PARENT_FN, m_strFisrt_name);
-	DDX_Text(pDX, IDC_EDIT_PARENT_LN, m_strLast_name);
+	DDX_Text(pDX, IDC_EDIT_PARENT_FIRST_NAME, m_strFisrt_name);
+	DDX_Text(pDX, IDC_EDIT_PARENT_LAST_NAME, m_strLast_name);
 	DDX_Text(pDX, IDC_EDIT_PARENT_EMAIL, m_strEmail);
 	DDX_Text(pDX, IDC_EDIT_PARENT_PHONE_NUMBER, m_strPhoneNumber);
 	DDX_Text(pDX, IDC_EDIT_PARENT_CITY, m_strCity);
@@ -59,8 +59,8 @@ void CParentDlg::EnableDisableBoxes()
 {
 	BOOL bEnable = m_eMode != eDialogMode_View;
 
-	GetDlgItem(IDC_EDIT_PARENT_FN)->EnableWindow(bEnable);
-	GetDlgItem(IDC_EDIT_PARENT_LN)->EnableWindow(bEnable);
+	GetDlgItem(IDC_EDIT_PARENT_FIRST_NAME)->EnableWindow(bEnable);
+	GetDlgItem(IDC_EDIT_PARENT_LAST_NAME)->EnableWindow(bEnable);
 	GetDlgItem(IDC_EDIT_PARENT_EMAIL)->EnableWindow(bEnable);
 	GetDlgItem(IDC_EDIT_PARENT_PHONE_NUMBER)->EnableWindow(bEnable);
 	GetDlgItem(IDC_EDIT_PARENT_CITY)->EnableWindow(bEnable);
@@ -81,8 +81,8 @@ void CParentDlg::FillEditBoxes()
 	m_strNeighborhood = m_oParent.m_strNeighborhood;
 	m_strAddress = m_oParent.m_strAddress;
 	
-	SetDlgItemText(IDC_EDIT_PARENT_FN, m_strFisrt_name);
-	SetDlgItemText(IDC_EDIT_PARENT_LN, m_strLast_name);
+	SetDlgItemText(IDC_EDIT_PARENT_FIRST_NAME, m_strFisrt_name);
+	SetDlgItemText(IDC_EDIT_PARENT_LAST_NAME, m_strLast_name);
 	SetDlgItemText(IDC_EDIT_PARENT_EMAIL, m_strEmail);
 	SetDlgItemText(IDC_EDIT_PARENT_PHONE_NUMBER, m_strPhoneNumber);
 	SetDlgItemText(IDC_EDIT_PARENT_CITY, m_strCity);

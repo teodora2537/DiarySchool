@@ -1,7 +1,7 @@
 #pragma once
 #include "afxdb.h"
 #include "CParent.h"
-using namespace std;
+
 
 struct PARENT {
 	int  iId;

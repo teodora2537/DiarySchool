@@ -55,8 +55,8 @@ public:
 public: //methods
 	bool AddStudent(CStudentData& oStudent);
 	bool EditStudent(CStudentData& oStudent);
-	bool LoadStudent(const int nClassNumber, CStudentData& oStudent);
-	bool DeleteStudent(const int nClassNumber);
+	bool LoadStudent(const int nIdStudent, CStudentData& oStudent);
+	bool DeleteStudent(const int nIdStudent);
 	void PrintStudent(list<CStudentData>& listStudent);
 
 public://reference methods

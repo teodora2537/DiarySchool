@@ -5,10 +5,10 @@
 #include "CSubjectTable.h"
 #include "CStudentTable.h"
 
-CScoreData::CScoreData(int _idScore, int _classNum, CString _subject, int _score, COleDateTime _date)
+CScoreData::CScoreData(int _idScore, int _idStudent, CString _subject, int _score, COleDateTime _date)
 {
 	m_iIdScore = _idScore;
-	m_iIdStudent = _classNum;
+	m_iIdStudent = _idStudent;
 	m_strSubject = _subject;
 	m_iScore = _score;
 	m_oleDateTime = _date;

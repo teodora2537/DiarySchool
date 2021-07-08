@@ -32,7 +32,7 @@ private: //methods
 
 private: //member
 	//string
-	CString m_strClassNum;
+	CString m_strStudentID;
 	CString m_strSubject;
 	CString m_strScore;
 	//date

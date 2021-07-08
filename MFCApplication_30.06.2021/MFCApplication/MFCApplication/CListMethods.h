@@ -4,7 +4,6 @@
 #include "Student.h"
 #include "Score.h"
 #include "Subject.h"
-using namespace std;
 
 enum ListCtrlColumnTypeData
 {

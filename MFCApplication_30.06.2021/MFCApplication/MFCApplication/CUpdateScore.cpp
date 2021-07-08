@@ -17,8 +17,8 @@ CScoreDlg::~CScoreDlg()
 void CScoreDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
-	DDX_Text(pDX, IDC_EDIT_UPDATE_SCORE_CLASS_NUMBER, m_strClassNum);
-	DDV_MaxChars(pDX, m_strClassNum, 2);//Size of class number
+	DDX_Text(pDX, IDC_EDIT_UPDATE_SCORE_STUDENT_ID, m_strStudentID);
+	DDV_MaxChars(pDX, m_strStudentID, 2);//Size of class number
 	DDX_Text(pDX, IDC_COMBO_SCORE, m_strScore);
 	DDX_Text(pDX, IDC_COMBO_SUBJECT, m_strSubject);
 	//date
@@ -86,7 +86,7 @@ void CScoreDlg::FillComboBox()
 void CScoreDlg::FillEditBoxes()
 {
 	Library oLib;
-	m_strClassNum = oLib.IntToCString(m_oScore.m_iIdStudent);
+	m_strStudentID = oLib.IntToCString(m_oScore.m_iIdStudent);
 	m_strScore = oLib.IntToCString(m_oScore.m_iScore);
 	m_strSubject = m_oScore.m_strSubject;
 
@@ -97,16 +97,16 @@ void CScoreDlg::FillEditBoxes()
 	else {
 
 		this->SetWindowText("Add Score");
-		GetDlgItem(IDC_EDIT_UPDATE_SCORE_CLASS_NUMBER)->EnableWindow(TRUE);
+		GetDlgItem(IDC_EDIT_UPDATE_SCORE_STUDENT_ID)->EnableWindow(TRUE);
 
-		m_strClassNum.Empty();
+		m_strStudentID.Empty();
 		m_strScore.Empty();
 
 		COleDateTime oleDate = COleDateTime::GetCurrentTime();
 		m_dtCtrlDate.SetTime(oleDate);
 	}
 
-	SetDlgItemText(IDC_EDIT_UPDATE_SCORE_CLASS_NUMBER, m_strClassNum);
+	SetDlgItemText(IDC_EDIT_UPDATE_SCORE_STUDENT_ID, m_strStudentID);
 	SetDlgItemText(IDC_COMBO_SUBJECT, m_strSubject);
 	SetDlgItemText(IDC_COMBO_SCORE, m_strScore);
 }
@@ -116,7 +116,7 @@ void CScoreDlg::EnableDisableBoxes()
 {
 	BOOL bEnable = m_eMode != eDialogMode_View;
 
-	GetDlgItem(IDC_EDIT_UPDATE_SCORE_CLASS_NUMBER)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT_UPDATE_SCORE_STUDENT_ID)->EnableWindow(FALSE);
 	m_comboBoxSubject.EnableWindow(bEnable);
 	m_comboBoxScore.EnableWindow(bEnable);
 	m_dtCtrlDate.EnableWindow(bEnable);
@@ -191,7 +191,7 @@ void CScoreDlg::OnBnClickedOk()
 	if (m_eMode != eDialogMode_View && !ValidateData())
 		return;
 
-	m_oScore.m_iIdStudent = atoi(m_strClassNum);
+	m_oScore.m_iIdStudent = atoi(m_strStudentID);
 	m_oScore.m_strSubject = m_strSubject;
 	m_oScore.m_iScore = atoi(m_strScore);
 	m_dtCtrlDate.GetTime(m_oScore.m_oleDateTime);

@@ -2,12 +2,12 @@
 #include "Subject.h"
 #include "CSubjectTable.h"
 
-CSubjectData::CSubjectData(int _idSubject, CString _subject, CString _fNameTeacher, CString _lNameTeacher)
+CSubjectData::CSubjectData(int _idSubject, CString _subject, CString _firstNameTeacher, CString _lastNameTeacher)
 {
 	m_iId = _idSubject;
 	m_strSubject = _subject;
-	m_strFNameTeacher = _fNameTeacher;
-	m_strLNameTeacher = _lNameTeacher;
+	m_strFirstNameTeacher = _firstNameTeacher;
+	m_strLastNameTeacher = _lastNameTeacher;
 }
 
 CSubjectData::CSubjectData()
@@ -48,8 +48,8 @@ void FillStructWithObjectData(SUBJECT& stSubject, CSubjectData& oSubjectData)
 {
 	stSubject.iId = oSubjectData.m_iId;
 	strcpy_s(stSubject.szSubject, CStringA(oSubjectData.m_strSubject).GetString());
-	strcpy_s(stSubject.sz_First_Name, CStringA(oSubjectData.m_strFNameTeacher).GetString());
-	strcpy_s(stSubject.sz_Last_Name, CStringA(oSubjectData.m_strLNameTeacher).GetString());
+	strcpy_s(stSubject.sz_First_Name, CStringA(oSubjectData.m_strFirstNameTeacher).GetString());
+	strcpy_s(stSubject.sz_Last_Name, CStringA(oSubjectData.m_strLastNameTeacher).GetString());
 }
 
 bool CSubject::AddSubject(CSubjectData& oSubjectData)

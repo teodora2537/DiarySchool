@@ -21,13 +21,13 @@ void CSubjectDlg::FillEditBoxes()
 	Library oLib;
 	m_strRoomNum = oLib.IntToCString(m_oSubject.m_iId);
 	m_strSubject = m_oSubject.m_strSubject;
-	m_strFN = m_oSubject.m_strFNameTeacher;
-	m_strLN = m_oSubject.m_strLNameTeacher;
+	m_strFirst_Name = m_oSubject.m_strFirstNameTeacher;
+	m_strLast_Name = m_oSubject.m_strLastNameTeacher;
 
 	SetDlgItemText(IDC_EDIT_UPDATE_SUBJECT_ROOM_NUM, m_strRoomNum);
 	SetDlgItemText(IDC_EDIT_UPDATE_SUBJECT_SUBJECT, m_strSubject);
-	SetDlgItemText(IDC_EDIT_UPDATE_SUBJECT_FN, m_strFN);
-	SetDlgItemText(IDC_EDIT_UPDATE_SUBJECT_LN, m_strLN);
+	SetDlgItemText(IDC_EDIT_UPDATE_SUBJECT_FIRST_NAME, m_strFirst_Name);
+	SetDlgItemText(IDC_EDIT_UPDATE_SUBJECT_LAST_NAME, m_strLast_Name);
 }
 
 /*Set enable/disable of edit boxes*/
@@ -37,8 +37,8 @@ void CSubjectDlg::EnableDisableBoxes()
 
 	GetDlgItem(IDC_EDIT_UPDATE_SUBJECT_ROOM_NUM)->EnableWindow(FALSE);
 	GetDlgItem(IDC_EDIT_UPDATE_SUBJECT_SUBJECT)->EnableWindow(bEnable);
-	GetDlgItem(IDC_EDIT_UPDATE_SUBJECT_FN)->EnableWindow(bEnable);
-	GetDlgItem(IDC_EDIT_UPDATE_SUBJECT_LN)->EnableWindow(bEnable);
+	GetDlgItem(IDC_EDIT_UPDATE_SUBJECT_FIRST_NAME)->EnableWindow(bEnable);
+	GetDlgItem(IDC_EDIT_UPDATE_SUBJECT_LAST_NAME)->EnableWindow(bEnable);
 }
 
 /*virtual*/
@@ -69,10 +69,10 @@ void CSubjectDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT_UPDATE_SUBJECT_ROOM_NUM, m_strRoomNum);
 	DDX_Text(pDX, IDC_EDIT_UPDATE_SUBJECT_SUBJECT, m_strSubject);
 	DDV_MaxChars(pDX, m_strSubject, 25);//Size of subject
-	DDX_Text(pDX, IDC_EDIT_UPDATE_SUBJECT_FN, m_strFN);
-	DDV_MaxChars(pDX, m_strFN, 20);//Size of FN teacher
-	DDX_Text(pDX, IDC_EDIT_UPDATE_SUBJECT_LN, m_strLN);
-	DDV_MaxChars(pDX, m_strLN, 15);//Size of FN teacher
+	DDX_Text(pDX, IDC_EDIT_UPDATE_SUBJECT_FIRST_NAME, m_strFirst_Name);
+	DDV_MaxChars(pDX, m_strFirst_Name, 20);//Size of FN teacher
+	DDX_Text(pDX, IDC_EDIT_UPDATE_SUBJECT_LAST_NAME, m_strLast_Name);
+	DDV_MaxChars(pDX, m_strLast_Name, 15);//Size of FN teacher
 }
 
 BEGIN_MESSAGE_MAP(CSubjectDlg, CDialogEx)
@@ -87,13 +87,13 @@ BOOL CSubjectDlg::ValidateData()
 		return FALSE;
 	}
 
-	if (m_strFN.IsEmpty())
+	if (m_strFirst_Name.IsEmpty())
 	{
 		MessageBox("Missing first name's teacher!", "Error", MB_ICONHAND);
 		return FALSE;
 	}
 
-	if (m_strLN.IsEmpty())
+	if (m_strLast_Name.IsEmpty())
 	{
 		MessageBox("Missing last name's teacher!", "Error", MB_ICONHAND);
 		return FALSE;
@@ -111,8 +111,8 @@ void CSubjectDlg::OnBnClickedOk()
 
 	m_oSubject.m_iId = atoi(m_strRoomNum);
 	m_oSubject.m_strSubject = m_strSubject;
-	m_oSubject.m_strFNameTeacher = m_strFN;
-	m_oSubject.m_strLNameTeacher = m_strLN;
+	m_oSubject.m_strFirstNameTeacher = m_strFirst_Name;
+	m_oSubject.m_strLastNameTeacher = m_strLast_Name;
 
 	CDialogEx::OnOK();
 }

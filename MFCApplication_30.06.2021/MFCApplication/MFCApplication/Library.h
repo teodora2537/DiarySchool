@@ -2,7 +2,6 @@
 #include "afxdb.h"
 #include <afxwin.h>
 #include <string>
-
 using namespace std;
 
 #define DEF_FILE_DATA_SEPARATOR	'|'
