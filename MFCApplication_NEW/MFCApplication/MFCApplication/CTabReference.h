@@ -4,6 +4,16 @@
 #include "Library.h"
 #include "CListMethods.h"
 
+class DataColumn 
+{
+public:
+	CString m_strName;
+	ListCtrlColumnTypeData m_eColumnType;
+
+public:
+	DataColumn(CString strName, ListCtrlColumnTypeData eColumnType);
+};
+
 // CTabReference dialog
 class CTabReference : public CDialogEx
 {
@@ -36,6 +46,6 @@ private: //methods
 private: //member
 	CListMethods m_listCtrl;
 	list<REFERENCE> m_listReference;
+	list<DataColumn*> m_lClmn;
 	bool m_bIsOnlyNames;
-
 };

@@ -37,6 +37,13 @@ BOOL CTabReference::OnInitDialog()
 	m_listCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
 }
 
+DataColumn::DataColumn(CString strName, ListCtrlColumnTypeData eColumnType) 
+{
+	m_strName = strName; 
+	m_eColumnType = eColumnType;
+}
+
+
 // Print average score by subject
 void CTabReference::OnBnClickedButtonAvgScoreBySubject()
 {
@@ -44,10 +51,10 @@ void CTabReference::OnBnClickedButtonAvgScoreBySubject()
 
 	ClearList();
 
-	m_listCtrl.InsertColumnAtEnd("#", eListCtrlColumnTypeData_Int, LVCFMT_LEFT);
-	m_listCtrl.InsertColumnAtEnd("Name", eListCtrlColumnTypeData_String, LVCFMT_LEFT);
-	m_listCtrl.InsertColumnAtEnd("Subject", eListCtrlColumnTypeData_String, LVCFMT_LEFT);
-	m_listCtrl.InsertColumnAtEnd("Avg score", eListCtrlColumnTypeData_Int, LVCFMT_LEFT);
+	m_lClmn.push_back(new DataColumn("#", eListCtrlColumnTypeData_Int));
+	m_lClmn.push_back(new DataColumn("Name", eListCtrlColumnTypeData_String));
+	m_lClmn.push_back(new DataColumn("Subject", eListCtrlColumnTypeData_String));
+	m_lClmn.push_back(new DataColumn("Avg score", eListCtrlColumnTypeData_Int));
 
 	CStudent oStudent;
 	oStudent.AvgScoreBySubject(m_listReference);
@@ -63,10 +70,10 @@ void CTabReference::OnBnClickedButtonAvgScore()
 
 	ClearList();
 	
-	m_listCtrl.InsertColumnAtEnd("#", eListCtrlColumnTypeData_Int, LVCFMT_LEFT);
-	m_listCtrl.InsertColumnAtEnd("Name", eListCtrlColumnTypeData_String, LVCFMT_LEFT);
-	m_listCtrl.InsertColumnAtEnd("Avg score", eListCtrlColumnTypeData_Int, LVCFMT_LEFT);
-
+	m_lClmn.push_back(new DataColumn("#", eListCtrlColumnTypeData_Int));
+	m_lClmn.push_back(new DataColumn("Name", eListCtrlColumnTypeData_String));
+	m_lClmn.push_back(new DataColumn("Avg score", eListCtrlColumnTypeData_Int));
+	
 	CStudent oStudent;
 	oStudent.AvgScoreByAllSubject(m_listReference);
 	LoadData();
@@ -79,9 +86,9 @@ void CTabReference::OnBnClickedButtonCorrectionBySubject()
 
 	ClearList();
 	
-	m_listCtrl.InsertColumnAtEnd("#", eListCtrlColumnTypeData_Int, LVCFMT_LEFT);
-	m_listCtrl.InsertColumnAtEnd("Name", eListCtrlColumnTypeData_String, LVCFMT_LEFT);
-	m_listCtrl.InsertColumnAtEnd("Subject", eListCtrlColumnTypeData_String, LVCFMT_LEFT);
+	m_lClmn.push_back(new DataColumn("#", eListCtrlColumnTypeData_Int));
+	m_lClmn.push_back(new DataColumn("Name", eListCtrlColumnTypeData_String));
+	m_lClmn.push_back(new DataColumn("Subject", eListCtrlColumnTypeData_String));
 
 	CStudent oStudent;
 	oStudent.AvgScoreBySubject(m_listReference);
@@ -95,7 +102,7 @@ void CTabReference::OnBnClickedButtonExcellentStudent()
 
 	ClearList();
 
-	m_listCtrl.InsertColumnAtEnd("Name", eListCtrlColumnTypeData_String, LVCFMT_LEFT);
+	m_lClmn.push_back(new DataColumn("Name", eListCtrlColumnTypeData_String));
 
 	CStudent oStudent;
 	oStudent.ExcellentStud(m_listReference);
@@ -109,7 +116,7 @@ void CTabReference::OnBnClickedButtonBirtdays()
 
 	ClearList();
 	
-	m_listCtrl.InsertColumnAtEnd("Name", eListCtrlColumnTypeData_String, LVCFMT_LEFT);
+	m_lClmn.push_back(new DataColumn("Name", eListCtrlColumnTypeData_String));
 
 	CStudent oStudent;
 	oStudent.PeopleHaveBirthday(m_listReference);
@@ -122,7 +129,7 @@ void CTabReference::OnBnClickedButtonCorrectionByMoreSubjects()
 	m_bIsOnlyNames = true;
 
 	ClearList();
-	m_listCtrl.InsertColumnAtEnd("Name", eListCtrlColumnTypeData_String, LVCFMT_LEFT);
+	m_lClmn.push_back(new DataColumn("Name", eListCtrlColumnTypeData_String));
 
 	CStudent oStudent;
 	oStudent.RemedialExaminationByMoreSub(m_listReference);
@@ -131,12 +138,16 @@ void CTabReference::OnBnClickedButtonCorrectionByMoreSubjects()
 
 void CTabReference::LoadData() 
 {
+	//create column
+	for (auto i = m_lClmn.begin(); i != m_lClmn.end(); ++i)
+	{
+		m_listCtrl.InsertColumnAtEnd((*i)->m_strName, (*i)->m_eColumnType, LVCFMT_LEFT);
+	}
+
 	//fill datas in listCtrl
-	Library oLib;
 	int iId = 0;
 	int nCount = 0;
 	int nItemIndex = 0;
-	CString strClmn;
 
 	for (auto& it = m_listReference.begin(); it != m_listReference.end(); it++)
 	{
@@ -160,6 +171,9 @@ void CTabReference::LoadData()
 	for (int i = 0; i < m_listCtrl.GetHeaderCtrl()->GetItemCount(); ++i) {
 		m_listCtrl.SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
 	}
+
+	//clear list column
+	m_lClmn.clear();
 }
 
 void CTabReference::ClearList()
