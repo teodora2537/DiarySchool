@@ -124,24 +124,7 @@ bool CScore::AddScore(CScoreData& oScoreData)
 
 		//Add score
 		CScoreTable oScoreTable(&g_dbConnection);
-		//oScoreTable.Open();
-		//
-		//if (!oScoreTable.IsOpen()) {
-		//	MessageBox(NULL, "The table Score isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
-		//	oScoreTable.Close();
-		//	return FALSE;
-		//}
-		//
-		//if (!oScoreTable.CanAppend()) 
-		//{
-		//	MessageBox(NULL, "The record can't append!", "Can't append", MB_OK | MB_ICONERROR);
-		//	oScoreTable.Close();
-		//	
-		//	return FALSE;
-		//}
-		//
-		//oScoreTable.AddNew();
-
+		
 		SCORE stScore;
 		FillStructWithObjectData(stScore, oScoreData);
 

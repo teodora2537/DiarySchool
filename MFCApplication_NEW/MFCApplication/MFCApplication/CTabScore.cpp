@@ -35,6 +35,14 @@ BOOL CTabScore::OnInitDialog() {
 	if (!__super::OnInitDialog())
 		return FALSE;
 
+	m_listCtrl.SetBkColor(GetSysColor(COLOR_3DFACE));
+	m_listCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
+	m_listCtrl.InsertColumnAtEnd("#", eListCtrlColumnTypeData_Int, LVCFMT_LEFT);
+	m_listCtrl.InsertColumnAtEnd("Name", eListCtrlColumnTypeData_String, LVCFMT_LEFT);
+	m_listCtrl.InsertColumnAtEnd("Subject", eListCtrlColumnTypeData_String, LVCFMT_LEFT);
+	m_listCtrl.InsertColumnAtEnd("Score", eListCtrlColumnTypeData_Int, LVCFMT_LEFT);
+	m_listCtrl.InsertColumnAtEnd("Date", eListCtrlColumnTypeData_Date, LVCFMT_LEFT);
+
 	LoadData();
 
 	return true;
@@ -206,13 +214,7 @@ void CTabScore::OnNMDblclkList(NMHDR* pNMHDR, LRESULT* pResult) {
 
 void CTabScore::LoadData() 
 {
-	m_listCtrl.SetBkColor(GetSysColor(COLOR_3DFACE));
-	m_listCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
-	m_listCtrl.InsertColumnAtEnd("#", eListCtrlColumnTypeData_Int, LVCFMT_LEFT);
-	m_listCtrl.InsertColumnAtEnd("Name", eListCtrlColumnTypeData_String, LVCFMT_LEFT);
-	m_listCtrl.InsertColumnAtEnd("Subject", eListCtrlColumnTypeData_String, LVCFMT_LEFT);
-	m_listCtrl.InsertColumnAtEnd("Score", eListCtrlColumnTypeData_Int, LVCFMT_LEFT);
-	m_listCtrl.InsertColumnAtEnd("Date", eListCtrlColumnTypeData_Date, LVCFMT_LEFT);
+	
 
 	m_listCtrl.DeleteAllItems();
 
