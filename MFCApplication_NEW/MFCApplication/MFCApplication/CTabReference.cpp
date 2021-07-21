@@ -59,8 +59,6 @@ void CTabReference::OnBnClickedButtonAvgScoreBySubject()
 	CStudent oStudent;
 	oStudent.AvgScoreBySubject(m_listReference);
 	LoadData();
-
-	//m_listCtrl.SetColumnWidth(3, 0); // hight column	
 }
 
 // Print average score by all subject
@@ -139,8 +137,7 @@ void CTabReference::OnBnClickedButtonCorrectionByMoreSubjects()
 void CTabReference::LoadData() 
 {
 	//create column
-	for (auto i = m_lClmn.begin(); i != m_lClmn.end(); ++i)
-	{
+	for (auto i = m_lClmn.begin(); i != m_lClmn.end(); ++i) {
 		m_listCtrl.InsertColumnAtEnd((*i)->m_strName, (*i)->m_eColumnType, LVCFMT_LEFT);
 	}
 
@@ -154,13 +151,11 @@ void CTabReference::LoadData()
 		nCount = m_listCtrl.GetItemCount();
 		nItemIndex = m_listCtrl.InsertItem(nCount, it->szClm0);
 		
-		if (nCount > -1) 
+		if(nCount > -1)
 		{
 			m_listCtrl.SetItemText(nItemIndex, 1, it->szClm1);
 			m_listCtrl.SetItemText(nItemIndex, 2, it->szClm2);
-			if (it->szClm3 != "") {
-				m_listCtrl.SetItemText(nItemIndex, 3, it->szClm3);
-			}
+			m_listCtrl.SetItemText(nItemIndex, 3, it->szClm3);
 		}
 
 		nItemIndex = m_listCtrl.SetItemData(nCount, (DWORD_PTR)iId);

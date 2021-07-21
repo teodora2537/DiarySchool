@@ -6,6 +6,9 @@
 
  CParentData::CParentData()
  {
+	 m_iParentId = 0;
+	 m_iStudentId = 0;
+	 m_eRecordMode = eRecordMode_None;
  }
 
 CParentData::CParentData(int iParentId, int iStudentId, CString strFirstName, CString strLastName, CString strPhoneNumber, 
@@ -68,9 +71,8 @@ bool CParent::Func(int nIdStudent, list<CParentData>& arrParents)
 		return true;
 }
 
-void FillStructWithObjectData(PARENT& stParent, CParentData& oParent)
+void FillDataFromObjectToStruct(PARENT& stParent, CParentData& oParent)
 {
-	stParent.iId = oParent.m_iParentId;
 	stParent.iStudentID = oParent.m_iStudentId;
 	strcpy_s(stParent.sz_First_Name, CStringA(oParent.m_strFirstName).GetString());
 	strcpy_s(stParent.sz_Last_Name, CStringA(oParent.m_strLastName).GetString());
@@ -82,43 +84,17 @@ void FillStructWithObjectData(PARENT& stParent, CParentData& oParent)
 	strcpy_s(stParent.szAddress, CStringA(oParent.m_strAddress).GetString());
 }
 
-bool CParent::AddParent(CParentData & oParent)
+bool CParent::AddParent(CParentData& oParent)
 {
 	CParentTable oParentTable(&g_dbConnection);
-	oParentTable.Open();
-	
-	if(!oParentTable.IsOpen())
-	{
-		MessageBox(NULL, "The table parent isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
-		oParentTable.Close();
-
-		return false;
-	}
-
-	if(!oParentTable.CanAppend())
-	{
-		MessageBox(NULL, "The table parent can't append!", "Can't append", MB_OK | MB_ICONERROR);
-		oParentTable.Close();
-		
-		return false;
-	}
-
-	if (oParentTable.IsExist(oParent)) {
-		return true;
-	}
-
-	oParentTable.AddNew();
 	
 	PARENT stParent;
-	FillStructWithObjectData(stParent, oParent);
 
-	oParentTable.Add_Edit_Parent(stParent);
+	FillDataFromObjectToStruct(stParent, oParent);
 
-	if (!oParentTable.Update())
+	if (!oParentTable.AddRec(stParent))
 	{
-		MessageBox(NULL, "The record can't update!", "Can't update", MB_OK | MB_ICONERROR);
-		
-		g_dbConnection.Rollback();
+		MessageBox(NULL, "The record can't added!", "Can't added", MB_OK | MB_ICONERROR);
 		oParentTable.Close();
 		
 		return false;
@@ -131,87 +107,44 @@ bool CParent::AddParent(CParentData & oParent)
 
 bool CParent::EditParent(CParentData& oParent)
 {
-   CParentTable oParentTable(&g_dbConnection);
-
-	oParentTable.m_strFilter.Format("id = '%d'", oParent.m_iParentId);
-
-	oParentTable.Open();
-	
-	if (!oParentTable.IsOpen())
-	{
-		MessageBox(NULL, "The table Parent isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
-		oParentTable.Close();
-		
-		return false;
-	}
-	
-	oParentTable.Edit();
-	
-	if (!oParent.m_strFirstName.IsEmpty()) {
-		return true;
-	}
+	CParentTable oParentTable(&g_dbConnection);
 
 	PARENT stParent;
-	FillStructWithObjectData(stParent, oParent);
+	stParent.iId = oParent.m_iParentId;
+	FillDataFromObjectToStruct(stParent, oParent);
 
-	oParentTable.Add_Edit_Parent(stParent);
-
-	if (!oParentTable.Update())
+	if (!oParentTable.EditRec(stParent))
 	{
 		MessageBox(NULL, "The record can't update!", "Can't update", MB_OK | MB_ICONERROR);
-		
-		g_dbConnection.Rollback();
 		oParentTable.Close();
-		
 		return false;
 	}
 
 	oParentTable.Close();
-   
    	return true;
 }
 
- bool CParent::DeleteParent(const int nIdStudent)
+ bool CParent::DeleteParents(const int nIdStudent)
  {
 	 try
 	 {
 		 CParentTable oParentTable(&g_dbConnection);
-		 oParentTable.m_strFilter.Format("student_id = '%d'", nIdStudent);
-		 oParentTable.Open();
 
-		 if (!oParentTable.IsOpen())
+		 PARENT stParent;
+		 stParent.iStudentID = nIdStudent;
+
+		 if (!oParentTable.DeleteRecords(stParent))
 		 {
-			 MessageBox(NULL, "The table Student isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
+			 MessageBox(NULL, "The record can't delete!", "Can't delete", MB_OK | MB_ICONERROR);
 			 oParentTable.Close();
-
 			 return false;
 		 }
 
-		 if (oParentTable.m_str_first_name.IsEmpty())
-		 {
-			 oParentTable.Close();
-			 
-			 return true;
-		 }
-
-		 while (!oParentTable.IsEOF())
-		 {
-			oParentTable.Delete();
-			oParentTable.MoveNext();
-		 }
-		
-		 if (!oParentTable.IsDeleted())
-		 {
-			 MessageBox(NULL, "The record isn't deleted!", "Isn't deleted", MB_OK | MB_ICONERROR);
-			 oParentTable.Close();
-			 
-			 return false;
-		 }
+		 oParentTable.Close();
 	 }
 	 catch (exception e)
 	 {
 		 AfxMessageBox("Error delete student!", MB_ICONEXCLAMATION);
-		 
 		 return false;
 	 }
 
@@ -223,36 +156,41 @@ bool CParent::EditParent(CParentData& oParent)
 	 try
 	 {
 		CParentTable oParentTable(&g_dbConnection);
-		oParentTable.m_strFilter.Format("id = '%d'", nIdParent);
 
-		oParentTable.Open();
+		PARENT stParent;
+		stParent.iId = nIdParent;
 
-		if (!oParentTable.IsOpen())
+		if (!oParentTable.DeleteRec(stParent))
 		{
-			MessageBox(NULL, "The table Student isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
+			MessageBox(NULL, "The record can't delete!", "Can't delete", MB_OK | MB_ICONERROR);
 			oParentTable.Close();
-		
+
 			return false;
 		}
 
-		oParentTable.Delete();
-		
-		if (!oParentTable.IsDeleted())
-		 {
-			 MessageBox(NULL, "The record isn't deleted!", "Isn't deleted", MB_OK | MB_ICONERROR);
-			 oParentTable.Close();
-			
-			 return false;
-		 }
+		oParentTable.Close();
 	 }
 	 catch (exception e)
 	 {
 		 AfxMessageBox("Error delete student!", MB_ICONEXCLAMATION);
-		 
 		 return false;
 	 }
 
 	 return true;
+ }
+
+ void FillDataFromStructToObject(CParentData& oParent, PARENT& recParent)
+ {
+	 oParent.m_iParentId = recParent.iId;
+	 oParent.m_iStudentId = recParent.iStudentID;
+	 oParent.m_strFirstName = recParent.sz_First_Name;
+	 oParent.m_strLastName = recParent.sz_Last_Name;
+	 oParent.m_strPhoneNumber = recParent.szPhoneNumber;
+	 oParent.m_strEmail = recParent.szEmail;
+	 oParent.m_strCity = recParent.szCity;
+	 oParent.m_strPostCode = recParent.szPostCode;
+	 oParent.m_strNeighborhood = recParent.szNeighborhood;
+	 oParent.m_strAddress = recParent.szAddress;
  }
 
  bool CParent::PrintParentByStudent(const int& nIdStudent, list<CParentData>& lParent)
@@ -270,11 +208,13 @@ bool CParent::EditParent(CParentData& oParent)
 		 return false;
 	 }
 
+		 PARENT stParent;
+		 CParentData oParent;
+
 	 while (!oParentTable.IsEOF())
 	 {
-		 CParentData oParent;
-	 
-		 oParentTable.LoadParent(oParent);
+		 oParentTable.GetRecStruct(stParent);
+		 FillDataFromStructToObject(oParent, stParent);
 		 oParent.m_eRecordMode = eRecordMode_None;
 		 lParent.push_back(oParent);
 
@@ -289,21 +229,11 @@ bool CParent::EditParent(CParentData& oParent)
 	 try
 	 {
 		 CParentTable oParentTable(&g_dbConnection);
-		 oParentTable.m_strFilter.Format("id = '%d'", oParent.m_iParentId);
+		 PARENT recParent;
+		 recParent.iId = oParent.m_iParentId;
+		 oParentTable.LoadParent(recParent);
 
-		 oParentTable.Open();
-
-		 if (!oParentTable.IsOpen())
-		 {
-			 MessageBox(NULL, "The table Parent isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
-			 oParentTable.Close();
-		
-			 return false;
-		 }
-
-		 oParentTable.LoadParent(oParent);
-	
-		 oParentTable.Close();
+		 FillDataFromStructToObject(oParent, recParent);
 	 }
 	 catch (exception e)
 	 {

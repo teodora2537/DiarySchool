@@ -42,8 +42,9 @@ BOOL CTabSubject::OnInitDialog() {
 	LoadData(true);
 
 	//autosize column
-	for (int i = 0; i < m_listCtrl.GetHeaderCtrl()->GetItemCount(); ++i)
+	for (int i = 0; i < m_listCtrl.GetHeaderCtrl()->GetItemCount(); ++i) {
 		m_listCtrl.SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
+	}
 
 	return true;
 }
@@ -79,13 +80,15 @@ void CTabSubject::OnAddSubject()
 
 	CSubjectDlg dlg(oSubjectData, eDialogMode_Add);
 
-	if (dlg.DoModal() != IDOK)
+	if (dlg.DoModal() != IDOK) {
 		return;
+	}
 
 	if (!oSubject.AddSubject(oSubjectData))
 	{
-		if (IDRETRY)
+		if (IDRETRY) {
 			OnAddSubject();
+		}
 		return;
 	}
 
@@ -97,8 +100,9 @@ void CTabSubject::OnEditSubject()
 	POSITION pos = m_listCtrl.GetFirstSelectedItemPosition();
 	
 	/*Нямам нужда от тази проверка, защото ,мога да Edit-вам само селектиран елемен, иначе са ми disable*/
-	if (pos == NULL)
+	if (pos == NULL) {
 		return;
+	}
 
 	int nItem = m_listCtrl.GetNextSelectedItem(pos);
 	
@@ -114,19 +118,24 @@ void CTabSubject::OnEditSubject()
 	CSubjectData oSubjectData;
 	CSubject oSubject;
 
-	if (!oSubject.LoadSubject(nId, oSubjectData))
+	if (!oSubject.LoadSubject(nId, oSubjectData)) {
 		return;
+	}
 
 	CSubjectDlg dlg(oSubjectData, eDialogMode_Edit);
 
-	if (dlg.DoModal() != IDOK)
+	if (dlg.DoModal() != IDOK) {
 		return;
+	}
 
 	if (!oSubject.EditSubject(oSubjectData))
 	{
 		MessageBox("The subject not updated!", "Error", MB_RETRYCANCEL | MB_ICONERROR);
-		if (IDRETRY)
+		
+		if (IDRETRY) {
 			OnEditSubject();
+		}
+
 		return;
 	}
 
@@ -137,8 +146,9 @@ void CTabSubject::OnDeleteSubject()
 {
 	POSITION pos = m_listCtrl.GetFirstSelectedItemPosition();
 
-	if (pos == NULL)
+	if (pos == NULL) {
 		return;
+	}
 
 	int nItem = m_listCtrl.GetNextSelectedItem(pos);
 
@@ -157,11 +167,13 @@ void CTabSubject::OnDeleteSubject()
 	int result = MessageBox(message, "Delete subject", MB_YESNO);
 
 	//button yes clicked
-	if (result != IDYES)
+	if (result != IDYES) {
 		return;
+	}
 
-	if (!oSubject.DeleteSubject(nId))
+	if (!oSubject.DeleteSubject(nId)) {
 		return;
+	}
 
 	m_listCtrl.DeleteItem(nItem);
 }
@@ -170,8 +182,9 @@ void CTabSubject::OnViewSubject()
 {
 	POSITION pos = m_listCtrl.GetFirstSelectedItemPosition();
 	
-	if (pos == NULL)
+	if (pos == NULL) {
 		return;
+	}
 
 	int nItem = m_listCtrl.GetNextSelectedItem(pos);
 	
@@ -187,13 +200,15 @@ void CTabSubject::OnViewSubject()
 	CSubjectData oSubjectData;
 	CSubject oSubject;
 
-	if (!oSubject.LoadSubject(nId, oSubjectData))
+	if (!oSubject.LoadSubject(nId, oSubjectData)) {
 		return;
+	}
 
 	CSubjectDlg dlg(oSubjectData, eDialogMode_View);
 
-	if (dlg.DoModal() != IDOK)
+	if (dlg.DoModal() != IDOK) {
 		return;
+	}
 }
 
 void CTabSubject::OnNMDblclkList(NMHDR* pNMHDR, LRESULT* pResult)

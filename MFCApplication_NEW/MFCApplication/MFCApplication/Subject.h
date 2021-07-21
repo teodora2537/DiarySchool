@@ -29,5 +29,5 @@ public: //methods
 	void PrintSubject(list<CSubjectData>& listSub);
 
 	void GetLastId(CSubjectData& oSubject);
-	bool IsContainsSubject(CSubjectData& oSubject);
+	//bool IsContainsSubject(CSubjectData& oSubject);
 };

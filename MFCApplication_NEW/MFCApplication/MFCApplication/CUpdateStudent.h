@@ -54,4 +54,5 @@ public: //member
 	CDateTimeCtrl m_dtCtrlBirthday;
 	CStudentData& m_oStudent;
 	list<CParentData> m_lParents;
+	int m_nCount = -1;
 };

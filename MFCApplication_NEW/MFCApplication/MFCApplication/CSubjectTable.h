@@ -31,6 +31,7 @@ protected: //methods
 	virtual CString GetDefaultConnection();
 	virtual CString GetDefaultSQL();
 
+
 public: //member
 	int	m_iId;
 	CString m_strSubject;
@@ -41,6 +42,12 @@ public: //member
 public: //methods
 	void Add_Edit(SUBJECT& stSubject);
 	void DeleteSubject();
-	void Load(CSubjectData& oSubject);
-	bool IsExist(CSubjectData& oSubject);
+	BOOL Load(SUBJECT& recSubject);
+	bool IsExist(const SUBJECT& recSubject, bool& bExists);
+	bool IsEquals(const SUBJECT& recSubject, bool& bEquals);
+	BOOL AddRec(SUBJECT& stSubject);
+	BOOL EditRec(SUBJECT& recSubject);
+	BOOL DeleteRec(SUBJECT& recSubject);
+	BOOL LoadSubject(SUBJECT& recSubject);
+	void GetRecStruct(SUBJECT& stSubject);
 };

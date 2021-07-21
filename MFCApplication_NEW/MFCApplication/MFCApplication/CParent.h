@@ -33,7 +33,7 @@ public:
 	bool Func(int nIdStudent, list<CParentData>& arrParents);
 	bool PrintParentByStudent(const int& nIdStudent, list<CParentData>& lParent);
 	bool LoadParent(CParentData& oParent);
-	bool DeleteParent(const int nId);
+	bool DeleteParents(const int nId);
 	
 //Functions
 private:

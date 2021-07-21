@@ -15,7 +15,13 @@ CScoreData::CScoreData(int _idScore, int _idStudent, CString _subject, int _scor
 }
 
 CScoreData::CScoreData()
-{}
+{
+	m_iIdScore = 0;
+	m_iIdStudent = 0;
+	m_iIdSubject = 0;
+	m_iScore = 0;
+	m_oleDateTime = COleDateTime::GetCurrentTime();
+}
 
 extern CDatabase g_dbConnection;
 
@@ -44,7 +50,7 @@ bool CScore::IsContainAStudent(CScoreData& oScoreData)
 			return false;
 		}
 
-		if (!oStudentTable.m_iId) 
+		if (oStudentTable.GetRecordCount() < 1)
 		{
 			MessageBox(NULL, "The student isn't exist!", "Isn't exist", MB_OK | MB_ICONERROR);
 			oStudentTable.Close();
@@ -68,11 +74,8 @@ bool CScore::GetIdSubject(CScoreData& oScore)
 	try 
 	{
 		//get id subject
-		CString strWhere;
-		strWhere.Format("subject = '%s';", oScore.m_strSubject);
-		
 		CSubjectTable oSubjectTable(&g_dbConnection);
-		oSubjectTable.m_strFilter = strWhere;
+		oSubjectTable.m_strFilter.Format("subject = '%s';", oScore.m_strSubject);
 		oSubjectTable.Open();
 
 		if (!oSubjectTable.IsOpen()) 
@@ -109,49 +112,46 @@ bool CScore::AddScore(CScoreData& oScoreData)
 {
 	// is valid id student
 	if (!IsContainAStudent(oScoreData))	{
-		return false;
+		return FALSE;
 	}
 	
 	try 
 	{
 		//Get id subject
 		if (!GetIdSubject(oScoreData)) {
-			return false;
+			return FALSE;
 		}
 
 		//Add score
 		CScoreTable oScoreTable(&g_dbConnection);
-		oScoreTable.Open();
-
-		if (!oScoreTable.IsOpen()) {
-			MessageBox(NULL, "The table Score isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
-			oScoreTable.Close();
-			return false;
-		}
-
-		if (!oScoreTable.CanAppend()) 
-		{
-			MessageBox(NULL, "The record can't append!", "Can't append", MB_OK | MB_ICONERROR);
-			oScoreTable.Close();
-			
-			return false;
-		}
-
-		oScoreTable.AddNew();
+		//oScoreTable.Open();
+		//
+		//if (!oScoreTable.IsOpen()) {
+		//	MessageBox(NULL, "The table Score isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
+		//	oScoreTable.Close();
+		//	return FALSE;
+		//}
+		//
+		//if (!oScoreTable.CanAppend()) 
+		//{
+		//	MessageBox(NULL, "The record can't append!", "Can't append", MB_OK | MB_ICONERROR);
+		//	oScoreTable.Close();
+		//	
+		//	return FALSE;
+		//}
+		//
+		//oScoreTable.AddNew();
 
 		SCORE stScore;
 		FillStructWithObjectData(stScore, oScoreData);
 
-		oScoreTable.Add_Edit_Score(stScore);
-		
-		if (!oScoreTable.Update()) 
+		if (!oScoreTable.AddRec(stScore))
 		{
-			MessageBox(NULL, "The record can't update!", "Can't update", MB_OK | MB_ICONERROR);
+			MessageBox(NULL, "The record can't added!", "Can't added", MB_OK | MB_ICONERROR);
 			oScoreTable.Close();
-			
+
 			return false;
 		}
-
 		 oScoreTable.Close();
 	}
 	catch (exception e)
@@ -169,36 +169,20 @@ bool CScore::EditScore(CScoreData& oScore)
 	{
 		//get id subject
 		GetIdSubject(oScore);
-
-		CString strWhere;
-		strWhere.Format("id = '%d'", oScore.m_iIdScore);
-		
 		CScoreTable oScoreTable(&g_dbConnection);
-		oScoreTable.m_strFilter = strWhere;
-		oScoreTable.Open();
-	
-		if (!oScoreTable.IsOpen()) 
-		{
-			MessageBox(NULL, "The table Score isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
-			oScoreTable.Close();
-
-			return false;
-		}
-
-		oScoreTable.Edit();
 
 		SCORE stScore;
+		stScore.iIdScore = oScore.m_iIdScore;
+
 		FillStructWithObjectData(stScore, oScore);
 
-		oScoreTable.Add_Edit_Score(stScore);
-
-		if (!oScoreTable.Update())
+		if (!oScoreTable.EditRec(stScore))
 		{
 			MessageBox(NULL, "The record can't update!", "Can't update", MB_OK | MB_ICONERROR);
 			oScoreTable.Close();
-
 			return false;
 		}
+			oScoreTable.Close();
 	}
 	catch (exception e)
 	{
@@ -212,30 +196,19 @@ bool CScore::DeleteScore(const int nIdScore)
 {
 	try
 	{
-		CString strWhere;
-		strWhere.Format("id = '%d'", nIdScore);
-		
 		CScoreTable oScoreTable(&g_dbConnection);
-		oScoreTable.m_strFilter = strWhere;
-		oScoreTable.Open();
-		
-		if (!oScoreTable.IsOpen())
-		{
-			MessageBox(NULL, "The table Score isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
-			oScoreTable.Close();
 
-			return false;
+		SCORE stScore;
+		stScore.iIdScore = nIdScore;
+
+		if (!oScoreTable.DeleteRec(stScore))
+		{
+			MessageBox(NULL, "The record can't delete!", "Can't delete", MB_OK | MB_ICONERROR);
+			oScoreTable.Close();
+			return FALSE;
 		}
 
-		oScoreTable.Delete();
-		
-		if (!oScoreTable.IsDeleted())
-		{
-			MessageBox(NULL, "The record isn't deleted!", "Isn't deleted", MB_OK | MB_ICONERROR);
-			oScoreTable.Close();
-
-			return false;
-		}
+		oScoreTable.Close();
 	}
 	catch (exception e)
 	{
@@ -258,6 +231,10 @@ bool CScore::DeleteScoreByStudent(int nIdStudent)
 			MessageBox(NULL, "The table Student isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
 			return false;
 		}
+
+		if (oScoreTable.GetRecordCount() == 0)
+			return true;
+
 		while (!oScoreTable.IsEOF())
 		{
 			oScoreTable.Delete();
@@ -341,24 +318,36 @@ void CScore::GetSubject(CScoreData& oScore)
 bool CScore::LoadScore(const int nIdScore, CScoreData& oScore)
 {
 	try {
-		//get score
-		CString strWhere;
-		strWhere.Format("id = '%d'", nIdScore);
-		
 		CScoreTable oScoreTable(&g_dbConnection);
-		oScoreTable.m_strFilter = strWhere;
-		oScoreTable.Open();
 
-		if (!oScoreTable.IsOpen())
-		{
-			MessageBox(NULL, "The table Score isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
-			oScoreTable.Close();
-			
-			return false;
-		}
-		
-		oScoreTable.Load(oScore);
+		SCORE recScore;
+		recScore.iIdScore = nIdScore;
+		oScoreTable.LoadScore(recScore);
 
+		Library oLib;
+		oScore.m_iIdScore =	recScore.iIdScore;
+		oScore.m_iIdStudent = recScore.iIdStudent;
+		oScore.m_iIdSubject = recScore.iIdSubject;
+		oScore.m_iScore = recScore.iScore;
+		oScore.m_oleDateTime = oLib.CStringToDate(recScore.szDate);
+
+		//get score
+		//CString strWhere;
+		//strWhere.Format("id = '%d'", nIdScore);
+		//
+		//oScoreTable.m_strFilter = strWhere;
+		//oScoreTable.Open();
+		//
+		//if (!oScoreTable.IsOpen())
+		//{
+		//	MessageBox(NULL, "The table Score isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
+		//	oScoreTable.Close();
+		//	
+		//	return false;
+		//}
+		//
+		//oScoreTable.LoadScore(oScore);
+		//
 		oScoreTable.Close();
 
 		//get student name

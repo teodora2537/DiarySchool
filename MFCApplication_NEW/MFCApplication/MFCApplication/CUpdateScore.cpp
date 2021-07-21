@@ -23,7 +23,7 @@ void CScoreDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_COMBO_SUBJECT, m_strSubject);
 	//date
 	DDX_Control(pDX, IDC_DATETIMEPICKER, m_dtCtrlDate);
-	CString formatStr = _T("MM'/'dd'/'yyyy");
+	CString formatStr = _T("yyyy'-'MM'-'dd");
 	m_dtCtrlDate.SetFormat(formatStr);
 	//combobox
 	DDX_Control(pDX, IDC_COMBO_SUBJECT, m_comboBoxSubject);
@@ -90,12 +90,11 @@ void CScoreDlg::FillEditBoxes()
 	m_strScore = oLib.IntToCString(m_oScore.m_iScore);
 	m_strSubject = m_oScore.m_strSubject;
 
-	if (m_eMode != eDialogMode_Add)
-	{
+	if (m_eMode != eDialogMode_Add) {
 		m_dtCtrlDate.SetTime(m_oScore.m_oleDateTime);
 	}
-	else {
-
+	else 
+	{
 		this->SetWindowText("Add Score");
 		GetDlgItem(IDC_EDIT_SCORE_STUDENT_ID)->EnableWindow(TRUE);
 
@@ -125,8 +124,9 @@ void CScoreDlg::EnableDisableBoxes()
 /*virtual*/
 BOOL CScoreDlg::OnInitDialog()
 {
-	if (!__super::OnInitDialog())
+	if (!__super::OnInitDialog()) {
 		return FALSE;
+	}
 	
 	/*Range date*/
 	SetRangeOfDTPicker();
@@ -134,10 +134,12 @@ BOOL CScoreDlg::OnInitDialog()
 	/*Fill combo box*/
 	FillComboBox();
 
-	if (m_eMode == eDialogMode_Edit)
+	if (m_eMode == eDialogMode_Edit) {
 		this->SetWindowText("Update Score");
-	else if (m_eMode == eDialogMode_View)
+	}
+	else if (m_eMode == eDialogMode_View) {
 		this->SetWindowText("Score");
+	}
 
 	/*Set enable/disable of edit boxes*/
 	EnableDisableBoxes();
@@ -188,8 +190,9 @@ void CScoreDlg::OnBnClickedOk()
 {
 	UpdateData(TRUE);
 
-	if (m_eMode != eDialogMode_View && !ValidateData())
+	if (m_eMode != eDialogMode_View && !ValidateData()) {
 		return;
+	}
 
 	m_oScore.m_iIdStudent = atoi(m_strStudentID);
 	m_oScore.m_strSubject = m_strSubject;

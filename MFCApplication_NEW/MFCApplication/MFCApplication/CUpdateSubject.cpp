@@ -44,15 +44,19 @@ void CSubjectDlg::EnableDisableBoxes()
 /*virtual*/
 BOOL CSubjectDlg::OnInitDialog()
 {
-	if (!__super::OnInitDialog())
+	if (!__super::OnInitDialog()) {
 		return FALSE;
+	}
 
-	if (m_eMode == eDialogMode_Add)
+	if (m_eMode == eDialogMode_Add) {
 		this->SetWindowText("Add Subject");
-	else if (m_eMode == eDialogMode_Edit)
+	}
+	else if (m_eMode == eDialogMode_Edit) {
 		this->SetWindowText("Edit Subject");
-	else if (m_eMode == eDialogMode_View)
+	}
+	else if (m_eMode == eDialogMode_View) {
 		this->SetWindowText("Subject");
+	}
 
 	/*Set enable/disable of edit boxes*/
 	EnableDisableBoxes();
@@ -106,8 +110,9 @@ void CSubjectDlg::OnBnClickedOk()
 {
 	UpdateData(TRUE);
 
-	if (m_eMode != eDialogMode_View && !ValidateData())
+	if (m_eMode != eDialogMode_View && !ValidateData()) {
 		return;
+	}
 
 	m_oSubject.m_iId = atoi(m_strRoomNum);
 	m_oSubject.m_strSubject = m_strSubject;

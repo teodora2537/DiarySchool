@@ -10,6 +10,8 @@ CSubjectTable::CSubjectTable(CDatabase* pdb)
 	m_nFields = 5;
 	m_nParams = 5;
 	m_nDefaultType = dynaset;
+
+	m_iId = 0;
 }
 
 CSubjectTable::~CSubjectTable()
@@ -45,6 +47,14 @@ CString CSubjectTable::GetDefaultSQL() {
 	return "[Subject]";
 }
 
+void CSubjectTable::GetRecStruct(SUBJECT& stSubject)
+{
+	stSubject.iId = m_iId;
+	strcpy_s(stSubject.szSubject, CStringA(m_strSubject).GetString());
+	strcpy_s(stSubject.sz_First_Name, CStringA(m_strFirstNameTeacher).GetString());
+	strcpy_s(stSubject.sz_Last_Name, CStringA(m_strLastNameTeacher).GetString());
+}
+
 void CSubjectTable::Add_Edit(SUBJECT& stSubject) 
 {
 	m_strSubject = stSubject.szSubject;
@@ -52,25 +62,248 @@ void CSubjectTable::Add_Edit(SUBJECT& stSubject)
 	m_strLastNameTeacher = stSubject.sz_Last_Name;
 }
 
-void CSubjectTable::DeleteSubject() {
-	m_strStatus = "unactiv";
+BOOL CSubjectTable::Load(SUBJECT& recSubject) 
+{
+	m_strFilter.Format("id = '%d'", recSubject.iId);
+
+	if (!Open())
+	{
+		MessageBox(NULL, "The table subject isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
+		Close();
+		return FALSE;
+	}
+
+	if (!IsOpen())
+	{
+		MessageBox(NULL, "The table subject isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
+		Close();
+
+		return FALSE;
+	}
+
+	GetRecStruct(recSubject);
+
+	Close();
+
+	return TRUE;
 }
 
-void CSubjectTable::Load(CSubjectData& oSubject) 
+bool CSubjectTable::IsExist(const SUBJECT& recSubject, bool& bExists)
 {
-	oSubject.m_iId = m_iId;
-	oSubject.m_strSubject = m_strSubject;
-	oSubject.m_strFirstNameTeacher = m_strFirstNameTeacher;
-	oSubject.m_strLastNameTeacher = m_strLastNameTeacher;
+	bExists = false;
+
+	m_strFilter.Format("subject = '%s' ", recSubject.szSubject);
+
+	if (!Open())
+	{
+		MessageBox(NULL, "The table subject isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
+		Close();
+		return FALSE;
+	}
+
+	if (!IsOpen())
+	{
+		MessageBox(NULL, "The table subject isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
+		Close();
+		return FALSE;
+	}
+
+
+	bExists = GetRecordCount() > 0;
+
+	Close();
+
+	return TRUE;
 }
 
-bool CSubjectTable::IsExist(CSubjectData& oSubject) 
+/*TO DOS*/
+bool CSubjectTable::IsEquals(const SUBJECT& recSubject, bool& bEquals) 
 {
-		if (m_strSubject == oSubject.m_strSubject &&
-			m_strFirstNameTeacher ==  oSubject.m_strFirstNameTeacher &&
-			m_strLastNameTeacher == oSubject.m_strLastNameTeacher) {
-				return true;
-			}
+	return FALSE;
+}
 
-	return false;
+BOOL CSubjectTable::AddRec(SUBJECT& recSubject)
+{
+	bool bExists = false;
+
+	if (!IsExist(recSubject, bExists))
+		return FALSE;
+
+	if (bExists)
+	{
+		MessageBox(NULL, "The record is exist!", "Isn't Add", MB_OK | MB_ICONERROR);
+		return FALSE;
+	}
+
+	if (!Open())
+	{
+		MessageBox(NULL, "The table subject isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
+		Close();
+		return FALSE;
+	}
+
+	if (!IsOpen())
+	{
+		MessageBox(NULL, "The table subject isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
+		Close();
+
+		return false;
+	}
+
+	if (!CanAppend())
+	{
+		MessageBox(NULL, "The table subject can't append!", "Can't append", MB_OK | MB_ICONERROR);
+		Close();
+
+		return false;
+	}
+
+	AddNew();
+
+	Add_Edit(recSubject);
+
+	if (!Update())
+	{
+		MessageBox(NULL, "The record can't update!", "Can't update", MB_OK | MB_ICONERROR);
+		Close();
+
+		return FALSE;
+	}
+
+	Close();
+
+	return TRUE;
+}
+
+BOOL CSubjectTable::EditRec(SUBJECT& recSubject)
+{
+	bool bExists = false;
+	if (IsEquals(recSubject, bExists))
+	return FALSE;
+
+	m_strFilter.Format("id = '%d'", recSubject.iId);
+
+	if (!Open())
+	{
+		MessageBox(NULL, "The table subject isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
+		Close();
+		return FALSE;
+	}
+
+	if (!IsOpen())
+	{
+		MessageBox(NULL, "The table subject isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
+		Close();
+
+		return false;
+	}
+
+	if (!CanUpdate())
+	{
+		MessageBox(NULL, "The table subject can't update!", "Can't update", MB_OK | MB_ICONERROR);
+		Close();
+
+		return false;
+	}
+
+	Edit();
+
+	SUBJECT recordSubject;
+
+	GetRecStruct(recordSubject);
+
+	SUBJECT stSubject;
+
+	if (memcmp(&recordSubject, &stSubject, sizeof(recordSubject)))
+	{
+		Close();
+		return true;
+	}
+
+	stSubject = recSubject;
+
+	Add_Edit(stSubject);
+
+	if (!Update())
+	{
+		MessageBox(NULL, "The record can't update!", "Can't update", MB_OK | MB_ICONERROR);
+
+		g_dbConnection.Rollback();
+		Close();
+
+		return false;
+	}
+
+	Close();
+
+	return TRUE;
+}
+
+BOOL CSubjectTable::DeleteRec(SUBJECT& recSubject)
+{
+	try
+	{
+		m_strFilter.Format("id = '%d'", recSubject.iId);
+
+		if (!Open())
+		{
+			MessageBox(NULL, "The table subject isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
+			Close();
+			return FALSE;
+		}
+
+		if (!IsOpen())
+		{
+			MessageBox(NULL, "The table subject isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
+			Close();
+			return FALSE;
+		}
+
+		Edit();
+
+		m_strStatus = "unactiv";
+
+		if (!Update()) {
+			MessageBox(NULL, "The record can't delete!", "Can't delete", MB_OK | MB_ICONERROR);
+			Close();
+
+			return FALSE;
+		}
+
+		Close();
+	}
+	catch (exception e)
+	{
+		AfxMessageBox("Error delete subject!", MB_ICONEXCLAMATION);
+
+		return FALSE;
+	}
+
+	return TRUE;
+}
+
+BOOL CSubjectTable::LoadSubject(SUBJECT& recSubject)
+{
+	m_strFilter.Format("id = '%d'", recSubject.iId);
+
+	if (!Open())
+	{
+		MessageBox(NULL, "The table subject isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
+		Close();
+		return FALSE;
+	}
+
+	if (!IsOpen())
+	{
+		MessageBox(NULL, "The table subject isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
+		Close();
+
+		return false;
+	}
+
+	GetRecStruct(recSubject);
+
+	Close();
+
+	return true;
 }

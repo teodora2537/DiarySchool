@@ -66,6 +66,7 @@ public://reference methods
 	void PeopleHaveBirthday(list<REFERENCE>& listReference);
 	void RemedialExaminationBySub(list<REFERENCE>& listReference);
 	void RemedialExaminationByMoreSub(list<REFERENCE>& listReference);
+	
 	//get
 	bool GetLastAddedID(CString& nIdStudent);
 	void GetLastId(int& lastID);

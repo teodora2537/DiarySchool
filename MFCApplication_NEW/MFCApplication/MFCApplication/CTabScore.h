@@ -21,6 +21,7 @@ public:
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	BOOL OnInitDialog();
+	
 
 	DECLARE_MESSAGE_MAP()
 
@@ -33,7 +34,9 @@ private: //contex menu methods
 
 private: //methods
 	void afx_msg OnNMDblclkList(NMHDR* pNMHDR, LRESULT* pResult);
-	void LoadData(bool isFromFile);
+	
+public: //methods 
+	void LoadData();
 
 private: //member
 	CListMethods m_listCtrl;

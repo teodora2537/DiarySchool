@@ -6,7 +6,6 @@
 struct PARENT {
 	int  iId;
 	int  iStudentID;
-	char szName[100 + 1]; // sz- char array ->name student
 	char sz_First_Name[50 + 1];
 	char sz_Last_Name[50 + 1];
 	char szEmail[100 + 1];
@@ -15,7 +14,6 @@ struct PARENT {
 	char szPostCode[10 + 1];
 	char szNeighborhood[70 + 1];
 	char szAddress[1000 + 1]; //max size
-	char szRecordMode[20];
 
 	PARENT()
 	{
@@ -51,7 +49,15 @@ public: //member
 	CString m_str_address;
 
 public: //methods
-	void LoadParent(CParentData& oParent);
+	//void LoadParent(CParentData& oParent);//ssus struct
 	void Add_Edit_Parent(PARENT& oParent);
-	bool IsExist(CParentData& oParent);
+	void GetRecStruct(PARENT& oParent);
+	BOOL IsExist(const PARENT& oParent, bool& bExists);
+	BOOL AddRec(PARENT& oParent);
+	BOOL IsEquals(PARENT& obj1, PARENT& obj2);
+	BOOL EditRec(PARENT& recParent);
+	BOOL DeleteRecords(PARENT& recParent);
+	BOOL DeleteRec(PARENT& recParent);
+	BOOL LoadParent(PARENT& recParent);
+	//OOL PrintParents(PARENT& recPArent, list<PARENT&> lRecParent);
 };

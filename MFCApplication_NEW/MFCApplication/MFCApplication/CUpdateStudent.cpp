@@ -41,8 +41,9 @@ void CStudentDlg::DoDataExchange(CDataExchange* pDX)
 
 BOOL CStudentDlg::OnInitDialog()
 {
-	if (!__super::OnInitDialog())
+	if (!__super::OnInitDialog()) {
 		return FALSE;
+	}
 	
 	//Set Title boxes
 	if (m_eMode == eDialogMode_Add) {
@@ -75,14 +76,16 @@ BOOL CStudentDlg::OnInitDialog()
 	m_listCtrl.InsertColumnAtEnd("Neighborhood", eListCtrlColumnTypeData_String, LVCFMT_LEFT);
 	m_listCtrl.InsertColumnAtEnd("Address", eListCtrlColumnTypeData_String, LVCFMT_LEFT);
 
-	if (m_eMode != eDialogMode_Add)
+	if (m_eMode != eDialogMode_Add) {
 		LoadDatas(m_oStudent.m_iStudentId);
+	}
 
 	m_listCtrl.SetBkColor(GetSysColor(COLOR_3DFACE));
 
 	//autosize column
-	for (int i = 0; i < m_listCtrl.GetHeaderCtrl()->GetItemCount(); ++i)
+	for (int i = 0; i < m_listCtrl.GetHeaderCtrl()->GetItemCount(); ++i) {
 		m_listCtrl.SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
+	}
 
 	return TRUE;
 }
@@ -90,6 +93,8 @@ BOOL CStudentDlg::OnInitDialog()
 /*Set range date*/
 void CStudentDlg::SetRangeOfDTPicker()
 {
+
+
 	COleDateTime currentDate = COleDateTime::GetCurrentTime();
 	COleDateTime dtMinRange;
 	COleDateTime dtMaxRange;
@@ -103,7 +108,7 @@ void CStudentDlg::SetRangeOfDTPicker()
 void CStudentDlg::FillEditBoxes()
 {
 	Library oLib;
-	m_strStudentId =	oLib.IntToCString(m_oStudent.m_iStudentId);
+	m_strStudentId = oLib.IntToCString(m_oStudent.m_iStudentId);
 	m_strFirst_name = m_oStudent.m_strFirstName;
 	m_strLast_name = m_oStudent.m_strLastName;
 	m_strPhoneNumber = m_oStudent.m_strPhoneNumber;
@@ -114,8 +119,7 @@ void CStudentDlg::FillEditBoxes()
 	m_strNeighborhood = m_oStudent.m_strNeighborhood;
 	m_strAddress = m_oStudent.m_strAddress;
 
-	if (m_eMode != eDialogMode_Add)
-	{
+	if (m_eMode != eDialogMode_Add) {
 		m_dtCtrlBirthday.SetTime(m_oStudent.m_oleDTBirthday);
 	}
 
@@ -170,14 +174,15 @@ void CStudentDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 	
 	bool bIsItemSelected = pos != NULL;
 
-	if (m_eParentMode == eRecordMode_Add) 
-	{
-		int nItem = m_listCtrl.GetNextSelectedItem(pos);
-		int nId = (int)m_listCtrl.GetItemData(nItem);
-	
-		if (nId < 0)
-			return;
-	}
+	//if (m_eParentMode == eRecordMode_Add) 
+	//{
+	//	int nItem = m_listCtrl.GetNextSelectedItem(pos);
+	//	int nId = (int)m_listCtrl.GetItemData(nItem);
+	//
+	//	if (nId < 0) {
+	//		return;
+	//	}
+	//}
 
 	CMenu submenu;
 	submenu.CreatePopupMenu();
@@ -193,6 +198,7 @@ void CStudentDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 	submenu.EnableMenuItem(IDC_MENU_VIEW_PARENT, !bIsItemSelected);
 
 	submenu.TrackPopupMenu(TPM_LEFTALIGN, point.x, point.y, this);
+	;
 }
 
 void CStudentDlg::OnAddParent()
@@ -207,6 +213,7 @@ void CStudentDlg::OnAddParent()
 	}
 
 	oParentData.m_eRecordMode = eRecordMode_Add;
+	oParentData.m_iStudentId =atoi(m_strStudentId);
 	m_oStudent.m_arrParents.push_back(oParentData);
 
 	//Add parent in list
@@ -214,7 +221,7 @@ void CStudentDlg::OnAddParent()
 
 	Library oLib;
 
-	int nItemIndex = m_listCtrl.InsertItem(nCount, "0");
+	int nItemIndex = m_listCtrl.InsertItem(nCount, oLib.IntToCString(m_nCount));
 
 	if (nItemIndex > -1)
 	{
@@ -229,6 +236,8 @@ void CStudentDlg::OnAddParent()
 
 		//set index back item
 		nItemIndex = m_listCtrl.SetItemData(nCount, (DWORD_PTR)oParentData.m_iParentId);
+
+		--m_nCount;
 	}
 }
 
@@ -236,8 +245,9 @@ void CStudentDlg::OnEditParent()
 {
 	POSITION pos = m_listCtrl.GetFirstSelectedItemPosition();
 
-	if (pos == NULL)
+	if (pos == NULL) {
 		return;
+	}
 
 	int nItem = m_listCtrl.GetNextSelectedItem(pos);
 
@@ -249,6 +259,7 @@ void CStudentDlg::OnEditParent()
 	}
 
 	int nId = (int)m_listCtrl.GetItemData(nItem);
+
 	CParentData oParentData;
 	CParentData oOldParentData;
 
@@ -258,13 +269,16 @@ void CStudentDlg::OnEditParent()
 
 	CParentDlg dlg(oParentData, eDialogMode_Edit);
 	
-	if (dlg.DoModal() != IDOK)
+	if (dlg.DoModal() != IDOK) {
 		return;
+	}
 	
+	//erase old parent than push new parent
 	m_oStudent.m_arrParents.erase(remove_if(m_oStudent.m_arrParents.begin(), m_oStudent.m_arrParents.end(),
 		[&](CParentData const& p) { return p.m_iParentId == nId; }));
-
+	if(nId > 0)
 	oParentData.m_eRecordMode = eRecordMode_Edit;
+	
 	m_oStudent.m_arrParents.push_back(oParentData);
 
 	//Show change parent
@@ -282,8 +296,9 @@ void CStudentDlg::OnDeleteParent()
 {
 	POSITION pos = m_listCtrl.GetFirstSelectedItemPosition();
 
-	if (pos == NULL)
+	if (pos == NULL) {
 		return;
+	}
 
 	int nItem = m_listCtrl.GetNextSelectedItem(pos);
 
@@ -295,21 +310,20 @@ void CStudentDlg::OnDeleteParent()
 
 	int nId = (int)m_listCtrl.GetItemData(nItem);
 
-	CStudent oStudent;
-
 	CString message;
 	message.Format("Do you want to delete parent with # %d?", nId);
 	int result = MessageBox(message, "Delete Parent", MB_YESNO);
 
 	//button yes clicked
-	if (result != IDYES)
+	if (result != IDYES) {
 		return;
+	}
 
 	CParentData oParentData;
 	oParentData.m_eRecordMode = eRecordMode_Delete;
 	oParentData.m_iParentId = nId;
 
-	//Remove old 
+	//Remove parent
 	m_oStudent.m_arrParents.erase(remove_if(m_oStudent.m_arrParents.begin(), m_oStudent.m_arrParents.end(),
 		[&](CParentData const& p) { return p.m_iParentId == nId; }));
 	
@@ -322,13 +336,14 @@ void CStudentDlg::OnViewParent()
 {
 	POSITION pos = m_listCtrl.GetFirstSelectedItemPosition();
 
-	if (pos == NULL)
+	if (pos == NULL) {
 		return;
+	}
 
 	int nItem = m_listCtrl.GetNextSelectedItem(pos);
 
 	//if don't get selected item
-	if (nItem < 0)
+	if (nItem < 0) 
 	{
 		MessageBox(NULL, "Don't get selected item!", MB_OK | MB_ICONERROR);
 		return;
@@ -345,13 +360,15 @@ void CStudentDlg::OnViewParent()
 	
 	oParentData.m_iParentId = nId;
 
-	if (!oParent.LoadParent(oParentData))
+	if (!oParent.LoadParent(oParentData)) {
 		return;
+	}
 
 	CParentDlg dlg(oParentData, eDialogMode_View);
 
-	if (dlg.DoModal() != IDOK)
+	if (dlg.DoModal() != IDOK) {
 		return;
+	}
 }
 
 void CStudentDlg::OnNMDblclkList(NMHDR* pNMHDR, LRESULT* pResult)
@@ -401,44 +418,62 @@ BOOL CStudentDlg::ValidateStudent()
 			MessageBox("Missing first name of student!", "Error", MB_ICONHAND);
 			return FALSE;
 		}
-		else if (m_strLast_name.IsEmpty())
+		
+		if (m_strLast_name.IsEmpty())
 		{
 			MessageBox("Missing last name of student!", "Error", MB_ICONHAND);
 			return FALSE;
 		}
-		else if (m_strEmail.IsEmpty())
+		
+		if (m_strEmail.IsEmpty())
 		{
 			MessageBox("Missing email of student!", "Error", MB_ICONHAND);
 			return FALSE;
 		}
-		else if (m_strPhoneNumber.IsEmpty() || m_strPhoneNumber.GetLength() < 8)
+		
+		if (m_strPhoneNumber.IsEmpty() || m_strPhoneNumber.GetLength() < 8)
 		{
 			MessageBox("Error phone number of student!", "Error", MB_ICONHAND);
 			return FALSE;
 		}
-		else if (m_strEGN.IsEmpty())
+		
+		if (m_strEGN.IsEmpty())
 		{
 			MessageBox("Missing egn of student!", "Error", MB_ICONHAND);
 			return FALSE;
 		}
-		else if (m_strCity.IsEmpty())
+		
+		if (m_strCity.IsEmpty())
 		{
 			MessageBox("Missing city of student!", "Error", MB_ICONHAND);
 			return FALSE;
 		}
-		else if (m_strPostCode.IsEmpty())
+		
+		if (m_strPostCode.IsEmpty())
 		{
 			MessageBox("Missing post code  of student!", "Error", MB_ICONHAND);
 			return FALSE;
 		}
-		else if (m_strNeighborhood.IsEmpty())
+		
+		if (m_strNeighborhood.IsEmpty())
 		{
 			MessageBox("Missing neighborhood  of student!", "Error", MB_ICONHAND);
 			return FALSE;
 		}
-		else if (m_strAddress.IsEmpty())
+		
+		if (m_strAddress.IsEmpty())
 		{
 			MessageBox("Missing address  of student!", "Error", MB_ICONHAND);
+			return FALSE;
+		}
+
+		m_dtCtrlBirthday.GetTime(m_oStudent.m_oleDTBirthday);
+
+		if (atoi("19" + m_strEGN.Mid(0, 2)) != m_oStudent.m_oleDTBirthday.GetYear() ||
+			atoi(m_strEGN.Mid(2, 2)) != m_oStudent.m_oleDTBirthday.GetMonth() ||
+			atoi(m_strEGN.Mid(4, 2)) != m_oStudent.m_oleDTBirthday.GetDay())
+		{
+			MessageBox("Birthday with EGN are different!", "Error", MB_ICONHAND);
 			return FALSE;
 		}
 	}

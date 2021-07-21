@@ -35,6 +35,7 @@ protected:
 private: //methods
 	afx_msg void OnBnClickedButtonAvgScoreBySubject();
 	void ClearList();
+	//void ButtonStyle();
 	afx_msg void OnBnClickedButtonAvgScore();
 	afx_msg void OnBnClickedButtonExcellentStudent();
 	afx_msg void OnBnClickedButtonBirtdays();

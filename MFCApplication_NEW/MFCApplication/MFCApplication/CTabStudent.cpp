@@ -27,10 +27,12 @@ BEGIN_MESSAGE_MAP(CTabStudent, CDialogEx)
 	ON_NOTIFY(NM_DBLCLK, IDC_LIST_STUDENT, &CTabStudent::OnNMDblclkList)
 END_MESSAGE_MAP()
 
-BOOL CTabStudent::OnInitDialog() {
+BOOL CTabStudent::OnInitDialog() 
+{
 
-	if (!__super::OnInitDialog())
+	if (!__super::OnInitDialog()) {
 		return FALSE;
+	}
 
 	m_listCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
 	m_listCtrl.InsertColumnAtEnd("#", eListCtrlColumnTypeData_Int, LVCFMT_LEFT);
@@ -84,13 +86,15 @@ void CTabStudent::OnAddStudent()
 
 	CStudentDlg dlg(oStudentData, eDialogMode_Add);
 
-	if (dlg.DoModal() != IDOK)
+	if (dlg.DoModal() != IDOK) {
 		return;
+	}
 
 	if (!oStudent.AddStudent(oStudentData))
 	{
-		if (IDRETRY)
+		if (IDRETRY) {
 			OnAddStudent();
+		}
 		return;
 	}
 
@@ -100,8 +104,9 @@ void CTabStudent::OnAddStudent()
 void CTabStudent::OnEditStudent()
 {
 	POSITION pos = m_listCtrl.GetFirstSelectedItemPosition();
-	if (pos == NULL)
+	if (pos == NULL) {
 		return;
+	}
 
 	int nItem = m_listCtrl.GetNextSelectedItem(pos);
 	
@@ -117,19 +122,21 @@ void CTabStudent::OnEditStudent()
 	CStudentData oStudentData;
 	CStudent oStudent;
 
-	if (!oStudent.LoadStudent(nId, oStudentData))
+	if (!oStudent.LoadStudent(nId, oStudentData)) {
 		return;
+	}
 
 	CStudentDlg dlg(oStudentData, eDialogMode_Edit);
 
-	if (dlg.DoModal() != IDOK)
+	if (dlg.DoModal() != IDOK) {
 		return;
-
+	}
 
 	if (!oStudent.EditStudent(oStudentData)) {
 
-		if (IDRETRY)
+		if (IDRETRY) {
 			OnEditStudent();
+		}
 		return;
 	}
 
@@ -140,8 +147,9 @@ void CTabStudent::OnDeleteStudent()
 {
 	POSITION pos = m_listCtrl.GetFirstSelectedItemPosition();
 	
-	if (pos == NULL)
+	if (pos == NULL) {
 		return;
+	}
 
 	int nItem = m_listCtrl.GetNextSelectedItem(pos);
 
@@ -190,17 +198,18 @@ void CTabStudent::OnViewStudent()
 
 	CStudent oScore;
 
-	if (!oScore.LoadStudent(nId, oStudentData))
+	if (!oScore.LoadStudent(nId, oStudentData)) {
 		return;
+	}
 
 	CStudentDlg dlg(oStudentData, eDialogMode_View);
 
-	if (dlg.DoModal() != IDOK)
+	if (dlg.DoModal() != IDOK) {
 		return;
+	}
 }
 
-void CTabStudent::OnNMDblclkList(NMHDR* pNMHDR, LRESULT* pResult)
-{
+void CTabStudent::OnNMDblclkList(NMHDR* pNMHDR, LRESULT* pResult) {
 	OnViewStudent();
 }
 

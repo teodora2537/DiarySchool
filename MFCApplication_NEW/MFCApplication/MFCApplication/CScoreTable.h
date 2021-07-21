@@ -9,11 +9,11 @@ struct SCORE
 {
 	int iIdScore; // id score
 	int iIdStudent; // id student
-	char szName[DEF_NAME_LEN + 1]; // sz- char array ->name student
+//	char szName[DEF_NAME_LEN + 1]; // sz- char array ->name student
 	int iIdSubject; // id subject
-	char szSubject[DEF_NAME_LEN + 1]; // name subject
+	//char szSubject[DEF_NAME_LEN + 1]; // name subject
 	int iScore; //score
-	char szDate[9 + 1];//DBTIMESTAMP ->date of score
+	char szDate[10 + 1];//DBTIMESTAMP ->date of score
 
 	SCORE()
 	{
@@ -33,6 +33,8 @@ protected: //methods
 	virtual CString GetDefaultConnection();
 	virtual CString GetDefaultSQL();
 
+	void GetRecStruct(SCORE& oScore);
+
 public: //memeber
 	int m_iIdScore;
 	int m_iIdStudent;
@@ -42,5 +44,9 @@ public: //memeber
 
 public: //methods
 	void Add_Edit_Score(SCORE& stScore);
-	void Load(CScoreData& oScore);
+	BOOL AddRec(SCORE& recScore);
+	BOOL IsEquals(SCORE& obj1, SCORE& obj2);
+	BOOL EditRec(SCORE& recScore);
+	BOOL DeleteRec(SCORE& recScore);
+	BOOL LoadScore(SCORE& recScore);
 };

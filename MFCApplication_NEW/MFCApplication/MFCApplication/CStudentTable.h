@@ -38,6 +38,7 @@ protected: //methods
 	virtual CString GetDefaultConnection();
 	virtual CString GetDefaultSQL();
 
+
 public: //member
 	int m_iId;
 	CString m_str_First_name;
@@ -54,6 +55,11 @@ public: //member
 
 public: // methods
     void Add_Edit_Student(STUDENT& stStudent);
-	void LoadStudent(CStudentData& oStudent);
-	bool IsExist(CStudentData& oStudent);
+	BOOL LoadStudent(STUDENT& oStudent);
+	bool IsExist(const STUDENT& recStudent, bool& bExists);
+	BOOL AddRec(STUDENT& recStudent);
+	BOOL IsEquals(STUDENT& obj1, STUDENT& obj2);
+	BOOL EditRec(STUDENT& recStudent);
+	BOOL DeleteRec(STUDENT& recStudent);
+void GetRecStruct(STUDENT& oStudent);
 };

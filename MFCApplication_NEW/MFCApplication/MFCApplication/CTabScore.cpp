@@ -35,20 +35,7 @@ BOOL CTabScore::OnInitDialog() {
 	if (!__super::OnInitDialog())
 		return FALSE;
 
-	m_listCtrl.SetBkColor(GetSysColor(COLOR_3DFACE));
-	m_listCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
-	m_listCtrl.InsertColumnAtEnd("#", eListCtrlColumnTypeData_Int, LVCFMT_LEFT);
-	m_listCtrl.InsertColumnAtEnd("Name", eListCtrlColumnTypeData_String, LVCFMT_LEFT);
-	m_listCtrl.InsertColumnAtEnd("Subject", eListCtrlColumnTypeData_String, LVCFMT_LEFT);
-	m_listCtrl.InsertColumnAtEnd("Score", eListCtrlColumnTypeData_Int, LVCFMT_LEFT);
-	m_listCtrl.InsertColumnAtEnd("Date", eListCtrlColumnTypeData_Date, LVCFMT_LEFT);
-
-	LoadData(true);
-	
-	//autosize column
-	for (int i = 0; i < m_listCtrl.GetHeaderCtrl()->GetItemCount(); ++i) {
-		m_listCtrl.SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
-	}
+	LoadData();
 
 	return true;
 }
@@ -83,24 +70,27 @@ void CTabScore::OnAddScore()
 
 	CScoreDlg dlg(oScoreData, eDialogMode_Add);
 
-	if (dlg.DoModal() != IDOK)
-		return;
-
-	if (!oScore.AddScore(oScoreData)) 
-	{	
-		if (IDRETRY)
-			OnAddScore();
+	if (dlg.DoModal() != IDOK) {
 		return;
 	}
 
-	LoadData(true);
+	if (!oScore.AddScore(oScoreData)) 
+	{	
+		if (IDRETRY) {
+			OnAddScore();
+		}
+		return;
+	}
+
+	LoadData();
 }
 
 void CTabScore::OnEditScore()
 {
 	POSITION pos = m_listCtrl.GetFirstSelectedItemPosition();
-	if (pos == NULL)
+	if (pos == NULL) {
 		return;
+	}
 
 	int nItem = m_listCtrl.GetNextSelectedItem(pos);
 	
@@ -117,30 +107,35 @@ void CTabScore::OnEditScore()
 	oScoreData.m_iIdScore = nId;
 	CScore oScore;
 
-	if (!oScore.LoadScore(nId, oScoreData))
+	if (!oScore.LoadScore(nId, oScoreData)) {
 		return;
+	}
 	
 	CScoreDlg dlg(oScoreData, eDialogMode_Edit);
 
-	if (dlg.DoModal() != IDOK)
-		return;
-
-	if (!oScore.EditScore(oScoreData)) 
-	{
-		if (IDRETRY)
-			OnEditScore();
+	if (dlg.DoModal() != IDOK) {
 		return;
 	}
 
-	LoadData(true);
+	if (!oScore.EditScore(oScoreData)) 
+	{
+		if (IDRETRY) { 
+			OnEditScore();
+		}
+
+		return;
+	}
+
+	LoadData();
 }
 
 void CTabScore::OnDeleteScore()
 {
 	POSITION pos = m_listCtrl.GetFirstSelectedItemPosition();
 	
-	if (pos == NULL)
+	if (pos == NULL) {
 		return;
+	}
 
 	int nItem = m_listCtrl.GetNextSelectedItem(pos);
 	
@@ -153,17 +148,19 @@ void CTabScore::OnDeleteScore()
 	
 	int nId = (int)m_listCtrl.GetItemData(nItem);
 
-	CScore oScore;
 	CString message;
 	message.Format("Do you want to delete score with id # %d?", nId);
 	int result = MessageBox(message, "Delete subject", MB_YESNO);
 
 	//button yes clicked
-	if (result != IDYES)
+	if (result != IDYES) {
 		return;
+	}
 
-	if (!oScore.DeleteScore(nId))
+	CScore oScore;
+	if (!oScore.DeleteScore(nId)) {
 		return;
+	}
 	
 	m_listCtrl.DeleteItem(nItem);
 }
@@ -172,8 +169,9 @@ void CTabScore::OnViewScore()
 {
 	POSITION pos = m_listCtrl.GetFirstSelectedItemPosition();
 	
-	if (pos == NULL)
+	if (pos == NULL) {
 		return;
+	}
 
 	int nItem = m_listCtrl.GetNextSelectedItem(pos);
 	
@@ -190,28 +188,40 @@ void CTabScore::OnViewScore()
 
 	CScore oScore;
 
-	if (!oScore.LoadScore(nId, oScoreData))
+	if (!oScore.LoadScore(nId, oScoreData)) {
 		return;
+	}
 
 	CScoreDlg dlg(oScoreData, eDialogMode_View);
 
-	if (dlg.DoModal() != IDOK)
+	if (dlg.DoModal() != IDOK) {
 		return;
+	}
 }
 
-void CTabScore::OnNMDblclkList(NMHDR* pNMHDR, LRESULT* pResult)
-{
+void CTabScore::OnNMDblclkList(NMHDR* pNMHDR, LRESULT* pResult) {
 	OnViewScore();
 }
 
-void CTabScore::LoadData(bool isFromFile) {
-	
+
+void CTabScore::LoadData() 
+{
+	m_listCtrl.SetBkColor(GetSysColor(COLOR_3DFACE));
+	m_listCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
+	m_listCtrl.InsertColumnAtEnd("#", eListCtrlColumnTypeData_Int, LVCFMT_LEFT);
+	m_listCtrl.InsertColumnAtEnd("Name", eListCtrlColumnTypeData_String, LVCFMT_LEFT);
+	m_listCtrl.InsertColumnAtEnd("Subject", eListCtrlColumnTypeData_String, LVCFMT_LEFT);
+	m_listCtrl.InsertColumnAtEnd("Score", eListCtrlColumnTypeData_Int, LVCFMT_LEFT);
+	m_listCtrl.InsertColumnAtEnd("Date", eListCtrlColumnTypeData_Date, LVCFMT_LEFT);
+
 	m_listCtrl.DeleteAllItems();
 
-	if (isFromFile) {
 		m_listScore.clear();
 		CScore oScore;
 		oScore.Print_Score(m_listScore);
+
+	if (m_listScore.size() == 0) {
+		MessageBox("The list score is empty!", "Error", MB_OK | MB_ICONERROR);
 	}
 
 	Library oLib;
@@ -236,5 +246,10 @@ void CTabScore::LoadData(bool isFromFile) {
 			//set index back item
 			nItemIndex = m_listCtrl.SetItemData(nCount, (DWORD_PTR)it->m_iIdScore);
 		}
+	}
+
+	//autosize column
+	for (int i = 0; i < m_listCtrl.GetHeaderCtrl()->GetItemCount(); ++i) {
+		m_listCtrl.SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
 	}
 }

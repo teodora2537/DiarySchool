@@ -30,7 +30,7 @@ CString Library::IntToCString(int input) {
 
 CString Library::OleDTToCString(COleDateTime input) {
 	CString str;
-	str.Format("%d/%d/%d" ,input.GetMonth(), input.GetDay(), input.GetYear());
+	str.Format("%d-%d-%d" , input.GetYear(), input.GetMonth(), input.GetDay());
 	return str;
 }
 

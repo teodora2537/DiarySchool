@@ -243,6 +243,7 @@
     <ResourceCompile Include="MFCApplication.rc" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="resource.hm" />
     <None Include="res\MFCApplication.rc2" />
   </ItemGroup>
   <ItemGroup>
