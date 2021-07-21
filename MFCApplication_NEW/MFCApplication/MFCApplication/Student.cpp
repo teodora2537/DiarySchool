@@ -84,7 +84,6 @@ void FillDataFromObjectToStruct(STUDENT& stStudent, CStudentData& oStudent)
 	strcpy_s(stStudent.szAddress, CStringA(oStudent.m_strAddress).GetString());
 }
 
-/*TO DO*/
 bool CStudent::AddStudent(CStudentData& oStudent)
 {	
 	try
@@ -115,28 +114,6 @@ bool CStudent::AddStudent(CStudentData& oStudent)
 			return false;
 		}
 		
-		bool bIsExist = false;// = oStudentTable.IsExist(oStudent);
-
-		if (!bIsExist) 
-		{
-			oStudentTable.AddNew();
-
-			STUDENT stStudent;
-			FillDataFromObjectToStruct(stStudent, oStudent);
-
-			oStudentTable.Add_Edit_Student(stStudent);
-			
-			if (!oStudentTable.Update())
-			{
-				MessageBox(NULL, "The record can't update!", "Can't update", MB_OK | MB_ICONERROR);
-				
-				g_dbConnection.Rollback();
-				oStudentTable.Close();
-				
-				return false;
-			}
-		}
-		
 		//List 'Parents' is empty
 		if (oStudent.m_arrParents.size() == 0) 
 		{
@@ -151,7 +128,7 @@ bool CStudent::AddStudent(CStudentData& oStudent)
 		
 		CParent oParent;
 
-		if (!oParent.Func(atoi(strIdStudent), oStudent.m_arrParents) && !bIsExist) {
+		if (!oParent.Func(atoi(strIdStudent), oStudent.m_arrParents)) {
 			g_dbConnection.Rollback();
 		}
 
@@ -175,36 +152,6 @@ bool CStudent::EditStudent(CStudentData& oStudent)
 		CStudentTable oStudentTable(&g_dbConnection);
 	try
 	{
-
-		//oStudentTable.m_strFilter.Format("id='%d'", oStudent.m_iStudentId);
-		//
-		//oStudentTable.Open();
-		//
-		//if (!oStudentTable.IsOpen())
-		//{
-		//	MessageBox(NULL, "The table Student isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
-		//	oStudentTable.Close();
-		//
-		//	return false;
-		//}
-		//
-		//oStudentTable.Edit();
-		//
-		//if(!oStudentTable.IsExist(oStudent))
-		//{
-		//	STUDENT stStudent;
-		//	FillDataFromObjectToStruct(stStudent, oStudent);
-		//	oStudentTable.Add_Edit_Student(stStudent);
-		//
-		//	if (!oStudentTable.Update())
-		//	{
-		//		MessageBox(NULL, "The record can't update!", "Can't update", MB_OK | MB_ICONERROR);
-		//		oStudentTable.Close();
-		//		
-		//		return false;
-		//	}
-		//}
-
 		STUDENT stStudent;
 		stStudent.iId = oStudent.m_iStudentId;
 		FillDataFromObjectToStruct(stStudent, oStudent);
@@ -306,32 +253,10 @@ bool CStudent::LoadStudent(const int nIdStudent, CStudentData& oStudent)
 		oStudent.m_strNeighborhood = oStudentTable.m_str_neighborhood;
 		oStudent.m_strAddress = oStudentTable.m_str_address;
 
-
-	//try
-	//{
-	//	oStudentTable.m_strFilter.Format("id = '%d'", nIdStudent);
-	//	oStudentTable.Open();
-	//
-	//	if (!oStudentTable.IsOpen())
-	//	{
-	//		MessageBox(NULL, "The table Student isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
-	//		return false;
-	//	}
-	//	
-	//	oStudent.m_iStudentId = nIdStudent;
-	//	oStudentTable.LoadStudent(oStudent);
-	//
 		CParent oParent;
 		//Print by class
 		oParent.PrintParentByStudent(nIdStudent, oStudent.m_arrParents);
 		oStudentTable.Close();
-	//
-	//}
-	//catch (exception e)
-	//{
-	//	AfxMessageBox("Error load student!", MB_ICONEXCLAMATION);
-	//	return false;
-	//}
 
 	return TRUE;
 }
