@@ -28,8 +28,8 @@ BEGIN_MESSAGE_MAP(CTabSubject, CDialogEx)
 	ON_NOTIFY(NM_DBLCLK, IDC_LIST_SUBJECT, &CTabSubject::OnNMDblclkList)
 END_MESSAGE_MAP()
 
-BOOL CTabSubject::OnInitDialog() {
-
+BOOL CTabSubject::OnInitDialog() 
+{
 	if (!__super::OnInitDialog())
 		return FALSE;
 
@@ -39,14 +39,14 @@ BOOL CTabSubject::OnInitDialog() {
 	m_listCtrl.InsertColumnAtEnd("Subject", eListCtrlColumnTypeData_String, LVCFMT_LEFT);
 	m_listCtrl.InsertColumnAtEnd("Teacher", eListCtrlColumnTypeData_String, LVCFMT_LEFT);
 	
-	LoadData(true);
+	LoadData();
 
 	//autosize column
 	for (int i = 0; i < m_listCtrl.GetHeaderCtrl()->GetItemCount(); ++i) {
 		m_listCtrl.SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
 	}
 
-	return true;
+	return TRUE;
 }
 
 void CTabSubject::OnContextMenu(CWnd* pWnd, CPoint point)
@@ -92,14 +92,13 @@ void CTabSubject::OnAddSubject()
 		return;
 	}
 
-	LoadData(true);
+	LoadData();
 }
 
 void CTabSubject::OnEditSubject()
 {
 	POSITION pos = m_listCtrl.GetFirstSelectedItemPosition();
 	
-	/*Нямам нужда от тази проверка, защото ,мога да Edit-вам само селектиран елемен, иначе са ми disable*/
 	if (pos == NULL) {
 		return;
 	}
@@ -139,7 +138,7 @@ void CTabSubject::OnEditSubject()
 		return;
 	}
 
-	LoadData(true);
+	LoadData();
 }
 
 void CTabSubject::OnDeleteSubject()
@@ -160,8 +159,6 @@ void CTabSubject::OnDeleteSubject()
 
 	int nId = (int)m_listCtrl.GetItemData(nItem);
 
-	CSubject oSubject;
-
 	CString message;
 	message.Format("Do you want to delete subject with room # %d?", nId);
 	int result = MessageBox(message, "Delete subject", MB_YESNO);
@@ -171,6 +168,7 @@ void CTabSubject::OnDeleteSubject()
 		return;
 	}
 
+	CSubject oSubject;
 	if (!oSubject.DeleteSubject(nId)) {
 		return;
 	}
@@ -211,22 +209,18 @@ void CTabSubject::OnViewSubject()
 	}
 }
 
-void CTabSubject::OnNMDblclkList(NMHDR* pNMHDR, LRESULT* pResult)
-{
+void CTabSubject::OnNMDblclkList(NMHDR* pNMHDR, LRESULT* pResult) {
 	OnViewSubject();
 }
 
-void CTabSubject::LoadData(bool isFromFile)
+void CTabSubject::LoadData()
 {
 	m_listCtrl.DeleteAllItems();
 	
-	if (isFromFile)
-	{
 		m_listSubject.clear();
 		CSubject oSubject;
 		oSubject.PrintSubject(m_listSubject);
-	}
-	
+
 	Library oLib; 
 	
 	int nCount = 0;

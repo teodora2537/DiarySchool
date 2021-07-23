@@ -30,7 +30,8 @@ BEGIN_MESSAGE_MAP(CTabScore, CDialogEx)
 END_MESSAGE_MAP()
 
 /*virtual*/
-BOOL CTabScore::OnInitDialog() {
+BOOL CTabScore::OnInitDialog() 
+{
 
 	if (!__super::OnInitDialog())
 		return FALSE;
@@ -45,7 +46,7 @@ BOOL CTabScore::OnInitDialog() {
 
 	LoadData();
 
-	return true;
+	return TRUE;
 }
 
 void CTabScore::OnContextMenu(CWnd* pWnd, CPoint point)
@@ -96,6 +97,7 @@ void CTabScore::OnAddScore()
 void CTabScore::OnEditScore()
 {
 	POSITION pos = m_listCtrl.GetFirstSelectedItemPosition();
+	
 	if (pos == NULL) {
 		return;
 	}
@@ -214,20 +216,19 @@ void CTabScore::OnNMDblclkList(NMHDR* pNMHDR, LRESULT* pResult) {
 
 void CTabScore::LoadData() 
 {
-	
-
 	m_listCtrl.DeleteAllItems();
 
-		m_listScore.clear();
-		CScore oScore;
-		oScore.Print_Score(m_listScore);
+	m_listScore.clear();
+
+	CScore oScore;
+	oScore.Print_Score(m_listScore);
 
 	if (m_listScore.size() == 0) {
 		MessageBox("The list score is empty!", "Error", MB_OK | MB_ICONERROR);
+		return;
 	}
 
 	Library oLib;
-
 	int nCount = 0;
 	int nItemIndex = 0;
 

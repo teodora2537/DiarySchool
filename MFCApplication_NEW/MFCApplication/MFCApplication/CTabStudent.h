@@ -31,8 +31,7 @@ private: //methods
 
 private: //methods
 	afx_msg void OnNMDblclkList(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg void OnLvnColumnclickList_(NMHDR* pNMHDR, LRESULT* pResult);
-	void LoadData(bool isFromFile);
+	void LoadData();
 
 private: //member 
 	CListMethods m_listCtrl;

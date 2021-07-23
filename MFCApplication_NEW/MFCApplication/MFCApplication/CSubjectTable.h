@@ -15,6 +15,8 @@ struct SUBJECT {
 	{
 		SecureZeroMemory(this, sizeof(*this));
 	}
+
+	const BOOL IsEquals(const SUBJECT& obj1, const SUBJECT& obj2);
 };
 
 class CSubjectTable : public CRecordset
@@ -41,13 +43,14 @@ public: //member
 	
 public: //methods
 	void Add_Edit(SUBJECT& stSubject);
-	void DeleteSubject();
-	BOOL Load(SUBJECT& recSubject);
 	bool IsExist(const SUBJECT& recSubject, bool& bExists);
-	bool IsEquals(const SUBJECT& recSubject, bool& bEquals);
+	
 	BOOL AddRec(SUBJECT& stSubject);
 	BOOL EditRec(SUBJECT& recSubject);
 	BOOL DeleteRec(SUBJECT& recSubject);
 	BOOL LoadSubject(SUBJECT& recSubject);
+
+	//get
+	BOOL GetLastId(SUBJECT& recSubject);
 	void GetRecStruct(SUBJECT& stSubject);
 };

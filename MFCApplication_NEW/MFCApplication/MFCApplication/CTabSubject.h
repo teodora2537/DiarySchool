@@ -31,7 +31,7 @@ private: //Context Menu
 
 private: //methods 
 	afx_msg void OnNMDblclkList(NMHDR* pNMHDR, LRESULT* pResult);
-	void LoadData(bool isFromFile);
+	void LoadData();
 	DECLARE_MESSAGE_MAP()
 
 private: //member

@@ -6,11 +6,7 @@ class CParentData
 {
 public: //Constructories
 	CParentData();
-	CParentData(int iParentId, int iStudentId, CString  strFirstName, CString strLastName,  CString strPhoneNumber,
-				CString strEmail, CString strCity, CString strPostCode, CString strNeighborhood, 
-				CString strAddress);
 
-	
 public: //member
 	int m_iParentId;
 	int m_iStudentId;
@@ -22,22 +18,22 @@ public: //member
 	CString m_strPostCode;
 	CString m_strNeighborhood;
 	CString m_strAddress;
+
 	RecordMode m_eRecordMode;
 };
 
 class CParent
 {
-
-//Functions
+	//Functions
 public:
 	bool Func(int nIdStudent, list<CParentData>& arrParents);
 	bool PrintParentByStudent(const int& nIdStudent, list<CParentData>& lParent);
 	bool LoadParent(CParentData& oParent);
-	bool DeleteParents(const int nId);
 	
-//Functions
+	//Functions ADD/EDIT/DELETE
 private:
 	bool AddParent(CParentData& oParent);
 	bool EditParent(CParentData& oParent);
 	bool DeleteOneParent(const int nIdParent);
+	bool DeleteParents(const int nId);
 };

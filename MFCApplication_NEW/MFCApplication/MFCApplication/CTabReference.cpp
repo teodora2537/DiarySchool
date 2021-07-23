@@ -6,7 +6,6 @@ IMPLEMENT_DYNAMIC(CTabReference, CDialogEx)
 CTabReference::CTabReference()
 	: CDialogEx(IDD_DIALOG_TAB_REFERENCES)
 {
-	m_bIsOnlyNames = false;
 }
 
 CTabReference::~CTabReference()
@@ -37,7 +36,7 @@ BOOL CTabReference::OnInitDialog()
 	m_listCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
 }
 
-DataColumn::DataColumn(CString strName, ListCtrlColumnTypeData eColumnType) 
+DataColumn::DataColumn(CString strName, ListCtrlColumnTypeData eColumnType)
 {
 	m_strName = strName; 
 	m_eColumnType = eColumnType;
@@ -47,8 +46,6 @@ DataColumn::DataColumn(CString strName, ListCtrlColumnTypeData eColumnType)
 // Print average score by subject
 void CTabReference::OnBnClickedButtonAvgScoreBySubject()
 {
-	m_bIsOnlyNames = false;
-
 	ClearList();
 
 	m_lClmn.push_back(new DataColumn("#", eListCtrlColumnTypeData_Int));
@@ -64,8 +61,6 @@ void CTabReference::OnBnClickedButtonAvgScoreBySubject()
 // Print average score by all subject
 void CTabReference::OnBnClickedButtonAvgScore()
 {
-	m_bIsOnlyNames = false;
-
 	ClearList();
 	
 	m_lClmn.push_back(new DataColumn("#", eListCtrlColumnTypeData_Int));
@@ -80,8 +75,6 @@ void CTabReference::OnBnClickedButtonAvgScore()
 //Correct by subject
 void CTabReference::OnBnClickedButtonCorrectionBySubject()
 {
-	m_bIsOnlyNames = false;
-
 	ClearList();
 	
 	m_lClmn.push_back(new DataColumn("#", eListCtrlColumnTypeData_Int));
@@ -96,8 +89,6 @@ void CTabReference::OnBnClickedButtonCorrectionBySubject()
 //Print excelent student
 void CTabReference::OnBnClickedButtonExcellentStudent()
 {
-	m_bIsOnlyNames = true;
-
 	ClearList();
 
 	m_lClmn.push_back(new DataColumn("Name", eListCtrlColumnTypeData_String));
@@ -110,8 +101,6 @@ void CTabReference::OnBnClickedButtonExcellentStudent()
 //Print birthdays
 void CTabReference::OnBnClickedButtonBirtdays()
 {
-	m_bIsOnlyNames = true;
-
 	ClearList();
 	
 	m_lClmn.push_back(new DataColumn("Name", eListCtrlColumnTypeData_String));
@@ -124,8 +113,6 @@ void CTabReference::OnBnClickedButtonBirtdays()
 //Remedial examination by more 3 subjects
 void CTabReference::OnBnClickedButtonCorrectionByMoreSubjects()
 {
-	m_bIsOnlyNames = true;
-
 	ClearList();
 	m_lClmn.push_back(new DataColumn("Name", eListCtrlColumnTypeData_String));
 

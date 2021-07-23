@@ -3,7 +3,6 @@
 #include "Student.h"
 #include "CParentTable.h"
 
-
  CParentData::CParentData()
  {
 	 m_iParentId = 0;
@@ -11,64 +10,45 @@
 	 m_eRecordMode = eRecordMode_None;
  }
 
-CParentData::CParentData(int iParentId, int iStudentId, CString strFirstName, CString strLastName, CString strPhoneNumber, 
-					CString strEmail, CString strCity, CString strPostCode, CString strNeighborhood, CString strAddress)
- {
- 	m_iParentId = iParentId;
- 	m_iStudentId = iStudentId;
- 	m_strFirstName = strFirstName;
- 	m_strLastName = strLastName;
- 	m_strEmail = strEmail;
- 	m_strPhoneNumber = strPhoneNumber;
- 	m_strCity = strCity;
- 	m_strPostCode = strPostCode;
- 	m_strNeighborhood = strNeighborhood;
- 	m_strAddress = strAddress;
- }
-
 extern CDatabase g_dbConnection;
 
 bool CParent::Func(int nIdStudent, list<CParentData>& arrParents)
 {
-		for (auto& it = arrParents.begin(); it != arrParents.end(); it++)
+	for (auto& it = arrParents.begin(); it != arrParents.end(); it++)
+	{
+		switch (it->m_eRecordMode)
 		{
-			switch (it->m_eRecordMode)
-			{
 			case eRecordMode_Add:
 				
 				it->m_iStudentId = nIdStudent;
 				
 				if (!AddParent(*it)) {
-					return false;
+					return FALSE;
 				}
-				
 				break;
 			case eRecordMode_Edit:
 			
 				if (!EditParent(*it)) {
-					return false;
+					return FALSE;
 				}
-				
 				break;
 			case eRecordMode_Delete:
 				
 				if (!DeleteOneParent(it->m_iParentId)) {
-					return false;
+					return FALSE;
 				}
-			
 				break;
 			case eRecordMode_View:
 				
 				if (!LoadParent(*it)) {
-					return false;
+					return FALSE;
 				}
-				
 				break;
 			default:
 				break;
-			}
 		}
-		return true;
+	}
+	return TRUE;
 }
 
 void FillDataFromObjectToStruct(PARENT& stParent, CParentData& oParent)
@@ -97,12 +77,12 @@ bool CParent::AddParent(CParentData& oParent)
 		MessageBox(NULL, "The record can't added!", "Can't added", MB_OK | MB_ICONERROR);
 		oParentTable.Close();
 		
-		return false;
+		return FALSE;
 	}
 
 	oParentTable.Close();
 	
-	return true;
+	return TRUE;
 }
 
 bool CParent::EditParent(CParentData& oParent)
@@ -117,11 +97,11 @@ bool CParent::EditParent(CParentData& oParent)
 	{
 		MessageBox(NULL, "The record can't update!", "Can't update", MB_OK | MB_ICONERROR);
 		oParentTable.Close();
-		return false;
+		return FALSE;
 	}
 
 	oParentTable.Close();
-   	return true;
+   	return TRUE;
 }
 
  bool CParent::DeleteParents(const int nIdStudent)
@@ -137,7 +117,7 @@ bool CParent::EditParent(CParentData& oParent)
 		 {
 			 MessageBox(NULL, "The record can't delete!", "Can't delete", MB_OK | MB_ICONERROR);
 			 oParentTable.Close();
-			 return false;
+			 return FALSE;
 		 }
 
 		 oParentTable.Close();
@@ -145,10 +125,10 @@ bool CParent::EditParent(CParentData& oParent)
 	 catch (exception e)
 	 {
 		 AfxMessageBox("Error delete student!", MB_ICONEXCLAMATION);
-		 return false;
+		 return FALSE;
 	 }
 
-	 return true;
+	 return TRUE;
  }
 
  bool CParent::DeleteOneParent(const int nIdParent)
@@ -165,7 +145,7 @@ bool CParent::EditParent(CParentData& oParent)
 			MessageBox(NULL, "The record can't delete!", "Can't delete", MB_OK | MB_ICONERROR);
 			oParentTable.Close();
 
-			return false;
+			return FALSE;
 		}
 
 		oParentTable.Close();
@@ -173,10 +153,10 @@ bool CParent::EditParent(CParentData& oParent)
 	 catch (exception e)
 	 {
 		 AfxMessageBox("Error delete student!", MB_ICONEXCLAMATION);
-		 return false;
+		 return FALSE;
 	 }
 
-	 return true;
+	 return TRUE;
  }
 
  void FillDataFromStructToObject(CParentData& oParent, PARENT& recParent)
@@ -205,7 +185,7 @@ bool CParent::EditParent(CParentData& oParent)
 		 MessageBox(NULL, "The table parent isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
 		 oParentTable.Close();
 
-		 return false;
+		 return FALSE;
 	 }
 
 		 PARENT stParent;
@@ -213,10 +193,13 @@ bool CParent::EditParent(CParentData& oParent)
 
 	 while (!oParentTable.IsEOF())
 	 {
-		 oParentTable.GetRecStruct(stParent);
-		 FillDataFromStructToObject(oParent, stParent);
-		 oParent.m_eRecordMode = eRecordMode_None;
-		 lParent.push_back(oParent);
+		oParentTable.GetRecStruct(stParent);
+		
+		FillDataFromStructToObject(oParent, stParent);
+		
+		oParent.m_eRecordMode = eRecordMode_None;
+		
+		lParent.push_back(oParent);
 
 		 oParentTable.MoveNext();
 	 }
@@ -229,6 +212,7 @@ bool CParent::EditParent(CParentData& oParent)
 	 try
 	 {
 		 CParentTable oParentTable(&g_dbConnection);
+		
 		 PARENT recParent;
 		 recParent.iId = oParent.m_iParentId;
 		 oParentTable.LoadParent(recParent);
@@ -238,7 +222,7 @@ bool CParent::EditParent(CParentData& oParent)
 	 catch (exception e)
 	 {
 		 AfxMessageBox("Error load parent!", MB_ICONEXCLAMATION);
-		 return false;
+		 return FALSE;
 	 }
-	 return true;
+	 return TRUE;
  }

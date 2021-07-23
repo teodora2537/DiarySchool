@@ -2,14 +2,6 @@
 #include "Subject.h"
 #include "CSubjectTable.h"
 
-CSubjectData::CSubjectData(int _idSubject, CString _subject, CString _firstNameTeacher, CString _lastNameTeacher)
-{
-	m_iId = _idSubject;
-	m_strSubject = _subject;
-	m_strFirstNameTeacher = _firstNameTeacher;
-	m_strLastNameTeacher = _lastNameTeacher;
-}
-
 CSubjectData::CSubjectData()
 {
 	m_iId = 0;
@@ -25,27 +17,6 @@ CSubject::~CSubject()
 }
 
 extern CDatabase g_dbConnection;
-
-/*
-bool CSubject::IsContainsSubject(CSubjectData& oSubject) 
-{	
-	CSubjectTable oSubjectTable(&g_dbConnection);
-	oSubjectTable.Open();
-
-	while (!oSubjectTable.IsEOF())
-	{
-		if (oSubjectTable.IsExist(oSubject)) {
-			return true;
-	}
-
-		oSubjectTable.MoveNext();
-	}
-
-	oSubjectTable.Close();
-
-	return false;
-}
-*/
 
 void FillStructWithObjectData(SUBJECT& stSubject, CSubjectData& oSubjectData)
 {
@@ -66,42 +37,8 @@ bool CSubject::AddSubject(CSubjectData& oSubjectData)
 		MessageBox(NULL, "The record can't added!", "Can't added", MB_OK | MB_ICONERROR);
 		oSubjectTable.Close();
 
-		return false;
+		return FALSE;
 	}
-
-	//oSubjectTable.Open();
-		//
-		//if (!oSubjectTable.IsOpen()) 
-		//{
-		//	MessageBox(NULL, "The table Subject isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
-		//	return false;
-		//}
-		//
-		//if (!oSubjectTable.CanAppend())
-		//{
-		//	MessageBox(NULL, "The record can't append!", "Can't append", MB_OK | MB_ICONERROR);
-		//	oSubjectTable.Close();
-		//	return false;
-		//}
-		//
-		//if (IsContainsSubject(oSubjectData)) 
-		//{
-		//	MessageBox(NULL, "This subject exist!", "Student exist", MB_RETRYCANCEL | MB_ICONERROR);
-		//}
-		//
-		//oSubjectTable.AddNew();
-		//
-		//SUBJECT stSubject;
-		//FillStructWithObjectData(stSubject, oSubjectData);
-		//
-		//oSubjectTable.Add_Edit(stSubject);
-		//
-		//if (!oSubjectTable.Update())
-		//{
-		//	MessageBox(NULL, "The record can't update!", "Can't update", MB_OK | MB_ICONERROR);
-		//	oSubjectTable.Close();
-		//	return false;
-		//}
 
 	oSubjectTable.Close();
 	
@@ -121,35 +58,11 @@ bool CSubject::EditSubject(CSubjectData& oSubjectData)
 	{
 		MessageBox(NULL, "The record can't update!", "Can't update", MB_OK | MB_ICONERROR);
 		oSubjectTable.Close();
-		return false;
+		return FALSE;
 	}
 
 	oSubjectTable.Close();
-	//CSubjectTable oSubjectTable(&g_dbConnection);
-	//oSubjectTable.m_strFilter.Format("id='%d'", oSubjectData.m_iId);
-	//oSubjectTable.Open();
-	//
-	//if (!oSubjectTable.IsOpen())
-	//{
-	//	MessageBox(NULL, "The table Subject isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
-	//	oSubjectTable.Close();
-	//	return false;
-	//}
-	//
-	//oSubjectTable.Edit();
-	//
-	//SUBJECT stSubject;
-	//FillStructWithObjectData(stSubject, oSubjectData);
-	//
-	//oSubjectTable.Add_Edit(stSubject);
-	//
-	//if (!oSubjectTable.Update())
-	//{
-	//	MessageBox(NULL, "The record can't update!", "Can't update", MB_OK | MB_ICONERROR);
-	//	oSubjectTable.Close();
-	//	return false;
-	//}
-			
+
 	return TRUE;
 }
 
@@ -168,37 +81,16 @@ bool CSubject::DeleteSubject(const int nRoom)
 		}
 
 		oSubjectTable.Close();
-	//try
-	//{
-	//	oSubjectTable.m_strFilter.Format("id='%d'", nRoom);
-	//	oSubjectTable.Open();
-	//
-	//	if (!oSubjectTable.IsOpen())
-	//	{
-	//		MessageBox(NULL, "The table Subject isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
-	//		oSubjectTable.Close();
-	//
-	//		return false;
-	//	}
-	//
-	//	oSubjectTable.Edit();
-	//
-	//	oSubjectTable.DeleteSubject();
-	//
-	//	if (!oSubjectTable.Update()) {
-	//		MessageBox(NULL, "The record can't delete!", "Can't delete", MB_OK | MB_ICONERROR);
-	//		oSubjectTable.Close();
-	//
-	//		return false;
-	//	}
-	//}
-	//catch (exception e)
-	//{
-	//	AfxMessageBox("Error delete subject!", MB_ICONEXCLAMATION);
-	//	return false;
-	//}
 
 	return TRUE;
+}
+
+void FillDataFromStructToObj(CSubjectData& oSubject, SUBJECT& recSubject)
+{
+	oSubject.m_iId = recSubject.iId;
+	oSubject.m_strSubject = recSubject.szSubject;
+	oSubject.m_strFirstNameTeacher = recSubject.sz_First_Name;
+	oSubject.m_strLastNameTeacher = recSubject.sz_Last_Name;
 }
 
 bool CSubject::LoadSubject(const int nRoomId, CSubjectData& oSubject)
@@ -209,35 +101,8 @@ bool CSubject::LoadSubject(const int nRoomId, CSubjectData& oSubject)
 		recSubject.iId = nRoomId;
 		oSubjectTable.LoadSubject(recSubject);
 
-		oSubject.m_iId = recSubject.iId;
-		oSubject.m_strSubject = recSubject.szSubject;
-		oSubject.m_strFirstNameTeacher = recSubject.sz_First_Name;
-		oSubject.m_strLastNameTeacher = recSubject.sz_Last_Name;
+		FillDataFromStructToObj(oSubject, recSubject);
 		
-		/*
-	try{
-
-		oSubjectTable.m_strFilter.Format("id = '%d'", nRoomId);
-		oSubjectTable.Open();
-
-		if (!oSubjectTable.IsOpen())
-		{
-			MessageBox(NULL, "The table Subject isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
-			oSubjectTable.Close();
-			
-			return false;
-		}
-
-		oSubjectTable.Load(oSubject);
-
-		oSubjectTable.Close();
-	}
-	catch (exception e)
-	{
-		AfxMessageBox("Error load subject!", MB_ICONEXCLAMATION);
-		return false;
-	}
-		*/
 	return TRUE;
 }
 
@@ -264,10 +129,7 @@ void CSubject::PrintSubject(list<CSubjectData>& listSub)
 		{
 			oSubjectTable.GetRecStruct(stSubject);
 
-			oSubject.m_iId = stSubject.iId;
-			oSubject.m_strSubject = stSubject.szSubject;
-			oSubject.m_strFirstNameTeacher = stSubject.sz_First_Name;
-			oSubject.m_strLastNameTeacher = stSubject.sz_Last_Name;
+			FillDataFromStructToObj(oSubject, stSubject);
 			listSub.push_back(oSubject);
 
 			oSubjectTable.MoveNext();
@@ -279,6 +141,7 @@ void CSubject::PrintSubject(list<CSubjectData>& listSub)
 	catch (exception e)
 	{
 		AfxMessageBox("Error load sybjects!", MB_ICONEXCLAMATION);
+		return;
 	}
 }
 
@@ -287,22 +150,13 @@ void CSubject::GetLastId(CSubjectData& oSubject)
 	try
 	{
 		CSubjectTable oSubjectTable(&g_dbConnection);
-		oSubjectTable.Open();
-
-		if (!oSubjectTable.IsOpen())
-		{
-			MessageBox(NULL, "The recordset isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
-			oSubjectTable.Close();
-
-			return;
-		}
-
-		oSubjectTable.MoveLast();
-		oSubject.m_iId = oSubjectTable.m_iId;
-
-		oSubjectTable.Close();
+		SUBJECT stSubject;
+		oSubjectTable.GetLastId(stSubject);
+		oSubject.m_iId = stSubject.iId; 
 	}
-	catch (exception e) {
+	catch (exception e) 
+	{
 		AfxMessageBox("Don't get last id of student!", MB_ICONEXCLAMATION);
+		return;
 	}
 }

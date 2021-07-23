@@ -9,9 +9,7 @@ struct SCORE
 {
 	int iIdScore; // id score
 	int iIdStudent; // id student
-//	char szName[DEF_NAME_LEN + 1]; // sz- char array ->name student
 	int iIdSubject; // id subject
-	//char szSubject[DEF_NAME_LEN + 1]; // name subject
 	int iScore; //score
 	char szDate[10 + 1];//DBTIMESTAMP ->date of score
 
@@ -19,6 +17,8 @@ struct SCORE
 	{
 		SecureZeroMemory(this, sizeof(*this));
 	}
+
+  const	BOOL IsEquals(const SCORE& obj1, const SCORE& obj2);
 };
 
 class CScoreTable : public CRecordset
@@ -30,6 +30,7 @@ public:
 
 protected: //methods
 	virtual void DoFieldExchange(CFieldExchange* pFX);
+	//get
 	virtual CString GetDefaultConnection();
 	virtual CString GetDefaultSQL();
 
@@ -44,9 +45,9 @@ public: //memeber
 
 public: //methods
 	void Add_Edit_Score(SCORE& stScore);
+	BOOL LoadScore(SCORE& recScore);
+	
 	BOOL AddRec(SCORE& recScore);
-	BOOL IsEquals(SCORE& obj1, SCORE& obj2);
 	BOOL EditRec(SCORE& recScore);
 	BOOL DeleteRec(SCORE& recScore);
-	BOOL LoadScore(SCORE& recScore);
 };

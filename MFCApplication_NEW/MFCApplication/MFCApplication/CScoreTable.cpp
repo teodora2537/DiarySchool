@@ -53,7 +53,6 @@ CString CScoreTable::GetDefaultSQL() {
 
 void CScoreTable::GetRecStruct(SCORE& oScore)
 {
-	Library oLib;
 	oScore.iIdScore = m_iIdScore;
 	oScore.iIdStudent = m_iIdStudent;
 	oScore.iIdSubject = m_iIdSubject;
@@ -83,7 +82,7 @@ BOOL CScoreTable::AddRec(SCORE& recScore)
 		MessageBox(NULL, "The table score isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
 		Close();
 
-		return false;
+		return FALSE;
 	}
 
 	if (!CanAppend())
@@ -91,7 +90,7 @@ BOOL CScoreTable::AddRec(SCORE& recScore)
 		MessageBox(NULL, "The table score can't append!", "Can't append", MB_OK | MB_ICONERROR);
 		Close();
 
-		return false;
+		return FALSE;
 	}
 
 	AddNew();
@@ -111,13 +110,15 @@ BOOL CScoreTable::AddRec(SCORE& recScore)
 	return TRUE;
 }
 
-BOOL CScoreTable::IsEquals(SCORE& obj1, SCORE& obj2)
+const BOOL SCORE::IsEquals(const SCORE& obj1, const SCORE& obj2)
 {
 	if (obj1.iIdSubject != obj2.iIdSubject)
 		return FALSE;
+
 	if (obj1.iScore != obj2.iScore)
 		return FALSE;
-	if (obj1.szDate != obj2.szDate)
+	
+	if (strcmp(obj1.szDate, obj2.szDate) != 0)
 		return FALSE;
 
 
@@ -141,7 +142,7 @@ BOOL CScoreTable::EditRec(SCORE& recScore)
 		MessageBox(NULL, "The table score isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
 		Close();
 
-		return false;
+		return FALSE;
 	}
 
 	if (!CanUpdate())
@@ -149,7 +150,7 @@ BOOL CScoreTable::EditRec(SCORE& recScore)
 		MessageBox(NULL, "The table score can't update!", "Can't update", MB_OK | MB_ICONERROR);
 		Close();
 
-		return false;
+		return FALSE;
 	}
 
 	Edit();
@@ -158,23 +159,15 @@ BOOL CScoreTable::EditRec(SCORE& recScore)
 
 	GetRecStruct(recordScore);
 
-	if (IsEquals(recordScore, recScore))
+	if (recScore.IsEquals(recordScore, recScore))
 	{
 		Close();
-		return true;
+		return TRUE;
 	}
 
 	SCORE stScore;
 
 	stScore = recScore;
-
-	//if (memcmp(&recordScore, &stScore, sizeof(recordScore)))
-	//{
-	//	Close();
-	//	return true;
-	//}
-
-	//stParent = recParent;
 
 	Add_Edit_Score(stScore);
 
@@ -185,7 +178,7 @@ BOOL CScoreTable::EditRec(SCORE& recScore)
 		g_dbConnection.Rollback();
 		Close();
 
-		return false;
+		return FALSE;
 	}
 
 	Close();
@@ -228,7 +221,6 @@ BOOL CScoreTable::DeleteRec(SCORE& recScore)
 	catch (exception e)
 	{
 		AfxMessageBox("Error delete score!", MB_ICONEXCLAMATION);
-
 		return FALSE;
 	}
 
@@ -251,12 +243,12 @@ BOOL CScoreTable::LoadScore(SCORE& recScore)
 		MessageBox(NULL, "The table score isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
 		Close();
 
-		return false;
+		return FALSE;
 	}
 
 	GetRecStruct(recScore);
 
 	Close();
 
-	return true;
+	return TRUE;
 }

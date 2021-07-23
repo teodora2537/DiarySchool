@@ -19,6 +19,8 @@ struct PARENT {
 	{
 		SecureZeroMemory(this, sizeof(*this));
 	}
+
+	const BOOL IsEquals(PARENT& obj1, PARENT& obj2);
 };
 
 
@@ -49,15 +51,14 @@ public: //member
 	CString m_str_address;
 
 public: //methods
-	//void LoadParent(CParentData& oParent);//ssus struct
 	void Add_Edit_Parent(PARENT& oParent);
-	void GetRecStruct(PARENT& oParent);
 	BOOL IsExist(const PARENT& oParent, bool& bExists);
+	//get
+	void GetRecStruct(PARENT& oParent);
+	
 	BOOL AddRec(PARENT& oParent);
-	BOOL IsEquals(PARENT& obj1, PARENT& obj2);
 	BOOL EditRec(PARENT& recParent);
-	BOOL DeleteRecords(PARENT& recParent);
 	BOOL DeleteRec(PARENT& recParent);
+	BOOL DeleteRecords(PARENT& recParent);
 	BOOL LoadParent(PARENT& recParent);
-	//OOL PrintParents(PARENT& recPArent, list<PARENT&> lRecParent);
 };

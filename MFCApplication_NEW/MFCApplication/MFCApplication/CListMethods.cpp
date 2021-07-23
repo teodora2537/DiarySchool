@@ -149,7 +149,8 @@ void CListMethods::Sort(int iColumn, BOOL bAscending, ListCtrlColumnTypeData eCo
 	int iCountSwap = 0;
 	bool flag = false;
 
-	while (true) {
+	while (true) 
+	{
 
 		if ((bAscending && _CompareFunction(_GetItem(item1, iColumn), _GetItem(item2, iColumn), eColDataType) == -1) ||
 		   (!bAscending && _CompareFunction(_GetItem(item1, iColumn), _GetItem(item2, iColumn), eColDataType) == 1))
@@ -201,15 +202,15 @@ int CALLBACK CListMethods::_CompareFunction(CString& strItem1, CString& strItem2
 {
 	switch (eColDataType)
 	{
-	case 1:
-		return _NumberCompare(strItem1, strItem2);
-		break;
-	case 2:
-		return _DateCompare(strItem1, strItem2);
-		break;
-	case 3:
-		return _StringCompare(strItem1, strItem2);
-		break;
+		case 1:
+			return _NumberCompare(strItem1, strItem2);
+			break;
+		case 2:
+			return _DateCompare(strItem1, strItem2);
+			break;
+		case 3:
+			return _StringCompare(strItem1, strItem2);
+			break;
 	}
 }
 

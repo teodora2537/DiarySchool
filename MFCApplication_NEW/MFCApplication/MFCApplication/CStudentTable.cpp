@@ -199,27 +199,36 @@ BOOL CStudentTable::AddRec(STUDENT& recStudent)
 	return TRUE;
 }
 
-BOOL CStudentTable::IsEquals(STUDENT& obj1, STUDENT& obj2)
+const BOOL STUDENT::IsEquals(const STUDENT& obj1, const STUDENT& obj2)
 {
-	if (obj1.sz_First_Name != obj2.sz_First_Name)
+	if (strcmp(obj1.sz_First_Name, obj2.sz_First_Name) != 0)
 		return FALSE;
-	if (obj1.sz_Last_Name != obj2.sz_Last_Name)
+	
+	if (strcmp(obj1.sz_Last_Name, obj2.sz_Last_Name) != 0)
 		return FALSE;
-	if (obj1.szDate != obj2.szDate)
+	
+	if (strcmp(obj1.szDate, obj2.szDate) != 0)
 		return FALSE;
-	if (obj1.szEmail != obj2.szEmail)
+	
+	if (strcmp(obj1.szEmail, obj2.szEmail) != 0)
 		return FALSE;
-	if (obj1.szPhoneNumber != obj2.szPhoneNumber)
+	
+	if (strcmp(obj1.szPhoneNumber, obj2.szPhoneNumber) != 0)
 		return FALSE;
-	if (obj1.szEGN != obj2.szEGN)
+	
+	if (strcmp(obj1.szEGN, obj2.szEGN) != 0)
 		return FALSE;
-	if (obj1.szCity != obj2.szCity)
+	
+	if (strcmp(obj1.szCity, obj2.szCity) != 0)
 		return FALSE;
-	if (obj1.szPostCode != obj2.szPostCode)
+	
+	if (strcmp(obj1.szPostCode, obj2.szPostCode) != 0)
 		return FALSE;
-	if (obj1.szNeighborhood != obj2.szNeighborhood)
+	
+	if (strcmp(obj1.szNeighborhood, obj2.szNeighborhood) != 0)
 		return FALSE;
-	if (obj1.szAddress != obj2.szAddress)
+
+	if (strcmp(obj1.szAddress, obj2.szAddress) != 0)
 		return FALSE;
 
 	return TRUE;
@@ -258,19 +267,13 @@ BOOL CStudentTable::EditRec(STUDENT& recStudent)
 
 	GetRecStruct(recordStudent);
 
-	if (IsEquals(recordStudent, recStudent))
+	if (recStudent.IsEquals(recordStudent, recStudent))
 	{
 		Close();
-		return true;
+		return TRUE;
 	}
 
 	STUDENT stStudent = recStudent;
-
-	//if (memcmp(&recordStudent, &stStudent, sizeof(recordStudent)))
-	//{
-	//	Close();
-	//	return TRUE;
-	//}
 
 	Add_Edit_Student(stStudent);
 
@@ -324,7 +327,6 @@ BOOL CStudentTable::DeleteRec(STUDENT& recStudent)
 	catch (exception e)
 	{
 		AfxMessageBox("Error delete parent!", MB_ICONEXCLAMATION);
-
 		return FALSE;
 	}
 

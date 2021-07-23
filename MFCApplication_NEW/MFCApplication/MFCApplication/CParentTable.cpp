@@ -121,8 +121,9 @@ BOOL CParentTable::AddRec(PARENT& recParent)
 {
 	bool bExists = false;
 
-	if (!IsExist(recParent, bExists))
+	if (!IsExist(recParent, bExists)) {
 		return FALSE;
+	}
 
 	if (bExists)
 	{
@@ -142,7 +143,7 @@ BOOL CParentTable::AddRec(PARENT& recParent)
 		MessageBox(NULL, "The table parent isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
 		Close();
 
-		return false;
+		return FALSE;
 	}
 
 	if (!CanAppend())
@@ -150,7 +151,7 @@ BOOL CParentTable::AddRec(PARENT& recParent)
 		MessageBox(NULL, "The table parent can't append!", "Can't append", MB_OK | MB_ICONERROR);
 		Close();
 	
-		return false;
+		return FALSE;
 	}
 
 	AddNew();
@@ -166,28 +167,6 @@ BOOL CParentTable::AddRec(PARENT& recParent)
 	}
 
 	Close();
-
-	return TRUE;
-}
-
-BOOL CParentTable::IsEquals(PARENT& obj1, PARENT& obj2) 
-{
-	if (obj1.sz_First_Name != obj2.sz_First_Name) 
-		return FALSE;
-	if (obj1.sz_Last_Name != obj2.sz_Last_Name)
-		return FALSE;
-	if (obj1.szPhoneNumber != obj2.szPhoneNumber)
-		return FALSE;	
-	if (obj1.szEmail != obj2.szEmail)
-		return FALSE;
-	if (obj1.szCity != obj2.szCity)
-		return FALSE;
-	if (obj1.szPostCode != obj2.szPostCode)
-		return FALSE;
-	if (obj1.szNeighborhood != obj2.szNeighborhood)
-		return FALSE;
-	if (obj1.szAddress != obj2.szAddress)
-		return FALSE;
 
 	return TRUE;
 }
@@ -208,7 +187,7 @@ BOOL CParentTable::EditRec(PARENT& recParent)
 		MessageBox(NULL, "The table Parent isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
 		Close();
 
-		return false;
+		return FALSE;
 	}
 
 	if (!CanUpdate())
@@ -216,7 +195,7 @@ BOOL CParentTable::EditRec(PARENT& recParent)
 		MessageBox(NULL, "The table Parent can't update!", "Can't update", MB_OK | MB_ICONERROR);
 		Close();
 
-		return false;
+		return FALSE;
 	}
 
 	Edit();
@@ -225,21 +204,14 @@ BOOL CParentTable::EditRec(PARENT& recParent)
 
 	GetRecStruct(recordParent);
 
-	if (IsEquals(recordParent, recParent)) 
+	if (recParent.IsEquals(recordParent, recParent)) 
 	{
 		Close();
-		return true;
+		return TRUE;
 	}
 
 	PARENT stParent;
 	stParent = recParent;
-	//
-	//if (memcmp(&recordParent, &stParent, sizeof(recordParent)))
-	//{
-	//	Close();
-	//	return true;
-	//}
-
 
 	Add_Edit_Parent(stParent);
 
@@ -247,10 +219,9 @@ BOOL CParentTable::EditRec(PARENT& recParent)
 	{
 		MessageBox(NULL, "The record can't update!", "Can't update", MB_OK | MB_ICONERROR);
 
-		g_dbConnection.Rollback();
 		Close();
 
-		return false;
+		return FALSE;
 	}
 
 	Close();
@@ -300,7 +271,6 @@ BOOL CParentTable::DeleteRecords(PARENT& recParent)
 	catch (exception e)
 	{
 		AfxMessageBox("Error delete student!", MB_ICONEXCLAMATION);
-
 		return FALSE;
 	}
 
@@ -342,7 +312,6 @@ BOOL CParentTable::DeleteRec(PARENT& recParent)
 	catch (exception e)
 	{
 		AfxMessageBox("Error delete parent!", MB_ICONEXCLAMATION);
-
 		return FALSE;
 	}
 
@@ -365,12 +334,41 @@ BOOL CParentTable::LoadParent(PARENT& recParent)
 		MessageBox(NULL, "The table Parent isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
 		Close();
 
-		return false;
+		return FALSE;
 	}
 
 	GetRecStruct(recParent);
 
 	Close();
 
-	return true;
+	return TRUE;
+}
+
+const BOOL PARENT::IsEquals(PARENT& obj1, PARENT& obj2)
+{
+		if (strcmp(obj1.sz_First_Name, obj2.sz_First_Name) != 0)
+			return FALSE;
+
+		if (strcmp(obj1.sz_Last_Name, obj2.sz_Last_Name) != 0)
+			return FALSE;
+
+		if (strcmp(obj1.szPhoneNumber, obj2.szPhoneNumber) != 0)
+			return FALSE;
+
+		if (strcmp(obj1.szEmail, obj2.szEmail) != 0)
+			return FALSE;
+
+		if (strcmp(obj1.szCity, obj2.szCity) != 0)
+			return FALSE;
+
+		if (strcmp(obj1.szPostCode, obj2.szPostCode) != 0)
+			return FALSE;
+
+		if (strcmp(obj1.szNeighborhood, obj2.szNeighborhood) != 0)
+			return FALSE;
+
+		if (strcmp(obj1.szAddress, obj2.szAddress) != 0)
+			return FALSE;
+
+		return TRUE;
 }

@@ -93,8 +93,6 @@ BOOL CStudentDlg::OnInitDialog()
 /*Set range date*/
 void CStudentDlg::SetRangeOfDTPicker()
 {
-
-
 	COleDateTime currentDate = COleDateTime::GetCurrentTime();
 	COleDateTime dtMinRange;
 	COleDateTime dtMaxRange;
@@ -174,16 +172,6 @@ void CStudentDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 	
 	bool bIsItemSelected = pos != NULL;
 
-	//if (m_eParentMode == eRecordMode_Add) 
-	//{
-	//	int nItem = m_listCtrl.GetNextSelectedItem(pos);
-	//	int nId = (int)m_listCtrl.GetItemData(nItem);
-	//
-	//	if (nId < 0) {
-	//		return;
-	//	}
-	//}
-
 	CMenu submenu;
 	submenu.CreatePopupMenu();
 
@@ -198,7 +186,6 @@ void CStudentDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 	submenu.EnableMenuItem(IDC_MENU_VIEW_PARENT, !bIsItemSelected);
 
 	submenu.TrackPopupMenu(TPM_LEFTALIGN, point.x, point.y, this);
-	;
 }
 
 void CStudentDlg::OnAddParent()
@@ -238,6 +225,11 @@ void CStudentDlg::OnAddParent()
 		nItemIndex = m_listCtrl.SetItemData(nCount, (DWORD_PTR)oParentData.m_iParentId);
 
 		--m_nCount;
+	}
+
+	// autosize column
+	for (int i = 0; i < m_listCtrl.GetHeaderCtrl()->GetItemCount(); ++i) {
+		m_listCtrl.SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
 	}
 }
 
@@ -290,6 +282,11 @@ void CStudentDlg::OnEditParent()
 	m_listCtrl.SetItemText(nItem, 5, oParentData.m_strPostCode);
 	m_listCtrl.SetItemText(nItem, 6, oParentData.m_strNeighborhood);
 	m_listCtrl.SetItemText(nItem, 7, oParentData.m_strAddress);
+
+	// autosize column
+	for (int i = 0; i < m_listCtrl.GetHeaderCtrl()->GetItemCount(); ++i) {
+		m_listCtrl.SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
+	}
 }
 
 void CStudentDlg::OnDeleteParent()
@@ -407,6 +404,11 @@ void CStudentDlg::LoadDatas(const int& nIdStudent)
 			//set index back item
 			nItemIndex = m_listCtrl.SetItemData(nCount, (DWORD_PTR)i->m_iParentId);
 		}
+	}
+
+	// autosize column
+	for (int i = 0; i < m_listCtrl.GetHeaderCtrl()->GetItemCount(); ++i) {
+		m_listCtrl.SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
 	}
 }
 

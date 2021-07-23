@@ -22,6 +22,8 @@ struct STUDENT {
 	{
 		SecureZeroMemory(this, sizeof(*this));
 	}
+
+	const BOOL IsEquals(const STUDENT& obj1, const STUDENT& obj2);
 };
 
 class CStudentTable :  public CRecordset
@@ -35,6 +37,7 @@ public:
 
 protected: //methods
 	virtual void DoFieldExchange(CFieldExchange* pFX);
+	//get
 	virtual CString GetDefaultConnection();
 	virtual CString GetDefaultSQL();
 
@@ -52,14 +55,13 @@ public: //member
 	CString m_str_neighborhood;
 	CString m_str_address;
 
-
 public: // methods
     void Add_Edit_Student(STUDENT& stStudent);
 	BOOL LoadStudent(STUDENT& oStudent);
 	bool IsExist(const STUDENT& recStudent, bool& bExists);
+	
 	BOOL AddRec(STUDENT& recStudent);
-	BOOL IsEquals(STUDENT& obj1, STUDENT& obj2);
 	BOOL EditRec(STUDENT& recStudent);
 	BOOL DeleteRec(STUDENT& recStudent);
-void GetRecStruct(STUDENT& oStudent);
+	void GetRecStruct(STUDENT& oStudent);
 };

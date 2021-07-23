@@ -6,7 +6,6 @@
 class CSubjectData
 {
 public:
-	CSubjectData(int _idSubject, CString _subject, CString _firstNameTeacher, CString _lastNameTeacher);
 	CSubjectData();
 
 public://member
@@ -27,7 +26,6 @@ public: //methods
 	bool DeleteSubject(const int nRoom);
 	bool LoadSubject(const int nRoomId, CSubjectData& oSubject);
 	void PrintSubject(list<CSubjectData>& listSub);
-
+	//get
 	void GetLastId(CSubjectData& oSubject);
-	//bool IsContainsSubject(CSubjectData& oSubject);
 };

@@ -30,9 +30,8 @@ END_MESSAGE_MAP()
 BOOL CTabStudent::OnInitDialog() 
 {
 
-	if (!__super::OnInitDialog()) {
+	if (!__super::OnInitDialog())
 		return FALSE;
-	}
 
 	m_listCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
 	m_listCtrl.InsertColumnAtEnd("#", eListCtrlColumnTypeData_Int, LVCFMT_LEFT);
@@ -46,19 +45,15 @@ BOOL CTabStudent::OnInitDialog()
 	m_listCtrl.InsertColumnAtEnd("Neighborhood", eListCtrlColumnTypeData_String, LVCFMT_LEFT);
 	m_listCtrl.InsertColumnAtEnd("Address", eListCtrlColumnTypeData_String, LVCFMT_LEFT);
 	
-	LoadData(true);
+	LoadData();
 
-	//autosize column
-	for (int i = 0; i < m_listCtrl.GetHeaderCtrl()->GetItemCount(); ++i) {
-		m_listCtrl.SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
-	}
-
-	return true;
+	return TRUE;
 }
 
 void CTabStudent::OnContextMenu(CWnd* pWnd, CPoint point)
 {
 	POSITION pos = m_listCtrl.GetFirstSelectedItemPosition();
+	
 	bool bIsItemSelected = pos != NULL;
 
 	CMenu submenu;
@@ -98,12 +93,13 @@ void CTabStudent::OnAddStudent()
 		return;
 	}
 
-	LoadData(true);
+	LoadData();
 }
 
 void CTabStudent::OnEditStudent()
 {
 	POSITION pos = m_listCtrl.GetFirstSelectedItemPosition();
+	
 	if (pos == NULL) {
 		return;
 	}
@@ -132,15 +128,14 @@ void CTabStudent::OnEditStudent()
 		return;
 	}
 
-	if (!oStudent.EditStudent(oStudentData)) {
-
+	if (!oStudent.EditStudent(oStudentData)) 
+	{
 		if (IDRETRY) {
 			OnEditStudent();
 		}
 		return;
 	}
-
-	LoadData(true);
+	LoadData();
 }
 
 void CTabStudent::OnDeleteStudent()
@@ -167,11 +162,13 @@ void CTabStudent::OnDeleteStudent()
 	message.Format("Do you want to delete subject with room # %d?", nId);
 	int result = MessageBox(message, "Delete student", MB_YESNO);
 
-	if (result != IDYES)
+	if (result != IDYES) {
 		return;
+	}
 
-	if (!oStudent.DeleteStudent(nId))
-	return;
+	if (!oStudent.DeleteStudent(nId)) {
+		return;
+	}
 
 	m_listCtrl.DeleteItem(nItem);
 }
@@ -180,8 +177,9 @@ void CTabStudent::OnViewStudent()
 {
 	POSITION pos = m_listCtrl.GetFirstSelectedItemPosition();
 	
-	if (pos == NULL)
+	if (pos == NULL) {
 		return;
+	}
 
 	int nItem = m_listCtrl.GetNextSelectedItem(pos);
 
@@ -213,27 +211,14 @@ void CTabStudent::OnNMDblclkList(NMHDR* pNMHDR, LRESULT* pResult) {
 	OnViewStudent();
 }
 
-void CTabStudent::OnLvnColumnclickList_(NMHDR* pNMHDR, LRESULT* pResult)
-{
-	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
-	int sortClm = -1;
-	sortClm = pNMLV->iSubItem; //save column for the callback
-
-	LoadData(false);
-	
-	*pResult = 0;
-}
-
-void CTabStudent::LoadData(bool isFromFile)
+void CTabStudent::LoadData()
 {
 	m_listCtrl.DeleteAllItems();
 
-	if (isFromFile)
-	{
-		m_listStudent.clear();
-		CStudent oStudent;
-		oStudent.PrintStudent(m_listStudent);
-	}
+	m_listStudent.clear();
+	
+	CStudent oStudent;
+	oStudent.PrintStudent(m_listStudent);
 
 	Library oLib;
 
@@ -262,5 +247,10 @@ void CTabStudent::LoadData(bool isFromFile)
 			//set index of back item
 			nItemIndex = m_listCtrl.SetItemData(nCount, (DWORD_PTR)(*i).m_iStudentId);
 		}
+	}
+
+	// autosize column
+	for (int i = 0; i < m_listCtrl.GetHeaderCtrl()->GetItemCount(); ++i) {
+		m_listCtrl.SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
 	}
 }

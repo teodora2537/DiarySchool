@@ -62,32 +62,6 @@ void CSubjectTable::Add_Edit(SUBJECT& stSubject)
 	m_strLastNameTeacher = stSubject.sz_Last_Name;
 }
 
-BOOL CSubjectTable::Load(SUBJECT& recSubject) 
-{
-	m_strFilter.Format("id = '%d'", recSubject.iId);
-
-	if (!Open())
-	{
-		MessageBox(NULL, "The table subject isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
-		Close();
-		return FALSE;
-	}
-
-	if (!IsOpen())
-	{
-		MessageBox(NULL, "The table subject isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
-		Close();
-
-		return FALSE;
-	}
-
-	GetRecStruct(recSubject);
-
-	Close();
-
-	return TRUE;
-}
-
 bool CSubjectTable::IsExist(const SUBJECT& recSubject, bool& bExists)
 {
 	bExists = false;
@@ -116,10 +90,18 @@ bool CSubjectTable::IsExist(const SUBJECT& recSubject, bool& bExists)
 	return TRUE;
 }
 
-/*TO DOS*/
-bool CSubjectTable::IsEquals(const SUBJECT& recSubject, bool& bEquals) 
+const BOOL SUBJECT::IsEquals(const SUBJECT& obj1, const SUBJECT& obj2)
 {
-	return FALSE;
+	if (strcmp(obj1.szSubject, obj2.szSubject) != 0)
+		return FALSE;
+
+	if (strcmp(obj1.sz_First_Name, obj2.sz_First_Name) != 0)
+		return FALSE;
+	
+	if (strcmp(obj1.sz_Last_Name, obj2.sz_Last_Name) != 0)
+		return FALSE;
+
+	return TRUE;
 }
 
 BOOL CSubjectTable::AddRec(SUBJECT& recSubject)
@@ -147,7 +129,7 @@ BOOL CSubjectTable::AddRec(SUBJECT& recSubject)
 		MessageBox(NULL, "The table subject isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
 		Close();
 
-		return false;
+		return FALSE;
 	}
 
 	if (!CanAppend())
@@ -155,7 +137,7 @@ BOOL CSubjectTable::AddRec(SUBJECT& recSubject)
 		MessageBox(NULL, "The table subject can't append!", "Can't append", MB_OK | MB_ICONERROR);
 		Close();
 
-		return false;
+		return FALSE;
 	}
 
 	AddNew();
@@ -176,11 +158,7 @@ BOOL CSubjectTable::AddRec(SUBJECT& recSubject)
 }
 
 BOOL CSubjectTable::EditRec(SUBJECT& recSubject)
-{
-	bool bExists = false;
-	if (IsEquals(recSubject, bExists))
-	return FALSE;
-
+{		
 	m_strFilter.Format("id = '%d'", recSubject.iId);
 
 	if (!Open())
@@ -195,7 +173,7 @@ BOOL CSubjectTable::EditRec(SUBJECT& recSubject)
 		MessageBox(NULL, "The table subject isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
 		Close();
 
-		return false;
+		return FALSE;
 	}
 
 	if (!CanUpdate())
@@ -203,7 +181,7 @@ BOOL CSubjectTable::EditRec(SUBJECT& recSubject)
 		MessageBox(NULL, "The table subject can't update!", "Can't update", MB_OK | MB_ICONERROR);
 		Close();
 
-		return false;
+		return FALSE;
 	}
 
 	Edit();
@@ -214,10 +192,10 @@ BOOL CSubjectTable::EditRec(SUBJECT& recSubject)
 
 	SUBJECT stSubject;
 
-	if (memcmp(&recordSubject, &stSubject, sizeof(recordSubject)))
+	if (recSubject.IsEquals(recordSubject, recSubject))
 	{
 		Close();
-		return true;
+		return TRUE;
 	}
 
 	stSubject = recSubject;
@@ -231,7 +209,7 @@ BOOL CSubjectTable::EditRec(SUBJECT& recSubject)
 		g_dbConnection.Rollback();
 		Close();
 
-		return false;
+		return FALSE;
 	}
 
 	Close();
@@ -263,10 +241,10 @@ BOOL CSubjectTable::DeleteRec(SUBJECT& recSubject)
 
 		m_strStatus = "unactiv";
 
-		if (!Update()) {
+		if (!Update()) 
+		{
 			MessageBox(NULL, "The record can't delete!", "Can't delete", MB_OK | MB_ICONERROR);
 			Close();
-
 			return FALSE;
 		}
 
@@ -275,7 +253,6 @@ BOOL CSubjectTable::DeleteRec(SUBJECT& recSubject)
 	catch (exception e)
 	{
 		AfxMessageBox("Error delete subject!", MB_ICONEXCLAMATION);
-
 		return FALSE;
 	}
 
@@ -297,13 +274,37 @@ BOOL CSubjectTable::LoadSubject(SUBJECT& recSubject)
 	{
 		MessageBox(NULL, "The table subject isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
 		Close();
-
-		return false;
+		return FALSE;
 	}
 
 	GetRecStruct(recSubject);
 
 	Close();
 
-	return true;
+	return TRUE;
+}
+
+BOOL CSubjectTable::GetLastId(SUBJECT& recSubject)
+{
+	if (!Open())
+	{
+		MessageBox(NULL, "The table subject isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
+		Close();
+		return FALSE;
+	}
+
+	if (!IsOpen())
+	{
+		MessageBox(NULL, "The table subject isn't open!", "Isn't open", MB_OK | MB_ICONERROR);
+		Close();
+
+		return FALSE;
+	}
+	
+	MoveLast();
+	recSubject.iId = m_iId;
+
+	Close();
+
+	return TRUE;
 }

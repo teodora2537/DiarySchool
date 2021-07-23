@@ -39,6 +39,8 @@ public: //methods
 	void LoadData();
 
 private: //member
-	CListMethods m_listCtrl;
 	list<CScoreData> m_listScore;
+
+public:
+	CListMethods m_listCtrl;
 };

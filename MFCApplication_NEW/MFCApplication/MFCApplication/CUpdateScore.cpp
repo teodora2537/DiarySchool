@@ -71,8 +71,8 @@ void CScoreDlg::FillComboBox()
 	
 	arrData.RemoveAll();
 
-	for (int i = 2; i <= 6; i++) {
-
+	for (int i = 2; i <= 6; i++) 
+	{
 		COMBO_DATA combo_data;
 		combo_data.nID = iId;
 		sprintf(combo_data.szName, "%d", i);
@@ -170,7 +170,7 @@ BOOL CScoreDlg::ValidateData()
 	else if (nIndexSub < 0)
 	{
 		MessageBox("Please input correct subject or choose subject!", "Incorect subject");
-		return false;
+		return FALSE;
 	}
 	//empty or incorect score
 	else if (m_strScore.IsEmpty())
@@ -181,7 +181,7 @@ BOOL CScoreDlg::ValidateData()
 	else if (nIndexScore < 0)
 	{
 		MessageBox("Please input correct score!", "Incorect score");
-		return false;
+		return FALSE;
 	}
 	return TRUE;
 }

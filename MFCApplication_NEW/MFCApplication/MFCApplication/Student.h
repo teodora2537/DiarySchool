@@ -7,7 +7,6 @@
 #include "CParent.h"
 
 struct REFERENCE {
-	//int iId;
 	char szClm0[100 + 1];
 	char szClm1[100 + 1];
 	char szClm2[100 + 1];
@@ -23,10 +22,7 @@ class CStudentData
 {
 public:
 	CStudentData();
-	CStudentData(int iParentId, int iStudentId, CString strFirstName, CString strLastName, COleDateTime oleDTBirthday,
-				 CString strEmail, CString strPhoneNumber, CString strEgn, CString strCity, 
-				 CString strPostCode, CString strNeighborhood, CString strAddress);
-	
+
 public: //member
 	int m_iStudentId;
 	int m_iParentId;
@@ -66,7 +62,6 @@ public://reference methods
 	void PeopleHaveBirthday(list<REFERENCE>& listReference);
 	void RemedialExaminationBySub(list<REFERENCE>& listReference);
 	void RemedialExaminationByMoreSub(list<REFERENCE>& listReference);
-	
 	//get
 	bool GetLastAddedID(CString& nIdStudent);
 	void GetLastId(int& lastID);
